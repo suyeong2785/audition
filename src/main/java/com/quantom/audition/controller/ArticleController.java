@@ -16,7 +16,7 @@ public class ArticleController {
 	private ArticleService articleService;
 	
 	@RequestMapping("/article/list")
-	public String showMain(Model model) {
+	public String showArticles (Model model) {
 		
 		List<Article> articles = articleService.getArticles();
 		
