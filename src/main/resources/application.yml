@@ -13,5 +13,6 @@ spring:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
 mybatis:
   type-aliases-package: com.quantom.audition
-    
+custom:
+  logoText: 오디션 트리
  

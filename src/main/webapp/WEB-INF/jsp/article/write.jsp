@@ -31,7 +31,7 @@
 </script>
 
 <form class="form1" method="POST" action="doWrite" onsubmit="ArticleWriteForm__submit(this); return false;" >
-		<input type="hidden" name="redirectUrl" value="/article/detail?id=#id" />
+		<input type="hidden" name="redirectUrl" value="./detail?id=#id" />
 		<div class="table-box con">
 		<table>
 		<tbody>
