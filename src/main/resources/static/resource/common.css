@@ -43,6 +43,20 @@ label[for] {
 	padding: 10px;
 	text-align: left;
 }
+/* 폼 관련 라이브러리*/
+.form1 .form-control-box> input,
+.form1 .form-control-box> textarea	 {
+	width:100%;
+	padding:10px;
+	margin:0;
+	display:block;
+	box-sizing: border-box;
+}
+
+.form1 .form-control-box> textarea	 {
+	min-height: 300px;
+	resize: none;
+}
 
 /* 커스텀 */
 .con {
