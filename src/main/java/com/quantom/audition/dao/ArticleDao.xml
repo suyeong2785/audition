@@ -29,5 +29,26 @@
 		`body` = #{body}
 	
 	</insert>
+	
+	<insert id="writeReply" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO articleReply
+		SET regDate = NOW(),
+		updateDate = NOW(),
+		body =
+		#{body},
+		memberId = #{memberId},
+		articleId = #{articleId},
+		displayStatus
+		= 1
+	</insert>
+	
+	<select id="getForPrintArticleReplies" resultType="ArticleReply">
+		SELECT *
+		FROM articleReply
+		WHERE articleId = #{articleId}
+		AND displayStatus = 1
+		AND id >= #{from}
+		ORDER BY id ASC
+	</select>
 
 </mapper>

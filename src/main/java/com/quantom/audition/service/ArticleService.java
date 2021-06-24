@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.quantom.audition.dao.ArticleDao;
 import com.quantom.audition.dto.Article;
+import com.quantom.audition.dto.ArticleReply;
 import com.quantom.audition.util.Util;
 
 @Service
@@ -25,8 +26,18 @@ public class ArticleService {
 
 	public int write(Map<String, Object> param) {
 		articleDao.write(param);
-		
-		return Util.getAsInt(param.get("id"));	
+
+		return Util.getAsInt(param.get("id"));
+	}
+	
+	public int writeReply(Map<String, Object> param) {
+		articleDao.writeReply(param);
+
+		return Util.getAsInt(param.get("id"));
+	}
+	
+	public List<ArticleReply> getForPrintArticleReplies(Map<String, Object> param) {
+		return articleDao.getForPrintArticleReplies(param);
 	}
 	
 }

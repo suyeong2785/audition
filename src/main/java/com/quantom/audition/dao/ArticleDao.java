@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.quantom.audition.dto.Article;
+import com.quantom.audition.dto.ArticleReply;
 
 @Mapper
 public interface ArticleDao {
@@ -16,5 +17,9 @@ public interface ArticleDao {
 	Article getForPrintArticleById(@Param(value = "id") int id);
 
 	void write(Map<String, Object> param);
+
+	List<ArticleReply> getForPrintArticleReplies(Map<String, Object> param);
+
+	void writeReply(Map<String, Object> param);
 	
 }
