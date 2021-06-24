@@ -5,10 +5,17 @@
 
 <mapper namespace="com.quantom.audition.dao.ArticleDao">
 
-	<select id="getArticles" resultType="Article">
+	<select id="getForPrintArticles" resultType="Article">
 		SELECT *
 		FROM article
 		WHERE displayStatus = 1
+		ORDER BY id DESC
+	</select>
+	
+	<select id="getForPrintArticleById" resultType="Article">
+		SELECT *
+		FROM article
+		WHERE id = #{id}
 		ORDER BY id DESC
 	</select>
 

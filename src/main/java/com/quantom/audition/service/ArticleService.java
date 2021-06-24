@@ -13,8 +13,12 @@ public class ArticleService {
 	@Autowired
 	ArticleDao articleDao;
 	
-	public List<Article> getArticles() {
-		return articleDao.getArticles();
+	public List<Article> getForPrintArticles() {
+		return articleDao.getForPrintArticles();
+	}
+
+	public Article getForPrintArticleById(int id) {
+		return articleDao.getForPrintArticleById(id);
 	}
 	
 }
