@@ -33,6 +33,36 @@ label[for] {
 	margin-right: auto;
 }
 
+.border-red {
+	border: 10px solid red;
+}
+
+html>head+body:nth-child(2) .height-300 {
+	min-height: 100px;
+}
+
+.bg-white {
+	background-color:white;
+}
+
+.padding-10 {
+	padding:10px;
+}
+
+/* flex 관련 */
+.flex {
+	display: flex;
+}
+
+.flex-ai-c {
+	align-items: center;
+}
+
+.flex-jc-c {
+	justify-content: center;
+}
+
+/* 테이블 관련 */
 .table-box > table {
 	width: 100%;
 	border-collapse: collapse;
@@ -43,7 +73,7 @@ label[for] {
 	padding: 10px;
 	text-align: left;
 }
-/* 폼 관련 라이브러리*/
+/* 폼 관련 */
 .form1 .form-control-box> input,
 .form1 .form-control-box> textarea	 {
 	width: 100%;
@@ -61,6 +91,23 @@ label[for] {
 .form-control-box > textarea.height-300 {
 	min-height:100px;
 }
+
+.form1 .form-row {
+	display:flex;
+}
+
+.form1 .form-row > .form-control-label {
+	display:flex;
+	align-items: center;
+	padding:10px;
+}
+
+.form1 .form-row > .form-control-box {
+	display:flex;
+	align-items: center;
+	padding:10px;
+}
+
 
 /* 커스텀 */
 .con {

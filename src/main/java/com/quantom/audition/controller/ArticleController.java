@@ -18,6 +18,7 @@ import com.quantom.audition.dto.ArticleReply;
 import com.quantom.audition.dto.Member;
 import com.quantom.audition.dto.ResultData;
 import com.quantom.audition.service.ArticleService;
+import com.quantom.audition.util.Util;
 
 @Controller
 public class ArticleController {
@@ -89,13 +90,29 @@ public class ArticleController {
 		return new ResultData("S-1", String.format("%d개의 댓글을 불러왔습니다.", articleReplies.size()), rsDataBody);
 	}
 	
-	@RequestMapping("/usr/article/doDeleteArticleReplyAjax")
+	@RequestMapping("/usr/article/doDeleteReplyAjax")
 	@ResponseBody
-	public ResultData doDeleteArticleReplyAjax(int id) {
+	public ResultData doDeleteReplyAjax(int id) {
 		
-		articleService.doDeleteArticleReplyAjax(id);
+		articleService.deleteReply(id);
 
 		return new ResultData("S-1", String.format("%d번 댓글을 삭제했습니다.",id),id);
+	}
+	
+	@RequestMapping("/usr/article/doModifyReplyAjax")
+	@ResponseBody
+	public ResultData doModifyReplyAjax(@RequestParam Map<String, Object> param, HttpServletRequest req, int id) {
+		Member loginedMember = (Member) req.getAttribute("loginedMember");
+		ArticleReply articleReply = articleService.getForPrintArticleReplyById(id);
+
+		if ( articleService.actorCanModify(loginedMember, articleReply) == false ) {
+			return new ResultData("F-1", String.format("%d번 댓글을 수정할 권한이 없습니다.", id));
+		}
+
+		Map<String, Object> modfiyReplyParam = Util.getNewMapOf(param, "id", "body");
+		ResultData rd = articleService.modfiyReply(modfiyReplyParam);
+
+		return rd;
 	}
 	
 }

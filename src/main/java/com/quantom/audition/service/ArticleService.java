@@ -10,6 +10,7 @@ import com.quantom.audition.dao.ArticleDao;
 import com.quantom.audition.dto.Article;
 import com.quantom.audition.dto.ArticleReply;
 import com.quantom.audition.dto.Member;
+import com.quantom.audition.dto.ResultData;
 import com.quantom.audition.util.Util;
 
 @Service
@@ -52,20 +53,31 @@ public class ArticleService {
 
 	private void updateForPrintInfo(Member actor, ArticleReply articleReply) {
 		articleReply.getExtra().put("actorCanDelete", actorCanDelete(actor,articleReply));
-		articleReply.getExtra().put("actorCanUpdate", actorCanUpdate(actor,articleReply));	
+		articleReply.getExtra().put("actorCanModify", actorCanModify(actor,articleReply));	
 	}
 	
-	private Object actorCanUpdate(Member actor, ArticleReply articleReply) {
+	public boolean actorCanModify(Member actor, ArticleReply articleReply) {
 		return actor != null && actor.getId() == articleReply.getMemberId()? true : false;
 	}
 
-	private Object actorCanDelete(Member actor, ArticleReply articleReply) {
-		return actorCanUpdate(actor, articleReply);
+	public boolean actorCanDelete(Member actor, ArticleReply articleReply) {
+		return actorCanModify(actor, articleReply);
 	}
 
-	public void doDeleteArticleReplyAjax(int id) {
-		articleDao.doDeleteArticleReplyAjax(id);
+	public void deleteReply(int id) {
+		articleDao.deleteReply(id);
 		
 	}
+	
+	public ArticleReply getForPrintArticleReplyById(int id) {
+		return articleDao.getForPrintArticleReplyById(id);
+	}
+
+	public ResultData modfiyReply(Map<String, Object> param) {
+		articleDao.modifyReply(param);
+		return new ResultData("S-1", String.format("%d번 댓글을 수정하였습니다.", Util.getAsInt(param.get("id"))), param);
+	}
+	
+	
 	
 }
