@@ -149,7 +149,7 @@
 		html += '<tr reply-id='+ articleReply.id +'>';
 		html += '<td>' + articleReply.id + '</td>';
 		html += '<td>' + articleReply.regDate + '</td>';
-		html += '<td>' + 11 + '</td>';
+		html += '<td>' + articleReply.extra.writer + '</td>';
 		html += '<td>' + articleReply.body + '</td>';
 		html += '<td><button onclick="ArticleReplyList__deleteReplyAjax(this); return false;">삭제</button></td>';
 		html += '</tr>';

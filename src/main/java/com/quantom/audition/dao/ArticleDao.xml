@@ -31,6 +31,7 @@
 	</insert>
 	
 	<insert id="writeReply" useGeneratedKeys="true" keyProperty="id">
+		<![CDATA[
 		INSERT INTO articleReply
 		SET regDate = NOW(),
 		updateDate = NOW(),
@@ -40,15 +41,21 @@
 		articleId = #{articleId},
 		displayStatus
 		= 1
+		]]>
 	</insert>
 	
-	<select id="getForPrintArticleReplies" resultType="ArticleReply">
-		SELECT *
-		FROM articleReply
-		WHERE articleId = #{articleId}
-		AND displayStatus = 1
-		AND id >= #{from}
-		ORDER BY id ASC
+	<select id="getForPrintArticleReplies" resultMap="articleReply">
+		<![CDATA[
+		SELECT AR.*,
+		M.nickname AS extra__writer
+		FROM articleReply AS AR
+		INNER JOIN member AS M
+		ON AR.memberId = M.id
+		WHERE AR.articleId = #{articleId}
+		AND AR.displayStatus = 1
+		AND AR.id >= #{from}
+		ORDER BY AR.id ASC
+		]]>
 	</select>
 	
 	<delete id="doDeleteArticleReplyAjax">
@@ -58,5 +65,19 @@
 		]]>
 		
 	</delete>	 
+	
+	<resultMap type="ArticleReply" id="articleReply">
+		<id property="id" column="id" />
+		<id property="regDate" column="regDate" />
+		<id property="updateDate" column="updateDate" />
+		<id property="delDate" column="delDate" />
+		<id property="delStatus" column="delStatus" />
+		<id property="body" column="body" />
+		<id property="memberId" column="memberId" />
+		<id property="articleId" column="articleId" />
+		<association property="extra" javaType="map">
+			<id property="writer" column="extra__writer" />
+		</association>
+	</resultMap>
 
 </mapper>
