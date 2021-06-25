@@ -39,5 +39,10 @@ public class ArticleService {
 	public List<ArticleReply> getForPrintArticleReplies(Map<String, Object> param) {
 		return articleDao.getForPrintArticleReplies(param);
 	}
+
+	public void doDeleteArticleReplyAjax(int id) {
+		articleDao.doDeleteArticleReplyAjax(id);
+		
+	}
 	
 }

@@ -116,7 +116,7 @@
 				ArticleReplyList__lastLoadedId = data.body.articleReplies[data.body.articleReplies.length - 1].id;
 				ArticleReplyList__drawReplies(data.body.articleReplies);
 			}
-			setTimeout(ArticleReplyList__loadMore, 2000);
+			setTimeout(ArticleReplyList__loadMore, 10000);
 		}, 'json');
 	}
 	
@@ -126,15 +126,32 @@
 			ArticleReplyList__drawReply(articleReply);
 		}
 	}
+	
+	function ArticleReplyList__deleteReplyAjax(el) {
+		var $tr = $(el).closest('tr');
+		var id = $tr.attr('reply-id');
+		
+		$.post(
+				"doDeleteArticleReplyAjax",
+				{
+					id:id
+				},
+				function (data){
+					$tr.remove();
+				},
+				'json'
+		);
+		
+	}
 
 	function ArticleReplyList__drawReply(articleReply) {
 		var html = '';
-		html += '<tr>';
+		html += '<tr reply-id='+ articleReply.id +'>';
 		html += '<td>' + articleReply.id + '</td>';
 		html += '<td>' + articleReply.regDate + '</td>';
 		html += '<td>' + 11 + '</td>';
 		html += '<td>' + articleReply.body + '</td>';
-		html += '<td>비고</td>';
+		html += '<td><button onclick="ArticleReplyList__deleteReplyAjax(this); return false;">삭제</button></td>';
 		html += '</tr>';
 		
 		ArticleReplyList__$tbody.prepend(html);

@@ -21,5 +21,7 @@ public interface ArticleDao {
 	List<ArticleReply> getForPrintArticleReplies(Map<String, Object> param);
 
 	void writeReply(Map<String, Object> param);
+
+	void doDeleteArticleReplyAjax(@Param(value = "id") int id);
 	
 }

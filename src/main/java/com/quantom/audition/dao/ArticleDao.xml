@@ -50,5 +50,13 @@
 		AND id >= #{from}
 		ORDER BY id ASC
 	</select>
+	
+	<delete id="doDeleteArticleReplyAjax">
+		<![CDATA[
+		DELETE FROM articleReply
+		WHERE id = #{id}
+		]]>
+		
+	</delete>	 
 
 </mapper>
