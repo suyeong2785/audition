@@ -2,7 +2,6 @@
 DROP DATABASE IF EXISTS `audition`;
 CREATE DATABASE `audition`;
 USE `audition`;
-
 # article 테이블 세팅
 CREATE TABLE article (
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -14,21 +13,24 @@ CREATE TABLE article (
     title CHAR(200) NOT NULL,
     `body` LONGTEXT NOT NULL
 );
-
 # article 테이블에 테스트 데이터 삽입
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
 title = '제목1',
 `body` = '내용1';
-
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
 title = '제목2',
 `body` = '내용2',
 displayStatus = 1;
-
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+title = '제목3',
+`body` = '내용3',
+displayStatus = 1;
 # member 테이블 세팅
 CREATE TABLE `member` (
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -44,7 +46,6 @@ CREATE TABLE `member` (
     `email` CHAR(100) NOT NULL,
     `phoneNo` CHAR(20) NOT NULL
 );
-
 # member 테이블에 테스트 데이터 삽입
 INSERT INTO `member`
 SET regDate = NOW(),
@@ -55,9 +56,7 @@ loginPw = SHA2('admin', 256),
 `nickname` = '관리자',
 `email` = '',
 `phoneNo` = '';
-
-
-#article 테이블 세팅
+# article 테이블 세팅
 CREATE TABLE articleReply (
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME,
@@ -69,7 +68,6 @@ CREATE TABLE articleReply (
 	displayStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
     `body` LONGTEXT NOT NULL
 );
-
 # articleReply 테이블에 테스트 데이터 삽입
 INSERT INTO articleReply
 SET regDate = NOW(),
@@ -78,3 +76,13 @@ memberId = 1,
 articleId = 1,
 displayStatus = 1,
 `body` = '내용1';
+
+/* 게시물 댓글을 범용 댓글 테이블로 변경 */
+RENAME TABLE `articleReply` TO `reply`;
+
+ALTER TABLE `reply` ADD COLUMN `relTypeCode` CHAR(50) NOT NULL AFTER `memberId`,
+CHANGE `articleId` `relId` INT(10) UNSIGNED NOT NULL;
+ALTER TABLE `at`.`reply` ADD INDEX (`relId`, `relTypeCode`);
+UPDATE reply
+SET relTypeCode = 'article'
+WHERE relTypeCode = ''; 

@@ -5,11 +5,12 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.quantom.audition.dao.ArticleDao;
 import com.quantom.audition.dto.Article;
-import com.quantom.audition.dto.ArticleReply;
 import com.quantom.audition.dto.Member;
+import com.quantom.audition.dto.Reply;
 import com.quantom.audition.dto.ResultData;
 import com.quantom.audition.util.Util;
 
@@ -38,30 +39,30 @@ public class ArticleService {
 		return Util.getAsInt(param.get("id"));
 	}
 	
-	public List<ArticleReply> getForPrintArticleReplies(Map<String, Object> param) {
-		List<ArticleReply> articleReplies = articleDao.getForPrintArticleReplies(param);
+	public List<Reply> getForPrintReplies(@RequestParam Map<String, Object> param) {
+		List<Reply> replies = articleDao.getForPrintReplies(param);
 	
 		Member actor = (Member)param.get("actor");
 		
-		for ( ArticleReply articleReply : articleReplies) {
+		for ( Reply reply : replies ) {
 			//출력용 부가데이터를 추가한다.
-			updateForPrintInfo(actor, articleReply);
+			updateForPrintInfo(actor, reply);
 		}
 		
-		return articleReplies;
+		return replies;
 	}
 
-	private void updateForPrintInfo(Member actor, ArticleReply articleReply) {
-		articleReply.getExtra().put("actorCanDelete", actorCanDelete(actor,articleReply));
-		articleReply.getExtra().put("actorCanModify", actorCanModify(actor,articleReply));	
+	private void updateForPrintInfo(Member actor, Reply reply) {
+		reply.getExtra().put("actorCanDelete", actorCanDelete(actor, reply));
+		reply.getExtra().put("actorCanModify", actorCanModify(actor, reply));
 	}
 	
-	public boolean actorCanModify(Member actor, ArticleReply articleReply) {
-		return actor != null && actor.getId() == articleReply.getMemberId()? true : false;
+	public boolean actorCanModify(Member actor, Reply reply) {
+		return actor != null && actor.getId() == reply.getMemberId() ? true : false;
 	}
 
-	public boolean actorCanDelete(Member actor, ArticleReply articleReply) {
-		return actorCanModify(actor, articleReply);
+	public boolean actorCanDelete(Member actor, Reply reply) {
+		return actorCanModify(actor, reply);
 	}
 
 	public void deleteReply(int id) {
@@ -69,8 +70,8 @@ public class ArticleService {
 		
 	}
 	
-	public ArticleReply getForPrintArticleReplyById(int id) {
-		return articleDao.getForPrintArticleReplyById(id);
+	public Reply getForPrintReplyById(int id) {
+		return articleDao.getForPrintReplyById(id);
 	}
 
 	public ResultData modfiyReply(Map<String, Object> param) {

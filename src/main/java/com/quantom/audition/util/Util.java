@@ -28,5 +28,11 @@ public class Util {
 
 		return newMap;
 	}
+	
+	public static void changeMapKey(Map<String, Object> param, String oldKey, String newKey) {
+		Object value = param.get(oldKey);
+		param.remove(oldKey);
+		param.put(newKey, value);
+	}
 
 }
