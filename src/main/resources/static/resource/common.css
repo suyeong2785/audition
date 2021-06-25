@@ -38,7 +38,7 @@ label[for] {
 	border-collapse: collapse;
 }
 
-.table-box>table th, .table-box > table td {
+.table-box>table th, .table-box>table td {
 	border: 1px solid black;
 	padding: 10px;
 	text-align: left;
@@ -46,19 +46,19 @@ label[for] {
 /* 폼 관련 라이브러리*/
 .form1 .form-control-box> input,
 .form1 .form-control-box> textarea	 {
-	width:100%;
-	padding:10px;
-	margin:0;
-	display:block;
+	width: 100%;
+	padding: 0;
+	display: block;
 	box-sizing: border-box;
+	padding: 10px;
 }
 
-.form1 .form-control-box> textarea	 {
+.form1 .form-control-box>textarea {
 	min-height: 300px;
 	resize: none;
 }
 
-html > head + body:last-child .height-300 {
+.form-control-box > textarea.height-300 {
 	min-height:100px;
 }
 
