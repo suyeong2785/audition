@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.quantom.audition.dto.Article;
 import com.quantom.audition.dto.ArticleReply;
+import com.quantom.audition.dto.Member;
 import com.quantom.audition.dto.ResultData;
 import com.quantom.audition.service.ArticleService;
 
@@ -76,9 +77,12 @@ public class ArticleController {
 	
 	@RequestMapping("/usr/article/getForPrintArticleReplies")
 	@ResponseBody
-	public ResultData getForPrintArticleReplies(@RequestParam Map<String, Object> param) {
+	public ResultData getForPrintArticleReplies(@RequestParam Map<String, Object> param,HttpServletRequest req) {
+		
+		Member loginedMember = (Member)req.getAttribute("loginedMember");
 		Map<String, Object> rsDataBody = new HashMap<>();
 		
+		param.put("actor", loginedMember);
 		List<ArticleReply> articleReplies = articleService.getForPrintArticleReplies(param);
 		rsDataBody.put("articleReplies", articleReplies);
 
