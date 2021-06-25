@@ -92,8 +92,14 @@ public class ArticleController {
 	
 	@RequestMapping("/usr/article/doDeleteReplyAjax")
 	@ResponseBody
-	public ResultData doDeleteReplyAjax(int id) {
-		
+	public ResultData doDeleteReplyAjax(int id, HttpServletRequest req) {
+		Member loginedMember = (Member) req.getAttribute("loginedMember");
+		ArticleReply articleReply = articleService.getForPrintArticleReplyById(id);
+
+		if (articleService.actorCanDelete(loginedMember, articleReply) == false) {
+			return new ResultData("F-1", String.format("%d번 댓글을 삭제할 권한이 없습니다.", id));
+		}
+
 		articleService.deleteReply(id);
 
 		return new ResultData("S-1", String.format("%d번 댓글을 삭제했습니다.",id),id);
