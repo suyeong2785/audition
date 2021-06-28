@@ -41,6 +41,12 @@
 			}
 			var startUploadFiles = function(onSuccess) {
 				var fileUploadFormData = new FormData(form);
+				
+				if ( form.file__reply__0__common__attachment__1.value.length == 0 ) {
+					onSuccess();
+					return;
+				} 
+				
 				fileUploadFormData.delete("relTypeCode");
 				fileUploadFormData.delete("relId");
 				$.ajax({
@@ -68,9 +74,17 @@
 				});
 			};
 			startUploadFiles(function(data) {
-				var idsStr = data.body.fileIdsStr;
+				var idsStr = '';
+				if ( data && data.body && data.body.fileIdsStr ) {
+					idsStr = data.body.fileIdsStr;
+				}
 				startWriteReply(idsStr, function(data) {
+					if ( data.msg ) {
+						alert(data.msg);
+					}
+					
 					form.body.value = '';
+					form.file__reply__0__common__attachment__1.value = '';
 				});
 			});
 		}

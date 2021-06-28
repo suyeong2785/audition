@@ -64,6 +64,12 @@ public class FileController {
 
 		for (String fileInputName : fileMap.keySet()) {
 			MultipartFile multipartFile = fileMap.get(fileInputName);
+			
+			byte[] fileBytes = Util.getFileBytesFromMultipartFile(multipartFile);
+
+			if ( fileBytes == null || fileBytes.length == 0 ) {
+				continue;
+			}
 
 			String[] fileInputNameBits = fileInputName.split("__");
 
@@ -77,7 +83,6 @@ public class FileController {
 				String fileExtTypeCode = Util.getFileExtTypeCodeFromFileName(multipartFile.getOriginalFilename());
 				String fileExtType2Code = Util.getFileExtType2CodeFromFileName(multipartFile.getOriginalFilename());
 				String fileExt = Util.getFileExtFromFileName(multipartFile.getOriginalFilename()).toLowerCase();
-				byte[] fileBytes = Util.getFileBytesFromMultipartFile(multipartFile);
 				int fileSize = (int) multipartFile.getSize();
 
 				int fileId = fileService.saveFile(relTypeCode, relId, typeCode, type2Code, fileNo, originFileName,
@@ -88,7 +93,7 @@ public class FileController {
 		}
 
 		Map<String, Object> rsDataBody = new HashMap<>();
-		rsDataBody.put("fileIdsStr", Joiner.on("").join(fileIds));
+		rsDataBody.put("fileIdsStr", Joiner.on(",").join(fileIds));
 		rsDataBody.put("fileIds", fileIds);
 
 		return new ResultData("S-1", String.format("%d개의 파일을 저장했습니다.", fileIds.size()), rsDataBody);
