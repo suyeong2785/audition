@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -128,5 +130,16 @@ public class Util {
 
 		return null;
 	}
+	
+	public static InputStream getBinaryStreamFromBlob(Blob fileBody) {
+		try {
+			return fileBody.getBinaryStream();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
 
 }
