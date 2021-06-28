@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,13 +20,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import com.google.common.base.Joiner;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.quantom.audition.dto.File;
 import com.quantom.audition.dto.ResultData;
 import com.quantom.audition.service.FileService;
 import com.quantom.audition.service.VideoStreamService;
 import com.quantom.audition.util.Util;
-
-import reactor.core.publisher.Mono;
 
 @Controller
 public class FileController {
@@ -34,13 +36,21 @@ public class FileController {
 	@Autowired
 	private VideoStreamService videoStreamService;
 
+	private LoadingCache<Integer, File> fileCache = CacheBuilder.newBuilder().maximumSize(100)
+			.expireAfterAccess(2, TimeUnit.MINUTES).build(new CacheLoader<Integer, File>() {
+				@Override
+				public File load(Integer fileId) {
+					return fileService.getFileById(fileId);
+				}
+			});
+	
 	@RequestMapping("/usr/file/streamVideo")
-	public Mono<ResponseEntity<byte[]>> streamVideo(
-			@RequestHeader(value = "Range", required = false) String httpRangeList, int id) {
-		File file = fileService.getFileById(id);
-		final ByteArrayInputStream is = new ByteArrayInputStream(file.getBody());
-
-		return Mono.just(videoStreamService.prepareContent(is, file.getFileSize(), file.getFileExt(), httpRangeList));
+	public ResponseEntity<byte[]> streamVideo(@RequestHeader(value = "Range", required = false) String httpRangeList,
+			int id) {
+		File file = Util.getCacheData(fileCache, id);
+		
+		return videoStreamService.prepareContent(new ByteArrayInputStream(file.getBody()), file.getFileSize(),
+				file.getFileExt(), httpRangeList);
 	}
 
 	@RequestMapping("/usr/file/doUploadAjax")
