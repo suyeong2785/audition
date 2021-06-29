@@ -28,6 +28,15 @@ public class VideoStreamService {
 	 * @param range    String.
 	 * @return ResponseEntity.
 	 */
+	
+	private String getContentTypeDetail(String fileExt) {
+		if (fileExt.equals("mov")) {
+			return "quicktime";
+		}
+
+		return fileExt;
+	}
+	
 	public ResponseEntity<byte[]> prepareContent(ByteArrayInputStream is, int fileSize, String fileType, String range) {
 		long rangeStart = 0;
 		long rangeEnd;
@@ -35,7 +44,8 @@ public class VideoStreamService {
 
 		try {
 			if (range == null) {
-				return ResponseEntity.status(HttpStatus.OK).header(CONTENT_TYPE, VIDEO_CONTENT + fileType)
+				return ResponseEntity.status(HttpStatus.OK)
+						.header(CONTENT_TYPE, VIDEO_CONTENT + getContentTypeDetail(fileType))
 						.header(CONTENT_LENGTH, String.valueOf(fileSize))
 						.body(readByteRange(is, rangeStart, fileSize - 1)); // Read the object and convert it
 																			// as bytes
@@ -55,8 +65,9 @@ public class VideoStreamService {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 		String contentLength = String.valueOf((rangeEnd - rangeStart) + 1);
-		return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).header(CONTENT_TYPE, VIDEO_CONTENT + fileType)
-				.header(ACCEPT_RANGES, BYTES).header(CONTENT_LENGTH, contentLength)
+		return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT)
+				.header(CONTENT_TYPE, VIDEO_CONTENT + getContentTypeDetail(fileType)).header(ACCEPT_RANGES, BYTES)
+				.header(CONTENT_LENGTH, contentLength)
 				.header(CONTENT_RANGE, BYTES + " " + rangeStart + "-" + rangeEnd + "/" + fileSize).body(data);
 
 	}
