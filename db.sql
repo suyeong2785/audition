@@ -106,3 +106,10 @@ CREATE TABLE `file` (
     fileNo TINYINT(2) UNSIGNED NOT NULL,
     `body` LONGBLOB
 ); 
+
+/* max_allowed_packet를 50M로 만들어주기 */
+SET GLOBAL max_allowed_packet = 1024 * 1024 * 50;
+SET SESSION max_allowed_packet = 1024 * 1024 * 50;
+
+# 멤버 테이블 칼럼명 변경
+ALTER TABLE `member` CHANGE `phoneNo` `cellphoneNo` CHAR(20) NOT NULL;  
