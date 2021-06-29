@@ -73,11 +73,7 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 
 		// 설정 파일에 있는 정보를 request에 담는다.
 		request.setAttribute("logoText", this.siteName);
-
 		HttpSession session = request.getSession();
-
-		// 임시작업
-		session.setAttribute("loginedMemberId", 1);
 
 		// 로그인 여부에 관련된 정보를 request에 담는다.
 		boolean isLogined = false;

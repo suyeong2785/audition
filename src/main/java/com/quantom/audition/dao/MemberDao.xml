@@ -20,6 +20,12 @@
 		WHERE loginId = #{loginId}
 	</select>
 
+	<select id="getMemberByLoginId" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE loginId = #{loginId}
+	</select>
+	
 	<insert id="join" useGeneratedKeys="true" keyProperty="id">
 		INSERT
 		INTO member
