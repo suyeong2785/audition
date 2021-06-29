@@ -32,7 +32,7 @@
 
 <form class="table-box con form1" method="POST" action="doWrite"
 	onsubmit="ArticleWriteForm__submit(this); return false;">
-	<input type="hidden" name="redirectUrl" value="./detail?id=#id" />	
+	<input type="hidden" name="redirectUri" value="/article/detail?id=#id"/>	
 	<table>
 		<tbody>
 			<tr>
