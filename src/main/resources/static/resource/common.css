@@ -28,6 +28,16 @@ label[for] {
 	display: inline-block;
 }
 
+.img-box>img, .img-box>svg {
+	width: 100%;
+	display: block;
+}
+
+.video-box>video {
+	width: 100%;
+	display: block;
+}
+
 .con {
 	margin-left: auto;
 	margin-right: auto;
