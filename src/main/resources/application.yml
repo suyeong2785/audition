@@ -2,6 +2,19 @@ server:
   port: 8081
   
 spring:
+  profiles:
+    active: local
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: tpwls2785@gmail.com
+    password: qeoayhfnocobftus
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   servlet:
     multipart:
       file-size-threshold: 1MB
@@ -20,5 +33,9 @@ spring:
 mybatis:
   type-aliases-package: com.quantom.audition
 custom:
+  siteName: 오디션 트리
+  siteMainUri: https://localhost:8081/usr/member/login
   logoText: 오디션 트리
+  emailFrom: tpwls2785@locahost
+  emailFromName: 방수
  

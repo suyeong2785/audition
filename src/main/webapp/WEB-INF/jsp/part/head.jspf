@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
-   
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>${logoText} - ${pageTitle}</title>
+<title>${logoText}- ${pageTitle}</title>
 
 <!-- 모바일에서 사이트가 PC에서의 픽셀크기 기준으로 작동하게 하기(반응형 하려면 필요) -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,7 +36,10 @@
 <script src="/resource/app.js"></script>
 
 <script>
-var param = ${paramJson};
+	var param = $
+	{
+		paramJson
+	};
 </script>
 
 </head>
