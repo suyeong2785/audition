@@ -43,12 +43,12 @@ public class FileController {
 					return fileService.getFileById(fileId);
 				}
 			});
-	
+
 	@RequestMapping("/usr/file/streamVideo")
 	public ResponseEntity<byte[]> streamVideo(@RequestHeader(value = "Range", required = false) String httpRangeList,
 			int id) {
 		File file = Util.getCacheData(fileCache, id);
-		
+
 		return videoStreamService.prepareContent(new ByteArrayInputStream(file.getBody()), file.getFileSize(),
 				file.getFileExt(), httpRangeList);
 	}
@@ -64,16 +64,16 @@ public class FileController {
 
 		for (String fileInputName : fileMap.keySet()) {
 			MultipartFile multipartFile = fileMap.get(fileInputName);
-			
-			byte[] fileBytes = Util.getFileBytesFromMultipartFile(multipartFile);
-
-			if ( fileBytes == null || fileBytes.length == 0 ) {
-				continue;
-			}
 
 			String[] fileInputNameBits = fileInputName.split("__");
 
 			if (fileInputNameBits[0].equals("file")) {
+				byte[] fileBytes = Util.getFileBytesFromMultipartFile(multipartFile);
+
+				if (fileBytes == null || fileBytes.length == 0) {
+					continue;
+				}
+
 				String relTypeCode = fileInputNameBits[1];
 				int relId = Integer.parseInt(fileInputNameBits[2]);
 				String typeCode = fileInputNameBits[3];
@@ -85,10 +85,46 @@ public class FileController {
 				String fileExt = Util.getFileExtFromFileName(multipartFile.getOriginalFilename()).toLowerCase();
 				int fileSize = (int) multipartFile.getSize();
 
-				int fileId = fileService.saveFile(relTypeCode, relId, typeCode, type2Code, fileNo, originFileName,
-						fileExtTypeCode, fileExtType2Code, fileExt, fileBytes, fileSize);
+				int oldFileId = fileService.getFileId(relTypeCode, relId, typeCode, type2Code, fileNo);
 
-				fileIds.add(fileId);
+				boolean needToUpdate = oldFileId > 0;
+
+				if (needToUpdate) {
+					fileService.updateFile(oldFileId, originFileName, fileExtTypeCode, fileExtType2Code, fileExt,
+							fileBytes, fileSize);
+
+					fileCache.refresh(oldFileId);
+
+				} else {
+					int fileId = fileService.saveFile(relTypeCode, relId, typeCode, type2Code, fileNo, originFileName,
+							fileExtTypeCode, fileExtType2Code, fileExt, fileBytes, fileSize);
+
+					fileIds.add(fileId);
+				}
+			}
+		}
+
+		int deleteCount = 0;
+
+		for (String inputName : param.keySet()) {
+			String[] inputNameBits = inputName.split("__");
+
+			if (inputNameBits[0].equals("fileDelete")) {
+				String relTypeCode = inputNameBits[1];
+				int relId = Integer.parseInt(inputNameBits[2]);
+				String typeCode = inputNameBits[3];
+				String type2Code = inputNameBits[4];
+				int fileNo = Integer.parseInt(inputNameBits[5]);
+
+				int oldFileId = fileService.getFileId(relTypeCode, relId, typeCode, type2Code, fileNo);
+
+				boolean needToDelete = oldFileId > 0;
+
+				if (needToDelete) {
+					fileService.deleteFile(oldFileId);
+					fileCache.refresh(oldFileId);
+					deleteCount++;
+				}
 			}
 		}
 
@@ -96,6 +132,7 @@ public class FileController {
 		rsDataBody.put("fileIdsStr", Joiner.on(",").join(fileIds));
 		rsDataBody.put("fileIds", fileIds);
 
-		return new ResultData("S-1", String.format("%d개의 파일을 저장했습니다.", fileIds.size()), rsDataBody);
+		return new ResultData("S-1", String.format("%d개의 파일을 저장했습니다. %d개의 파일을 삭제했습니다.", fileIds.size(), deleteCount),
+				rsDataBody);
 	}
 }

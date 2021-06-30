@@ -17,19 +17,33 @@
 		FROM
 		article
 		WHERE id = #{id}
-		ORDER BY id DESC
+	</select>
+
+	<select id="getArticleById" resultType="Article">
+		SELECT *
+		FROM
+		article
+		WHERE
+		id = #{id}
 	</select>
 
 	<insert id="write" useGeneratedKeys="true" keyProperty="id">
-
-		INSERT INTO article
+		INSERT
+		INTO article
 		SET regDate = NOW(),
 		updateDate = NOW(),
-		title =
-		#{title},
+		title = #{title},
 		body = #{body},
 		memberId = #{memberId}
-
 	</insert>
 
+	<update id="modify">
+		UPDATE article
+		<set>
+			updateDate = NOW(),
+			<if test="title != null">title = #{title},</if>
+			<if test="body != null">body = #{body},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
 </mapper>

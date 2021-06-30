@@ -127,6 +127,9 @@ UPDATE article
 SET memberId = 1
 WHERE memberId = 0;
 
+# 파일 테이블에 유니크 인덱스 추가
+ALTER TABLE `file` ADD UNIQUE INDEX (`relId`, `relTypeCode`, `typeCode`, `type2Code`, `fileNo`); 
+
 /* max_allowed_packet를 50M로 만들어주기 */
 SET GLOBAL max_allowed_packet = 1024 * 1024 * 50;
 SET SESSION max_allowed_packet = 1024 * 1024 * 50;
