@@ -2,6 +2,8 @@
 DROP DATABASE IF EXISTS `audition`;
 CREATE DATABASE `audition`;
 USE `audition`;
+
+
 # article 테이블 세팅
 CREATE TABLE article (
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -13,24 +15,28 @@ CREATE TABLE article (
     title CHAR(200) NOT NULL,
     `body` LONGTEXT NOT NULL
 );
+
 # article 테이블에 테스트 데이터 삽입
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
 title = '제목1',
 `body` = '내용1';
+
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
 title = '제목2',
 `body` = '내용2',
 displayStatus = 1;
+
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
 title = '제목3',
 `body` = '내용3',
 displayStatus = 1;
+
 # member 테이블 세팅
 CREATE TABLE `member` (
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -46,6 +52,7 @@ CREATE TABLE `member` (
     `email` CHAR(100) NOT NULL,
     `phoneNo` CHAR(20) NOT NULL
 );
+
 # member 테이블에 테스트 데이터 삽입
 INSERT INTO `member`
 SET regDate = NOW(),
@@ -56,6 +63,8 @@ loginPw = SHA2('admin', 256),
 `nickname` = '관리자',
 `email` = '',
 `phoneNo` = '';
+
+
 # article 테이블 세팅
 CREATE TABLE articleReply (
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -68,6 +77,7 @@ CREATE TABLE articleReply (
 	displayStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
     `body` LONGTEXT NOT NULL
 );
+
 # articleReply 테이블에 테스트 데이터 삽입
 INSERT INTO articleReply
 SET regDate = NOW(),
@@ -82,7 +92,7 @@ RENAME TABLE `articleReply` TO `reply`;
 
 ALTER TABLE `reply` ADD COLUMN `relTypeCode` CHAR(50) NOT NULL AFTER `memberId`,
 CHANGE `articleId` `relId` INT(10) UNSIGNED NOT NULL;
-ALTER TABLE `audition`.`reply` ADD INDEX (`relId`, `relTypeCode`);
+ALTER TABLE `at`.`reply` ADD INDEX (`relId`, `relTypeCode`);
 UPDATE reply
 SET relTypeCode = 'article'
 WHERE relTypeCode = '';
@@ -105,11 +115,18 @@ CREATE TABLE `file` (
     fileExtType2Code CHAR(10) NOT NULL,
     fileNo TINYINT(2) UNSIGNED NOT NULL,
     `body` LONGBLOB
-); 
+);
+
+# 멤버 테이블 칼럼명 변경
+ALTER TABLE `member` CHANGE `phoneNo` `cellphoneNo` CHAR(20) NOT NULL; 
+
+# 게시물 테이블에 작성자 정보 추가
+ALTER TABLE `article` ADD COLUMN `memberId` INT(10) UNSIGNED NOT NULL AFTER `delStatus`; 
+
+UPDATE article
+SET memberId = 1
+WHERE memberId = 0;
 
 /* max_allowed_packet를 50M로 만들어주기 */
 SET GLOBAL max_allowed_packet = 1024 * 1024 * 50;
 SET SESSION max_allowed_packet = 1024 * 1024 * 50;
-
-# 멤버 테이블 칼럼명 변경
-ALTER TABLE `member` CHANGE `phoneNo` `cellphoneNo` CHAR(20) NOT NULL;  

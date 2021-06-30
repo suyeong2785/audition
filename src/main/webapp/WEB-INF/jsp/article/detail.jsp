@@ -54,6 +54,16 @@
 	</table>
 </div>
 
+<div class="btn-box con margin-top-20">
+	<c:if test="${article.extra.actorCanModify}">
+		<a class="btn btn-info" href="modify?id=${article.id}">수정</a>
+	</c:if>
+	<c:if test="${article.extra.actorCanDelete}">
+		<a class="btn btn-info" href="doDelete?id=${article.id}"
+			onclick="if ( confirm('삭제하시겠습니까?') == false ) return false;">삭제</a>
+	</c:if>
+</div>
+
 <c:if test="${isLogined}">
 	<h2 class="con">댓글 작성</h2>
 
@@ -166,8 +176,8 @@
 			</tbody>
 		</table>
 	</form>
-
 </c:if>
+
 
 <h2 class="con">댓글 리스트</h2>
 
@@ -205,7 +215,6 @@
 	background-color: rgba(0, 0, 0, 0.4);
 	display: none;
 }
-
 .reply-modify-form-modal-actived .reply-modify-form-modal {
 	display: flex;
 }
@@ -342,5 +351,6 @@
 	}
 	ReplyList__loadMore();
 </script>
+
 
 <%@ include file="../part/foot.jspf"%>

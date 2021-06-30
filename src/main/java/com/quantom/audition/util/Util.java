@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
@@ -37,23 +39,23 @@ public class Util {
 
 		return -1;
 	}
-	
+
 	public static Map<String, Object> getNewMapOf(Map<String, Object> oldMap, String... keys) {
 		Map<String, Object> newMap = new HashMap<>();
 
-		for ( String key : keys ) {
+		for (String key : keys) {
 			newMap.put(key, oldMap.get(key));
 		}
 
 		return newMap;
 	}
-	
+
 	public static void changeMapKey(Map<String, Object> param, String oldKey, String newKey) {
 		Object value = param.get(oldKey);
 		param.remove(oldKey);
 		param.put(newKey, value);
 	}
-	
+
 	public static String getFileExtTypeCodeFromFileName(String fileName) {
 		String ext = getFileExtFromFileName(fileName).toLowerCase();
 
@@ -145,7 +147,7 @@ public class Util {
 
 		return null;
 	}
-	
+
 	public static InputStream getBinaryStreamFromBlob(Blob fileBody) {
 		try {
 			return fileBody.getBinaryStream();
@@ -158,20 +160,20 @@ public class Util {
 
 	public static <T extends Object> T getCacheData(LoadingCache cache, int key) {
 		try {
-			return (T)cache.get(key);
+			return (T) cache.get(key);
 		} catch (ExecutionException e) {
 			return null;
 		}
 	}
-	
+
 	public static String getAsStr(Object object) {
-		if ( object == null ) {
+		if (object == null) {
 			return "";
 		}
 
 		return object.toString();
 	}
-	
+
 	public static boolean isNum(Object obj) {
 		if (obj == null) {
 			return false;
@@ -354,4 +356,74 @@ public class Util {
 		return param;
 	}
 
+	public static Object getExtraVal(Object obj, String key, Object elseValue) {
+		Class cls = obj.getClass();
+
+		try {
+			Method getExtraMethod = cls.getDeclaredMethod("getExtra");
+			Map<String, Object> extra = (Map<String, Object>) getExtraMethod.invoke(obj);
+
+			if (extra == null) {
+				return null;
+			} else {
+				if ( extra.get(key) == null ) {
+					return elseValue;
+				}
+				else {
+					return extra.get(key);
+				}
+			}
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
+	public static void putExtraVal(Object obj, String key, Object value) {
+		Class cls = obj.getClass();
+
+		try {
+			Method getExtraMethod = cls.getDeclaredMethod("getExtra");
+			Map<String, Object> extra = (Map<String, Object>) getExtraMethod.invoke(obj);
+
+			if (extra == null) {
+				extra = new HashMap<>();
+				extra.put(key, value);
+
+				Method setExtraMethod = cls.getDeclaredMethod("setExtra", Map.class);
+				setExtraMethod.invoke(obj, extra);
+			} else {
+				extra.put(key, value);
+			}
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
