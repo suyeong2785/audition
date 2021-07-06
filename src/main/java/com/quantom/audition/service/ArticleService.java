@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.quantom.audition.dao.ArticleDao;
 import com.quantom.audition.dto.Article;
+import com.quantom.audition.dto.Board;
 import com.quantom.audition.dto.File;
 import com.quantom.audition.dto.Member;
 import com.quantom.audition.dto.ResultData;
@@ -49,7 +50,7 @@ public class ArticleService {
 
 		updateForPrintInfo(actor, article);
 
-		List<File> files = fileService.getFilesMapKeyFileNo("article", article.getId(), "common", "attachment");
+		List<File> files = fileService.getFiles("article", article.getId(), "common", "attachment");
 
 		Map<String, File> filesMap = new HashMap<>();
 
@@ -69,8 +70,23 @@ public class ArticleService {
 		String fileIdsStr = (String) param.get("fileIdsStr");
 
 		if (fileIdsStr != null && fileIdsStr.length() > 0) {
-			List<Integer> fileIds = Arrays.asList(fileIdsStr.split(",")).stream().map(s -> Integer.parseInt(s.trim()))
-					.collect(Collectors.toList());
+			fileIdsStr = fileIdsStr.trim();
+
+			if (fileIdsStr.startsWith(",")) {
+				fileIdsStr = fileIdsStr.substring(1);
+			}
+		}
+
+		if (fileIdsStr != null && fileIdsStr.length() > 0) {
+			fileIdsStr = fileIdsStr.trim();
+
+			if (fileIdsStr.equals(",")) {
+				fileIdsStr = "";
+			}
+		}
+
+		if (fileIdsStr != null && fileIdsStr.length() > 0) {
+			List<Integer> fileIds = Arrays.asList(fileIdsStr.split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
 
 			// 파일이 먼저 생성된 후에, 관련 데이터가 생성되는 경우에는, file의 relId가 일단 0으로 저장된다.
 			// 그것을 뒤늦게라도 이렇게 고처야 한다.
@@ -100,14 +116,21 @@ public class ArticleService {
 
 	public void modify(Map<String, Object> param) {
 		articleDao.modify(param);
-		
+
 		int id = Util.getAsInt(param.get("id"));
 
 		String fileIdsStr = (String) param.get("fileIdsStr");
 
 		if (fileIdsStr != null && fileIdsStr.length() > 0) {
-			List<Integer> fileIds = Arrays.asList(fileIdsStr.split(",")).stream().map(s -> Integer.parseInt(s.trim()))
-					.collect(Collectors.toList());
+			fileIdsStr = fileIdsStr.trim();
+
+			if (fileIdsStr.startsWith(",")) {
+				fileIdsStr = fileIdsStr.substring(1);
+			}
+		}
+
+		if (fileIdsStr != null && fileIdsStr.length() > 0) {
+			List<Integer> fileIds = Arrays.asList(fileIdsStr.split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
 
 			// 파일이 먼저 생성된 후에, 관련 데이터가 생성되는 경우에는, file의 relId가 일단 0으로 저장된다.
 			// 그것을 뒤늦게라도 이렇게 고처야 한다.
@@ -115,5 +138,9 @@ public class ArticleService {
 				fileService.changeRelId(fileId, id);
 			}
 		}
+	}
+
+	public Board getBoardByCode(String boardCode) {
+		return articleDao.getBoardByCode(boardCode);
 	}
 }

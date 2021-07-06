@@ -2,6 +2,8 @@ package com.quantom.audition.dto;
 
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,9 +25,28 @@ public class File {
 	private int relId;
 	private String fileExtTypeCode;
 	private String fileExtType2Code;
-	private byte[] body;
 	private int fileSize;
 	private int fileNo;
 	private String fileExt;
+	private String fileDir;
+	private String originFileName;
 	private Map<String, Object> extra;
+	
+	@JsonIgnore
+	public String getFilePath(String genFileDirPath) {
+		return genFileDirPath + getBaseFileUri();
+	}
+	
+	@JsonIgnore
+	public String getBaseFileUri() {
+		return "/" + relTypeCode + "/" + fileDir + "/" + getFileName();
+	}
+
+	private String getFileName() {
+		return id + "." + fileExt;
+	}
+	
+	public String getForPrintGenUrl() {
+		return "/gen" + getBaseFileUri() + "?updateDate=" + updateDate;
+	}
 }

@@ -9,12 +9,16 @@ import com.quantom.audition.dto.Member;
 
 @Mapper
 public interface MemberDao {
-	
+
 	Member getMemberById(@Param("id") int id);
-	
+
 	void join(Map<String, Object> param);
 
 	int getLoginIdDupCount(@Param("loginId") String loginId);
-	
+
 	Member getMemberByLoginId(@Param("loginId") String loginId);
+
+	void modify(Map<String, Object> param);
+
+	Member getMemberByNameAndEmail(@Param("name") String name, @Param("email") String email);
 }

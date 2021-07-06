@@ -75,4 +75,4 @@ public class MailService {
 
 		return new ResultData("S-1", "메일이 발송되었습니다.");
 	}
-} 
+}

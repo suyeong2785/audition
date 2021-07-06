@@ -1,6 +1,5 @@
 package com.quantom.audition.service;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,16 +27,18 @@ public class VideoStreamService {
 	 * @param range    String.
 	 * @return ResponseEntity.
 	 */
-	
+
 	private String getContentTypeDetail(String fileExt) {
-		if (fileExt.equals("mov")) {
-			return "quicktime";
+		if (fileExt.equals("mp4")) {
+			return "mp4";
+		} else if (fileExt.equals("avi")) {
+			return "x-msvideo";
 		}
 
-		return fileExt;
+		return "quicktime";
 	}
-	
-	public ResponseEntity<byte[]> prepareContent(ByteArrayInputStream is, int fileSize, String fileType, String range) {
+
+	public ResponseEntity<byte[]> prepareContent(InputStream is, int fileSize, String fileType, String range) {
 		long rangeStart = 0;
 		long rangeEnd;
 		byte[] data;

@@ -8,7 +8,6 @@ import org.apache.ibatis.annotations.Param;
 
 import com.quantom.audition.dto.File;
 
-
 @Mapper
 public interface FileDao {
 

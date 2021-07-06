@@ -1,18 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.quantom.audition.dao.MemberDao">
-
+	
 	<select id="getMemberById" resultType="Member">
 		SELECT *
-		FROM
-		`member`
+		FROM member
 		WHERE
 		id = #{id}
 	</select>
-	
+
+	<select id="getMemberByNameAndEmail" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE
+		name = #{name}
+		AND email = #{email}
+	</select>
+
 	<select id="getLoginIdDupCount" resultType="int">
 		SELECT COUNT(*) AS
 		cnt
@@ -25,7 +31,7 @@
 		FROM member
 		WHERE loginId = #{loginId}
 	</select>
-	
+
 	<insert id="join" useGeneratedKeys="true" keyProperty="id">
 		INSERT
 		INTO member
@@ -41,4 +47,16 @@
 		cellphoneNo = #{cellphoneNo}
 	</insert>
 
+	<update id="modify">
+		UPDATE member
+		<set>
+			updateDate = NOW(),
+			<if test="name != null and name.length() > 0">`name` = #{name},</if>
+			<if test="nickname != null and nickname.length() > 0">`nickname` = #{nickname},</if>
+			<if test="email != null and email.length() > 0">`email` = #{email},</if>
+			<if test="cellphoneNo != null and cellphoneNo.length() > 0">`cellphoneNo` = #{cellphoneNo},</if>
+			<if test="loginPw != null and loginPw.length() > 0">`loginPw` = #{loginPw},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
 </mapper>

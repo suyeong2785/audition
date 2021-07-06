@@ -5,9 +5,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HomeController {
+	@RequestMapping("/usr/home/main")
+	public String showMain() {
+	    return "redirect:/usr/recruitment/actor-list";
+	}
 	
-	@RequestMapping("usr/home/main")
-	public String showList() {
-		return "home/main";
+	@RequestMapping("/")
+	public String showIndex() {
+		return "usr/home/main";
 	}
 }

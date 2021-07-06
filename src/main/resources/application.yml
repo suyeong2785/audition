@@ -1,9 +1,15 @@
-server:
-  port: 8081
-  
 spring:
   profiles:
     active: local
+  redis:
+    host: localhost
+    port: 6379
+  session:
+    timeout: 6000
+    store-type: redis
+    redis:
+      flush-mode: on-save
+      namespace: spring:session
   mail:
     host: smtp.gmail.com
     port: 587
@@ -32,10 +38,45 @@ spring:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
 mybatis:
   type-aliases-package: com.quantom.audition
+server:
+  error:
+    include-exception: true
+    include-stacktrace: always
+    include-message: always
+    include-binding-errors: always
 custom:
   siteName: 오디션 트리
-  siteMainUri: https://localhost:8081/usr/member/login
+  siteMainUri: https://bangsuyeong.shop:8080/usr/member/login
   logoText: 오디션 트리
   emailFrom: tpwls2785@locahost
   emailFromName: 방수
+  genFileDirPath: C:/work/sts-4.8.0.RELEASE-workspace/at-file
+  logging:
+    dir: log
+    level: info
  
+ 
+---
+
+spring:
+  profiles: local
+server:
+  port: 8080
+
+---
+
+spring:
+  profiles: production
+  servlet:
+    multipart:
+      location: /tmp
+  datasource:
+    username: auditionLocal
+    password: dheltus123414
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/audition?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull
+custom:
+  genFileDirPath: /opt/tomcat/apache-tomcat-9.0.37/bangsuyeong.shop-file
+  logging:
+    dir: /tmp/bangsuyeong-resource-log 
+    level: info

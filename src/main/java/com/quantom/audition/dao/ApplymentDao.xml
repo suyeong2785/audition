@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quantom.audition.dao.ApplymentDao">
+	
+	<select id="getForPrintApplyments" resultMap="applyment">
+
+		SELECT AM.*,
+		M.nickname AS extra__writer,
+		M.name AS extra__writerRealName,
+		M.cellphoneNo AS extra__writerCellphoneNo,
+		M.email AS extra__writerEmail,
+		M.nickname AS extra__writer
+		FROM applyment AS AM
+		INNER JOIN member AS M
+		ON AM.memberId = M.id
+		WHERE AM.relId = #{relId}
+		AND AM.relTypeCode = #{relTypeCode}
+		AND AM.displayStatus = 1
+		AND AM.id <![CDATA[ >= ]]> #{from}
+		<if test="memberId != null">AND AM.memberId = #{memberId}</if>
+		ORDER BY AM.id ASC
+	</select>
+
+	<insert id="writeApplyment" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO applyment
+		SET regDate = NOW(),
+		updateDate =
+		NOW(),
+		body =
+		#{body},
+		memberId = #{memberId},
+		relTypeCode =
+		#{relTypeCode},
+		relId =
+		#{relId},
+		displayStatus
+		= 1
+	</insert>
+
+	<select id="getForPrintApplymentById" resultMap="applyment">
+		SELECT AM.*,
+		M.nickname AS extra__writer,
+		M.name AS extra__writerRealName,
+		M.cellphoneNo AS extra__writerCellphoneNo,
+		M.email AS
+		extra__writerEmail,
+		M.nickname AS extra__writer
+		FROM applyment AS
+		AM
+		INNER JOIN member AS M
+		ON
+		AM.memberId = M.id
+		WHERE AM.id = #{id}
+		AND
+		AM.displayStatus = 1
+		AND AM.id
+		= #{id}
+	</select>
+
+	<select id="getApplymentsByRelId" resultMap="applyment">
+		SELECT *
+		FROM
+		applyment AS AM
+		WHERE AM.relId = #{relId}
+		AND AM.relTypeCode =
+		#{relTypeCode}
+		AND AM.delStatus = 0
+		ORDER BY AM.id DESC
+	</select>
+
+	<select id="getApplymentByRelIdAndMemberId" resultMap="applyment">
+		SELECT *
+		FROM applyment AS AM
+		WHERE AM.relId = #{relId}
+		AND
+		AM.relTypeCode = #{relTypeCode}
+		AND AM.memberId = #{memberId}
+		AND
+		AM.delStatus = 0
+	</select>
+
+
+
+	<update id="deleteApplyment">
+		UPDATE applyment
+		SET delStatus = 1,
+		delDate = NOW(),
+		displayStatus = 0
+		WHERE id = #{id}
+	</update>
+
+	<update id="modifyApplyment">
+		UPDATE applyment
+		<set>
+			updateDate = NOW(),
+			<if test="body != null">body = #{body},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<update id="changeHideStatus">
+		UPDATE applyment
+		<set>
+			hideStatus = #{hideStatus}
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<resultMap type="Applyment" id="applyment">
+		<id property="id" column="id" />
+		<id property="regDate" column="regDate" />
+		<id property="updateDate" column="updateDate" />
+		<id property="delDate" column="delDate" />
+		<id property="delStatus" column="delStatus" />
+		<id property="displayStatus" column="displayStatus" />
+		<id property="hideStatus" column="hideStatus" />
+		<id property="body" column="body" />
+		<id property="memberId" column="memberId" />
+		<id property="relId" column="relId" />
+		<id property="relTypeCode" column="relTypeCode" />
+		<association property="extra" javaType="map">
+			<id property="writer" column="extra__writer" />
+			<id property="writerCellphoneNo" column="extra__writerCellphoneNo" />
+			<id property="writerEmail" column="extra__writerEmail" />
+			<id property="writerRealName" column="extra__writerRealName" />
+		</association>
+	</resultMap>
+</mapper>

@@ -1,7 +1,5 @@
 package com.quantom.audition.interceptor;
 
-import java.net.URLEncoder;
-import java.util.Enumeration;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.quantom.audition.config.AppConfig;
 import com.quantom.audition.dto.Member;
 import com.quantom.audition.service.MemberService;
 import com.quantom.audition.util.Util;
@@ -23,13 +21,17 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 	@Autowired
 	@Value("${custom.logoText}")
 	private String siteName;
+	@Value("${spring.profiles.active}")
+	private String activeProfile;
 
 	@Autowired
 	private MemberService memberService;
-	
+
+	@Autowired
+	private AppConfig appConfig;
+
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
 		// 기타 유용한 정보를 request에 담는다.
 		Map<String, Object> param = Util.getParamMap(request);
@@ -51,7 +53,7 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 
 		// 현재 페이지가 이미 로그인 페이지라면, 이 상태에서 로그인 버튼을 눌렀을 때 기존 param의 redirectUri가 계속 유지되도록
 		// 한다.
-		if (requestUri.contains("/usr/member/login")) {
+		if (requestUri.contains("/usr/member/login") || requestUri.contains("/usr/member/join") || requestUri.contains("/usr/member/findLoginId") || requestUri.contains("/usr/member/findLoginPw")) {
 			afterLoginUri = Util.getString(request, "redirectUri", "");
 		}
 
@@ -59,7 +61,7 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 
 		request.setAttribute("afterLoginUri", afterLoginUri);
 		request.setAttribute("encodedAfterLoginUri", encodedAfterLoginUri);
-		request.setAttribute("param", param);
+		request.setAttribute("paramMap", param);
 		request.setAttribute("paramJson", paramJson);
 
 		// 해당 요청이 ajax 요청인지 아닌지 체크
@@ -67,6 +69,12 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 
 		if (isAjax == false) {
 			if (param.containsKey("ajax") && param.get("ajax").equals("Y")) {
+				isAjax = true;
+			}
+		}
+
+		if (isAjax == false) {
+			if (requestUri.contains("/get")) {
 				isAjax = true;
 			}
 		}
@@ -79,18 +87,26 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 
 		// 로그인 여부에 관련된 정보를 request에 담는다.
 		boolean isLogined = false;
+		boolean isAdmin = false;
 		int loginedMemberId = 0;
 		Member loginedMember = null;
-
+		
 		if (session.getAttribute("loginedMemberId") != null) {
 			loginedMemberId = (int) session.getAttribute("loginedMemberId");
 			isLogined = true;
 			loginedMember = memberService.getMemberById(loginedMemberId);
+			
+			isAdmin = loginedMember.isAdmin();
 		}
 
 		request.setAttribute("loginedMemberId", loginedMemberId);
 		request.setAttribute("isLogined", isLogined);
+		request.setAttribute("isAdmin", isAdmin);
 		request.setAttribute("loginedMember", loginedMember);
+
+		request.setAttribute("activeProfile", activeProfile);
+
+		request.setAttribute("appConfig", appConfig);
 
 		return HandlerInterceptor.super.preHandle(request, response, handler);
 	}

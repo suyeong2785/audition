@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.quantom.audition.dto.Article;
-import com.quantom.audition.dto.Reply;
+import com.quantom.audition.dto.Board;
 
 @Mapper
 public interface ArticleDao {
@@ -20,4 +20,6 @@ public interface ArticleDao {
 	void write(Map<String, Object> param);
 
 	void modify(Map<String, Object> param);
+
+	Board getBoardByCode(String boardCode);
 }

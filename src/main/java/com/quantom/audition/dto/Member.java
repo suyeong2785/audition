@@ -1,12 +1,14 @@
 package com.quantom.audition.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class Member {
 	private int id;
 	private String regDate;
@@ -15,9 +17,19 @@ public class Member {
 	private String delDate;
 	private boolean authStatus;
 	private String loginId;
+
+	@JsonIgnore
 	private String loginPw;
 	private String name;
 	private String nickname;
 	private String email;
 	private String cellphoneNo;
+
+	public boolean isAdmin() {
+		if (loginId.equals("admin") || loginId.equals("user1")) {
+			return true;
+		}
+
+		return false;
+	}
 }

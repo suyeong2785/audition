@@ -25,14 +25,15 @@ public class ReplyService {
 
 	public List<Reply> getForPrintReplies(@RequestParam Map<String, Object> param) {
 		List<Reply> replies = replyDao.getForPrintReplies(param);
-		
+
 		List<Integer> replyIds = replies.stream().map(reply -> reply.getId()).collect(Collectors.toList());
-		if ( replyIds.size() > 0 ) {
-			Map<Integer, Map<Integer, File>> filesMap = fileService.getFilesMapKeyRelIdAndFileNo("reply", replyIds, "common", "attachment");
-			
-			for ( Reply reply : replies ) {
+		if (replyIds.size() > 0) {
+			Map<Integer, Map<Integer, File>> filesMap = fileService.getFilesMapKeyRelIdAndFileNo("reply", replyIds,
+					"common", "attachment");
+
+			for (Reply reply : replies) {
 				Map<Integer, File> filesMap2 = filesMap.get(reply.getId());
-				
+
 				if (filesMap2 != null) {
 					reply.getExtra().put("file__common__attachment", filesMap2);
 				}
@@ -67,7 +68,7 @@ public class ReplyService {
 	public int writeReply(Map<String, Object> param) {
 		replyDao.writeReply(param);
 		int id = Util.getAsInt(param.get("id"));
-		
+
 		String fileIdsStr = (String) param.get("fileIdsStr");
 
 		if (fileIdsStr != null && fileIdsStr.length() > 0) {
@@ -79,8 +80,8 @@ public class ReplyService {
 			for (int fileId : fileIds) {
 				fileService.changeRelId(fileId, id);
 			}
-
 		}
+
 		return id;
 	}
 
@@ -90,11 +91,35 @@ public class ReplyService {
 	}
 
 	public Reply getForPrintReplyById(int id) {
-		return replyDao.getForPrintReplyById(id);
+		Reply reply = replyDao.getForPrintReplyById(id);
+
+		Map<Integer, File> filesMap = fileService.getFilesMapKeyFileNo("reply", id, "common", "attachment");
+		Util.putExtraVal(reply, "file__common__attachment", filesMap);
+
+		return reply;
 	}
 
 	public ResultData modfiyReply(Map<String, Object> param) {
 		replyDao.modifyReply(param);
+		int id = Util.getAsInt(param.get("id"));
+
+		String fileIdsStr = (String) param.get("fileIdsStr");
+
+		if (fileIdsStr != null && fileIdsStr.length() > 0) {
+			List<Integer> fileIds = Arrays.asList(fileIdsStr.split(",")).stream().map(s -> Integer.parseInt(s.trim()))
+					.collect(Collectors.toList());
+
+			// 파일이 먼저 생성된 후에, 관련 데이터가 생성되는 경우에는, file의 relId가 일단 0으로 저장된다.
+			// 그것을 뒤늦게라도 이렇게 고처야 한다.
+			for (int fileId : fileIds) {
+				fileService.changeRelId(fileId, id);
+			}
+		}
+		
+		Reply reply = getForPrintReplyById(id);
+		
+		param.put("file__common__attachment", reply.getExtra().get("file__common__attachment"));
+
 		return new ResultData("S-1", String.format("%d번 댓글을 수정하였습니다.", Util.getAsInt(param.get("id"))), param);
 	}
 }

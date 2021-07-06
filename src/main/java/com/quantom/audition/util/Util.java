@@ -11,6 +11,9 @@ import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,12 +23,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.HtmlUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.cache.LoadingCache;
 
 public class Util {
+	public static String safeHtmlNl2Br(String html) {
+		String htmlForPrint = HtmlUtils.htmlEscape(html);
+		htmlForPrint = htmlForPrint.replace("\n", "<br>");
+
+		return htmlForPrint;
+	}
+
 	public static int getAsInt(Object object) {
 		if (object instanceof BigInteger) {
 			return ((BigInteger) object).intValue();
@@ -207,19 +218,6 @@ public class Util {
 		}
 	}
 
-	public static void printEx(String errName, HttpServletResponse resp, Exception e) {
-		try {
-			resp.getWriter()
-					.append("<h1 style='color:red; font-weight:bold; text-align:left;'>[에러 : " + errName + "]</h1>");
-
-			resp.getWriter().append("<pre style='text-align:left; font-weight:bold; font-size:1.3rem;'>");
-			e.printStackTrace(resp.getWriter());
-			resp.getWriter().append("</pre>");
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-	}
-
 	public static String getString(HttpServletRequest req, String paramName) {
 		return req.getParameter(paramName);
 	}
@@ -294,10 +292,7 @@ public class Util {
 
 	public static String getTempPassword(int length) {
 		int index = 0;
-		char[] charArr = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
-				'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a',
-				'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
-				'w', 'x', 'y', 'z' };
+		char[] charArr = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 
 		StringBuffer sb = new StringBuffer();
 
@@ -366,10 +361,9 @@ public class Util {
 			if (extra == null) {
 				return null;
 			} else {
-				if ( extra.get(key) == null ) {
+				if (extra.get(key) == null) {
 					return elseValue;
-				}
-				else {
+				} else {
 					return extra.get(key);
 				}
 			}
@@ -389,7 +383,7 @@ public class Util {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 
@@ -426,4 +420,65 @@ public class Util {
 			e.printStackTrace();
 		}
 	}
+
+	public static int getPassedSecondsFrom(String from) {
+		SimpleDateFormat fDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		Date n;
+		try {
+			n = fDate.parse(from);
+		} catch (ParseException e) {
+			return -1;
+		}
+
+		return (int) ((new Date().getTime() - n.getTime()) / 1000);
+	}
+
+	public static Object ifNull(Object value, Object elseValue) {
+		if (value == null) {
+			return elseValue;
+		}
+
+		return value;
+	}
+
+	public static String ifNull(Object value, String elseValue) {
+		if (value == null || ((String) value).length() == 0) {
+			return elseValue;
+		}
+
+		return (String) value;
+	}
+
+	public static String getNowDateStr() {
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		String dateStr = format1.format(System.currentTimeMillis());
+
+		return dateStr;
+	}
+
+	public static String getDateStrLater(int seconds) {
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		String dateStr = format1.format(System.currentTimeMillis() + seconds * 1000);
+
+		return dateStr;
+	}
+
+	public static String getNowYearMonthDateStr() {
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy_MM");
+
+		String dateStr = format1.format(System.currentTimeMillis());
+
+		return dateStr;
+	}
+	
+	public static int getOneOrZero(boolean b) {
+		if ( b ) {
+			return 1;
+		}
+		
+		return 0;
+	}
 }
+

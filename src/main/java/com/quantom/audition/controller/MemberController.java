@@ -2,6 +2,7 @@ package com.quantom.audition.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +21,70 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 
+	@RequestMapping("/usr/member/findLoginInfo")
+	public String showFindLoginInfo() {
+		return "usr/member/findLoginInfo";
+	}
+
+	@RequestMapping("/usr/member/doFindLoginId")
+	public String doFindLoginId(String name, String email, Model model) {
+		Member member = memberService.getMemberByNameAndEmail(name, email);
+
+		if (member == null) {
+			model.addAttribute("historyBack", true);
+			model.addAttribute("msg", "해당 회원이 존재하지 않습니다.");
+			return "common/redirect";
+		}
+
+		model.addAttribute("historyBack", true);
+		model.addAttribute("msg", String.format("해당 회원의 로그인 아이디는 %s 입니다.", member.getLoginId()));
+		return "common/redirect";
+	}
+
+	@RequestMapping("/usr/member/doFindLoginPw")
+	public String doFindLoginPw(String loginId, String email, String redirectUri, Model model, HttpServletRequest req) {
+		Member member = memberService.getMemberByLoginId(loginId);
+
+		if (member == null) {
+			model.addAttribute("historyBack", true);
+			model.addAttribute("msg", "해당 회원이 존재하지 않습니다.");
+			return "common/redirect";
+		}
+
+		if (member.getEmail().equals(email) == false) {
+			model.addAttribute("historyBack", true);
+			model.addAttribute("msg", "이메일이 올바르지 않습니다.");
+			return "common/redirect";
+		}
+
+		ResultData sendTempLoginPwToEmailResultData = memberService.sendTempLoginPwToEmail(member);
+
+		if (sendTempLoginPwToEmailResultData.isFail()) {
+			model.addAttribute("historyBack", true);
+			model.addAttribute("msg", sendTempLoginPwToEmailResultData.getMsg());
+			return "common/redirect";
+		}
+
+		model.addAttribute("redirectUri", redirectUri);
+		model.addAttribute("msg", sendTempLoginPwToEmailResultData.getMsg());
+		return "common/redirect";
+	}
+
 	@RequestMapping("/usr/member/join")
 	public String showWrite() {
-		return "member/join";
+		return "usr/member/join";
 	}
 
 	@RequestMapping("/usr/member/doJoin")
 	public String doWrite(@RequestParam Map<String, Object> param, Model model) {
 		Util.changeMapKey(param, "loginPwReal", "loginPw");
+
 		ResultData checkLoginIdJoinableResultData = memberService
 				.checkLoginIdJoinable(Util.getAsStr(param.get("loginId")));
 
 		if (checkLoginIdJoinableResultData.isFail()) {
 			model.addAttribute("historyBack", true);
-			model.addAttribute("alertMsg", checkLoginIdJoinableResultData.getMsg());
+			model.addAttribute("msg", checkLoginIdJoinableResultData.getMsg());
 			return "common/redirect";
 		}
 
@@ -47,37 +98,75 @@ public class MemberController {
 
 	@RequestMapping("/usr/member/login")
 	public String showLogin() {
-		return "member/login";
+		return "usr/member/login";
 	}
-	
+
+	@RequestMapping("/usr/member/checkPassword")
+	public String showCheckPassword() {
+		return "usr/member/checkPassword";
+	}
+
+	@RequestMapping("/usr/member/doCheckPassword")
+	public String doLogin(String loginPwReal, String redirectUri, Model model, HttpServletRequest req) {
+		String loginPw = loginPwReal;
+		Member loginedMember = (Member) req.getAttribute("loginedMember");
+
+		if (loginedMember.getLoginPw().equals(loginPw) == false) {
+			model.addAttribute("historyBack", true);
+			model.addAttribute("msg", "비밀번호가 일치하지 않습니다.");
+			return "common/redirect";
+		}
+
+		String authCode = memberService.genCheckPasswordAuthCode(loginedMember.getId());
+
+		if (redirectUri == null || redirectUri.length() == 0) {
+			redirectUri = "/usr/home/main";
+		}
+
+		redirectUri = Util.getNewUri(redirectUri, "checkPasswordAuthCode", authCode);
+
+		model.addAttribute("redirectUri", redirectUri);
+
+		return "common/redirect";
+	}
+
 	@RequestMapping("/usr/member/doLogin")
 	public String doLogin(String loginId, String loginPwReal, String redirectUri, Model model, HttpSession session) {
 		String loginPw = loginPwReal;
 		Member member = memberService.getMemberByLoginId(loginId);
 
-		if ( member == null ) {
+		if (member == null) {
 			model.addAttribute("historyBack", true);
-			model.addAttribute("alertMsg", "존재하지 않는 회원입니다.");
+			model.addAttribute("msg", "존재하지 않는 회원입니다.");
 			return "common/redirect";
 		}
 
-		if ( member.getLoginPw().equals(loginPw) == false ) {
+		if (member.getLoginPw().equals(loginPw) == false) {
 			model.addAttribute("historyBack", true);
-			model.addAttribute("alertMsg", "비밀번호가 일치하지 않습니다.");
+			model.addAttribute("msg", "비밀번호가 일치하지 않습니다.");
 			return "common/redirect";
 		}
 
 		session.setAttribute("loginedMemberId", member.getId());
+
 		if (redirectUri == null || redirectUri.length() == 0) {
 			redirectUri = "/usr/home/main";
 		}
 
+		boolean usingTempPassword = memberService.usingTempPassword(member.getId());
+
+		if (usingTempPassword) {
+			redirectUri = "/usr/member/checkPassword?redirectUri=%2Fusr%2Fmember%2Fmodify";
+			model.addAttribute("msg", "현재 임시 패스워드를 사용하고 있습니다. 비밀번호를 변경해주세요.");
+		} else {
+			model.addAttribute("msg", String.format("%s님 반갑습니다.", member.getNickname()));
+		}
+
 		model.addAttribute("redirectUri", redirectUri);
-		model.addAttribute("alertMsg", String.format("%s님 반갑습니다.", member.getNickname()));
 
 		return "common/redirect";
 	}
-	
+
 	@RequestMapping("/usr/member/doLogout")
 	public String doLogout(HttpSession session, Model model, String redirectUri) {
 		session.removeAttribute("loginedMemberId");
@@ -87,6 +176,41 @@ public class MemberController {
 		}
 
 		model.addAttribute("redirectUri", redirectUri);
+		return "common/redirect";
+	}
+
+	@RequestMapping("/usr/member/modify")
+	public String showModify(HttpSession session, Model model, HttpServletRequest req, String checkPasswordAuthCode) {
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+		ResultData checkValidCheckPasswordAuthCodeResultData = memberService
+				.checkValidCheckPasswordAuthCode(loginedMemberId, checkPasswordAuthCode);
+
+		if (checkPasswordAuthCode == null || checkPasswordAuthCode.length() == 0) {
+			model.addAttribute("historyBack", true);
+			model.addAttribute("msg", "비밀번호 체크 인증코드가 없습니다.");
+			return "common/redirect";
+		}
+
+		if (checkValidCheckPasswordAuthCodeResultData.isFail()) {
+			model.addAttribute("historyBack", true);
+			model.addAttribute("msg", checkValidCheckPasswordAuthCodeResultData.getMsg());
+			return "common/redirect";
+		}
+
+		return "usr/member/modify";
+	}
+
+	@RequestMapping("/usr/member/doModify")
+	public String doWrite(@RequestParam Map<String, Object> param, Model model, HttpServletRequest req) {
+		Util.changeMapKey(param, "loginPwReal", "loginPw");
+
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+		param.put("id", loginedMemberId);
+		memberService.modify(param);
+
+		String redirectUri = (String) param.get("redirectUri");
+		model.addAttribute("redirectUri", redirectUri);
+
 		return "common/redirect";
 	}
 }

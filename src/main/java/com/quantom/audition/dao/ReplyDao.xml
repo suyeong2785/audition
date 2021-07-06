@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.quantom.audition.dao.ReplyDao">
-
+	
 	<select id="getForPrintReplies" resultMap="reply">
 	    <![CDATA[
 		SELECT AR.*,
@@ -49,10 +48,13 @@
 		= #{id}
 	</select>
 
-	<delete id="deleteReply">
-		DELETE FROM reply
+	<update id="deleteReply">
+		UPDATE reply
+		SET delStatus = 1,
+		delDate = NOW(),
+		displayStatus = 0
 		WHERE id = #{id}
-	</delete>
+	</update>
 
 	<update id="modifyReply">
 		UPDATE reply
@@ -77,5 +79,4 @@
 			<id property="writer" column="extra__writer" />
 		</association>
 	</resultMap>
-
 </mapper>
