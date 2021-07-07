@@ -8,6 +8,8 @@
 
 		SELECT AM.*,
 		M.nickname AS extra__writer,
+		M.age AS extra__age,
+		M.gender AS extra__gender,
 		M.name AS extra__writerRealName,
 		M.cellphoneNo AS extra__writerCellphoneNo,
 		M.email AS extra__writerEmail,
@@ -122,6 +124,8 @@
 		<id property="relTypeCode" column="relTypeCode" />
 		<association property="extra" javaType="map">
 			<id property="writer" column="extra__writer" />
+			<id property="writerAge" column="extra__age" />
+			<id property="writerGender" column="extra__gender" />
 			<id property="writerCellphoneNo" column="extra__writerCellphoneNo" />
 			<id property="writerEmail" column="extra__writerEmail" />
 			<id property="writerRealName" column="extra__writerRealName" />

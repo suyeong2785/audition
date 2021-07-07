@@ -16,6 +16,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!-- lodash 불러오기 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
+<!-- 테일윈드 불러오기 -->
+<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 <!-- 공통(라이브러리) CSS -->
 <link rel="stylesheet" href="/resource/common.css" />
 <!-- 공통(라이브러리) JS -->
@@ -33,18 +35,17 @@ var param = ${paramJson};
 <%="</script>"%>
 </head>
 <body>
-    <div class="loading-box flex-ai-c flex-jc-c">
-        <div class="lds-roller">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div>
+    <!-- 로딩화면 -->
+	<img class="loader-img absolute " src="/resource/img/logo_1@3x.png"
+		alt="" />
+	<div class="loader"></div>
+	<script>
+		$(window).on('load', function() {
+			$('.loader').fadeOut();
+			$('.loader-img').fadeOut();
+		});
+	</script>
+    
     <div class="outer-box">
         <div class="mobile-top-bar visible-on-sm-down flex flex flex-ai-c">
             <a href="/usr/home/main" class="logo img-box">
@@ -69,9 +70,11 @@ var param = ${paramJson};
             <nav class="menu-box-1 flex-1-0-0">
                 <ul>
                     <c:if test="${isLogined}">
+                        <li><a class="flex flex-jc-c" href="/adm/home/showMyPage">마이페이지</a></li>
                         <li><a class="flex flex-jc-c" href="/usr/member/checkPassword?redirectUri=${Util.getUriEncoded('/usr/member/modify')}">내 정보수정</a></li>
                         <li><a class="flex flex-jc-c" href="/usr/member/doLogout">로그아웃</a></li>
                     </c:if>
+                    <li><a class="flex flex-jc-c" href="/adm/actingRole/list">배역리스트</a></li>
                     <li><a class="flex flex-jc-c" href="/adm/actingRole/artworkList">작품리스트</a></li>
                 </ul>
             </nav>
@@ -83,6 +86,7 @@ var param = ${paramJson};
             <nav class="menu-box-1">
                 <ul class="flex">
                     <c:if test="${isLogined}">
+                        <li class="padding-0-10"><a class="btn btn-info" href="/adm/home/showMyPage">마이페이지</a></li>
                         <li class="padding-0-10"><a class="btn btn-info" href="/usr/member/checkPassword?redirectUri=${Util.getUriEncoded('/usr/member/modify')}">내 정보수정</a></li>
                         <li class="padding-0-10"><a class="btn btn-info" href="/usr/member/doLogout">로그아웃</a></li>
                     </c:if>

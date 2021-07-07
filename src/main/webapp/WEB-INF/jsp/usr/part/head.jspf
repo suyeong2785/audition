@@ -50,6 +50,17 @@ var param = ${paramJson};
 
 </head>
 <body>
+	<!-- 로딩화면 -->
+	<img class="loader-img absolute " src="/resource/img/logo_1@3x.png"
+		alt="" />
+	<div class="loader"></div>
+	<script>
+		$(window).on('load', function() {
+			$('.loader').fadeOut();
+			$('.loader-img').fadeOut();
+		});
+	</script>
+	
 	<div class="loading-box flex-ai-c flex-jc-c">
 		<div class="lds-roller">
 			<div></div>

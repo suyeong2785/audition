@@ -208,6 +208,22 @@ label[for] {
 .flex-1-0-0 {
   flex: 1 0 0;
 }
+.flex-1{
+	flex-grow: 1;
+}
+.flex-2{
+	flex-grow: 2;
+}
+.flex-3{
+	flex-grow: 3;
+}
+.flex-4{
+	flex-grow: 4;
+}
+.flex-5{
+	flex-grow: 5;
+}
+
 
 /* 테이블 관련 */
 .table-box {
@@ -369,8 +385,8 @@ label[for] {
   text-shadow: 1px 1px 20px #000000;
   text-decoration: none;
   box-sizing: border-box;
-  justify-content: center;
   text-align: center;
+  justify-content: center;
 }
 
 .btn-success {
@@ -386,7 +402,7 @@ label[for] {
 }
 
 .btn-warning {
-  background-color: #ffc10;
+  background-color: #dc3540;
 }
 
 .btn+.btn {
@@ -427,7 +443,7 @@ label[for] {
 }
 
 .badge-warning {
-  background-color: #ffc10;
+  background-color:  #dc3540;
 }
 
 .te-ww-container .tui-editor-contents {
@@ -458,4 +474,41 @@ label[for] {
 .tui-editor-contents pre {
   padding-left: 0 !important;
   padding-right: 0 !important;
+}
+
+/* loader 커스텀*/
+.loader-img {
+  width: 120px;
+  height: 120px;
+  -webkit-animation: 2s linear infinite; 
+  animation:  2s linear infinite;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  z-index: 100;
+}
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 180px;
+  height: 180px;
+  -webkit-animation: spin 2s linear infinite; 
+  animation: spin 2s linear infinite;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  z-index: 100;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform:translate(-50%, -50%) rotate(0deg); }
+  100% { -webkit-transform:translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform:translate(-50%, -50%) rotate(0deg); }
+  100% { transform:translate(-50%, -50%) rotate(360deg); }
 }

@@ -41,6 +41,8 @@
 		loginId = #{loginId},
 		loginPw = #{loginPw},
 		`name` = #{name},
+		`age` = #{age},
+		`gender` = #{gender},
 		nickname =
 		#{nickname},
 		email = #{email},

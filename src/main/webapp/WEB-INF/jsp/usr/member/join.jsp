@@ -160,6 +160,23 @@
                 </td>
             </tr>
             <tr>
+                <th>나이</th>
+                <td>
+                    <div class="form-control-box">
+                        <input type="number" placeholder="나이를 입력해주세요." name="age" maxlength="20" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>성별</th>
+                <td>
+                    <div class="form-control-box">
+                        <label><input type="radio" name="gender" value="woman"> 여성</label>
+                        <label><input type="radio" name="gender" value="man"> 남성</label>
+                    </div>
+                </td>
+            </tr>          
+            <tr>
                 <th>활동명</th>
                 <td>
                     <div class="form-control-box">
