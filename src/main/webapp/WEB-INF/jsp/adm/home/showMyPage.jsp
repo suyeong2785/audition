@@ -49,11 +49,17 @@
 <div class="popup-1 applicant-decision-form-modal">
 	<div class="content">
 		<div id="media-content" class="flex justify-center"></div>
-		<div class="flex justify-center">
-		<button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">추천</button>
-		<button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">보류</button>
-		<button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">삭제</button>
-		<button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" onclick="hideApplicantDecisonModal()">닫기</button>
+		<div class="button-box flex justify-center">
+			<button
+				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">추천</button>
+			<button
+				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">보류</button>
+			<button id="delete-applicant"
+				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+				onclick="deleteApplicant()">삭제</button>
+			<button
+				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+				onclick="hideApplicantDecisonModal()">닫기</button>
 		</div>
 	</div>
 
@@ -144,8 +150,8 @@ var ApplymentList__applymentsCount = 0;
         $('html').removeClass('applicant-decision-form-modal-actived');
     }
 	
-  	function showApplicantDecisonModal(id) {
-	  
+  	function showApplicantDecisonModal(id) { 		
+  		
 	  var Applicant__$div = $("#media-content");
 	  
 	  var html = '';
@@ -159,6 +165,11 @@ var ApplymentList__applymentsCount = 0;
 			var $div = $(html);
 			
 			Applicant__$div.prepend($div);
+			
+			//applicantDecisionModal창을 열때마다 
+			// ApplymentList__getMediaHtml를 감싸고있는 #media-content에
+			// 전역변수처럼 data-id에 id값을 저장해서 해당 엘리먼트의 자식,후손들이 사용할 수 있도록 한다.
+			$("#media-content").data("id",id);
 			
 		}, 'json');  
 	
@@ -195,6 +206,23 @@ var ApplymentList__applymentsCount = 0;
 
 	        return '<div class="media-box">' + html + "</div>";
 	}
+	
+	function deleteApplicant() {
+		var id = $('#media-content').data('id');
+		
+		if (confirm('삭제 하시겠습니까?') == false) {
+            return;
+        }
+
+		$.post('../../usr/applyment/doDeleteApplymentAjax',{
+			id:id
+		},function(data){
+			alert(data.msg);
+		},'json');
+		
+		location.reload();
+		
+	} 
 	
 </script>
 

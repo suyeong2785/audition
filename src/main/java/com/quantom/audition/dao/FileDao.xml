@@ -106,17 +106,21 @@
 		WHERE id = #{id}
 	</update>
 
-	<delete id="deleteFiles">
-		DELETE FROM file
+	<update id="deleteFiles">
+		UPDATE file
+		SET delDate = NOW(),
+		delStatus = 1
 		WHERE relId = #{relId}
 		AND relTypeCode
 		= #{relTypeCode}
-	</delete>
+	</update>
 
-	<delete id="deleteFile">
-		DELETE FROM file
+	<update id="deleteFile">
+		UPDATE file
+		SET delDate = NOW(),
+		delStatus = 1
 		WHERE id = #{id}
-	</delete>
+	</update>
 
 	<select id="getFileId" resultType="int">
 		SELECT id

@@ -53,7 +53,7 @@ public class ApplymentController {
 
 		return new ResultData("S-1", String.format("%d개의 신청을 불러왔습니다.", applyments.size()), rsDataBody);
 	}
-	
+
 	@RequestMapping("/usr/applyment/getForPrintApplyment")
 	@ResponseBody
 	public ResultData getForPrintApplyment(@RequestParam Map<String, Object> param, HttpServletRequest req) {
@@ -73,7 +73,8 @@ public class ApplymentController {
 		Member loginedMember = (Member) request.getAttribute("loginedMember");
 		param.put("memberId", request.getAttribute("loginedMemberId"));
 
-		ResultData checkWriteApplymentAvailableResultData = applymentService.checkActorCanWriteApplyment(loginedMember, (String) param.get("relTypeCode"), Util.getAsInt(param.get("relId")));
+		ResultData checkWriteApplymentAvailableResultData = applymentService.checkActorCanWriteApplyment(loginedMember,
+				(String) param.get("relTypeCode"), Util.getAsInt(param.get("relId")));
 
 		if (checkWriteApplymentAvailableResultData.isFail()) {
 			fileService.deleteFiles((String) param.get("fileIdsStr"));
@@ -84,7 +85,10 @@ public class ApplymentController {
 		int newApplymentId = applymentService.writeApplyment(param);
 		rsDataBody.put("applymentId", newApplymentId);
 
-		return new ResultData("S-1", String.format("신청이 완료되었습니다, " + appConfig.getModifyAvailablePerioMinutes() + "분 이내에만 삭제, 수정이 가능합니다.", newApplymentId), rsDataBody);
+		return new ResultData("S-1",
+				String.format("신청이 완료되었습니다, " + appConfig.getModifyAvailablePerioMinutes() + "분 이내에만 삭제, 수정이 가능합니다.",
+						newApplymentId),
+				rsDataBody);
 	}
 
 	@RequestMapping("/usr/applyment/doDeleteApplymentAjax")
@@ -93,8 +97,11 @@ public class ApplymentController {
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
 		Applyment applyment = applymentService.getForPrintApplymentById(id);
 
-		if (applymentService.actorCanDelete(loginedMember, applyment) == false) {
-			return new ResultData("F-1", String.format("%d번 신청을 삭제할 권한이 없습니다.", id));
+		if ((boolean)req.getAttribute("isAdmin") == false) {
+			if (applymentService.actorCanDelete(loginedMember, applyment) == false) {
+				return new ResultData("F-1", String.format("%d번 신청을 삭제할 권한이 없습니다.", id));
+			}
+
 		}
 
 		applymentService.deleteApplyment(id);
