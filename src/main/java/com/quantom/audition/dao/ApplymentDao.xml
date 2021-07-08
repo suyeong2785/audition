@@ -24,6 +24,23 @@
 		<if test="memberId != null">AND AM.memberId = #{memberId}</if>
 		ORDER BY AM.id ASC
 	</select>
+	
+	<select id="getForPrintApplyment" resultMap="applyment">
+
+		SELECT AM.*,
+		M.nickname AS extra__writer,
+		M.age AS extra__age,
+		M.gender AS extra__gender,
+		M.name AS extra__writerRealName,
+		M.cellphoneNo AS extra__writerCellphoneNo,
+		M.email AS extra__writerEmail,
+		M.nickname AS extra__writer
+		FROM applyment AS AM
+		INNER JOIN member AS M
+		ON AM.memberId = M.id
+		WHERE AM.displayStatus = 1
+		AND AM.id = #{id}
+	</select>
 
 	<insert id="writeApplyment" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO applyment

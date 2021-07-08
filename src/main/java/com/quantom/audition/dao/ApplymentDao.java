@@ -12,6 +12,8 @@ import com.quantom.audition.dto.Applyment;
 public interface ApplymentDao {
 	List<Applyment> getForPrintApplyments(Map<String, Object> param);
 
+	Applyment getForPrintApplyment(Map<String, Object> param);
+
 	void writeApplyment(Map<String, Object> param);
 
 	void deleteApplyment(@Param("id") int id);
@@ -25,4 +27,5 @@ public interface ApplymentDao {
 	Applyment getApplymentByRelIdAndMemberId(@Param("relTypeCode") String relTypeCode, @Param("relId") int relId, @Param("memberId") int memberId);
 
 	void changeHideStatus(@Param("id") int id, @Param("hideStatus") boolean hideStatus);
+
 }

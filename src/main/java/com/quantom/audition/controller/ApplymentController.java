@@ -53,6 +53,17 @@ public class ApplymentController {
 
 		return new ResultData("S-1", String.format("%d개의 신청을 불러왔습니다.", applyments.size()), rsDataBody);
 	}
+	
+	@RequestMapping("/usr/applyment/getForPrintApplyment")
+	@ResponseBody
+	public ResultData getForPrintApplyment(@RequestParam Map<String, Object> param, HttpServletRequest req) {
+		Map<String, Object> rsDataBody = new HashMap<>();
+
+		Applyment applyment = applymentService.getForPrintApplyment(param);
+		rsDataBody.put("applyment", applyment);
+
+		return new ResultData("S-1", "1개의 신청을 불러왔습니다.", rsDataBody);
+	}
 
 	@RequestMapping("/usr/applyment/doWriteApplymentAjax")
 	@ResponseBody

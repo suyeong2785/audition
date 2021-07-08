@@ -87,6 +87,27 @@ public class FileService {
 		return fileDao.getFileById(id);
 	}
 
+	public Map<Integer, Map<Integer, File>> getFileMapKeyRelIdAndFileNo(String relTypeCode, int relId, String typeCode,
+			String type2Code) {
+
+		List<File> files = fileDao.getFilesRelTypeCodeAndRelIdAndTypeCodeAndType2Code(relTypeCode, relId, typeCode,
+				type2Code);
+		
+		Map<Integer, File> map = new HashMap<>();
+		
+		Map<Integer, Map<Integer, File>> rs = new LinkedHashMap<>();
+		
+		for (File file : files) {
+			if (rs.containsKey(file.getRelId()) == false) {
+				rs.put(file.getRelId(), new LinkedHashMap<>());
+			}
+
+			rs.get(file.getRelId()).put(file.getFileNo(), file);
+		}
+
+		return rs;
+	}
+
 	public Map<Integer, Map<Integer, File>> getFilesMapKeyRelIdAndFileNo(String relTypeCode, List<Integer> relIds,
 			String typeCode, String type2Code) {
 		List<File> files = fileDao.getFilesRelTypeCodeAndRelIdsAndTypeCodeAndType2Code(relTypeCode, relIds, typeCode,

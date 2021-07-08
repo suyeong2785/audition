@@ -655,7 +655,7 @@
     }
 
     // 1초
-    var ApplymentList__loadMoreInterval = 1 * 1000;
+    var ApplymentList__loadMoreInterval = 1 * 100000;
     var ApplymentList__applymentsCount = 0;
     var ApplymentList__hiddenApplymentsCount = 0;
 
