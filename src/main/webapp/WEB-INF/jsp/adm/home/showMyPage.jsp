@@ -56,7 +56,10 @@
 				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">보류</button>
 			<button id="delete-applicant"
 				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-				onclick="deleteApplicant()">삭제</button>
+				onclick="ChangeApplymentResult(2)">1차 불합격</button>
+			<button id="delete-applicant"
+				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+				onclick="ChangeApplymentResult(1)">1차 합격</button>
 			<button
 				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
 				onclick="hideApplicantDecisonModal()">닫기</button>
@@ -88,11 +91,18 @@ var ApplymentList__applymentsCount = 0;
 		//ajax를 통해 recruitment.id에 해당하는 모든 applyments 객체를 가져와서
 		//ApplymentList__loadMoreCallback에 전달한다.
 		function ApplymentList__loadMore() {
+			var undecidedApplicant = 0;
 
-			$.get('../../usr/applyment/getForPrintApplyments', {
+			$.get('../../usr/applyment/getForPrintApplymentsByResult', {
 				recruitmentId : recruitment_id,
-				from : ApplymentList__lastLodedId + 1
-			}, ApplymentList__loadMoreCallback, 'json');
+				from : ApplymentList__lastLodedId + 1,
+				result : undecidedApplicant
+				
+			}, function(data) {
+				if(data && data.body){
+					ApplymentList__loadMoreCallback(data);
+				}
+			}, 'json');
 		}
 		
 		//받아온 applyments객체의 데이터유무 확인하고,가장 마지막의 applyment의 id를
@@ -126,7 +136,7 @@ var ApplymentList__applymentsCount = 0;
 			
 			var html = '';
 			
-			html += '<div onclick="showApplicantDecisonModal(' + applyment.id + ');" class="flex justify-center text-center border-2 border-black box-border p-4">';
+			html += '<div onclick="showApplicantDecisonModal(' + applyment.id + ','+ recruitment_id +');" class="flex justify-center text-center border-2 border-black box-border p-4">';
 			html += '<div class="flex-1">' + applyment.id + '</div>';
 			html += '<div class="flex-1">' + applyment.extra.writerRealName + '</div>';
 			html += '<div class="flex-1">' + applyment.extra.writerGender + '</div>';
@@ -150,14 +160,19 @@ var ApplymentList__applymentsCount = 0;
         $('html').removeClass('applicant-decision-form-modal-actived');
     }
 	
-  	function showApplicantDecisonModal(id) { 		
+  	function showApplicantDecisonModal(applyment_id,recruitment_id) { 		
   		
 	  var Applicant__$div = $("#media-content");
 	  
 	  var html = '';
 	  
-	  $.get('../../usr/applyment/getForPrintApplyment', {
-		 id : id
+	  var undecidedApplicant = 0;
+	  
+	  $.get('../../usr/applyment/getForPrintApplymentRelatedToResultAjax', {
+		 id : applyment_id,
+		 relId : recruitment_id,
+		 result : undecidedApplicant
+		 
 		}, function (data) {
 			
 			html += ApplymentList__getMediaHtml(data);
@@ -169,7 +184,7 @@ var ApplymentList__applymentsCount = 0;
 			//applicantDecisionModal창을 열때마다 
 			// ApplymentList__getMediaHtml를 감싸고있는 #media-content에
 			// 전역변수처럼 data-id에 id값을 저장해서 해당 엘리먼트의 자식,후손들이 사용할 수 있도록 한다.
-			$("#media-content").data("id",id);
+			$('#media-content').data('id',applyment_id);
 			
 		}, 'json');  
 	
@@ -207,15 +222,27 @@ var ApplymentList__applymentsCount = 0;
 	        return '<div class="media-box">' + html + "</div>";
 	}
 	
-	function deleteApplicant() {
+	function ChangeApplymentResult(result) {
 		var id = $('#media-content').data('id');
 		
-		if (confirm('삭제 하시겠습니까?') == false) {
-            return;
-        }
+		// result : 1 (합격)
+		if(result == 1){
+			if (confirm('합격 시키겠습니까?') == false) {
+	            return;
+	        }
+		} else{
+			// result : 2 (불합격)
+			if (confirm('불합격 시키겠습니까?') == false) {
+	            return;
+	        }
 
-		$.post('../../usr/applyment/doDeleteApplymentAjax',{
-			id:id
+		}
+		
+		
+		
+		$.post('../../usr/applyment/doChangeApplymentResultAjax',{
+			id : id,
+			result : result
 		},function(data){
 			alert(data.msg);
 		},'json');

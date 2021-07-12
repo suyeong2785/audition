@@ -3,46 +3,106 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.quantom.audition.dao.ApplymentDao">
-	
+
 	<select id="getForPrintApplyments" resultMap="applyment">
 
 		SELECT AM.*,
 		M.nickname AS extra__writer,
 		M.age AS extra__age,
-		M.gender AS extra__gender,
+		M.gender
+		AS extra__gender,
 		M.name AS extra__writerRealName,
-		M.cellphoneNo AS extra__writerCellphoneNo,
+		M.cellphoneNo AS
+		extra__writerCellphoneNo,
 		M.email AS extra__writerEmail,
-		M.nickname AS extra__writer
+		M.nickname AS
+		extra__writer
 		FROM applyment AS AM
 		INNER JOIN member AS M
-		ON AM.memberId = M.id
+		ON AM.memberId
+		= M.id
 		WHERE AM.relId = #{relId}
 		AND AM.relTypeCode = #{relTypeCode}
-		AND AM.displayStatus = 1
-		AND AM.id <![CDATA[ >= ]]> #{from}
+		AND
+		AM.displayStatus = 1
+		AND AM.id <![CDATA[ >= ]]>
+		#{from}
 		<if test="memberId != null">AND AM.memberId = #{memberId}</if>
 		ORDER BY AM.id ASC
 	</select>
-	
-	<select id="getForPrintApplyment" resultMap="applyment">
 
+	<select id="getForPrintApplymentRelatedToResult"
+		resultMap="applyment">
 		SELECT AM.*,
 		M.nickname AS extra__writer,
 		M.age AS extra__age,
-		M.gender AS extra__gender,
+		M.gender
+		AS extra__gender,
 		M.name AS extra__writerRealName,
-		M.cellphoneNo AS extra__writerCellphoneNo,
+		M.cellphoneNo AS
+		extra__writerCellphoneNo,
 		M.email AS extra__writerEmail,
-		M.nickname AS extra__writer
+		M.nickname AS
+		extra__writer
 		FROM applyment AS AM
 		INNER JOIN member AS M
-		ON AM.memberId = M.id
+		ON AM.memberId
+		= M.id
+		WHERE AM.displayStatus = 1
+		AND AM.id =
+		#{id}
+		AND AM.result = #{result}
+		ORDER BY AM.id ASC
+	</select>
+
+	<select id="getForPrintApplyment" resultMap="applyment">
+		SELECT AM.*,
+		M.nickname AS extra__writer,
+		M.age AS extra__age,
+		M.gender AS
+		extra__gender,
+		M.name AS extra__writerRealName,
+		M.cellphoneNo AS
+		extra__writerCellphoneNo,
+		M.email AS extra__writerEmail,
+		M.nickname AS
+		extra__writer
+		FROM applyment AS AM
+		INNER JOIN member AS M
+		ON AM.memberId
+		= M.id
 		WHERE AM.displayStatus = 1
 		AND AM.id = #{id}
 	</select>
 
-	<insert id="writeApplyment" useGeneratedKeys="true" keyProperty="id">
+	<select id="getForPrintApplymentsByResult" resultMap="applyment">
+		SELECT
+		AM.*,
+		M.nickname AS extra__writer,
+		M.age AS extra__age,
+		M.gender AS
+		extra__gender,
+		M.name AS extra__writerRealName,
+		M.cellphoneNo AS
+		extra__writerCellphoneNo,
+		M.email AS
+		extra__writerEmail,
+		M.nickname AS
+		extra__writer
+		FROM applyment AS AM
+		INNER JOIN member AS M
+		ON AM.memberId
+		= M.id
+		WHERE AM.displayStatus = 1
+		AND AM.relId = #{relId} 
+		AND AM.relTypeCode = #{relTypeCode}
+		AND AM.id <![CDATA[ >= ]]>
+		#{from}
+		AND AM.result = 0
+	</select>
+
+	<insert id="writeApplyment" useGeneratedKeys="true"
+		keyProperty="id">
 		INSERT INTO applyment
 		SET regDate = NOW(),
 		updateDate =
@@ -89,7 +149,8 @@
 		ORDER BY AM.id DESC
 	</select>
 
-	<select id="getApplymentByRelIdAndMemberId" resultMap="applyment">
+	<select id="getApplymentByRelIdAndMemberId"
+		resultMap="applyment">
 		SELECT *
 		FROM applyment AS AM
 		WHERE AM.relId = #{relId}
@@ -100,7 +161,40 @@
 		AM.delStatus = 0
 	</select>
 
-
+	<select id="getApplymenResultInfoByMemberId"
+		resultMap="applymentResult">
+		SELECT Apply.*, Mem.name AS extra__writerName,
+		Act.name AS
+		extra__actingName,
+		Act.job AS extra__actingJob,
+		Act.gender AS
+		extra__actingGender,
+		Art.name AS extra__ArtworkName,
+		Art.productionName
+		AS extra__ProductionName,
+		Art.directorName AS extra__directorName
+		FROM
+		applyment AS Apply
+		LEFT OUTER JOIN `member`
+		AS `Mem`
+		ON Apply.memberId =
+		Mem.id
+		LEFT OUTER
+		JOIN `recruitment` AS
+		Recruit
+		ON Apply.relId =
+		Recruit.id
+		LEFT OUTER
+		JOIN `actingRole` AS Act
+		ON
+		Recruit.roleId = Act.id
+		LEFT OUTER JOIN
+		`artwork` AS Art
+		ON Act.artworkId
+		= Art.id
+		WHERE Mem.id =
+		#{memberId}
+	</select>
 
 	<update id="deleteApplyment">
 		UPDATE applyment
@@ -127,6 +221,15 @@
 		WHERE id = #{id}
 	</update>
 
+	<update id="changeApplymentResult">
+		UPDATE applyment
+		<set>
+			updateDate = NOW(),
+			result = #{result}
+		</set>
+		WHERE id = #{id}
+	</update>
+
 	<resultMap type="Applyment" id="applyment">
 		<id property="id" column="id" />
 		<id property="regDate" column="regDate" />
@@ -138,6 +241,7 @@
 		<id property="body" column="body" />
 		<id property="memberId" column="memberId" />
 		<id property="relId" column="relId" />
+		<id property="result" column="result" />
 		<id property="relTypeCode" column="relTypeCode" />
 		<association property="extra" javaType="map">
 			<id property="writer" column="extra__writer" />
@@ -146,6 +250,30 @@
 			<id property="writerCellphoneNo" column="extra__writerCellphoneNo" />
 			<id property="writerEmail" column="extra__writerEmail" />
 			<id property="writerRealName" column="extra__writerRealName" />
+		</association>
+	</resultMap>
+
+	<resultMap type="Applyment" id="applymentResult">
+		<id property="id" column="id" />
+		<id property="regDate" column="regDate" />
+		<id property="updateDate" column="updateDate" />
+		<id property="delDate" column="delDate" />
+		<id property="delStatus" column="delStatus" />
+		<id property="displayStatus" column="displayStatus" />
+		<id property="hideStatus" column="hideStatus" />
+		<id property="body" column="body" />
+		<id property="memberId" column="memberId" />
+		<id property="relId" column="relId" />
+		<id property="result" column="result" />
+		<id property="relTypeCode" column="relTypeCode" />
+		<association property="extra" javaType="map">
+			<id property="writer" column="extra__writer" />
+			<id property="actingName" column="extra__actingName" />
+			<id property="actingJob" column="extra__actingJob" />
+			<id property="actingGender" column="extra__actingGender" />
+			<id property="ArtworkName" column="extra__ArtworkName" />
+			<id property="ProductionName" column="extra__ProductionName" />
+			<id property="directorName" column="extra__directorName" />
 		</association>
 	</resultMap>
 </mapper>

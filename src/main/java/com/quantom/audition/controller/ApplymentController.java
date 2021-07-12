@@ -53,6 +53,28 @@ public class ApplymentController {
 
 		return new ResultData("S-1", String.format("%d개의 신청을 불러왔습니다.", applyments.size()), rsDataBody);
 	}
+	
+	@RequestMapping("/usr/applyment/getForPrintApplymentsByResult")
+	@ResponseBody
+	public ResultData getForPrintApplymentsByResult(@RequestParam Map<String, Object> param, HttpServletRequest req) {
+		Member loginedMember = (Member) req.getAttribute("loginedMember");
+		Map<String, Object> rsDataBody = new HashMap<>();
+
+		param.put("relTypeCode", "recruitment");
+		Util.changeMapKey(param, "recruitmentId", "relId");
+
+		boolean actorIsWriter = recruitmentService.actorIsWriter(loginedMember, Util.getAsInt(param.get("relId")));
+
+		if (actorIsWriter == false) {
+			param.put("memberId", loginedMember.getId());
+		}
+
+		param.put("actor", loginedMember);
+		List<Applyment> applyments = applymentService.getForPrintApplymentsByResult(param);
+		rsDataBody.put("applyments", applyments);
+
+		return new ResultData("S-1", String.format("%d개의 신청을 불러왔습니다.", applyments.size()), rsDataBody);
+	}
 
 	@RequestMapping("/usr/applyment/getForPrintApplyment")
 	@ResponseBody
@@ -60,6 +82,17 @@ public class ApplymentController {
 		Map<String, Object> rsDataBody = new HashMap<>();
 
 		Applyment applyment = applymentService.getForPrintApplyment(param);
+		rsDataBody.put("applyment", applyment);
+
+		return new ResultData("S-1", "1개의 신청을 불러왔습니다.", rsDataBody);
+	}
+	
+	@RequestMapping("/usr/applyment/getForPrintApplymentRelatedToResultAjax")
+	@ResponseBody
+	public ResultData getForPrintApplymentRelatedToResultAjax(@RequestParam Map<String, Object> param, HttpServletRequest req) {
+		Map<String, Object> rsDataBody = new HashMap<>();
+		
+		Applyment applyment = applymentService.getForPrintApplymentRelatedToResult(param);
 		rsDataBody.put("applyment", applyment);
 
 		return new ResultData("S-1", "1개의 신청을 불러왔습니다.", rsDataBody);
@@ -107,6 +140,27 @@ public class ApplymentController {
 		applymentService.deleteApplyment(id);
 
 		return new ResultData("S-1", String.format("%d번 신청을 삭제하였습니다.", id));
+	}
+	
+	@RequestMapping("/usr/applyment/doChangeApplymentResultAjax")
+	@ResponseBody
+	public ResultData doTurnDownApplymentAjax(int id,int result, HttpServletRequest req) {
+		Member loginedMember = (Member) req.getAttribute("loginedMember");
+		Applyment applyment = applymentService.getForPrintApplymentById(id);
+
+		if ((boolean)req.getAttribute("isAdmin") == false) {
+			if (applymentService.actorCanModify(loginedMember, applyment) == false) {
+				return new ResultData("F-1", String.format("%d번 신청을 수정할 권한이 없습니다.", id));
+			}
+		}
+
+		applymentService.changeApplymentResult(id,result);
+
+		if(result == 1) {
+			return new ResultData("S-1", String.format("%d번 지원자를 합격시키셨습니다.", id));
+		}
+		
+		return new ResultData("S-1", String.format("%d번 지원자를 탈락시키셧습니다.", id));
 	}
 
 	@RequestMapping("/usr/applyment/doModifyApplymentAjax")

@@ -12,7 +12,11 @@ import com.quantom.audition.dto.Applyment;
 public interface ApplymentDao {
 	List<Applyment> getForPrintApplyments(Map<String, Object> param);
 
+	List<Applyment> getForPrintApplymentsByResult(Map<String, Object> param);
+
 	Applyment getForPrintApplyment(Map<String, Object> param);
+
+	Applyment getForPrintApplymentRelatedToResult(Map<String, Object> param);
 
 	void writeApplyment(Map<String, Object> param);
 
@@ -28,4 +32,7 @@ public interface ApplymentDao {
 
 	void changeHideStatus(@Param("id") int id, @Param("hideStatus") boolean hideStatus);
 
+	void changeApplymentResult(@Param("id") int id, @Param("result") int result);
+
+	List<Applyment> getApplymenResultInfoByMemberId(int memberId);
 }

@@ -79,6 +79,35 @@ public class ApplymentService {
 
 		return applyments;
 	}
+	
+
+	public List<Applyment> getForPrintApplymentsByResult(Map<String, Object> param) {
+		List<Applyment> applyments = applymentDao.getForPrintApplymentsByResult(param);
+
+		List<Integer> applymentIds = applyments.stream().map(applyment -> applyment.getId())
+				.collect(Collectors.toList());
+		if (applymentIds.size() > 0) {
+			Map<Integer, Map<Integer, File>> filesMap = fileService.getFilesMapKeyRelIdAndFileNo("applyment",
+					applymentIds, "common", "attachment");
+
+			for (Applyment applyment : applyments) {
+				Map<Integer, File> filesMap2 = filesMap.get(applyment.getId());
+
+				if (filesMap2 != null) {
+					applyment.getExtra().put("file__common__attachment", filesMap2);
+				}
+			}
+		}
+
+		Member actor = (Member) param.get("actor");
+
+		for (Applyment applyment : applyments) {
+			// 출력용 부가데이터를 추가한다.
+			updateForPrintInfo(actor, applyment);
+		}
+
+		return applyments;
+	}
 
 	private void updateForPrintInfo(Member actor, Applyment applyment) {
 		applyment.getExtra().put("actorCanDelete", actorCanDelete(actor, applyment));
@@ -214,5 +243,39 @@ public class ApplymentService {
 
 		return new ResultData("S-1", "변경되었습니다.");
 	}
+
+	public void changeApplymentResult(int id, int result) {
+		// id(applyment.id), 2(불합격)
+		applymentDao.changeApplymentResult(id, result);
+		fileService.deleteFiles("applyment", id);
+	}
+
+	public Applyment getForPrintApplymentRelatedToResult(Map<String, Object> param) {
+		Applyment applyment = applymentDao.getForPrintApplymentRelatedToResult(param);
+		int applymentId = applyment.getId();
+
+		if (applymentId > 0) {
+			Map<Integer, Map<Integer, File>> filesMap = fileService.getFileMapKeyRelIdAndFileNo("applyment",
+					applymentId, "common", "attachment");
+
+			Map<Integer, File> filesMap2 = filesMap.get(applyment.getId());
+
+			if (filesMap2 != null) {
+				applyment.getExtra().put("file__common__attachment", filesMap2);
+			}
+		}
+
+		Member actor = (Member) param.get("actor");
+
+		// 출력용 부가데이터를 추가한다.
+		updateForPrintInfo(actor, applyment);
+
+		return applyment;
+	}
+
+	public List<Applyment> getApplymenResultInfoByMemberId(int MemberId) {
+		return applymentDao.getApplymenResultInfoByMemberId(MemberId);
+	}
+
 
 }

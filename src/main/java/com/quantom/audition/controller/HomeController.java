@@ -1,21 +1,20 @@
 package com.quantom.audition.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.quantom.audition.config.AppConfig;
+import com.quantom.audition.dto.Applyment;
 import com.quantom.audition.dto.Job;
 import com.quantom.audition.dto.Member;
 import com.quantom.audition.dto.Recruitment;
+import com.quantom.audition.service.ApplymentService;
 import com.quantom.audition.service.RecruitmentService;
 
 @Controller
@@ -25,6 +24,9 @@ public class HomeController {
 	
 	@Autowired
 	AppConfig appConfig;
+	
+	@Autowired
+	ApplymentService applymentService;
 	
 	@RequestMapping("/usr/home/main")
 	public String showMain() {
@@ -37,7 +39,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/adm/home/showMyPage")
-	public String showMyPage(Model model, HttpServletRequest req) {
+	public String showMyPageAdmin(Model model, HttpServletRequest req) {
 		Job job = recruitmentService.getJobByCode("actor");
 		model.addAttribute("job", job);
 
@@ -50,5 +52,17 @@ public class HomeController {
 
 
 		return "adm/home/showMyPage";
+	}
+	
+	@RequestMapping("/usr/home/showMyPage")
+	public String showMyPage(Model model, HttpServletRequest req) {
+		Job job = recruitmentService.getJobByCode("actor");
+		
+		Member loginedMember = (Member) req.getAttribute("loginedMember");
+		
+		List<Applyment> applymentResults = applymentService.getApplymenResultInfoByMemberId(loginedMember.getId());
+		model.addAttribute("applymentResults",applymentResults);
+		
+		return "usr/home/showMyPage";
 	}
 }

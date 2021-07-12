@@ -3,7 +3,6 @@ DROP DATABASE IF EXISTS `audition`;
 CREATE DATABASE `audition`;
 USE `audition`;
 
-
 # article 테이블 세팅
 CREATE TABLE article (
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -130,6 +129,286 @@ WHERE memberId = 0;
 # 파일 테이블에 유니크 인덱스 추가
 ALTER TABLE `file` ADD UNIQUE INDEX (`relId`, `relTypeCode`, `typeCode`, `type2Code`, `fileNo`); 
 
-/* max_allowed_packet를 50M로 만들어주기 */
-SET GLOBAL max_allowed_packet = 1024 * 1024 * 50;
-SET SESSION max_allowed_packet = 1024 * 1024 * 50;
+# 파일 테이블의 기존 인덱스에 유니크가 걸려 있어서 relId가 0 인 동안 충돌이 발생할 수 있다. 그래서 일반 인덱스로 바꾼다.
+ALTER TABLE `file` DROP INDEX `relId`, ADD INDEX (`relId` , `relTypeCode` , `typeCode` , `type2Code` , `fileNo`); 
+
+# 게시물 테이블에 게시판 정보 추가
+ALTER TABLE `article` ADD COLUMN `boardId` INT(10) UNSIGNED NOT NULL AFTER `delStatus`; 
+
+UPDATE article
+SET boardId = 1
+WHERE boardId = 0;
+
+# 게시판 테이블 추가
+CREATE TABLE `board` (
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME,
+    updateDate DATETIME,
+    delDate DATETIME,
+	delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+    `code` CHAR(20) NOT NULL UNIQUE,
+	`name` CHAR(20) NOT NULL UNIQUE
+);
+
+INSERT INTO `board`
+SET regDate = NOW(),
+updateDAte = NOW(),
+`code` = 'free',
+`name` = '자유';
+
+# 직업 테이블 추가
+CREATE TABLE `job` (
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME,
+    updateDate DATETIME,
+    delDate DATETIME,
+	delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+    `code` CHAR(20) NOT NULL UNIQUE,
+	`name` CHAR(20) NOT NULL UNIQUE
+);
+
+INSERT INTO `job`
+SET regDate = NOW(),
+updateDAte = NOW(),
+`code` = 'actor',
+`name` = '배우';
+
+# recruitment 테이블 세팅
+CREATE TABLE recruitment (
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME,
+    updateDate DATETIME,
+    memberId INT(10) UNSIGNED NOT NULL,
+    jobId INT(10) UNSIGNED NOT NULL,
+    delDate DATETIME,
+	delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	displayStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+    `title` CHAR(100) NOT NULL,
+    `body` TEXT NOT NULL,
+    addi TEXT
+);
+
+# applyment 테이블 세팅
+CREATE TABLE applyment (
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME,
+    updateDate DATETIME,
+    memberId INT(10) UNSIGNED NOT NULL,
+    relTypeCode CHAR(20) NOT NULL,
+    relId INT(10) UNSIGNED NOT NULL,
+    delDate DATETIME,
+	delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	displayStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+    `body` TEXT NOT NULL
+);
+
+# 부가정보테이블 
+# 댓글 테이블 추가
+CREATE TABLE attr (
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    `relTypeCode` CHAR(20) NOT NULL,
+    `relId` INT(10) UNSIGNED NOT NULL,
+    `typeCode` CHAR(30) NOT NULL,
+    `type2Code` CHAR(30) NOT NULL,
+    `value` TEXT NOT NULL
+);
+
+# attr 유니크 인덱스 걸기
+## 중복변수 생성금지
+## 변수찾는 속도 최적화
+ALTER TABLE `attr` ADD UNIQUE INDEX (`relTypeCode`, `relId`, `typeCode`, `type2Code`); 
+
+## 특정 조건을 만족하는 회원 또는 게시물(기타 데이터)를 빠르게 찾기 위해서
+ALTER TABLE `attr` ADD INDEX (`relTypeCode`, `typeCode`, `type2Code`);
+
+# member 테이블에 테스트 데이터 삽입
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+loginId = 'user1',
+loginPw = SHA2('user1', 256),
+`name` = '캐스팅디렉터',
+`nickname` = '캐스팅디렉터',
+`email` = '',
+`cellphoneNo` = '';
+
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+loginId = 'user2',
+loginPw = SHA2('user2', 256),
+`name` = '김성훈',
+`nickname` = '하정우',
+`email` = '',
+`cellphoneNo` = '';
+
+# 신청테이블에 숨김여부 칼럼을 추가한다.
+ALTER TABLE `applyment` ADD COLUMN `hideStatus` TINYINT(1) UNSIGNED DEFAULT 0 NOT NULL AFTER `delStatus`; 
+
+# 작품 테이블 만들기
+CREATE TABLE artwork (
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    `name` CHAR(50) NOT NULL,
+    `productionName` CHAR(50) NOT NULL,
+    `directorName` CHAR(50) NOT NULL,
+    etc TEXT
+);
+
+INSERT INTO artwork
+SET regDate = NOW(),
+updateDate = NOW(),
+`name` = '균',
+`directorName` = '조용선',
+productionName = '마스터원엔터테인먼트';
+
+# 배역 테이블 만들기
+CREATE TABLE actingRole (
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    artworkId INT(10) UNSIGNED NOT NULL,
+    realName CHAR(50) NOT NULL,
+    `name` CHAR(50) NOT NULL,
+    pay CHAR(50) NOT NULL,
+    age CHAR(50) NOT NULL,
+    job CHAR(100) NOT NULL,
+    scriptStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+    gender CHAR(5) NOT NULL,
+    scenesCount TINYINT(2) UNSIGNED NOT NULL DEFAULT 0,
+    shootingsCount TINYINT(2) UNSIGNED NOT NULL DEFAULT 0,
+    `character` TEXT,
+    etc TEXT
+);
+
+INSERT INTO actingRole
+SET regDate = NOW(),
+updateDate = NOW(),
+artworkId = 1,
+realName = '',
+`name` = '조대표',
+`job` = '오투 CEO',
+pay = '',
+age = '',
+scriptStatus = 1,
+gender = '',
+scenesCount = '14',
+shootingsCount = '8',
+`character` = '오투 한국지사 CEO. 영국국적을 가지고 있고 가습기 살균제 사건을 막기 위해 우식을 TFI 부서 로 복직시킨다. 자신의 이익만을 생각한다.',
+etc = '';
+
+ALTER TABLE `recruitment` ADD COLUMN `completeStatus` TINYINT(1) UNSIGNED DEFAULT 0 NOT NULL AFTER `addi`, ADD COLUMN `completeDate` DATETIME AFTER `completeStatus`;
+
+ALTER TABLE `recruitment` ADD COLUMN `roleTypeCode` CHAR(50) NOT NULL AFTER `completeDate`, ADD COLUMN `roleId` INT(10) UNSIGNED NOT NULL AFTER `roleTypeCode`; 
+
+DELETE FROM actingRole
+WHERE id = 1;
+
+ALTER TABLE `actingRole` ADD COLUMN `auditionStatus` TINYINT(1) UNSIGNED DEFAULT 0 NOT NULL AFTER `scriptStatus`;
+
+ALTER TABLE `actingRole` CHANGE `scenesCount` `scenesCount` CHAR(10) NOT NULL;
+ALTER TABLE `actingRole` CHANGE `shootingsCount` `shootingsCount` CHAR(10) NOT NULL; 
+
+ALTER TABLE `actingRole` CHANGE `realName` `realName` CHAR(50) DEFAULT '' NOT NULL;
+ALTER TABLE `actingRole` CHANGE `pay` `pay` CHAR(50) DEFAULT '' NOT NULL;
+ALTER TABLE `actingRole` CHANGE `age` `age` CHAR(50) DEFAULT '' NOT NULL;
+ALTER TABLE `actingRole` CHANGE `job` `job` CHAR(100) DEFAULT '' NOT NULL;
+ALTER TABLE `actingRole` CHANGE `gender` `gender` CHAR(5) DEFAULT '' NOT NULL;
+ALTER TABLE `actingRole` CHANGE `scenesCount` `scenesCount` CHAR(10) DEFAULT '' NOT NULL;
+ALTER TABLE `actingRole` CHANGE `shootingsCount` `shootingsCount` CHAR(10) DEFAULT '' NOT NULL;
+
+# attr에 만료날짜 추가
+ALTER TABLE `attr` ADD COLUMN `expireDate` DATETIME NULL AFTER `value`;
+
+# file에 fileDir 추가
+ALTER TABLE `file` ADD COLUMN `fileDir` CHAR(20) NOT NULL AFTER `body`; 
+
+# applyment에 오디션결과를 보여주는 result컬럼 추가 (오디션결과 (0)답변없음,(1)합격 (2)불합격)
+ALTER TABLE `applyment` ADD COLUMN `result` TINYINT NOT NULL DEFAULT 0 AFTER `relId`;
+
+# member에 나이를 age칼럼 추가
+ALTER TABLE `member` ADD COLUMN `age` TINYINT UNSIGNED NOT NULL AFTER `name`;
+ALTER TABLE `member` ADD COLUMN `gender` CHAR(6) NOT NULL AFTER `age`;
+
+UPDATE `member`
+SET age = 25
+WHERE age = 0;
+
+UPDATE `member`
+SET gender = '남자'
+WHERE gender = '';
+
+# actingRole 테스트 데이터를 추가
+INSERT INTO actingRole
+SET regDate = NOW(),
+updateDate = NOW(),
+artworkId = 1,
+realName = '홍길동',
+`name` = '홍길순',
+pay = 300,
+age = 29,
+job = '사기꾼',
+scriptStatus = 1,
+auditionStatus = 1,
+gender = '남자',
+scenesCount = 16,
+shootingsCount = 20,
+`character` = '이러쿵저러쿵',
+etc = '';
+
+# actingRole 테스트 데이터를 추가
+INSERT INTO actingRole
+SET regDate = NOW(),
+updateDate = NOW(),
+artworkId = 1,
+realName = '방수영',
+`name` = '방세진',
+pay = 200,
+age = 27,
+job = '협잡꾼',
+scriptStatus = 1,
+auditionStatus = 1,
+gender = '남자',
+scenesCount = 16,
+shootingsCount = 20,
+`character` = '어쩌구저쩌구',
+etc = '';
+
+# recruitment 테스트 데이터를 추가
+INSERT INTO recruitment
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 1,
+jobId = 1,
+displayStatus = 1,
+title = '',
+`body` = '',
+roleTypeCode = 'actingRole',
+roleId = 2;
+
+INSERT INTO recruitment
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 1,
+jobId = 1,
+displayStatus = 1,
+title = '',
+`body` = '',
+roleTypeCode = 'actingRole',
+roleId = 3;
+
+
+/*
+select * from `file`;
+SELECT * FROM `job`;
+SELECT * FROM `actingRole`;
+SELECT * FROM `recruitment`;
+SELECT * FROM `applyment`;
+SELECT * FROM `artwork`;
+select * from `member`;
+select * from `attr`;
+select * from  reply;
+*/
