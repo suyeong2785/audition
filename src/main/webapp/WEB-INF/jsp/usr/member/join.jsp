@@ -185,6 +185,17 @@
                 </td>
             </tr>
             <tr>
+                <th>직업</th>
+                <td>
+                    <div class="form-control-box">
+                        <select name="authority" maxlength="20">
+                        	<option value="1">캐스팅디렉터</option>
+                        	<option value="2">배우</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
                 <th>이메일</th>
                 <td>
                     <div class="form-control-box">

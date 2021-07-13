@@ -400,6 +400,30 @@ title = '',
 roleTypeCode = 'actingRole',
 roleId = 3;
 
+# 캐스팅 디렉터들간의 공유기능을 테스트하기위한 데이터를 추가
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+loginId = 'user3',
+loginPw = SHA2('user3', 256),
+`name` = '캐스팅디렉터2',
+`nickname` = '캐스팅디렉터2',
+age = 25,
+gender = '남자',
+`email` = '',
+`cellphoneNo` = '';
+
+# 권한에 따른 페이지를 페이지를 보여주기위한 member 테이블에 권한 칼럼 추가 (0):관리자 (1):캐스팅디렉터 (2):유저(배우지망생)
+ALTER TABLE `member` ADD COLUMN authority TINYINT UNSIGNED NOT NULL AFTER authStatus
+
+UPDATE `member`
+SET authority = 1
+WHERE `name` LIKE '캐스팅디렉터%';
+
+UPDATE `member`
+SET authority = 2
+WHERE `name` NOT LIKE '캐스팅디렉터%'
+AND `name` NOT LIKE 'admin';
 
 /*
 select * from `file`;

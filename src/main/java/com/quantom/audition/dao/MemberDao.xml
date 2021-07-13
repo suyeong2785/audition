@@ -38,6 +38,7 @@
 		SET regDate = NOW(),
 		updateDate = NOW(),
 		authStatus = 0,
+		authority = #{authority},
 		loginId = #{loginId},
 		loginPw = #{loginPw},
 		`name` = #{name},

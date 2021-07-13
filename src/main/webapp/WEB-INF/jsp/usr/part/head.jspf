@@ -113,6 +113,11 @@ var param = ${paramJson};
 							<a href="/adm/actingRole/list" class="flex flex-jc-c">관리자</a>
 						</li>
 					</c:if>
+					<c:if test="${isCastingDirector}">
+						<li>
+							<a href="/adm/actingRole/list" class="flex flex-jc-c">캐스팅</a>
+						</li>
+					</c:if>
 					<li>
 						<a href="/usr/recruitment/actor-list" class="flex flex-jc-c">배우모집</a>
 					</li>
@@ -156,7 +161,12 @@ var param = ${paramJson};
 				<ul class="flex">
 					<c:if test="${isAdmin}">
 						<li class="padding-0-10">
-							<a class="btn btn-danger" href="/adm/actingRole/list">관리자</a>
+							<a class="btn btn-danger" href="/adm/home/showMyPage">관리자</a>
+						</li>
+					</c:if>
+					<c:if test="${isCastingDirector}">
+						<li class="padding-0-10">
+							<a class="btn btn-warning" href="/adm/home/showMyPage">캐스팅</a>
 						</li>
 					</c:if>
 					<li class="padding-0-10">

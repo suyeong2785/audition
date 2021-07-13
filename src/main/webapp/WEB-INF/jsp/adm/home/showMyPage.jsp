@@ -4,25 +4,6 @@
 <c:set var="pageTitle" value="오디션 신청관리페이지" />
 <%@ include file="../part/head.jspf"%>
 
-
-<div class="list-box con">
-	<div class="flex border-2 border-black box-border p-4">
-		<div class=" flex-1">번호</div>
-		<div class="flex-4">모집기간</div>
-		<div class=" flex-4">배역</div>
-	</div>
-	<c:forEach items="${recruitments}" var="recruitment">
-		<div class="toggle">
-			<div class="flex border-2 border-black box-border p-4">
-				<div class=" flex-1">${recruitment.id}</div>
-				<div class="flex-4">${recruitment.regDate}</div>
-				<div class=" flex-4" onclick="showApplicantList(${recruitment.id})">${recruitment.forPrintTitle}</div>
-			</div>
-			<div class="${recruitment.id} border-2 "></div>
-		</div>
-	</c:forEach>
-</div>
-
 <style>
 .applicant-decision-form-modal-actived,
 	applicant-decision-form-modal-actived>body {
@@ -46,6 +27,27 @@
 }
 </style>
 
+
+
+<div class="list-box con">
+	<div class="flex border-2 border-black box-border p-4">
+		<div class=" flex-1">번호</div>
+		<div class="flex-4">모집기간</div>
+		<div class=" flex-4">배역</div>
+	</div>
+	<c:if test="${recruitment.memberId == loginedMemberId || isAdmin == true}">
+		<c:forEach items="${recruitments}" var="recruitment">
+			<div class="toggle">
+				<div class="flex border-2 border-black box-border p-4">
+					<div class=" flex-1">${recruitment.id}</div>
+					<div class="flex-4">${recruitment.regDate}</div>
+					<div class=" flex-4" onclick="showApplicantList(${recruitment.id})">${recruitment.forPrintTitle}</div>
+				</div>
+				<div class="${recruitment.id} border-2 "></div>
+			</div>
+		</c:forEach>
+	</c:if>
+</div>
 <div class="popup-1 applicant-decision-form-modal">
 	<div class="content">
 		<div id="media-content" class="flex justify-center"></div>
@@ -67,6 +69,7 @@
 	</div>
 
 </div>
+
 <script>
 
 var ApplymentList__lastLodedId = 0;

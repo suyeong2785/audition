@@ -88,6 +88,7 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 		// 로그인 여부에 관련된 정보를 request에 담는다.
 		boolean isLogined = false;
 		boolean isAdmin = false;
+		boolean isCastingDirector = false;
 		int loginedMemberId = 0;
 		Member loginedMember = null;
 		
@@ -97,11 +98,13 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 			loginedMember = memberService.getMemberById(loginedMemberId);
 			
 			isAdmin = loginedMember.isAdmin();
+			isCastingDirector= loginedMember.isCastingDirector();
 		}
 
 		request.setAttribute("loginedMemberId", loginedMemberId);
 		request.setAttribute("isLogined", isLogined);
 		request.setAttribute("isAdmin", isAdmin);
+		request.setAttribute("isCastingDirector", isCastingDirector);
 		request.setAttribute("loginedMember", loginedMember);
 
 		request.setAttribute("activeProfile", activeProfile);

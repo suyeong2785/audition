@@ -16,6 +16,7 @@ public class Member {
 	private boolean delStatus;
 	private String delDate;
 	private boolean authStatus;
+	private int authority;
 	private String loginId;
 
 	@JsonIgnore
@@ -26,7 +27,15 @@ public class Member {
 	private String cellphoneNo;
 
 	public boolean isAdmin() {
-		if (loginId.equals("admin") || loginId.equals("user1")) {
+		if ( authority == 0 ) {
+			return true;
+		}
+
+		return false;
+	}
+	
+	public boolean isCastingDirector() {
+		if (authority == 1 ) {
 			return true;
 		}
 
