@@ -56,10 +56,10 @@
 				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">보류</button>
 			<button id="delete-applicant"
 				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-				onclick="ChangeApplymentResult(2)">1차 불합격</button>
+				onclick="ChangeApplymentResult(2)">불합격</button>
 			<button id="delete-applicant"
 				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-				onclick="ChangeApplymentResult(1)">1차 합격</button>
+				onclick="ChangeApplymentResult(1)">합격</button>
 			<button
 				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
 				onclick="hideApplicantDecisonModal()">닫기</button>
@@ -202,7 +202,30 @@ var ApplymentList__applymentsCount = 0;
 	                file = applyment.extra.file__common__attachment[fileNo];
 	            }
 
-	            html += '<div class="video-box" data-video-name="applyment__' + applyment.id + '__common__attachment__' + fileNo + '" data-file-no="' + fileNo + '">';
+	            html += '<div class="video-box hidden md:block" data-video-name="applyment__' + applyment.id + '__common__attachment__' + fileNo + '" data-file-no="' + fileNo + '">';
+
+	            if (file && file.fileExtTypeCode == 'video') {
+	                html += '<video preload="auto" controls src="' + file.forPrintGenUrl + '"></video>';
+	            }
+
+	            html += '</div>';
+
+	            html += '<div class="img-box img-box-auto" data-img-name="applyment__' + applyment.id + '__common__attachment__' + fileNo + '" data-file-no="' + fileNo + '">';
+
+	            if (file && file.fileExtTypeCode == 'img') {
+	                html += '<img src="' + file.forPrintGenUrl + '">';
+	            }
+
+	            html += '</div>';
+	        }
+			
+			for (var fileNo = 1; fileNo <= 3; fileNo++) {
+	            var file = null;
+	            if (applyment.extra.file__common__attachment && applyment.extra.file__common__attachment[fileNo]) {
+	                file = applyment.extra.file__common__attachment[fileNo];
+	            }
+
+	            html += '<div class=" visible-on-sm-down" data-video-name="applyment__' + applyment.id + '__common__attachment__' + fileNo + '" data-file-no="' + fileNo + '">';
 
 	            if (file && file.fileExtTypeCode == 'video') {
 	                html += '<video preload="auto" controls src="' + file.forPrintGenUrl + '"></video>';
