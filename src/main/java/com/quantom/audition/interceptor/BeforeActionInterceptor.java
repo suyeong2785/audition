@@ -91,9 +91,11 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 		boolean isCastingDirector = false;
 		int loginedMemberId = 0;
 		Member loginedMember = null;
+		String loginedDate = null;
 		
 		if (session.getAttribute("loginedMemberId") != null) {
 			loginedMemberId = (int) session.getAttribute("loginedMemberId");
+			loginedDate = (String) session.getAttribute("loginedDate");
 			isLogined = true;
 			loginedMember = memberService.getMemberById(loginedMemberId);
 			
@@ -102,6 +104,7 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 		}
 
 		request.setAttribute("loginedMemberId", loginedMemberId);
+		request.setAttribute("loginedDate", loginedDate);
 		request.setAttribute("isLogined", isLogined);
 		request.setAttribute("isAdmin", isAdmin);
 		request.setAttribute("isCastingDirector", isCastingDirector);

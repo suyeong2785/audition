@@ -310,25 +310,42 @@
 	$('#ApplymentFile').on("change", function() {
 		const video = document.createElement ( "VIDEO" );
 		const files = $("#ApplymentFile")[0].files;
+		const file = $("#ApplymentFile")[0].files[0];
 		
 		if(files.length != 0){
-			const videourl = URL.createObjectURL(files[0]);
+			const videourl = URL.createObjectURL(file);
 			video.setAttribute("src", videourl);
-
+			
 			setTimeout(function(){
 				var duration =  Math.floor(video.duration);
-				var oneMinute = Math.floor(video.duration/60);
+				var oneMinute = Math.floor(video.duration > 60 ? video.duration/60 : 0);
+				var loginedDate = "<c:out value='${loginedDate}' />";
 			
 				$("#totalTime").html("총 재생시간 : "
 						+ (oneMinute > 0 ? oneMinute + "분 " : "") + 
-				(Math.floor(video.duration) - oneMinute * 60) + "초" );
+				(duration - oneMinute * 60) + "초" +  "</br>duration : " +  "</br>파일 수정날짜 : " + formatDate(file.lastModified) + "</br>로그인 날짜 : " + loginedDate);
 				
 				// 동영상 재생시간이 1분 30초 이상이 넘어간다면 초기화 후,알림창띄움
 				if(duration > 90){
 					$('#ApplymentFile').val("");
 					$("#totalTime").html("");
 					alert('동영상이 1분 30초를 넘겨서는 안됩니다!');
+					URL.revokeObjectURL(file);
+					return;
 				}
+				
+				var dateOfVideo = new Date(file.lastModified);
+				var dateOfLogin = new Date(loginedDate);
+				
+				if(dateOfVideo.getTime() <= dateOfLogin.getTime()){
+					$('#ApplymentFile').val("");
+					$("#totalTime").html("");
+					alert('로그인 이후의 동영상만 사용가능합니다!!');
+					URL.revokeObjectURL(file);
+					return;
+				}
+				
+				URL.revokeObjectURL(file);
 			},100);
 			
 			

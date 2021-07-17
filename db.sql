@@ -91,7 +91,7 @@ RENAME TABLE `articleReply` TO `reply`;
 
 ALTER TABLE `reply` ADD COLUMN `relTypeCode` CHAR(50) NOT NULL AFTER `memberId`,
 CHANGE `articleId` `relId` INT(10) UNSIGNED NOT NULL;
-ALTER TABLE `at`.`reply` ADD INDEX (`relId`, `relTypeCode`);
+ALTER TABLE `reply` ADD INDEX (`relId`, `relTypeCode`);
 UPDATE reply
 SET relTypeCode = 'article'
 WHERE relTypeCode = '';
@@ -329,7 +329,7 @@ ALTER TABLE `file` ADD COLUMN `fileDir` CHAR(20) NOT NULL AFTER `body`;
 # applyment에 오디션결과를 보여주는 result컬럼 추가 (오디션결과 (0)답변없음,(1)합격 (2)불합격)
 ALTER TABLE `applyment` ADD COLUMN `result` TINYINT NOT NULL DEFAULT 0 AFTER `relId`;
 
-# member에 나이를 age칼럼 추가
+# member에 나이를 age,gender칼럼 추가
 ALTER TABLE `member` ADD COLUMN `age` TINYINT UNSIGNED NOT NULL AFTER `name`;
 ALTER TABLE `member` ADD COLUMN `gender` CHAR(6) NOT NULL AFTER `age`;
 
@@ -414,7 +414,7 @@ gender = '남자',
 `cellphoneNo` = '';
 
 # 권한에 따른 페이지를 페이지를 보여주기위한 member 테이블에 권한 칼럼 추가 (0):관리자 (1):캐스팅디렉터 (2):유저(배우지망생)
-ALTER TABLE `member` ADD COLUMN authority TINYINT UNSIGNED NOT NULL AFTER authStatus
+ALTER TABLE `member` ADD COLUMN authority TINYINT UNSIGNED NOT NULL AFTER authStatus;
 
 UPDATE `member`
 SET authority = 1
@@ -424,6 +424,10 @@ UPDATE `member`
 SET authority = 2
 WHERE `name` NOT LIKE '캐스팅디렉터%'
 AND `name` NOT LIKE 'admin';
+
+# 지원자를 추천하거나 
+ALTER TABLE `member` ADD COLUMN recommendation INT UNSIGNED NOT NULL DEFAULT 0 AFTER cellphoneNo;
+ALTER TABLE `member` ADD COLUMN hold INT UNSIGNED NOT NULL DEFAULT 0 AFTER cellphoneNo;
 
 /*
 select * from `file`;

@@ -52,3 +52,10 @@ function iOS() {
 	// iPad on iOS 13 detection
 	|| (navigator.userAgent.includes("Mac") && "ontouchend" in document)
 }
+
+
+function formatDate(datetime) {
+    let date = new Date(datetime);
+    let formatted_date = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    return formatted_date;
+}

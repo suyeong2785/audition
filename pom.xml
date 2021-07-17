@@ -85,6 +85,14 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- 동영상 편집을위해 ffmpeg library추가 -->
+		<!-- https://mvnrepository.com/artifact/net.bramp.ffmpeg/ffmpeg -->
+		<dependency>
+			<groupId>net.bramp.ffmpeg</groupId>
+			<artifactId>ffmpeg</artifactId>
+			<version>0.6.2</version>
+		</dependency>
+
 		<!-- 메일 보내기 위한 -->
 		<dependency>
 			<groupId>org.springframework</groupId>

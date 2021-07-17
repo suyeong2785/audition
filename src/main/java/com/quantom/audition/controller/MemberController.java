@@ -107,7 +107,7 @@ public class MemberController {
 	}
 
 	@RequestMapping("/usr/member/doCheckPassword")
-	public String doLogin(String loginPwReal, String redirectUri, Model model, HttpServletRequest req) {
+	public String doCheckPassword(String loginPwReal, String redirectUri, Model model, HttpServletRequest req) {
 		String loginPw = loginPwReal;
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
 
@@ -131,7 +131,8 @@ public class MemberController {
 	}
 
 	@RequestMapping("/usr/member/doLogin")
-	public String doLogin(String loginId, String loginPwReal, String redirectUri, Model model, HttpSession session) {
+	public String doLogin(String loginId, String loginPwReal, String redirectUri, Model model, HttpSession session) { 
+		
 		String loginPw = loginPwReal;
 		Member member = memberService.getMemberByLoginId(loginId);
 
@@ -148,6 +149,7 @@ public class MemberController {
 		}
 
 		session.setAttribute("loginedMemberId", member.getId());
+		session.setAttribute("loginedDate", (String)Util.getNowDateStr());
 
 		if (redirectUri == null || redirectUri.length() == 0) {
 			redirectUri = "/usr/home/main";

@@ -35,33 +35,29 @@
 		<div class="flex-4">모집기간</div>
 		<div class=" flex-4">배역</div>
 	</div>
-	<c:if test="${recruitment.memberId == loginedMemberId || isAdmin == true}">
-		<c:forEach items="${recruitments}" var="recruitment">
+
+	<c:forEach items="${recruitments}" var="recruitment">
+		<c:if
+			test="${recruitment.memberId == loginedMemberId || isAdmin == true}">
 			<div class="toggle">
 				<div class="flex border-2 border-black box-border p-4">
 					<div class=" flex-1">${recruitment.id}</div>
 					<div class="flex-4">${recruitment.regDate}</div>
-					<div class=" flex-4" onclick="showApplicantList(${recruitment.id})">${recruitment.forPrintTitle}</div>
+					<div class=" flex-4"
+						onclick="showApplicantList( ${recruitment.id} , ${recruitment.memberId} )">${recruitment.forPrintTitle}</div>
 				</div>
 				<div class="${recruitment.id} border-2 "></div>
 			</div>
-		</c:forEach>
-	</c:if>
+		</c:if>
+	</c:forEach>
 </div>
 <div class="popup-1 applicant-decision-form-modal">
 	<div class="content">
 		<div id="media-content" class="flex justify-center"></div>
-		<div class="button-box flex justify-center">
+		<div id="button-box" class="button-box flex justify-center">
 			<button
 				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">추천</button>
-			<button
-				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">보류</button>
-			<button id="delete-applicant"
-				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-				onclick="ChangeApplymentResult(2)">불합격</button>
-			<button id="delete-applicant"
-				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-				onclick="ChangeApplymentResult(1)">합격</button>
+			<span id="decision-button-box"> </span>
 			<button
 				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
 				onclick="hideApplicantDecisonModal()">닫기</button>
@@ -75,7 +71,7 @@
 var ApplymentList__lastLodedId = 0;
 var ApplymentList__applymentsCount = 0;
 
-	var showApplicantList = function(recruitment_id) {
+	var showApplicantList = function(recruitment_id , recruitment_memberId) {
 		
 		//displayStatus를 확인하고 displayStatus을 누를때마다 바꿔주면서
 		//display:none,block를 결정해준다.
@@ -89,7 +85,6 @@ var ApplymentList__applymentsCount = 0;
 			$('.' + recruitment_id).css({"display":"block"});
 			$('.' + recruitment_id).data("displayStatus",1);
 		}
-		
 		
 		//ajax를 통해 recruitment.id에 해당하는 모든 applyments 객체를 가져와서
 		//ApplymentList__loadMoreCallback에 전달한다.
@@ -139,7 +134,7 @@ var ApplymentList__applymentsCount = 0;
 			
 			var html = '';
 			
-			html += '<div onclick="showApplicantDecisonModal(' + applyment.id + ','+ recruitment_id +');" class="flex justify-center text-center border-2 border-black box-border p-4">';
+			html += '<div onclick="showApplicantDecisonModal(' + applyment.id + ','+ recruitment_id + ','+ recruitment_memberId +');" class="flex justify-center text-center border-2 border-black box-border p-4">';
 			html += '<div class="flex-1">' + applyment.id + '</div>';
 			html += '<div class="flex-1">' + applyment.extra.writerRealName + '</div>';
 			html += '<div class="flex-1">' + applyment.extra.writerGender + '</div>';
@@ -158,16 +153,35 @@ var ApplymentList__applymentsCount = 0;
 	var Applyment__lastLodedId = 0;	
 	
 	function hideApplicantDecisonModal() {
+        //showApplicantDecisonModal의 동영상 제거한다.
         $('#media-content').empty();
+        
+        //showApplicantDecisonModal의 합격/불합격 버튼을 제거한다.
+       $("#decision-button-box").empty();
 		
         $('html').removeClass('applicant-decision-form-modal-actived');
     }
 	
-  	function showApplicantDecisonModal(applyment_id,recruitment_id) { 		
+  	function showApplicantDecisonModal(applyment_id, recruitment_id, recruitment_memberId) { 		
   		
-	  var Applicant__$div = $("#media-content");
+  	  //video태그를 보여줄 id=media-content 엘리먼트를 가져온다.
+	  var $media_content = $("#media-content");
 	  
-	  var html = '';
+	  //버튼 태그를 보여줄 id=button-box 엘리먼트를 가져온다.
+	  var $decision_button_box = $("#decision-button-box");
+	  
+	  //로그인한 사용자의 번호를 가져온다.
+	  var loginedMemberId = '<c:out value="${loginedMemberId}"/>';
+	  
+	  //admin인지 확인용.
+	  var isAdmin = '<c:out value="${isAdmin}"/>';
+	  
+	  var Media_html = '';
+	  
+	  var button_html = '';
+	  
+	  button_html += "<button class='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow' onclick='ChangeApplymentResult(2)'>불합격</button>";
+	  button_html += "<button class='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow' onclick='ChangeApplymentResult(1)'>합격</button>";
 	  
 	  var undecidedApplicant = 0;
 	  
@@ -178,11 +192,19 @@ var ApplymentList__applymentsCount = 0;
 		 
 		}, function (data) {
 			
-			html += ApplymentList__getMediaHtml(data);
+			Media_html += ApplymentList__getMediaHtml(data);
 			
-			var $div = $(html);
+			var $Media_html = $(Media_html);
 			
-			Applicant__$div.prepend($div);
+			//video태그를 id=media-content인 태그에 넣어준다.
+			$media_content.prepend($Media_html);
+
+			//합격불,합격 버튼 태그를 사용자의 아이디에따라 보여준다.
+			if(loginedMemberId == recruitment_memberId ){
+				var $button_html = $(button_html);
+				
+				$decision_button_box.prepend($button_html);
+			}			
 			
 			//applicantDecisionModal창을 열때마다 
 			// ApplymentList__getMediaHtml를 감싸고있는 #media-content에
@@ -193,7 +215,6 @@ var ApplymentList__applymentsCount = 0;
 	
 	  $('html').addClass('applicant-decision-form-modal-actived');
  	}
-	  
 	
 	function ApplymentList__getMediaHtml(data) {
 			var applyment = data.body.applyment;	
@@ -261,10 +282,7 @@ var ApplymentList__applymentsCount = 0;
 			if (confirm('불합격 시키겠습니까?') == false) {
 	            return;
 	        }
-
 		}
-		
-		
 		
 		$.post('../../usr/applyment/doChangeApplymentResultAjax',{
 			id : id,
