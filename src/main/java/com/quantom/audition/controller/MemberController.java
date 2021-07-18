@@ -1,5 +1,6 @@
 package com.quantom.audition.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.quantom.audition.dto.Member;
 import com.quantom.audition.dto.ResultData;
@@ -215,4 +217,14 @@ public class MemberController {
 
 		return "common/redirect";
 	}
+	
+	@RequestMapping("/usr/member/getCastingDirectorListAjax")
+	@ResponseBody
+	public ResultData getCastingDirectorListAjax(@RequestParam Map<String, Object> param) {
+		
+		ResultData membersRd = memberService.getCastingDirectorsByLoginId(param);
+		
+		return membersRd;
+	}
+	
 }

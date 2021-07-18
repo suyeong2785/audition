@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quantom.audition.dao.ShareDao">
+
+	<insert id="doShareApplyments" useGeneratedKeys="true" keyProperty="id">
+		INSERT
+		INTO `share`
+		SET regDate = NOW(),
+		updateDate = NOW(),
+		relTypeCode = #{relTypeCode},
+		actorId = #{actorId},
+		targetId = #{targetId}
+	</insert>
+
+</mapper>

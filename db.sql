@@ -423,11 +423,26 @@ WHERE `name` LIKE '캐스팅디렉터%';
 UPDATE `member`
 SET authority = 2
 WHERE `name` NOT LIKE '캐스팅디렉터%'
-AND `name` NOT LIKE 'admin';
+AND `name` NOT LIKE '관리자';
 
-# 지원자를 추천하거나 
+# 캐스팅디렉터들이 지원자를 추천할때 추천횟수 기록
 ALTER TABLE `member` ADD COLUMN recommendation INT UNSIGNED NOT NULL DEFAULT 0 AFTER cellphoneNo;
-ALTER TABLE `member` ADD COLUMN hold INT UNSIGNED NOT NULL DEFAULT 0 AFTER cellphoneNo;
+
+# 캐스팅 디렉터들이 서로 공유할때 공유한 멤버들 기록
+CREATE TABLE `share`(
+id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+regDate DATETIME NOT NULL,
+updateDate DATETIME NOT NULL,
+answer TINYINT NOT NULL DEFAULT 0,
+relTypeCode CHAR(10) NOT NULL,
+actorId INT UNSIGNED NOT NULL,
+targetId INT UNSIGNED NOT NULL
+);
+
+# share 테이블에 delDate,delStatus 추가
+ALTER TABLE `share` 
+ADD COLUMN delDate DATETIME AFTER updateDate,
+ADD COLUMN delStatus TINYINT NOT NULL DEFAULT 0 AFTER delDate;
 
 /*
 select * from `file`;
@@ -439,4 +454,5 @@ SELECT * FROM `artwork`;
 select * from `member`;
 select * from `attr`;
 select * from  reply;
+select * from  share;
 */

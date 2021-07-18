@@ -1,6 +1,7 @@
 package com.quantom.audition.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -25,6 +26,8 @@ public class MemberService {
 	private String siteName;
 	@Autowired
 	private AttrService attrService;
+	@Autowired
+	private ShareService shareService;
 
 	public Member getMemberById(int id) {
 		return memberDao.getMemberById(id);
@@ -132,4 +135,28 @@ public class MemberService {
 	private void setNotUsingTempPassword(int id) {
 		attrService.remove("member", id, "extra", "usingTempPassword");
 	}
+
+	public ResultData getMembersByLoginId(String loginId) {
+		List<Member> members = memberDao.getMembersByLoginId(loginId);
+		System.out.println("loginId : " + loginId);
+		System.out.println("members : " + members);
+		if(members.isEmpty()) {
+			return new ResultData("F-1","일치하는 계정이 존재하지 않습니다.");
+		}
+		
+		return new ResultData("S-1",String.format("%d개의 계정을 가져왔습니다.",members.size()) ,"members", members);
+	}
+	
+	public ResultData getCastingDirectorsByLoginId(Map<String, Object> param) {
+		List<Member> members = memberDao.getCastingDirectorsByLoginId(param);
+		
+		System.out.println("loginId : " + (String)param.get("loginId"));
+		System.out.println("members : " + members);
+		if(members.isEmpty()) {
+			return new ResultData("F-1","일치하는 캐스팅디렉터가 존재하지 않습니다.");
+		}
+		
+		return new ResultData("S-1",String.format("%d개의 캐스팅디렉터 정보를 가져왔습니다.",members.size()) ,"members", members);
+	}
+
 }

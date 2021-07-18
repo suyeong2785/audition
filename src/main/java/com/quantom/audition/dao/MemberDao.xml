@@ -26,6 +26,20 @@
 		WHERE loginId = #{loginId}
 	</select>
 
+	<select id="getMembersByLoginId" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE loginId LIKE CONCAT('%',#{loginId},'%')
+	</select>
+	
+	<select id="getCastingDirectorsByLoginId" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE loginId LIKE CONCAT('%',#{loginId},'%')
+		AND authority = #{authority}
+		AND id != #{id}
+	</select>
+	
 	<select id="getMemberByLoginId" resultType="Member">
 		SELECT *
 		FROM member

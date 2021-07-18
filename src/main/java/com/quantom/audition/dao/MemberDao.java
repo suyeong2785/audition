@@ -1,5 +1,6 @@
 package com.quantom.audition.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -21,4 +22,8 @@ public interface MemberDao {
 	void modify(Map<String, Object> param);
 
 	Member getMemberByNameAndEmail(@Param("name") String name, @Param("email") String email);
+
+	List<Member> getMembersByLoginId(@Param("loginId") String loginId);
+
+	List<Member> getCastingDirectorsByLoginId(Map<String, Object> param);
 }
