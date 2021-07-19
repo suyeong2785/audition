@@ -220,7 +220,9 @@ public class MemberController {
 	
 	@RequestMapping("/usr/member/getCastingDirectorListAjax")
 	@ResponseBody
-	public ResultData getCastingDirectorListAjax(@RequestParam Map<String, Object> param) {
+	public ResultData getCastingDirectorListAjax(@RequestParam Map<String, Object> param, HttpServletRequest req) {
+		int loginedMemberId = (int)req.getAttribute("loginedMemberId");
+		param.put("requesterId", loginedMemberId);
 		
 		ResultData membersRd = memberService.getCastingDirectorsByLoginId(param);
 		

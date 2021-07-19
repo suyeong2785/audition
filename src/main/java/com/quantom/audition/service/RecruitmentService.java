@@ -16,6 +16,7 @@ import com.quantom.audition.dto.Job;
 import com.quantom.audition.dto.Member;
 import com.quantom.audition.dto.Recruitment;
 import com.quantom.audition.dto.ResultData;
+import com.quantom.audition.dto.Share;
 import com.quantom.audition.util.Util;
 
 @Service
@@ -26,13 +27,35 @@ public class RecruitmentService {
 	private FileService fileService;
 	@Autowired
 	private ApplymentService applymentService;
-
+	@Autowired
+	private ShareService shareService;
+	
 	public List<Recruitment> getForPrintRecruitments() {
 		List<Recruitment> recruitments = recruitmentDao.getForPrintRecruitments();
 
 		return recruitments;
 	}
 
+	public List<Recruitment> getForPrintRecruitmentsByLoginId(int memberId) {
+		return recruitmentDao.getForPrintRecruitmentsByLoginId(memberId);
+	}
+	
+	public Map<Integer, List<Recruitment>> getForPrintSharedRecruitmentsByLoginId(int memberId, List<Share> acceptedShares) {
+		int requesterId = 0;
+		Map<Integer, List<Recruitment>> sharedRecruitmentResultMap = new HashMap<>();
+		
+		for(Share acceptedShare : acceptedShares) {
+			requesterId = acceptedShare.getRequesterId();
+		
+			List<Recruitment> sharedRecruitments = recruitmentDao.getForPrintRecruitmentsByLoginId(requesterId);
+			
+			sharedRecruitmentResultMap.put(requesterId, sharedRecruitments);
+		}
+		
+		return sharedRecruitmentResultMap;
+		
+	}
+	
 	private void updateForPrintInfo(Member actor, Recruitment recruitment) {
 		Util.putExtraVal(recruitment, "actorCanDelete", actorCanDelete(actor, recruitment));
 		Util.putExtraVal(recruitment, "actorCanModify", actorCanModify(actor, recruitment));
@@ -199,4 +222,5 @@ public class RecruitmentService {
 	public Recruitment getRecruitmentById(int id) {
 		return recruitmentDao.getRecruitmentById(id);
 	}
+
 }

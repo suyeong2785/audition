@@ -26,7 +26,129 @@
 	width: 100px;
 }
 </style>
+
+
+<div class="share-recruitment-box con mx-auto mb-4">
+	<div class="flex border-2 border-black box-border p-2 ">
+		<div class="text-center flex-grow">공유된 지원자 목록</div>
+	</div>
+	<div class="share-recruitment">
+		<c:forEach items="${acceptedShares}" var="acceptedShare">
+			<div class="border-2 border-black box-border p-4"
+				onclick="showSharedRecruitments(${acceptedShare.requesterId})">
+				<strong>${acceptedShare.extra.memberName}</strong>님의 지원자들
+			</div>
+			<div id="${acceptedShare.requesterId}"></div>
+
+
+		</c:forEach>
+	</div>
+</div>
+
+<script>
+	
+	function showSharedRecruitments(requesterId){
+		
+		//displayStatus를 확인하고 displayStatus을 누를때마다 바꿔주면서
+		//display:none,block를 결정해준다.
+		if($('.share-recruitment  #'+ requesterId).data("displayStatus") == 1){
+			$('.share-recruitment  #'+ requesterId).css({"display":"none"});
+			$('.share-recruitment  #'+ requesterId).data("displayStatus",0);
+			return;
+		}
+		
+		if($('.share-recruitment  #'+ requesterId).data("displayStatus") == 0){
+			$('.share-recruitment  #'+ requesterId).css({"display":"block"});
+			$('.share-recruitment  #'+ requesterId).data("displayStatus",1);
+		}
+		
+		if($('.share-recruitment  #'+ requesterId).children().length != 0){
+			return;
+		}
+		
+		 $.get('../../usr/recruitment/showSharedRecruitmentsAjax',{
+			 memberId : requesterId
+		 },draw_sharedRecruitments,'json');
+		 
+		 function draw_sharedRecruitments (data){
+				
+				var sharedRecruitments = data.body.sharedRecruitments;
+				
+				var html= '';
+				
+				$.each(sharedRecruitments, function(index, sharedRecruitment){
+					
+					html += "<div class='toggle'>";
+					html += "<div class='flex border-2 border-black box-border p-4'>";
+					html += "<div class=' flex-1'>" + sharedRecruitment.id + "</div>";
+					html += "<div class='flex-4'>" + sharedRecruitment.regDate + "</div>";
+					html += "<div class=' flex-4'";
+					html += "onclick='showApplicantList( {sharedRecruitment.id}" + "," + "{sharedRecruitment.memberId} )'> " + sharedRecruitment.forPrintTitle  + "</div>";
+					html += "</div>";
+					html += "<div class='"+ sharedRecruitment.id + " border-2 '></div>";
+					html += "</div>";
+					
+					//item.name을 변수로 인식해서 uncaught reference error에러 발생 아래처럼 정규식으로 찾아서 값을 넣어줘야함
+					html = html.replace(/{sharedRecruitment.id}/gi, '"' + sharedRecruitment.id + '"').replace(/{sharedRecruitment.memberId}/gi, '"' + sharedRecruitment.memberId + '"');
+				});
+				
+				$('.share-recruitment  #'+ requesterId).prepend(html);
+				$('.share-recruitment  #'+ requesterId).data("displayStatus",1);
+			}
+	}
+		
+	
+		
+</script>
+
+<div class="share-request-box con mx-auto mb-4">
+	<div class="flex border-2 border-black box-border p-2 mb-2">
+		<div class="text-center flex-grow">지원자공유 제안</div>
+	</div>
+
+	<c:forEach items="${shares}" var="share">
+		<div class="share-request-list flex justify-center items-center">
+			<div>${share.forPrintRequestedShare}</div>
+			<div class="flex-grow"></div>
+			<div id="${share.id}" class="share-request-answer-buttons"
+				data-requester-name="${share.extra.requesterName}">
+				<button onclick="doModifyShareAnswer(1, ${share.id})"
+					class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">수락</button>
+				<button onclick="doModifyShareAnswer(2, ${share.id})"
+					class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">거절</button>
+			</div>
+		</div>
+	</c:forEach>
+</div>
+
+<script>
+	function doModifyShareAnswer(answer, share_id){
+		var $requesterName = $('.share-request-list div[id='+ share_id +']').data("requesterName"); 
+		alert("$requesterName : " + $requesterName);
+	
+		if(answer == 1){
+			alert($requesterName + '님의 지원자 공유를 받는것을 수락하셨습니다.');
+		} else{
+			alert($requesterName + '님의 지원자 공유를 받는것을 거절하셨습니다.');
+		}
+		
+		$.post('../../usr/share/doModifyShareAnswerAjax',{
+			id : share_id,
+			answer : answer,
+			name: $requesterName
+		},function(data){
+			
+		},'json');
+		
+		location.reload();
+	}
+
+</script>
+
 <div class="con mx-auto mb-4">
+	<div class="flex border-2 border-black box-border p-2 mb-2">
+		<div class="text-center flex-grow">캐스팅 검색</div>
+	</div>
 	<div
 		class="relative flex justify-center items-center text-white text-center h-12 md:h-14 text-2xl md:text-4xl mb-4">
 		<!-- 검색 상자 -->
@@ -66,7 +188,6 @@
 	}
 	
 	function CastingDirectorList(data){
-		
 		var members = data.body.members;
 
 		var $search_result = $('#search-result');
@@ -96,15 +217,15 @@
 	
 	function doShareApplymentsWith(id, name){
 		
-		var result = confirm(id + '번 ' +name +'님과 지원자들을 공유하시겠습니까?');
+		var result = confirm(name +'님과 지원자들을 공유하시겠습니까?');
 		
 		if(result == false){
 			return;
 		}
 		
 		$.post('../../usr/share/doShareApplymentsAjax',{
-			actorId: loginedMemberId,
-			targetId: id,
+			requesterId: loginedMemberId,
+			requesteeId: id,
 			name : name,
 			relTypeCode : "applyment"
 		},function (data){

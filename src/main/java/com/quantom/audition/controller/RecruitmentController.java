@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.quantom.audition.config.AppConfig;
 import com.quantom.audition.dto.ActingRole;
@@ -193,5 +194,18 @@ public class RecruitmentController {
 		model.addAttribute("redirectUri", redirectUri);
 
 		return "common/redirect";
+	}
+	
+	@RequestMapping("/usr/recruitment/showSharedRecruitmentsAjax")
+	@ResponseBody
+	public ResultData showSharedRecruitments(int memberId) {
+		
+		List<Recruitment> sharedRecruitments = recruitmentService.getForPrintRecruitmentsByLoginId(memberId);
+		
+		if(sharedRecruitments.isEmpty()) {
+			return new ResultData("F-1","일치하는 공고가 없습니다.");
+		}
+		
+		return new ResultData("S-1",String.format("%d개의 공고를 가져왔습니다.", sharedRecruitments.size()),"sharedRecruitments",sharedRecruitments);
 	}
 }

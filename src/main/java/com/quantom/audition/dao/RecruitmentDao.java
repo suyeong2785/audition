@@ -13,6 +13,8 @@ import com.quantom.audition.dto.Recruitment;
 public interface RecruitmentDao {
 	List<Recruitment> getForPrintRecruitments();
 
+	List<Recruitment> getForPrintRecruitmentsByLoginId(int id);
+	
 	Recruitment getForPrintRecruitmentById(@Param("id") int id);
 	
 	Recruitment getRecruitmentById(@Param("id") int id);
@@ -26,4 +28,7 @@ public interface RecruitmentDao {
 	void delete(@Param("id") int id);
 
 	void setComplete(@Param("id") int id);
+
+	List<Recruitment> getRecruitmentsByRequesterId(@Param("memberId") int memberId);
+
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.quantom.audition.dto.ResultData;
 import com.quantom.audition.service.ShareService;
+import com.quantom.audition.util.Util;
 
 @Controller
 public class ShareController {
@@ -24,4 +25,18 @@ public class ShareController {
 
 		return shareRd;
 	}
+	
+	@RequestMapping("/usr/share/doModifyShareAnswerAjax")
+	@ResponseBody
+	public ResultData doModifyShareAnswer(@RequestParam Map<String, Object> param) {
+
+		shareService.doModifyShareAnswer(param);
+		
+		int answer = Util.getAsInt((param).get("answer"));
+		String requesterName = Util.getAsStr((param).get("name"));
+
+		return new ResultData("S-1",String.format("%s님의 지원자 공유제안을 %s하였습니다.", requesterName, answer == 1? "수락":"거절"));
+	}
+	
+	
 }

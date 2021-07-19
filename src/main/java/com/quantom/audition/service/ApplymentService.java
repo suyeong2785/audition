@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.quantom.audition.config.AppConfig;
 import com.quantom.audition.dao.ApplymentDao;
+import com.quantom.audition.dao.RecruitmentDao;
 import com.quantom.audition.dto.Applyment;
 import com.quantom.audition.dto.File;
 import com.quantom.audition.dto.Member;
@@ -28,6 +29,8 @@ public class ApplymentService {
 	private AppConfig appConfig;
 	@Autowired
 	private RecruitmentService recruitmentService;
+	@Autowired
+	private RecruitmentDao recruitmentDao;
 
 	public Applyment getForPrintApplyment(@RequestParam Map<String, Object> param) {
 		Applyment applyment = applymentDao.getForPrintApplyment(param);
@@ -275,6 +278,19 @@ public class ApplymentService {
 
 	public List<Applyment> getApplymenResultInfoByMemberId(int MemberId) {
 		return applymentDao.getApplymenResultInfoByMemberId(MemberId);
+	}
+
+	public List<Applyment> getForPrintSharedApplymentsByRequesterId(int requesteeId, int requesterId) {
+		System.out.println("requesterId : " + requesterId);
+		List<Recruitment> recruitments = recruitmentDao.getRecruitmentsByRequesterId(requesterId);
+		
+		List<Applyment> sharedApplyments = null;
+		
+		for(Recruitment recruitment: recruitments) {
+			sharedApplyments = applymentDao.getApplymentsByRelId("recruitment", recruitment.getId());
+		}
+		
+		return sharedApplyments;
 	}
 
 

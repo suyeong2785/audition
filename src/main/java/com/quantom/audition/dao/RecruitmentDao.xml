@@ -4,6 +4,15 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.quantom.audition.dao.RecruitmentDao">
 	
+	
+	<select id="getRecruitmentsByRequesterId" resultType="Recruitment">
+		SELECT *
+		FROM
+		recruitment
+		WHERE
+		memberId = #{memberId}
+	</select>
+	
 	<select id="getForPrintRecruitments" resultMap="recruitment">
 		SELECT REC.*,
 		M.nickname AS extra__writer,
@@ -37,7 +46,42 @@
 		WHERE REC.displayStatus = 1
 		ORDER BY REC.id DESC
 	</select>
-
+	
+	<select id="getForPrintRecruitmentsByLoginId" resultMap="recruitment">
+		SELECT REC.*,
+		M.nickname AS extra__writer,
+		ACR.name AS extra__actingRoleName,
+		ACR.gender AS extra__actingRoleGender,
+		ACR.age AS extra__actingRoleAge,
+		ACR.job AS extra__actingRoleJob,
+		ACR.scriptStatus AS
+		extra__actingScriptStatus,
+		ACR.scenesCount AS
+		extra__actingRoleScenesCount,
+		ACR.shootingsCount AS
+		extra__actingRoleShootingsCount,
+		ACR.character AS
+		extra__actingRoleCharacter,
+		ACR.pay AS extra__actingRolePay,
+		ARW.name AS
+		extra__artworkName,
+		ARW.directorName AS extra__directorName,
+		ARW.productionName AS extra__productionName
+		FROM recruitment AS REC
+		INNER JOIN member AS M
+		ON REC.memberId = M.id
+		INNER JOIN actingRole AS
+		ACR
+		ON REC.roleTypeCode = 'actingRole'
+		AND REC.roleId = ACR.id
+		INNER JOIN
+		artwork AS ARW
+		ON ACR.artworkId = ARW.id
+		WHERE REC.displayStatus = 1
+		AND REC.memberId = #{memberId}
+		ORDER BY REC.id DESC
+	</select>
+	
 	<select id="getForPrintRecruitmentById" resultMap="recruitment">
 		SELECT REC.*,
 		M.nickname AS extra__writer,
