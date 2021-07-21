@@ -76,4 +76,19 @@
 		</set>
 		WHERE id = #{id}
 	</update>
+	
+	<update id="doModifyMemberRecommendation">
+		UPDATE member
+		SET updateDate = NOW(),
+		<choose>
+			<when test="recommendationStatus == 1">
+				recommendation = recommendation + 1
+			</when>
+			<otherwise>
+				recommendation = recommendation - 1
+			</otherwise>
+		</choose>
+		WHERE id = #{id}
+	</update>
+	
 </mapper>

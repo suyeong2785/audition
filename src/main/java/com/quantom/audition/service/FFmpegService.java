@@ -13,6 +13,7 @@ import net.bramp.ffmpeg.FFmpegExecutor;
 import net.bramp.ffmpeg.FFprobe;
 import net.bramp.ffmpeg.builder.FFmpegBuilder;
 
+//썸네일 추출하는걸 가져온거라서 나중에 시간나면 워터마크수정하는 방식으로 고쳐야함.
 @Service
 public class FFmpegService {
 

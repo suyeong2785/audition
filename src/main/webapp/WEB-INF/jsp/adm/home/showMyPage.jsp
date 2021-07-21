@@ -261,8 +261,9 @@
 	<div class="content">
 		<div id="media-content" class="flex justify-center"></div>
 		<div id="button-box" class="button-box flex justify-center">
-			<button
-				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">추천</button>
+			<button id="recommendation-button"
+				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+				onclick="doRecommendMember()">추천</button>
 			<span id="decision-button-box"> </span>
 			<button
 				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
@@ -273,6 +274,62 @@
 </div>
 
 <script>
+
+	//로그인한 사용자의 번호를 가져온다.
+	var loginedMemberId = '<c:out value="${loginedMemberId}"/>';
+
+	//admin인지 확인용.
+	var isAdmin = '<c:out value="${isAdmin}"/>';
+
+	function doRecommendMember(){
+		
+		var applyment_memberId = $('#media-content').data('member-id');
+		var applyment_id = $('#media-content').data('id');
+		
+		//video태그를 보여줄 id=recommendation-button 엘리먼트를 가져온다.
+	  	var $recommendation_button = $("#recommendation-button");
+		
+		if($recommendation_button.data("recommendationStatus") == 1){
+			
+			$.post('../../usr/recommendation/doModifyRecommendStatusAjax',{
+				relTypeCode : "applyment",
+				relId : applyment_id,
+				recommenderId : loginedMemberId,
+				recommendeeId : applyment_memberId,
+				recommendationStatus : 0
+			},function(data){
+				$recommendation_button.css({"background-color" : "white", "color" : "black"});
+				$recommendation_button.data("recommendationStatus", 0);
+			},'json');
+			
+		}else if($recommendation_button.data("recommendationStatus") == 0){
+			
+			$.post('../../usr/recommendation/doModifyRecommendStatusAjax',{
+				relTypeCode : "applyment",
+				relId : applyment_id,
+				recommenderId : loginedMemberId,
+				recommendeeId : applyment_memberId,
+				recommendationStatus : 1
+			},function(data){
+				$recommendation_button.css({"background-color" : "green", "color" : "white"});
+				$recommendation_button.data("recommendationStatus", 1);
+			},'json');
+			
+		}else{
+			
+			$.post('../../usr/recommendation/doMakeRecommendMemberAjax',{
+				relTypeCode : "applyment",
+				relId : applyment_id,
+				recommenderId : loginedMemberId,
+				recommendeeId : applyment_memberId,
+				recommendationStatus : 1
+			},function(data){
+				$recommendation_button.css({"background-color" : "green","color" : "white"});
+				$recommendation_button.data("recommendationStatus", 1);
+			},'json');
+		}
+
+	}
 
 var ApplymentList__lastLodedId = 0;
 var ApplymentList__applymentsCount = 0;
@@ -295,6 +352,7 @@ var ApplymentList__applymentsCount = 0;
 		//ajax를 통해 recruitment.id에 해당하는 모든 applyments 객체를 가져와서
 		//ApplymentList__loadMoreCallback에 전달한다.
 		function ApplymentList__loadMore() {
+			
 			var undecidedApplicant = 0;
 
 			$.get('../../usr/applyment/getForPrintApplymentsByResult', {
@@ -340,7 +398,7 @@ var ApplymentList__applymentsCount = 0;
 			
 			var html = '';
 			
-			html += '<div onclick="showApplicantDecisonModal(' + applyment.id + ','+ recruitment_id + ','+ recruitment_memberId +');" class="flex justify-center text-center border-2 border-black box-border p-4">';
+			html += '<div onclick="showApplicantDecisonModal(' + applyment.id + ','+ applyment.memberId + ','+ recruitment_id + ','+ recruitment_memberId +');" class="flex justify-center text-center border-2 border-black box-border p-4">';
 			html += '<div class="flex-1">' + applyment.id + '</div>';
 			html += '<div class="flex-1">' + applyment.extra.writerRealName + '</div>';
 			html += '<div class="flex-1">' + applyment.extra.writerGender + '</div>';
@@ -368,26 +426,46 @@ var ApplymentList__applymentsCount = 0;
         $('html').removeClass('applicant-decision-form-modal-actived');
     }
 	
-  	function showApplicantDecisonModal(applyment_id, recruitment_id, recruitment_memberId) { 		
+  	function showApplicantDecisonModal(applyment_id, applyment_memberId, recruitment_id, recruitment_memberId) { 		
   		
+  	  //video태그를 보여줄 id=recommendation-button 엘리먼트를 가져온다.
+  	  var $recommendation_button = $("#recommendation-button");
+  		
+  	  $.get('../../usr/recommendation/getRecommendationByRecommenderIdAjax',{
+  		  recommenderId : loginedMemberId,
+  		  recommendeeId : applyment_memberId
+  	  },function(data){
+  		  if(data.resultCode.startsWith("S")){
+  			var recommendationStatus = data.body.recommendation.recommendationStatus;
+  			  
+  			if(recommendationStatus == 1 ){
+  				$recommendation_button.css({"background-color" : "green","color" : "white"});
+  				$recommendation_button.data("recommendationStatus", recommendationStatus);
+  			}else{
+  				$recommendation_button.data("recommendationStatus",recommendationStatus);
+  				$recommendation_button.css({"background-color" : "white","color" : "black"});
+  			}
+  		  
+  		  }else{
+  			$recommendation_button.data("recommendationStatus",-1);
+  			$recommendation_button.css({"background-color" : "white","color" : "black"});
+  		  }
+  		  
+  		  
+  	  },'json');
+  	  
   	  //video태그를 보여줄 id=media-content 엘리먼트를 가져온다.
 	  var $media_content = $("#media-content");
+  	  
+	  var media_html = '';
 	  
 	  //버튼 태그를 보여줄 id=button-box 엘리먼트를 가져온다.
 	  var $decision_button_box = $("#decision-button-box");
 	  
-	  //로그인한 사용자의 번호를 가져온다.
-	  var loginedMemberId = '<c:out value="${loginedMemberId}"/>';
+	  var decision_button_html = '';
 	  
-	  //admin인지 확인용.
-	  var isAdmin = '<c:out value="${isAdmin}"/>';
-	  
-	  var Media_html = '';
-	  
-	  var button_html = '';
-	  
-	  button_html += "<button class='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow' onclick='ChangeApplymentResult(2)'>불합격</button>";
-	  button_html += "<button class='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow' onclick='ChangeApplymentResult(1)'>합격</button>";
+	  decision_button_html += "<button class='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow' onclick='ChangeApplymentResult(2)'>불합격</button>";
+	  decision_button_html += "<button class='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow' onclick='ChangeApplymentResult(1)'>합격</button>";
 	  
 	  var undecidedApplicant = 0;
 	  
@@ -398,16 +476,16 @@ var ApplymentList__applymentsCount = 0;
 		 
 		}, function (data) {
 			
-			Media_html += ApplymentList__getMediaHtml(data);
+			media_html += ApplymentList__getMediaHtml(data);
 			
-			var $Media_html = $(Media_html);
+			var $media_html = $(media_html);
 			
 			//video태그를 id=media-content인 태그에 넣어준다.
-			$media_content.prepend($Media_html);
+			$media_content.prepend($media_html);
 
 			//합격불,합격 버튼 태그를 사용자의 아이디에따라 보여준다.
 			if(loginedMemberId == recruitment_memberId ){
-				var $button_html = $(button_html);
+				var $button_html = $(decision_button_html);
 				
 				$decision_button_box.prepend($button_html);
 			}			
@@ -416,6 +494,7 @@ var ApplymentList__applymentsCount = 0;
 			// ApplymentList__getMediaHtml를 감싸고있는 #media-content에
 			// 전역변수처럼 data-id에 id값을 저장해서 해당 엘리먼트의 자식,후손들이 사용할 수 있도록 한다.
 			$('#media-content').data('id',applyment_id);
+			$('#media-content').data('member-id',applyment_memberId);
 			
 		}, 'json');  
 	

@@ -329,7 +329,7 @@ ALTER TABLE `file` ADD COLUMN `fileDir` CHAR(20) NOT NULL AFTER `body`;
 # applyment에 오디션결과를 보여주는 result컬럼 추가 (오디션결과 (0)답변없음,(1)합격 (2)불합격)
 ALTER TABLE `applyment` ADD COLUMN `result` TINYINT NOT NULL DEFAULT 0 AFTER `relId`;
 
-# member에 나이를 age,gender칼럼 추가
+# member에 나이를 age,gender칼럼 추가 (지원자의 나이와,성별이 필요하기 때문)
 ALTER TABLE `member` ADD COLUMN `age` TINYINT UNSIGNED NOT NULL AFTER `name`;
 ALTER TABLE `member` ADD COLUMN `gender` CHAR(6) NOT NULL AFTER `age`;
 
@@ -433,7 +433,7 @@ CREATE TABLE `share`(
 id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 regDate DATETIME NOT NULL,
 updateDate DATETIME NOT NULL,
-answer TINYINT NOT NULL DEFAULT 0,
+answer TINYINT NOT NULL DEFAULT 0 COMMENT "(1) 수락 (2)거절",
 relTypeCode CHAR(10) NOT NULL,
 actorId INT UNSIGNED NOT NULL,
 targetId INT UNSIGNED NOT NULL
@@ -443,6 +443,12 @@ targetId INT UNSIGNED NOT NULL
 ALTER TABLE `share` 
 ADD COLUMN delDate DATETIME AFTER updateDate,
 ADD COLUMN delStatus TINYINT NOT NULL DEFAULT 0 AFTER delDate;
+
+# share 테이블에 컬럼이름 바꿈(actorId가 혼란을 야기할수있기 때문)
+ALTER TABLE `share`
+CHANGE COLUMN actorId requesterId INT UNSIGNED NOT NULL,
+CHANGE COLUMN targetId requesteeId INT UNSIGNED NOT NULL;
+
 
 /*
 select * from `file`;

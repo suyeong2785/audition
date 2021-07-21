@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quantom.audition.dao.RecommendationDao">
+
+	<insert id="doMakeRecommendMember" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO recommendation
+		SET regDate = NOW(),
+		updateDate = NOW(),
+		relTypeCode = #{relTypeCode},
+		relId = #{relId},
+		recommenderId = #{recommenderId},
+		recommendeeId = #{recommendeeId},
+		recommendationStatus = #{recommendationStatus};		
+	</insert>
+	
+	<select id="getRecommendationByRecommenderId" resultType="Recommendation">
+		SELECT * FROM recommendation
+		WHERE recommenderId = #{recommenderId}
+		AND recommendeeId = #{recommendeeId}
+		
+	</select>
+	
+	<update id="doModifyRecommendStatus">
+		UPDATE recommendation
+		SET updateDate = NOW(),
+		recommendationStatus = #{recommendationStatus}
+		WHERE relTypeCode = #{relTypeCode}
+		AND relId = #{relId}
+		AND recommenderId = #{recommenderId}
+		AND recommendeeId = #{recommendeeId}
+	</update>
+
+</mapper>

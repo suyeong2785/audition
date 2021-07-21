@@ -179,4 +179,9 @@ public class MemberService {
 		return new ResultData("S-1", String.format("%d개의 캐스팅디렉터 정보를 가져왔습니다.", selectedMembers.size()), "members", selectedMembers);
 	}
 
+	public void doModifyMemberRecommendation(int id, int recommendationStatus) {
+		memberDao.doModifyMemberRecommendation(id,recommendationStatus);
+		
+	}
+
 }
