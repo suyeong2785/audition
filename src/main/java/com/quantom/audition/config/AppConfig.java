@@ -38,6 +38,16 @@ public class AppConfig {
 		}
 	}
 
+	public String getAttachemntFileInputAccept(String fileExtTypeCode) {
+
+		switch (fileExtTypeCode) {
+		case "img":
+			return "image/gif,image/jpeg,image/png";
+		default:
+			return "video/mp4,video/quicktime,video/x-msvideo";
+		}
+	}
+	
 	public String getAttachemntFileInputAccept(String relTypeCode, int fileNo) {
 		String fileExtTypeCode = getAttachmentFileExtTypeCode(relTypeCode, fileNo);
 

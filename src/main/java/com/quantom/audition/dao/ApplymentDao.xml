@@ -88,7 +88,9 @@
 		M.email AS
 		extra__writerEmail,
 		M.nickname AS
-		extra__writer
+		extra__writer,
+		M.recommendation AS
+		extra__writerRecommendation
 		FROM applyment AS AM
 		INNER JOIN member AS M
 		ON AM.memberId
@@ -250,6 +252,7 @@
 			<id property="writerCellphoneNo" column="extra__writerCellphoneNo" />
 			<id property="writerEmail" column="extra__writerEmail" />
 			<id property="writerRealName" column="extra__writerRealName" />
+			<id property="writerRecommendation" column="extra__writerRecommendation" />
 		</association>
 	</resultMap>
 

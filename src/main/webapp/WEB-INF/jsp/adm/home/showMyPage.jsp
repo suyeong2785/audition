@@ -38,7 +38,18 @@
 				onclick="showSharedRecruitments(${acceptedShare.requesterId})">
 				<strong>${acceptedShare.extra.memberName}</strong>님의 지원자들
 			</div>
-			<div id="${acceptedShare.requesterId}"></div>
+			<div id="${acceptedShare.requesterId}"
+				class="border-2 hidden"
+				data-display-status="0">
+				<div
+					class="flex justify-center text-center border-2 border-black box-border p-4">
+					<div class="flex-1">지원번호</div>
+					<div class="flex-1">이름/활동명</div>
+					<div class="flex-1">성별</div>
+					<div class="flex-1">나이</div>
+					<div class="flex-1">추천수</div>
+				</div>
+			</div>
 
 
 		</c:forEach>
@@ -62,7 +73,7 @@
 			$('.share-recruitment  #'+ requesterId).data("displayStatus",1);
 		}
 		
-		if($('.share-recruitment  #'+ requesterId).children().length != 0){
+		if($('.share-recruitment  #'+ requesterId).children().length > 1){
 			return;
 		}
 		
@@ -92,13 +103,11 @@
 					html = html.replace(/{sharedRecruitment.id}/gi, '"' + sharedRecruitment.id + '"').replace(/{sharedRecruitment.memberId}/gi, '"' + sharedRecruitment.memberId + '"');
 				});
 				
-				$('.share-recruitment  #'+ requesterId).prepend(html);
+				$('.share-recruitment  #'+ requesterId).append(html);
 				$('.share-recruitment  #'+ requesterId).data("displayStatus",1);
 			}
 	}
-		
 	
-		
 </script>
 
 <div class="share-request-box con mx-auto mb-4">
@@ -252,8 +261,17 @@
 					<div class=" flex-4"
 						onclick="showApplicantList( ${recruitment.id} , ${recruitment.memberId} )">${recruitment.forPrintTitle}</div>
 				</div>
-				<div class="${recruitment.id} border-2 "></div>
-			</div>
+				<div class="${recruitment.id} border-2 hidden"
+					data-display-status="0">
+					<div
+						class="flex justify-center text-center border-2 border-black box-border p-4">
+						<div class="flex-1">지원번호</div>
+						<div class="flex-1">이름/활동명</div>
+						<div class="flex-1">성별</div>
+						<div class="flex-1">나이</div>
+						<div class="flex-1">추천수</div>
+					</div>
+				</div>
 		</c:if>
 	</c:forEach>
 </div>
@@ -398,11 +416,13 @@ var ApplymentList__applymentsCount = 0;
 			
 			var html = '';
 			
+			html += '</div>'
 			html += '<div onclick="showApplicantDecisonModal(' + applyment.id + ','+ applyment.memberId + ','+ recruitment_id + ','+ recruitment_memberId +');" class="flex justify-center text-center border-2 border-black box-border p-4">';
 			html += '<div class="flex-1">' + applyment.id + '</div>';
 			html += '<div class="flex-1">' + applyment.extra.writerRealName + '</div>';
 			html += '<div class="flex-1">' + applyment.extra.writerGender + '</div>';
 			html += '<div class="flex-1">' + applyment.extra.writerAge + '</div>';
+			html += '<div class="flex-1">' + applyment.extra.writerRecommendation + '</div>';
 			html += '</div>';
 			
 			var $td = $(html);

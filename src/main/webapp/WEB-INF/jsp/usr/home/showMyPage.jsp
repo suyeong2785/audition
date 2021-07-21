@@ -4,6 +4,11 @@
 <c:set var="pageTitle" value="마이 페이지" />
 <%@ include file="../part/head.jspf"%>
 
+<h2 class="con">프로필</h2>
+
+
+<div class="profile-box con border-2 border-black box-border">gg</div>
+
 <h2 class="con">지원한 공고들</h2>
 
 <div class="list-box con">

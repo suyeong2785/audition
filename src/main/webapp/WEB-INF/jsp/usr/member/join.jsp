@@ -152,6 +152,16 @@
                 </td>
             </tr>
             <tr>
+                <th>프로필 사진</th>
+                <td>
+                    <div class="form-control-box">
+                        <input id="join-file" type="file" accept="${appConfig.getAttachemntFileInputAccept('img')}"
+                         name="file__member__0__common__attachment__${fileNo}" />
+                        <img id="join-profile" src="" alt="" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
                 <th>이름</th>
                 <td>
                     <div class="form-control-box">
@@ -221,4 +231,24 @@
         </tbody>
     </table>
 </form>
+
+<script>
+	$('#join-file').on('change',function(){
+		
+		const files = $("#join-file")[0].files;
+		const file = $("#join-file")[0].files[0];
+		
+		if(files.length != 0){
+			const imgurl = URL.createObjectURL(file);
+			$('#join-profile').attr("src", imgurl);		
+				
+			URL.revokeObjectURL(file);
+			
+		} else {
+			//파일이 없는 경우 내용을 지워준다.
+			$('#join-profile').attr("src","");
+		}
+	});
+
+</script>
 <%@ include file="../part/foot.jspf"%>
