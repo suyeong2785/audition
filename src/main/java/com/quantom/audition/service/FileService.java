@@ -126,6 +126,11 @@ public class FileService {
 
 		return rs;
 	}
+	
+	public File getFileRelTypeCodeAndRelIdAndTypeCodeAndType2Code(String relTypeCode, int relId, String typeCode,
+			String type2Code) {
+		return fileDao.getFileRelTypeCodeAndRelIdAndTypeCodeAndType2Code(relTypeCode, relId, typeCode, type2Code);
+	}
 
 	public List<File> getFiles(String relTypeCode, int relId, String typeCode, String type2Code) {
 		List<File> files = fileDao.getFilesRelTypeCodeAndRelIdAndTypeCodeAndType2Code(relTypeCode, relId, typeCode,

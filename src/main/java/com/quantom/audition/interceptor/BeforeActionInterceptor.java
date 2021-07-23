@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.quantom.audition.config.AppConfig;
+import com.quantom.audition.dto.File;
 import com.quantom.audition.dto.Member;
 import com.quantom.audition.service.MemberService;
 import com.quantom.audition.util.Util;
@@ -92,12 +93,14 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 		int loginedMemberId = 0;
 		Member loginedMember = null;
 		String loginedDate = null;
+		File fileForProfile = null;
 		
 		if (session.getAttribute("loginedMemberId") != null) {
 			loginedMemberId = (int) session.getAttribute("loginedMemberId");
 			loginedDate = (String) session.getAttribute("loginedDate");
 			isLogined = true;
 			loginedMember = memberService.getMemberById(loginedMemberId);
+			fileForProfile = (File) session.getAttribute("fileForProfile");
 			
 			isAdmin = loginedMember.isAdmin();
 			isCastingDirector= loginedMember.isCastingDirector();
@@ -113,6 +116,7 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 		request.setAttribute("activeProfile", activeProfile);
 
 		request.setAttribute("appConfig", appConfig);
+		request.setAttribute("fileForProfile", fileForProfile);
 
 		return HandlerInterceptor.super.preHandle(request, response, handler);
 	}

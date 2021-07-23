@@ -18,7 +18,8 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
 <!-- 테일윈드 불러오기 -->
-<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+	rel="stylesheet">
 <!-- 제이쿼리 불러오기 -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -38,7 +39,7 @@
 var activeProfile = '${activeProfile}';
 <%="</script>"%>
 <%="<script>"%>
-var param = ${paramJson};
+var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 <%="</script>"%>
 
 <script>
@@ -85,7 +86,7 @@ var param = ${paramJson};
 		</div>
 	</div>
 	<div class="outer-box">
-		<div class="mobile-top-bar visible-on-sm-down flex flex flex-ai-c">
+		<div class="mobile-top-bar visible-on-sm-down flex flex-ai-c">
 			<a href="/usr/home/main" class="logo img-box">
 				<img src="/resource/img/logo_1@3x.png" alt="" />
 			</a>
@@ -103,6 +104,21 @@ var param = ${paramJson};
 			<a class="btn-toggle-mobile-side-bar">
 				<i class="fas fa-times"></i>
 				<i class="fas fa-bars"></i>
+			</a>
+			<a href="/usr/home/showMyPage" class="box w-10 h-10">
+				<c:if test="${isLogined}">
+					<c:choose>
+						<c:when test="${not empty fileForProfile}">
+							<img class="profile" src="${fileForProfile.forPrintGenUrl}"
+								alt="" />
+						</c:when>
+						<c:otherwise>
+							<span class="profile text-4xl text-green-500">
+								<i class="fas fa-user-circle"></i>
+							</span>
+						</c:otherwise>
+					</c:choose>
+				</c:if>
 			</a>
 		</div>
 		<div class="mobile-side-bar flex flex-ai-c">
@@ -158,7 +174,7 @@ var param = ${paramJson};
 				<img src="/resource/img/logo_1@3x.png" alt="" />
 			</a>
 			<nav class="menu-box-1">
-				<ul class="flex">
+				<ul class="flex flex-ai-c">
 					<c:if test="${isAdmin}">
 						<li class="padding-0-10">
 							<a class="btn btn-danger" href="/adm/home/showMyPage">관리자</a>
@@ -177,9 +193,9 @@ var param = ${paramJson};
 					</li>
 					<c:if test="${isLogined}">
 						<c:if test="${!isAdmin}">
-						<li class="padding-0-10">
-							<a href="/usr/home/showMyPage" class="btn btn-info">마이페이지</a>
-						</li>
+							<li class="padding-0-10">
+								<a href="/usr/home/showMyPage" class="btn btn-info">마이페이지</a>
+							</li>
 						</c:if>
 						<li class="padding-0-10">
 							<a class="btn btn-info"
@@ -189,6 +205,19 @@ var param = ${paramJson};
 						<li class="padding-0-10">
 							<a class="btn btn-info" href="/usr/member/doLogout">로그아웃</a>
 						</li>
+						<a href="/usr/home/showMyPage" class="box w-24 h-24">
+							<c:choose>
+								<c:when test="${not empty fileForProfile}">
+									<img class="profile" src="${fileForProfile.forPrintGenUrl}"
+										alt="" />
+								</c:when>
+								<c:otherwise>
+									<span class="profile text-8xl text-green-500">
+										<i class="fas fa-user-circle"></i>
+									</span>
+								</c:otherwise>
+							</c:choose>
+						</a>
 					</c:if>
 					<c:if test="${isLogined == false}">
 						<li class="padding-0-10">

@@ -89,6 +89,21 @@
 		ORDER BY fileNo
 	</select>
 
+	<select id="getFileRelTypeCodeAndRelIdAndTypeCodeAndType2Code"
+		resultType="File">
+		SELECT *
+		FROM file
+		WHERE 1
+		AND relId = #{relId}
+		AND relTypeCode
+		= #{relTypeCode}
+		AND typeCode = #{typeCode}
+		AND
+		type2Code = #{type2Code}
+		ORDER BY fileNo
+	</select>
+	
+	
 	<select id="getFileById" resultType="File">
 		SELECT *
 		FROM file

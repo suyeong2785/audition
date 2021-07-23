@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.quantom.audition.dto.File;
 import com.quantom.audition.dto.Member;
 import com.quantom.audition.dto.ResultData;
+import com.quantom.audition.service.FileService;
 import com.quantom.audition.service.MemberService;
 import com.quantom.audition.util.Util;
 
@@ -22,6 +24,9 @@ import com.quantom.audition.util.Util;
 public class MemberController {
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private FileService fileService;
 
 	@RequestMapping("/usr/member/findLoginInfo")
 	public String showFindLoginInfo() {
@@ -152,6 +157,11 @@ public class MemberController {
 
 		session.setAttribute("loginedMemberId", member.getId());
 		session.setAttribute("loginedDate", (String)Util.getNowDateStr());
+		
+		File fileForProfile = fileService.getFileRelTypeCodeAndRelIdAndTypeCodeAndType2Code("profile",
+				member.getId(), "common", "attachment");
+		
+		session.setAttribute("fileForProfile", fileForProfile);
 
 		if (redirectUri == null || redirectUri.length() == 0) {
 			redirectUri = "/usr/home/main";
@@ -174,6 +184,8 @@ public class MemberController {
 	@RequestMapping("/usr/member/doLogout")
 	public String doLogout(HttpSession session, Model model, String redirectUri) {
 		session.removeAttribute("loginedMemberId");
+		session.removeAttribute("loginedDate");
+		session.removeAttribute("fileForProfile");
 
 		if (redirectUri == null || redirectUri.length() == 0) {
 			redirectUri = "/usr/home/main";

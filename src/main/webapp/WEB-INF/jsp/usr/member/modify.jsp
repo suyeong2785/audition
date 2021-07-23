@@ -1,8 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="회원정보수정" />
 <%@ include file="../part/head.jspf"%>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 <script>
 	function MemberModifyForm__submit(form) {
 		if (isNowLoading()) {
@@ -100,14 +102,65 @@
 
 		form.loginPw.value = '';
 		form.loginPwConfirm.value = '';
+		
+		var fileNo = '<c:out value="${fileForProfile.fileNo}" />';
+		var loginedMemberId = '<c:out value="${loginedMemberId}" />';
+		
+		
+		var startUploadFiles = function(onSuccess) {
+			var needToUpload = false;
+
+			if (needToUpload == false
+					&& form["file__profile__" + loginedMemberId + "__common__attachment__" + fileNo ]) {
+				needToUpload = form["file__profile__" + loginedMemberId + "__common__attachment__" + fileNo ]
+						&& form["file__profile__" + loginedMemberId + "__common__attachment__" + fileNo ].value.length > 0;
+			}
+
+			if (needToUpload == false) {
+				onSuccess();
+				return;
+			}
+
+			var fileUploadFormData = new FormData(form);
+
+			$.ajax({
+				url : './../file/doUploadAjax',
+				data : fileUploadFormData,
+				processData : false,
+				contentType : false,
+				dataType : "json",
+				type : 'POST',
+				success : onSuccess
+			});
+		}
+
+		var startWriteApplyment = function(fileIdsStr) {
+
+	
+
+			form.submit();
+		};
+
+		startUploadFiles(function(data) {
+
+			var idsStr = '';
+			if (data && data.body && data.body.fileIdsStr) {
+				idsStr = data.body.fileIdsStr;
+			}
+
+			startWriteApplyment(idsStr);
+		});
 
 		form.submit();
 		startLoading();
 	}
 </script>
-<form method="POST" class="table-box table-box-vertical con form1" action="doModify" onsubmit="MemberModifyForm__submit(this); return false;">
+<form method="POST" class="table-box table-box-vertical con form1"
+	action="doModify"
+	onsubmit="MemberModifyForm__submit(this); return false;">
 	<input type="hidden" name="redirectUri" value="/usr/home/main">
 	<input type="hidden" name="loginPwReal">
+	<input type="hidden" name="fileIdsStr" value="${fileForProfile.id}">
 	<table>
 		<colgroup>
 			<col class="table-first-col">
@@ -123,7 +176,8 @@
 				<th>새 로그인 비번(선택)</th>
 				<td>
 					<div class="form-control-box">
-						<input type="password" placeholder="새 로그인 비밀번호를 입력해주세요." name="loginPw" maxlength="30" />
+						<input type="password" placeholder="새 로그인 비밀번호를 입력해주세요."
+							name="loginPw" maxlength="30" />
 					</div>
 				</td>
 			</tr>
@@ -131,7 +185,19 @@
 				<th>새 로그인 비번 확인(선택)</th>
 				<td>
 					<div class="form-control-box">
-						<input type="password" placeholder="새 로그인 비밀번호 확인을 입력해주세요." name="loginPwConfirm" maxlength="30" />
+						<input type="password" placeholder="새 로그인 비밀번호 확인을 입력해주세요."
+							name="loginPwConfirm" maxlength="30" />
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th>프로필 사진</th>
+				<td>
+					<div class="form-control-box">
+						<input id="modify-file" type="file"
+							accept="${appConfig.getAttachemntFileInputAccept('img')}"
+							name="file__profile__${loginedMemberId}__common__attachment__${fileForProfile.fileNo}" />
+						<img id="modify-profile" class="w-20" src="" alt="" />
 					</div>
 				</td>
 			</tr>
@@ -139,7 +205,8 @@
 				<th>이름</th>
 				<td>
 					<div class="form-control-box">
-						<input type="text" placeholder="이름을 입력해주세요." name="name" maxlength="20" value="${loginedMember.name.trim()}" />
+						<input type="text" placeholder="이름을 입력해주세요." name="name"
+							maxlength="20" value="${loginedMember.name.trim()}" />
 					</div>
 				</td>
 			</tr>
@@ -147,7 +214,8 @@
 				<th>활동명</th>
 				<td>
 					<div class="form-control-box">
-						<input type="text" placeholder="활동명 입력해주세요." name="nickname" maxlength="20" value="${loginedMember.nickname.trim()}" />
+						<input type="text" placeholder="활동명 입력해주세요." name="nickname"
+							maxlength="20" value="${loginedMember.nickname.trim()}" />
 					</div>
 				</td>
 			</tr>
@@ -155,7 +223,8 @@
 				<th>이메일</th>
 				<td>
 					<div class="form-control-box">
-						<input type="email" placeholder="이메일 입력해주세요." name="email" maxlength="50" value="${loginedMember.email.trim()}" />
+						<input type="email" placeholder="이메일 입력해주세요." name="email"
+							maxlength="50" value="${loginedMember.email.trim()}" />
 					</div>
 				</td>
 			</tr>
@@ -163,7 +232,8 @@
 				<th>휴대폰</th>
 				<td>
 					<div class="form-control-box">
-						<input type="tel" placeholder="휴대전화번호를 입력해주세요." name="cellphoneNo" maxlength="12" value="${loginedMember.cellphoneNo.trim()}" />
+						<input type="tel" placeholder="휴대전화번호를 입력해주세요." name="cellphoneNo"
+							maxlength="12" value="${loginedMember.cellphoneNo.trim()}" />
 					</div>
 				</td>
 			</tr>
@@ -171,10 +241,29 @@
 				<th>수정</th>
 				<td>
 					<button class="btn btn-primary" type="submit">수정</button>
-					<button class="btn btn-info" type="button" onclick="history.back();">취소</button>
+					<button class="btn btn-info" type="button"
+						onclick="history.back();">취소</button>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 </form>
+<script>
+	$('#modify-file').on('change', function() {
+
+		const files = $("#modify-file")[0].files;
+		const file = $("#modify-file")[0].files[0];
+
+		if (files.length != 0) {
+			const imgurl = URL.createObjectURL(file);
+			$('#modify-profile').attr("src", imgurl);
+
+			URL.revokeObjectURL(file);
+
+		} else {
+			//파일이 없는 경우 내용을 지워준다.
+			$('#modify-profile').attr("src", "");
+		}
+	});
+</script>
 <%@ include file="../part/foot.jspf"%>

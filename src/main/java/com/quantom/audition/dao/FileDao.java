@@ -31,6 +31,9 @@ public interface FileDao {
 
 	List<File> getFilesRelTypeCodeAndRelIdAndTypeCodeAndType2Code(@Param("relTypeCode") String relTypeCode,
 			@Param("relId") int relId, @Param("typeCode") String typeCode, @Param("type2Code") String type2Code);
+	
+	File getFileRelTypeCodeAndRelIdAndTypeCodeAndType2Code(@Param("relTypeCode") String relTypeCode,
+			@Param("relId") int relId, @Param("typeCode") String typeCode, @Param("type2Code") String type2Code);
 
 	Integer getFileId(@Param("relTypeCode") String relTypeCode, @Param("relId") int relId,
 			@Param("typeCode") String typeCode, @Param("type2Code") String type2Code, @Param("fileNo") int fileNo);
