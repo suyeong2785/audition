@@ -130,29 +130,20 @@
 				contentType : false,
 				dataType : "json",
 				type : 'POST',
-				success : onSuccess
+				success : function (data){
+					if(data.resultCode.startsWith('S')){
+						form.submit();
+						startLoading();
+					}else{
+						alert(data.msg);
+						return;
+					}
+					
+				}
 			});
 		}
-
-		var startWriteApplyment = function(fileIdsStr) {
-
-	
-
-			form.submit();
-		};
-
-		startUploadFiles(function(data) {
-
-			var idsStr = '';
-			if (data && data.body && data.body.fileIdsStr) {
-				idsStr = data.body.fileIdsStr;
-			}
-
-			startWriteApplyment(idsStr);
-		});
-
-		form.submit();
-		startLoading();
+		
+		startUploadFiles();
 	}
 </script>
 <form method="POST" class="table-box table-box-vertical con form1"
@@ -161,6 +152,7 @@
 	<input type="hidden" name="redirectUri" value="/usr/home/main">
 	<input type="hidden" name="loginPwReal">
 	<input type="hidden" name="fileIdsStr" value="${fileForProfile.id}">
+	<input type="hidden" name="relId" value="${loginedMember.id}">
 	<table>
 		<colgroup>
 			<col class="table-first-col">

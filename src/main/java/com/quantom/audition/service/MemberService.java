@@ -108,6 +108,11 @@ public class MemberService {
 		if (param.get("loginPw") != null) {
 			setNotUsingTempPassword(Util.getAsInt(param.get("id")));
 		}
+		
+		int fileIdsStr = Util.getAsInt(param.get("fileIdsStr"));
+		int relId = Util.getAsInt(param.get("relId"));
+		
+		fileService.changeRelId(fileIdsStr, relId);
 	}
 
 	public Member getMemberByNameAndEmail(String name, String email) {
