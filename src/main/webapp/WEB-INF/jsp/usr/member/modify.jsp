@@ -7,6 +7,22 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 <script>
 	function MemberModifyForm__submit(form) {
+
+		//url validation check 함수...
+		function validateUrl(value) {
+			return /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i
+					.test(value);
+		}
+
+		//YoutubeUrl validation check 함수...
+		function matchYoutubeUrl(url) {
+			var p = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+			if (url.match(p)) {
+				return url.match(p)[1];
+			}
+			return false;
+		}
+
 		if (isNowLoading()) {
 			alert('처리중입니다.');
 			return;
@@ -40,6 +56,17 @@
 				form.loginPwConfirm.focus();
 				alert('로그인 비밀번호 확인이 일치하지 않습니다.');
 
+				return;
+			}
+		}
+
+		form.youtubeUrl.value = form.youtubeUrl.value.trim();
+
+		if (form.youtubeUrl.value.length != 0) {
+			if (matchYoutubeUrl(form.youtubeUrl.value) == false) {
+				form.youtubeUrl.focus();
+				alert('youTube url형식에 맞게 입력해주세요.');
+				
 				return;
 			}
 		}
@@ -102,18 +129,20 @@
 
 		form.loginPw.value = '';
 		form.loginPwConfirm.value = '';
-		
+
 		var fileNo = '<c:out value="${fileForProfile.fileNo}" />';
 		var loginedMemberId = '<c:out value="${loginedMemberId}" />';
-		
-		
+
 		var startUploadFiles = function(onSuccess) {
 			var needToUpload = false;
 
 			if (needToUpload == false
-					&& form["file__profile__" + loginedMemberId + "__common__attachment__" + fileNo ]) {
-				needToUpload = form["file__profile__" + loginedMemberId + "__common__attachment__" + fileNo ]
-						&& form["file__profile__" + loginedMemberId + "__common__attachment__" + fileNo ].value.length > 0;
+					&& form["file__profile__" + loginedMemberId
+							+ "__common__attachment__" + fileNo]) {
+				needToUpload = form["file__profile__" + loginedMemberId
+						+ "__common__attachment__" + fileNo]
+						&& form["file__profile__" + loginedMemberId
+								+ "__common__attachment__" + fileNo].value.length > 0;
 			}
 
 			if (needToUpload == false) {
@@ -130,19 +159,19 @@
 				contentType : false,
 				dataType : "json",
 				type : 'POST',
-				success : function (data){
-					if(data.resultCode.startsWith('S')){
+				success : function(data) {
+					if (data.resultCode.startsWith('S')) {
 						form.submit();
 						startLoading();
-					}else{
+					} else {
 						alert(data.msg);
 						return;
 					}
-					
+
 				}
 			});
 		}
-		
+
 		startUploadFiles();
 	}
 </script>
@@ -190,6 +219,14 @@
 							accept="${appConfig.getAttachemntFileInputAccept('img')}"
 							name="file__profile__${loginedMemberId}__common__attachment__${fileForProfile.fileNo}" />
 						<img id="modify-profile" class="w-20" src="" alt="" />
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th>유튜브 url</th>
+				<td>
+					<div class="form-control-box">
+						<input id="modify-file" type="text" name="youtubeUrl" />
 					</div>
 				</td>
 			</tr>

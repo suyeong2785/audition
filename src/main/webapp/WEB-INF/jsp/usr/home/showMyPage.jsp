@@ -7,7 +7,58 @@
 <h2 class="con">프로필</h2>
 
 
-<div class="profile-box con border-2 border-black box-border">gg</div>
+<div class="profile-box con border-2 border-black box-border">
+
+	<div id="player" class="w-full h-80 md:h-96"></div>
+
+</div>
+
+<script>
+	//유튜브 url에서 videoid추출하는 함수 stackoverflow에서 찾음 제일간단...
+	function YouTubeGetID(url) {
+		url = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+		return (url[2] !== undefined) ? url[2].split(/[^0-9a-z_\-]/i)[0]
+				: url[0];
+	}
+
+	var tag = document.createElement('script');
+
+	tag.src = "https://www.youtube.com/iframe_api";
+	var firstScriptTag = document.getElementsByTagName('script')[0];
+	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+	var player;
+
+	function onYouTubeIframeAPIReady() {
+		player = new YT.Player('player', {
+			videoId : '0TQaYsgF7MY',
+			playerVars : {
+				'modestbranding' : 1,
+				'autoplay' : 1,
+				'controls' : 1,
+				'showinfo' : 1,
+				'rel' : 0,
+				'loop' : 1,
+				'playlist' : '0TQaYsgF7MY'
+			},
+			events : {
+				'onReady' : onPlayerReady,
+				'onStateChange' : onPlayerStateChange
+			}
+		});
+	}
+
+	function onPlayerReady(event) {
+		event.target.playVideo();
+	}
+
+	function onPlayerStateChange() {
+		if (player.getPlayerState() == 1)
+			console.log("재생중");
+		else if (player.getPlayerState() == 2)
+			console.log("일시중지");
+	}
+</script>
 
 <h2 class="con">지원한 공고들</h2>
 
@@ -21,7 +72,7 @@
 		<div class="toggle">
 			<div class="flex border-2 border-black box-border p-4">
 				<div class=" flex-1">${applymentResult.forPrintApplymentResult}</div>
-				
+
 			</div>
 		</div>
 	</c:forEach>
