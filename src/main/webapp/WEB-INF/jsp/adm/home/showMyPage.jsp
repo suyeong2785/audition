@@ -179,6 +179,7 @@
 	var loginedMemberId = '<c:out value="${loginedMemberId}"/>';	
 		
 	function getCastingDirectorList(){
+		
 		//양쪽 공백제거
 		var $director_search_input = $.trim($('#director-search-input').val());
 		
@@ -197,12 +198,18 @@
 	}
 	
 	function CastingDirectorList(data){
-		var members = data.body.members;
-
 		var $search_result = $('#search-result');
 		
 		//값 초기화
 		$('#search-result').empty();
+		
+		var members = null;
+		
+		if(data && data.body && data.body.members){
+			members = data.body.members;
+		}
+
+		var $search_result = $('#search-result');
 		
 		var html = '';
 		
@@ -265,8 +272,8 @@
 					data-display-status="0">
 					<div
 						class="flex justify-center text-center border-2 border-black box-border p-4">
-						<div class="flex-1">지원번호</div>
-						<div class="flex-1">이름/활동명</div>
+						<div class="flex-1">번호</div>
+						<div class="flex-1">활동명</div>
 						<div class="flex-1">성별</div>
 						<div class="flex-1">나이</div>
 						<div class="flex-1">추천수</div>

@@ -4,15 +4,6 @@
 <c:set var="pageTitle" value="마이 페이지" />
 <%@ include file="../part/head.jspf"%>
 
-<h2 class="con">프로필</h2>
-
-
-<div class="profile-box con border-2 border-black box-border">
-
-	<div id="player" class="w-full h-80 md:h-96"></div>
-
-</div>
-
 <script>
 	//유튜브 url에서 videoid추출하는 함수 stackoverflow에서 찾음 제일간단...
 	function YouTubeGetID(url) {
@@ -55,6 +46,16 @@
 	function onPlayerStateChange() {
 	}
 </script>
+
+<h2 class="con">자기소개 영상</h2>
+
+<div class="profile-box con border-2 border-black box-border">
+
+	<div id="player" class="w-full h-80 md:h-96"></div>
+
+</div>
+
+<h2 class="con">프로필</h2>
 
 <h2 class="con">지원한 공고들</h2>
 
