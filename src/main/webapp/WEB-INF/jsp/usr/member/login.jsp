@@ -57,7 +57,7 @@
 	}
 </script>
 <form method="POST" class="table-box table-box-vertical  con form1" action="doLogin"
-	onsubmit="MemberLoginForm__submit(this); return false;">
+	onsubmit="javascript:MemberLoginForm__submit(this); return false;">
 	<input type="hidden" name="redirectUri" value="${param.redirectUri}">
 	<input type="hidden" name="loginPwReal">
 

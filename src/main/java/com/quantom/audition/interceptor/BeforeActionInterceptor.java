@@ -14,6 +14,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import com.quantom.audition.config.AppConfig;
 import com.quantom.audition.dto.File;
 import com.quantom.audition.dto.Member;
+import com.quantom.audition.service.FileService;
 import com.quantom.audition.service.MemberService;
 import com.quantom.audition.util.Util;
 
@@ -27,6 +28,9 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private FileService fileService;
 
 	@Autowired
 	private AppConfig appConfig;
@@ -100,10 +104,15 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 			loginedDate = (String) session.getAttribute("loginedDate");
 			isLogined = true;
 			loginedMember = memberService.getMemberById(loginedMemberId);
-			fileForProfile = (File) session.getAttribute("fileForProfile");
-			
+
 			isAdmin = loginedMember.isAdmin();
-			isCastingDirector= loginedMember.isCastingDirector();
+			isCastingDirector= loginedMember.isCastingDirector();		
+			
+			if(fileService.getFileRelTypeCodeAndRelIdAndTypeCodeAndType2Code("profile",
+					loginedMemberId, "common", "attachment") != null) {
+				fileForProfile = fileService.getFileRelTypeCodeAndRelIdAndTypeCodeAndType2Code("profile",
+						loginedMemberId, "common", "attachment");
+			};
 		}
 
 		request.setAttribute("loginedMemberId", loginedMemberId);

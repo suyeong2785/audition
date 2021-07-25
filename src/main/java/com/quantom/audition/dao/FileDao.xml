@@ -37,6 +37,7 @@
 			<if test="fileExtType2Code != null">fileExtType2Code = #{fileExtType2Code},</if>
 		</set>
 		WHERE id = #{id}
+		AND delStatus = 0
 	</update>
 
 	<select
@@ -55,6 +56,7 @@
 		AND
 		type2Code = #{type2Code}
 		AND fileNo = #{fileNo}
+		AND delStatus = 0
 		ORDER BY relId
 	</select>
 
@@ -72,6 +74,7 @@
 		AND typeCode = #{typeCode}
 		AND
 		type2Code = #{type2Code}
+		AND delStatus = 0
 		ORDER BY relId, fileNo
 	</select>
 
@@ -86,6 +89,7 @@
 		AND typeCode = #{typeCode}
 		AND
 		type2Code = #{type2Code}
+		AND delStatus = 0
 		ORDER BY fileNo
 	</select>
 
@@ -100,6 +104,7 @@
 		AND typeCode = #{typeCode}
 		AND
 		type2Code = #{type2Code}
+		AND delStatus = 0
 		ORDER BY fileNo
 	</select>
 	
@@ -110,6 +115,7 @@
 		WHERE 1
 		AND
 		id = #{id}
+		AND delStatus = 0
 	</select>
 
 	<update id="changeRelId">
@@ -117,6 +123,7 @@
 		SET	updateDate = NOW(),
 		relId = #{relId}
 		WHERE id = #{id}
+		AND delStatus = 0
 	</update>
 
 	<update id="deleteFiles">
@@ -145,5 +152,6 @@
 		#{typeCode}
 		AND type2Code = #{type2Code}
 		AND fileNo = #{fileNo}
+		AND delStatus = 0
 	</select>
 </mapper>

@@ -157,11 +157,6 @@ public class MemberController {
 
 		session.setAttribute("loginedMemberId", member.getId());
 		session.setAttribute("loginedDate", (String)Util.getNowDateStr());
-		
-		File fileForProfile = fileService.getFileRelTypeCodeAndRelIdAndTypeCodeAndType2Code("profile",
-				member.getId(), "common", "attachment");
-		
-		session.setAttribute("fileForProfile", fileForProfile);
 
 		if (redirectUri == null || redirectUri.length() == 0) {
 			redirectUri = "/usr/home/main";
@@ -222,6 +217,7 @@ public class MemberController {
 
 		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
 		param.put("id", loginedMemberId);
+		
 		memberService.modify(param);
 
 		String redirectUri = (String) param.get("redirectUri");

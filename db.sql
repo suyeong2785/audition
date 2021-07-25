@@ -449,6 +449,11 @@ ALTER TABLE `share`
 CHANGE COLUMN actorId requesterId INT UNSIGNED NOT NULL,
 CHANGE COLUMN targetId requesteeId INT UNSIGNED NOT NULL;
 
+# 자기소개 영상 youtube URL을 member정보에 추가
+ALTER TABLE `member`
+ADD COLUMN `youTubeUrl` VARCHAR(100) NOT NULL AFTER cellphoneNo;
+
+
 
 /*
 select * from `file`;

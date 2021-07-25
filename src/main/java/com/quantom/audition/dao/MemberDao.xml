@@ -72,6 +72,7 @@
 			<if test="nickname != null and nickname.length() > 0">`nickname` = #{nickname},</if>
 			<if test="email != null and email.length() > 0">`email` = #{email},</if>
 			<if test="cellphoneNo != null and cellphoneNo.length() > 0">`cellphoneNo` = #{cellphoneNo},</if>
+			<if test="youtubeUrl != null and youtubeUrl.length() > 0">`youtubeUrl` = #{youtubeUrl},</if>
 			<if test="loginPw != null and loginPw.length() > 0">`loginPw` = #{loginPw},</if>
 		</set>
 		WHERE id = #{id}

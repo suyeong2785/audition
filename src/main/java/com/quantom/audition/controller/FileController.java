@@ -352,4 +352,23 @@ public class FileController {
 		return new ResultData("S-1", String.format("%d개의 파일을 저장했습니다. %d개의 파일을 삭제했습니다.", fileIds.size(), deleteCount),
 				rsDataBody);
 	}
+
+	@RequestMapping("/usr/file/doDeleteAjax")
+	@ResponseBody
+	public ResultData doDeleteAjax(@RequestParam Map<String, Object> param, HttpServletRequest req,
+			MultipartRequest multipartRequest) {
+		
+		int deleteCheck = Util.getAsInt(param.get("deleteCheck"));
+		int fileIdsStr = Util.getAsInt(param.get("fileIdsStr"));
+
+		if (deleteCheck == 1) {
+			if(fileIdsStr != 0) {
+				fileService.deleteFile(Util.getAsInt(param.get("fileIdsStr")));
+				return new ResultData("S-1",String.format("%d번 파일을 삭제했습니다.", fileIdsStr));
+			}
+			return new ResultData("F-1","파일번호를 입력해주세요.");
+		}
+		return new ResultData("F-2",String.format("파일삭제 체크박스가 체크되지 않았습니다."));
+		
+	}
 }

@@ -7,21 +7,13 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 <script>
 	function MemberModifyForm__submit(form) {
-
-		//url validation check 함수...
+		
+		/*url validation check 함수...
 		function validateUrl(value) {
 			return /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i
 					.test(value);
 		}
-
-		//YoutubeUrl validation check 함수...
-		function matchYoutubeUrl(url) {
-			var p = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
-			if (url.match(p)) {
-				return url.match(p)[1];
-			}
-			return false;
-		}
+		*/
 
 		if (isNowLoading()) {
 			alert('처리중입니다.');
@@ -59,17 +51,29 @@
 				return;
 			}
 		}
-
+		
+		//YoutubeUrl validation check 함수...
+		function matchYoutubeUrl(url) {
+			var p = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+			if (url.match(p)) {
+				return url.match(p)[1];
+			}
+			return false;
+		}
+		
 		form.youtubeUrl.value = form.youtubeUrl.value.trim();
 
 		if (form.youtubeUrl.value.length != 0) {
 			if (matchYoutubeUrl(form.youtubeUrl.value) == false) {
 				form.youtubeUrl.focus();
 				alert('youTube url형식에 맞게 입력해주세요.');
-				
+
 				return;
 			}
+			
 		}
+		
+		
 
 		form.name.value = form.name.value.trim();
 
@@ -130,11 +134,12 @@
 		form.loginPw.value = '';
 		form.loginPwConfirm.value = '';
 
-		var fileNo = '<c:out value="${fileForProfile.fileNo}" />';
+		var fileNo = '<c:out value="${fileForProfile != null ? fileForProfile.fileNo : 0}" />';
 		var loginedMemberId = '<c:out value="${loginedMemberId}" />';
 
 		var startUploadFiles = function(onSuccess) {
 			var needToUpload = false;
+			var needToDelete = form.deleteCheck.value;
 
 			if (needToUpload == false
 					&& form["file__profile__" + loginedMemberId
@@ -145,42 +150,55 @@
 								+ "__common__attachment__" + fileNo].value.length > 0;
 			}
 
-			if (needToUpload == false) {
+			if (needToUpload == false && needToDelete == -1) {
 				onSuccess();
 				return;
 			}
 
 			var fileUploadFormData = new FormData(form);
 
-			$.ajax({
-				url : './../file/doUploadAjax',
-				data : fileUploadFormData,
-				processData : false,
-				contentType : false,
-				dataType : "json",
-				type : 'POST',
-				success : function(data) {
-					if (data.resultCode.startsWith('S')) {
-						form.submit();
-						startLoading();
-					} else {
-						alert(data.msg);
-						return;
-					}
+			if (needToDelete == -1) {
+				$.ajax({
+					url : './../file/doUploadAjax',
+					data : fileUploadFormData,
+					processData : false,
+					contentType : false,
+					dataType : "json",
+					type : 'POST',
+					success : onSuccess
+				});
+			} else {
+				$.ajax({
+					url : './../file/doDeleteAjax',
+					data : fileUploadFormData,
+					processData : false,
+					contentType : false,
+					dataType : "json",
+					type : 'POST',
+					success : onSuccess
+				});
+			}
 
-				}
-			});
 		}
 
-		startUploadFiles();
+		startUploadFiles(function(data) {
+
+			if (data && data.body && data.body.fileIdsStr) {
+				form.fileIdsStr.value = data.body.fileIdsStr;
+				form.submit();
+			}
+
+			form.submit();
+		});
 	}
 </script>
 <form method="POST" class="table-box table-box-vertical con form1"
 	action="doModify"
-	onsubmit="MemberModifyForm__submit(this); return false;">
+	onsubmit="javascript:MemberModifyForm__submit(this); return false;">
 	<input type="hidden" name="redirectUri" value="/usr/home/main">
 	<input type="hidden" name="loginPwReal">
-	<input type="hidden" name="fileIdsStr" value="${fileForProfile.id}">
+	<input type="hidden" name="fileIdsStr"
+		value="${fileForProfile != null ? fileForProfile.id : 0 }">
 	<input type="hidden" name="relId" value="${loginedMember.id}">
 	<table>
 		<colgroup>
@@ -214,11 +232,22 @@
 			<tr>
 				<th>프로필 사진</th>
 				<td>
-					<div class="form-control-box">
-						<input id="modify-file" type="file"
-							accept="${appConfig.getAttachemntFileInputAccept('img')}"
-							name="file__profile__${loginedMemberId}__common__attachment__${fileForProfile.fileNo}" />
-						<img id="modify-profile" class="w-20" src="" alt="" />
+					<div class="flex">
+						<div>
+							<input id="modify-file" type="file" class="pb-4"
+								accept="${appConfig.getAttachemntFileInputAccept('img')}"
+								name="file__profile__${loginedMemberId}__common__attachment__${fileForProfile != null ? fileForProfile.fileNo : 0 }" />
+							<img id="modify-profile" class="w-20" src="" alt="" />
+						</div>
+						<c:if test="${fileForProfile != null}">
+							<div>
+								<label>프로필 삭제</label>
+								<input type="checkbox" onclick="changeDeleteCheck()" />
+							</div>
+						</c:if>
+						<input type="hidden" id="delete-check" name="deleteCheck"
+							value="-1" />
+
 					</div>
 				</td>
 			</tr>
@@ -226,7 +255,7 @@
 				<th>유튜브 url</th>
 				<td>
 					<div class="form-control-box">
-						<input id="modify-file" type="text" name="youtubeUrl" />
+						<input type="text" name="youtubeUrl" />
 					</div>
 				</td>
 			</tr>
@@ -294,5 +323,14 @@
 			$('#modify-profile').attr("src", "");
 		}
 	});
+
+	function changeDeleteCheck() {
+
+		if ($('#delete-check').val() == 1) {
+			$('#delete-check').val(-1);
+		} else {
+			$('#delete-check').val(1);
+		}
+	}
 </script>
 <%@ include file="../part/foot.jspf"%>

@@ -18,6 +18,7 @@ public class Member {
 	private boolean authStatus;
 	private int authority;
 	private String loginId;
+	private String youTubeUrl;
 
 	@JsonIgnore
 	private String loginPw;
