@@ -453,7 +453,16 @@ CHANGE COLUMN targetId requesteeId INT UNSIGNED NOT NULL;
 ALTER TABLE `member`
 ADD COLUMN `youTubeUrl` VARCHAR(100) NOT NULL AFTER cellphoneNo;
 
-
+#경력db 생성
+CREATE TABLE career(
+id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+regDate DATETIME NOT NULL,
+updateDate DATETIME NOT NULL,
+jobId INT UNSIGNED NOT NULL,
+careerDate DATETIME NOT NULL,
+memberId INT UNSIGNED NOT NULL,
+`body` VARCHAR(50) NOT NULL
+);
 
 /*
 select * from `file`;
@@ -465,5 +474,6 @@ SELECT * FROM `artwork`;
 select * from `member`;
 select * from `attr`;
 select * from  reply;
+select * from `career`;
 select * from  share;
 */

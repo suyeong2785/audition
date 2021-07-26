@@ -6,14 +6,85 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 <script>
-	function MemberModifyForm__submit(form) {
+	var checkCareerBoxResult = function(form) {
+		var dateNeedToStop = 0;
+		let dates = $("input[name='careerDate']").each(
+				function(index, item) {
+					//alert(" $.trim($(this).val()) : " + $.trim($(this).val()));
+					if ($.trim($(this).val()) != ""
+							&& $.trim($(this).val()) != null) {
+						return true;
+					}
+
+					alert('경력날짜의 ' + (index + 1) + '번째 칸이 비어있습니다.');
+					dateNeedToStop = 1;
+					$(this).focus();
+					return false;
+				});
+
+		if (dateNeedToStop == 1) {
+			return -1;
+		}
+
+		var dateSize = dates.length;
+
+		var artworkNeedToStop = 0;
+		let artworks = $("input[name='careerArtwork']").each(
+				function(index, item) {
+					//alert(" $.trim($(this).val()) : " + $.trim($(this).val()));
+					if ($.trim($(this).val()) != ""
+							&& $.trim($(this).val()) != null) {
+						return true;
+					}
+
+					alert('경력내용의 ' + (index + 1) + '번째 칸이 비어있습니다.');
+					artworkNeedToStop = 1;
+					$(this).focus();
+					return false;
+				});
+
+		if (artworkNeedToStop == 1) {
+			return -1;
+		}
 		
+		dates = $("input[name='careerDate']").map(
+				function(index, element) {
+					//alert(" $.trim($(this).val()) : " + $.trim($(this).val()));
+					if ($.trim($(this).val()) != ""
+							&& $.trim($(this).val()) != null) {
+						return $.trim($(this).val());
+					}
+				}).get().join(',');
+
+		artworks = $("input[name='careerArtwork']").map(
+				function(index, element) {
+					//alert(" $.trim($(this).val()) : " + $.trim($(this).val()));
+					if ($.trim($(this).val()) != ""
+							&& $.trim($(this).val()) != null) {
+						return $.trim($(this).val());
+					}
+				}).get().join(',');
+		
+		alert('artworks : ' + artworks);
+		alert('dates : ' + dates);
+		
+		form.careerDates.value = dates;
+		form.careerArtworks.value = artworks;
+		
+		alert('form.careerDates.value : ' + form.careerDates.value);
+		alert('form.careerArtworks.value : ' + form.careerArtworks.value);
+
+		return -1;
+	}
+
+	function MemberModifyForm__submit(form) {
+
 		/*url validation check 함수...
 		function validateUrl(value) {
 			return /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i
 					.test(value);
 		}
-		*/
+		 */
 
 		if (isNowLoading()) {
 			alert('처리중입니다.');
@@ -51,7 +122,7 @@
 				return;
 			}
 		}
-		
+
 		//YoutubeUrl validation check 함수...
 		function matchYoutubeUrl(url) {
 			var p = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
@@ -60,7 +131,7 @@
 			}
 			return false;
 		}
-		
+
 		form.youtubeUrl.value = form.youtubeUrl.value.trim();
 
 		if (form.youtubeUrl.value.length != 0) {
@@ -70,9 +141,9 @@
 
 				return;
 			}
-			
+
 		}
-		
+
 		form.name.value = form.name.value.trim();
 
 		if (form.name.value.length == 0) {
@@ -122,6 +193,14 @@
 			form.cellphoneNo.focus();
 			alert('휴대전화번호를 정확히 입력해주세요.');
 
+			return;
+		}
+		var result = 1;
+		if ($('#career-box-switch').data("displayStatus") == 1) {
+			result = checkCareerBoxResult(form);
+		}
+
+		if (result == -1) {
 			return;
 		}
 
@@ -198,6 +277,8 @@
 	<input type="hidden" name="fileIdsStr"
 		value="${fileForProfile != null ? fileForProfile.id : 0 }">
 	<input type="hidden" name="relId" value="${loginedMember.id}">
+	<input type="hidden" name="careerDates" />
+	<input type="hidden" name="careerArtworks" />
 	<table>
 		<colgroup>
 			<col class="table-first-col">
@@ -293,6 +374,17 @@
 					</div>
 				</td>
 			</tr>
+			<tr>
+				<th>출연작품</th>
+				<td class="relative flex items-center">
+					<button type="button" class="absolute top-50 text-2xl"
+						id="career-box-switch" data-displayStatus=-1
+						onclick="javascript:showCareerBox()">
+						<i class="far fa-plus-square"></i>
+					</button>
+					<div class="career-box hidden relative"></div>
+				</td>
+			</tr>
 			<tr class="tr-do">
 				<th>수정</th>
 				<td>
@@ -329,6 +421,66 @@
 		} else {
 			$('#delete-check').val(1);
 		}
+	}
+
+	function addCareerBox() {
+
+		let html = '';
+
+		html += '<div class="career-input flex items-center">';
+		html += '<div>';
+		html += '<input type="date" name="careerDate" />';
+		html += '</div>';
+		html += '<div>';
+		html += '<input name="careerArtwork" type="text" placeholder="작품명 입력해주세요." maxlength="20" />';
+		html += '</div>';
+		html += '<button class="text-2xl" onclick="removeCareerBox(this)">';
+		html += '<i class="far fa-minus-square"></i>';
+		html += '</button>';
+		html += '</div>';
+
+		$('#career-input-box').append(html);
+
+	}
+
+	function removeCareerBox(val) {
+		$(val).closest("div.career-input").remove();
+	}
+
+	function removeCareerBoxAndShowSwitch(val) {
+		$('#career-box-switch').data("displayStatus", -1);
+		$('#career-box-switch').css("display", "block");
+
+		$('.career-box').css("display", "none");
+		$('.career-box').empty();
+
+	}
+
+	function showCareerBox() {
+		$('#career-box-switch').data("displayStatus", 1);
+		$('#career-box-switch').css("display", "none");
+
+		html = '';
+
+		html += '<button type="button" class="absolute top-0 text-2xl" onclick="javascript:addCareerBox()">';
+		html += '<i class="far fa-plus-square"></i>';
+		html += '</button>';
+		html += '<div id="career-input-box" class="pl-8">';
+		html += '<div class="career-input flex items-center">';
+		html += '<div>';
+		html += '<input name="careerDate" type="date" />';
+		html += '</div>';
+		html += '<div>';
+		html += '<input name="careerArtwork" type="text" placeholder="작품명 입력해주세요." name="career" maxlength="20" />';
+		html += '</div>';
+		html += '<button type="button" class="text-2xl" onclick="javascript:removeCareerBoxAndShowSwitch(this)">';
+		html += '<i class="far fa-trash-alt"></i>';
+		html += '</button>';
+		html += '</div>';
+		html += '</div>';
+
+		$('.career-box').prepend(html);
+		$('.career-box').css("display", "flex");
 	}
 </script>
 <%@ include file="../part/foot.jspf"%>

@@ -133,7 +133,6 @@
 <script>
 	function doModifyShareAnswer(answer, share_id){
 		var $requesterName = $('.share-request-list div[id='+ share_id +']').data("requesterName"); 
-		alert("$requesterName : " + $requesterName);
 	
 		if(answer == 1){
 			alert($requesterName + '님의 지원자 공유를 받는것을 수락하셨습니다.');
@@ -247,6 +246,8 @@
 		},function (data){
 			alert(data.msg);
 		},'json');
+		
+		location.reload();
 	}
 </script>
 

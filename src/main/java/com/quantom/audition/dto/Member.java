@@ -17,8 +17,10 @@ public class Member {
 	private String delDate;
 	private boolean authStatus;
 	private int authority;
+	private int age;
 	private String loginId;
 	private String youTubeUrl;
+	private String gender;
 
 	@JsonIgnore
 	private String loginPw;
