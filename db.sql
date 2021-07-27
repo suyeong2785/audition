@@ -459,14 +459,34 @@ id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 regDate DATETIME NOT NULL,
 updateDate DATETIME NOT NULL,
 jobId INT UNSIGNED NOT NULL,
-careerDate DATETIME NOT NULL,
+`date` DATETIME NOT NULL,
 memberId INT UNSIGNED NOT NULL,
-`body` VARCHAR(50) NOT NULL
+artwork TEXT NOT NULL
 );
+
+ALTER TABLE `career`
+ADD COLUMN delDate DATETIME NULL AFTER updateDate,
+ADD COLUMN delStatus TINYINT DEFAULT 0 NOT NULL AFTER delDate;
+
+#member 테이블에 jobId 생성
+ALTER TABLE `member`
+ADD COLUMN jobId TINYINT NOT NULL DEFAULT 0 AFTER authority;
+
+UPDATE `member` SET `jobId` = '1' WHERE `id` = '3'; 
+
+INSERT INTO `job`
+SET regDate = NOW(),
+updateDAte = NOW(),
+`code` = 'castingDirector',
+`name` = '캐스팅디렉터';
+
+UPDATE `member` SET `jobId` = '2' WHERE `id` = '2'; 
+UPDATE `member` SET `jobId` = '2' WHERE `id` = '4'; 
+
 
 /*
 select * from `file`;
-SELECT * FROM `job`;
+`member``member`
 SELECT * FROM `actingRole`;
 SELECT * FROM `recruitment`;
 SELECT * FROM `applyment`;

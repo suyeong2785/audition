@@ -17,6 +17,7 @@ public class Member {
 	private String delDate;
 	private boolean authStatus;
 	private int authority;
+	private int jobId;
 	private int age;
 	private String loginId;
 	private String youTubeUrl;

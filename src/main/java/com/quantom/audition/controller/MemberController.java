@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.quantom.audition.dto.Career;
 import com.quantom.audition.dto.File;
 import com.quantom.audition.dto.Member;
 import com.quantom.audition.dto.ResultData;
+import com.quantom.audition.service.CareerService;
 import com.quantom.audition.service.FileService;
 import com.quantom.audition.service.MemberService;
 import com.quantom.audition.util.Util;
@@ -27,6 +29,9 @@ public class MemberController {
 	
 	@Autowired
 	private FileService fileService;
+	
+	@Autowired
+	private CareerService careerService;
 
 	@RequestMapping("/usr/member/findLoginInfo")
 	public String showFindLoginInfo() {
@@ -192,7 +197,9 @@ public class MemberController {
 
 	@RequestMapping("/usr/member/modify")
 	public String showModify(HttpSession session, Model model, HttpServletRequest req, String checkPasswordAuthCode) {
+		Member loginedMember = (Member) req.getAttribute("loginedMember");
 		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+		
 		ResultData checkValidCheckPasswordAuthCodeResultData = memberService
 				.checkValidCheckPasswordAuthCode(loginedMemberId, checkPasswordAuthCode);
 
@@ -207,6 +214,13 @@ public class MemberController {
 			model.addAttribute("msg", checkValidCheckPasswordAuthCodeResultData.getMsg());
 			return "common/redirect";
 		}
+		
+		Career career = careerService.getCareerByMember(loginedMemberId, loginedMember.getJobId());
+		if(career != null) {
+			Map<String,String> joinedCareer = careerService.getDatesAndArtworkOfCareerByMember(loginedMemberId,loginedMember.getJobId());
+
+			model.addAttribute("joinedCareer", joinedCareer);
+		}
 
 		return "usr/member/modify";
 	}
@@ -215,8 +229,10 @@ public class MemberController {
 	public String doWrite(@RequestParam Map<String, Object> param, Model model, HttpServletRequest req) {
 		Util.changeMapKey(param, "loginPwReal", "loginPw");
 
+		Member loginedMember = (Member) req.getAttribute("loginedMember");
 		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
 		param.put("id", loginedMemberId);
+		param.put("jobId", loginedMember.getJobId());
 		
 		memberService.modify(param);
 

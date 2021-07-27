@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quantom.audition.dao.CareerDao">
+
+	<insert id="setCareer" useGeneratedKeys="true" keyProperty="id">
+		INSERT
+		INTO `career`
+		SET regDate = NOW(),
+		updateDate = NOW(),
+		jobId = #{jobId},
+		date = #{date},
+		memberId = #{memberId},
+		artwork = #{artwork}
+	</insert>
+	
+	<select id="getCareerByMember" resultType="Career">
+		SELECT
+		* FROM career
+		WHERE memberId = #{memberId}
+		AND jobId = #{jobId}
+		
+	</select>
+	
+	<update id="modifyCareerByMemberIdAndJobId">
+		UPDATE career
+		SET updateDate = NOW(),
+		date = #{date},
+		artwork = #{artwork}
+		WHERE memberId = #{memberId}
+		AND jobId = #{jobId}
+		AND id = #{id}
+	</update>
+	
+	
+</mapper>

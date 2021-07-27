@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.quantom.audition.dao.MemberDao;
+import com.quantom.audition.dto.Career;
 import com.quantom.audition.dto.Member;
 import com.quantom.audition.dto.ResultData;
 import com.quantom.audition.dto.Share;
@@ -33,6 +34,8 @@ public class MemberService {
 	private ShareService shareService;
 	@Autowired
 	private FileService fileService;
+	@Autowired
+	private CareerService careerService;
 
 	public Member getMemberById(int id) {
 		return memberDao.getMemberById(id);
@@ -123,6 +126,26 @@ public class MemberService {
 				fileService.changeRelId(fileId, relId);
 			}
 		}
+		
+		Util.changeMapKey(param, "careerDates","date");
+		Util.changeMapKey(param, "careerArtworks","artwork");
+		Util.changeMapKey(param, "id","memberId");
+		
+		System.out.println("careerDates : " + param.get("careerDates") );
+		System.out.println("careerArtworks : " + param.get("careerArtworks") );
+		
+		int memberId = Util.getAsInt(param.get("memberId"));
+		int jobId = Util.getAsInt(param.get("jobId"));
+		
+		Career career = careerService.getCareerByMember(memberId, jobId);
+	
+		if (career == null) {
+			careerService.setCareer(param);
+		}else {
+			param.put("id", career.getId());
+			careerService.modifyCareerByMemberIdAndJobId(param);
+		}
+		
 	}
 
 	public Member getMemberByNameAndEmail(String name, String email) {

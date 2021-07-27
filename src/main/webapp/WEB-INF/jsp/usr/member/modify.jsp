@@ -8,19 +8,16 @@
 <script>
 	var checkCareerBoxResult = function(form) {
 		var dateNeedToStop = 0;
-		let dates = $("input[name='careerDate']").each(
-				function(index, item) {
-					//alert(" $.trim($(this).val()) : " + $.trim($(this).val()));
-					if ($.trim($(this).val()) != ""
-							&& $.trim($(this).val()) != null) {
-						return true;
-					}
+		let dates = $("input[name='careerDate']").each(function(index, item) {
+			if ($.trim($(this).val()) != "" && $.trim($(this).val()) != null) {
+				return true;
+			}
 
-					alert('경력날짜의 ' + (index + 1) + '번째 칸이 비어있습니다.');
-					dateNeedToStop = 1;
-					$(this).focus();
-					return false;
-				});
+			alert('경력날짜의 ' + (index + 1) + '번째 칸이 비어있습니다.');
+			dateNeedToStop = 1;
+			$(this).focus();
+			return false;
+		});
 
 		if (dateNeedToStop == 1) {
 			return -1;
@@ -31,7 +28,6 @@
 		var artworkNeedToStop = 0;
 		let artworks = $("input[name='careerArtwork']").each(
 				function(index, item) {
-					//alert(" $.trim($(this).val()) : " + $.trim($(this).val()));
 					if ($.trim($(this).val()) != ""
 							&& $.trim($(this).val()) != null) {
 						return true;
@@ -46,35 +42,27 @@
 		if (artworkNeedToStop == 1) {
 			return -1;
 		}
-		
-		dates = $("input[name='careerDate']").map(
-				function(index, element) {
-					//alert(" $.trim($(this).val()) : " + $.trim($(this).val()));
-					if ($.trim($(this).val()) != ""
-							&& $.trim($(this).val()) != null) {
-						return $.trim($(this).val());
-					}
-				}).get().join(',');
+
+		dates = $("input[name='careerDate']").map(function(index, element) {
+			if ($.trim($(this).val()) != "" && $.trim($(this).val()) != null) {
+				return $.trim($(this).val());
+			}
+		}).get().join(",");
 
 		artworks = $("input[name='careerArtwork']").map(
 				function(index, element) {
-					//alert(" $.trim($(this).val()) : " + $.trim($(this).val()));
 					if ($.trim($(this).val()) != ""
 							&& $.trim($(this).val()) != null) {
 						return $.trim($(this).val());
 					}
-				}).get().join(',');
-		
-		alert('artworks : ' + artworks);
-		alert('dates : ' + dates);
-		
+				}).get().join(",");
+
 		form.careerDates.value = dates;
 		form.careerArtworks.value = artworks;
-		
+
 		alert('form.careerDates.value : ' + form.careerDates.value);
 		alert('form.careerArtworks.value : ' + form.careerArtworks.value);
 
-		return -1;
 	}
 
 	function MemberModifyForm__submit(form) {
@@ -196,7 +184,7 @@
 			return;
 		}
 		var result = 1;
-		if ($('#career-box-switch').data("displayStatus") == 1) {
+		if ($('#career-box-switch').data("displayStatus") == -1) {
 			result = checkCareerBoxResult(form);
 		}
 
@@ -279,9 +267,10 @@
 	<input type="hidden" name="relId" value="${loginedMember.id}">
 	<input type="hidden" name="careerDates" />
 	<input type="hidden" name="careerArtworks" />
+	<input type="hidden" name="jobId" value="1" />
 	<table>
 		<colgroup>
-			<col class="table-first-col">
+			<col class="w-40">
 		</colgroup>
 		<tbody>
 			<tr>
@@ -374,15 +363,44 @@
 					</div>
 				</td>
 			</tr>
-			<tr>
-				<th>출연작품</th>
+			<tr id="activity-box">
+				<th>
+					<span>활동이력</span>
+				</th>
 				<td class="relative flex items-center">
 					<button type="button" class="absolute top-50 text-2xl"
 						id="career-box-switch" data-displayStatus=-1
 						onclick="javascript:showCareerBox()">
 						<i class="far fa-plus-square"></i>
 					</button>
-					<div class="career-box hidden relative"></div>
+					<div class="career-box hidden relative">
+						<c:if test="${joinedCareer != null}">
+							<button type="button" class="absolute top-0 text-2xl"
+								onclick="javascript:addCareerBox()">
+								<i class="far fa-plus-square"></i>
+							</button>
+
+							<div id="career-input-box" class="pl-8">
+								<c:forEach items="${joinedCareer}" var="career"
+									varStatus="status">
+									<div class="career-input flex items-center">
+										<div>
+											<input name="careerDate" type="date" value="${career.key}" />
+										</div>
+										<div>
+											<input name="careerArtwork" type="text"
+												placeholder="작품명 입력해주세요." name="career" maxlength="20"
+												value="${career.value}" />
+										</div>
+										<button type="button" class="text-2xl"
+											onclick="javascript:removeCareerBoxAndShowSwitch(this)">
+											<i class="far fa-trash-alt"></i>
+										</button>
+									</div>
+								</c:forEach>
+							</div>
+						</c:if>
+					</div>
 				</td>
 			</tr>
 			<tr class="tr-do">
@@ -397,6 +415,17 @@
 	</table>
 </form>
 <script>
+	$(function() {
+		var joinedCareer = '<c:out value="${joinedCareer}" />';
+		
+		if(joinedCareer != null && joinedCareer != "" ){
+			$('#career-box-switch').data("displayStatus",-1);
+			$('#career-box-switch').css("display", "none");
+			$('.career-box').css("display", "block");
+		}
+		
+	});
+
 	$('#modify-file').on('change', function() {
 
 		const files = $("#modify-file")[0].files;
@@ -448,7 +477,7 @@
 	}
 
 	function removeCareerBoxAndShowSwitch(val) {
-		$('#career-box-switch').data("displayStatus", -1);
+		$('#career-box-switch').data("displayStatus", 1);
 		$('#career-box-switch').css("display", "block");
 
 		$('.career-box').css("display", "none");
@@ -457,7 +486,7 @@
 	}
 
 	function showCareerBox() {
-		$('#career-box-switch').data("displayStatus", 1);
+		$('#career-box-switch').data("displayStatus", -1);
 		$('#career-box-switch').css("display", "none");
 
 		html = '';
