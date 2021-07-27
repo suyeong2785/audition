@@ -130,6 +130,12 @@ var param = ${paramJson};
 					</li>
 					<c:if test="${isLogined}">
 						<li class="padding-0-10">
+							<a class="btn btn-info" href="/adm/member/searchActor">배우검색</a>
+						</li>
+						<li class="padding-0-10">
+							<a class="btn btn-info" href="/adm/member/addActor">배우추가</a>
+						</li>
+						<li class="padding-0-10">
 							<a class="btn btn-info" href="/adm/home/showMyPage">마이페이지</a>
 						</li>
 						<li class="padding-0-10">

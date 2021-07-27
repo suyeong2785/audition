@@ -4,7 +4,7 @@
 <c:set var="pageTitle" value="마이 페이지" />
 <%@ include file="../part/head.jspf"%>
 <div class="con mx-auto">
-	<h2 class="text-center">자기소개 영상</h2>
+	<h2 class="text-center py-2 my-4 border-2 border-black box-border p-4 box-border">자기소개 영상</h2>
 
 	<div
 		class="profile-box con border-2 border-black box-border bg-gray-300 text-center">
@@ -23,7 +23,7 @@
 		</c:choose>
 	</div>
 
-	<h2 class="text-center py-2">프로필</h2>
+	<h2 class="text-center py-2 my-4 border-2 border-black box-border p-4 box-border">프로필</h2>
 	<div class="flex">
 		<div class="profile-image">
 			<a
@@ -31,7 +31,8 @@
 				class="box w-8 h-8 md:w-24 md:h-24 ">
 				<c:choose>
 					<c:when test="${not empty fileForProfile}">
-						<img class="w-24 h-24 md:w-40 md:h-40 mr-8 md:mr-14" src="${fileForProfile.forPrintGenUrl}" alt="" />
+						<img class="w-24 h-24 md:w-40 md:h-40 mr-8 md:mr-14"
+							src="${fileForProfile.forPrintGenUrl}" alt="" />
 					</c:when>
 					<c:otherwise>
 						<span class="profile text-8xl text-green-500">
@@ -49,14 +50,22 @@
 		</div>
 	</div>
 
-	<h2 class="text-center py-2">경력사항</h2>
-	<div class="profile-introduction border-2 border-black box-border p-4 box-border"></div>
+	<h2
+		class="text-center py-2 my-4 border-2 border-black box-border p-4 box-border">경력사항</h2>
+	<div class="profile-introduction ">
+		<c:forEach items="${joinedCareer}" var="career" varStatus="status">
+			<div class="career-input flex items-center">
+				<div>
+					<span>${career.key}</span>
+					<span>${career.value}</span>
+				</div>
+			</div>
+		</c:forEach>
+	</div>
 
-	<h2 class="text-center py-2">지원한 공고들</h2>
-
-	<div class="list-box">
+	<div class="list-box my-4">
 		<div class="flex justify-center border-2 border-black box-border p-4">
-			<div class="text-center ">알림</div>
+			<div class="text-center ">지원결과 알림</div>
 		</div>
 	</div>
 	<div class="list-box">

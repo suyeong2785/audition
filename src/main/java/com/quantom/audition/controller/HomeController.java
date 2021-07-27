@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.quantom.audition.config.AppConfig;
 import com.quantom.audition.dto.Applyment;
+import com.quantom.audition.dto.Career;
 import com.quantom.audition.dto.Job;
 import com.quantom.audition.dto.Member;
 import com.quantom.audition.dto.Recruitment;
 import com.quantom.audition.dto.Share;
 import com.quantom.audition.service.ApplymentService;
+import com.quantom.audition.service.CareerService;
 import com.quantom.audition.service.RecruitmentService;
 import com.quantom.audition.service.ShareService;
 
@@ -33,6 +35,9 @@ public class HomeController {
 	
 	@Autowired
 	ShareService shareService;
+	
+	@Autowired
+	CareerService careerService;
 	
 	@RequestMapping("/usr/home/main")
 	public String showMain() {
@@ -63,14 +68,6 @@ public class HomeController {
 		// applyment들을 List에 담음
 		List<Applyment> sharedApplyments = null;
 		
-//		for(Share acceptedShare : acceptedShares) {
-//			System.out.println("acceptedShare : " + acceptedShare);
-//			int requesterId = acceptedShare.getRequesterId();
-//			System.out.println("requesterId : " + requesterId);
-//			
-//			sharedApplyments = applymentService.getForPrintSharedApplymentsByRequesterId(loginedMember.getId(),requesterId);
-//		}
-		
 		// requesterid에 일치하는 recruitment에 일치하는 applyments들을 가져와서 마이페이지에 보낸다.
 		model.addAttribute("acceptedShares", acceptedShares);
 		
@@ -91,6 +88,13 @@ public class HomeController {
 		
 		List<Applyment> applymentResults = applymentService.getApplymenResultInfoByMemberId(loginedMember.getId());
 		model.addAttribute("applymentResults",applymentResults);
+		
+		Career career = careerService.getCareerByMember(loginedMember.getId(), loginedMember.getJobId());
+		if(career != null) {
+			Map<String,String> joinedCareer = careerService.getDatesAndArtworkOfCareerByMember(loginedMember.getId(),loginedMember.getJobId());
+
+			model.addAttribute("joinedCareer", joinedCareer);
+		}
 		
 		return "usr/home/showMyPage";
 	}

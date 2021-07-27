@@ -323,7 +323,7 @@
 			
 				$("#totalTime").html("총 재생시간 : "
 						+ (oneMinute > 0 ? oneMinute + "분 " : "") + 
-				(duration - oneMinute * 60) + "초" +  "</br>duration : " +  "</br>파일 수정날짜 : " + formatDate(file.lastModified) + "</br>로그인 날짜 : " + loginedDate);
+				(duration - oneMinute * 60) + "초"+  "</br>파일 수정날짜 : " + formatDate(file.lastModified) + "</br>로그인 날짜 : " + loginedDate);
 				
 				// 동영상 재생시간이 1분 30초 이상이 넘어간다면 초기화 후,알림창띄움
 				if(duration > 90){
@@ -334,6 +334,7 @@
 					return;
 				}
 				
+				/*
 				var dateOfVideo = new Date(file.lastModified);
 				var dateOfLogin = new Date(loginedDate);
 				
@@ -344,7 +345,7 @@
 					URL.revokeObjectURL(file);
 					return;
 				}
-				
+				*/
 				URL.revokeObjectURL(file);
 			},100);
 			

@@ -459,7 +459,7 @@ id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 regDate DATETIME NOT NULL,
 updateDate DATETIME NOT NULL,
 jobId INT UNSIGNED NOT NULL,
-`date` DATETIME NOT NULL,
+`date` TEXT NOT NULL,
 memberId INT UNSIGNED NOT NULL,
 artwork TEXT NOT NULL
 );
@@ -483,10 +483,22 @@ updateDAte = NOW(),
 UPDATE `member` SET `jobId` = '2' WHERE `id` = '2'; 
 UPDATE `member` SET `jobId` = '2' WHERE `id` = '4'; 
 
+#추천기능추가 이전에 만들어놨는데 사라짐.....
+CREATE TABLE `recommendation`(
+id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+regDate DATETIME NOT NULL,
+updateDate DATETIME NOT NULL,
+relTypeCode CHAR(10) NOT NULL,
+relId INT UNSIGNED NOT NULL,
+recommenderId INT UNSIGNED NOT NULL,
+recommendeeId INT UNSIGNED NOT NULL,
+recommendationStatus TINYINT NOT NULL
+);
+
+
 
 /*
 select * from `file`;
-`member``member`
 SELECT * FROM `actingRole`;
 SELECT * FROM `recruitment`;
 SELECT * FROM `applyment`;

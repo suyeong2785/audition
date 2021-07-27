@@ -50,8 +50,6 @@
 					<div class="flex-1">추천수</div>
 				</div>
 			</div>
-
-
 		</c:forEach>
 	</div>
 </div>
@@ -93,7 +91,7 @@
 					html += "<div class='flex border-2 border-black box-border p-4'>";
 					html += "<div class=' flex-1'>" + sharedRecruitment.id + "</div>";
 					html += "<div class='flex-4'>" + sharedRecruitment.regDate + "</div>";
-					html += "<div class=' flex-4'";
+					html += "<div id='applicant-list-switch' class=' flex-4'";
 					html += "onclick='showApplicantList( {sharedRecruitment.id}" + "," + "{sharedRecruitment.memberId} )'> " + sharedRecruitment.forPrintTitle  + "</div>";
 					html += "</div>";
 					html += "<div class='"+ sharedRecruitment.id + " border-2 '></div>";
@@ -163,12 +161,17 @@
 		<div class="search-box flex-grow h-full ">
 			<input id="director-search-input"
 				class="bg-gray-200 block w-full h-full text-xl px-4 text-black"
-				type="text" placeholder="공유할 캐스팅디렉터님의 아이디를 입력해주세요" />
+				type="text" placeholder="지원자를 공유할 캐스팅디렉터님의 아이디를 입력해주세요" />
 		</div>
 		<!-- 검색 버튼 -->
 		<button onclick="getCastingDirectorList()"
 			class="flex justify-center items-center h-full bg-green-400 text-white text-center h-full px-4 text-2xl md:text-3xl hover:bg-green-500">
 			<i class="fas fa-search"></i>
+		</button>
+		<!-- 검색 버튼 -->
+		<button onclick="closeCastingDirectorList()"
+			id="search-close-button" class=" hidden justify-center items-center h-full bg-green-400 text-white text-center h-full px-4 text-2xl md:text-3xl hover:bg-green-500">
+			<i class="fas fa-times"></i>
 		</button>
 	</div>
 	<div id="search-result"></div>
@@ -177,6 +180,11 @@
 <script>
 	var loginedMemberId = '<c:out value="${loginedMemberId}"/>';	
 		
+	function closeCastingDirectorList(){
+	
+		$('#search-result').empty();
+	}
+	
 	function getCastingDirectorList(){
 		
 		//양쪽 공백제거
@@ -194,6 +202,8 @@
 		},CastingDirectorList
 		,'json'
 		);
+		
+		
 	}
 	
 	function CastingDirectorList(data){
@@ -204,8 +214,14 @@
 		
 		var members = null;
 		
+		if(data.resultCode.startsWith('F')){
+			$('#search-close-button').css({"display":"none"});
+		}
+		
 		if(data && data.body && data.body.members){
 			members = data.body.members;
+			
+			$('#search-close-button').css({"display":"flex"});
 		}
 
 		var $search_result = $('#search-result');
@@ -271,14 +287,7 @@
 				</div>
 				<div class="${recruitment.id} border-2 hidden"
 					data-display-status="0">
-					<div
-						class="flex justify-center text-center border-2 border-black box-border p-4">
-						<div class="flex-1">번호</div>
-						<div class="flex-1">활동명</div>
-						<div class="flex-1">성별</div>
-						<div class="flex-1">나이</div>
-						<div class="flex-1">추천수</div>
-					</div>
+					
 				</div>
 		</c:if>
 	</c:forEach>
@@ -399,11 +408,30 @@ var ApplymentList__applymentsCount = 0;
 		function ApplymentList__loadMoreCallback(data) {
 	        
 	        if (data.body.applyments && data.body.applyments.length > 0) {
+	        	drawApplymentHeader();
 	            ApplymentList__lastLodedId = data.body.applyments[data.body.applyments.length - 1].id;
 	            ApplymentList__drawApplyments(data.body.applyments);
 	        }
 	        
 	        return;
+		}
+		
+		function drawApplymentHeader (){
+			
+			var ApplymentList__$tr = $('.' + recruitment_id);
+			
+			html = '';
+			html += '<div class="flex justify-center text-center border-2 border-black box-border p-4">';
+			html += '<div class="flex-1">번호</div>';
+			html += '<div class="flex-1">활동명</div>';
+			html += '<div class="flex-1">성별</div>';
+			html += '<div class="flex-1">나이</div>';
+			html += '<div class="flex-1">추천수</div>';
+			html += '</div>';
+		
+			var $html = $(html);
+			
+			ApplymentList__$tr.append($html);
 		}
 		
 		//ApplymentList__drawApplyment에 applyment를 뿌려서 화면에 그려낸다.
@@ -423,8 +451,7 @@ var ApplymentList__applymentsCount = 0;
 			$('.' + recruitment_id).data("displayStatus", 1);
 			
 			var html = '';
-			
-			html += '</div>'
+	
 			html += '<div onclick="showApplicantDecisonModal(' + applyment.id + ','+ applyment.memberId + ','+ recruitment_id + ','+ recruitment_memberId +');" class="flex justify-center text-center border-2 border-black box-border p-4">';
 			html += '<div class="flex-1">' + applyment.id + '</div>';
 			html += '<div class="flex-1">' + applyment.extra.writerRealName + '</div>';
@@ -452,6 +479,8 @@ var ApplymentList__applymentsCount = 0;
        $("#decision-button-box").empty();
 		
         $('html').removeClass('applicant-decision-form-modal-actived');
+        
+        location.reload();
     }
 	
   	function showApplicantDecisonModal(applyment_id, applyment_memberId, recruitment_id, recruitment_memberId) { 		
