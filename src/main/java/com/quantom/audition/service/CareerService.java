@@ -1,6 +1,7 @@
 package com.quantom.audition.service;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +32,15 @@ public class CareerService {
 	public Map<String, String> getDatesAndArtworkOfCareerByMember(int memberId, int jobId) {
 		Career career = careerDao.getCareerByMember(memberId, jobId);
 
-		String[] dates = career.getDate().split(",");
+		String[] dates = career.getDate().split("_");
 
-		String[] artworks = career.getArtwork().split(",");
+		String[] artworks = career.getArtwork().split("_");
 
-		Map<String, String> datesAndArtworkResultMap = new HashMap<>();
+		Map<String, String> datesAndArtworkResultMap = new LinkedHashMap<>();
 
 		for (int i = 0; i < dates.length; i++) {
 			datesAndArtworkResultMap.put(dates[i], artworks[i]);
+			System.out.println("datesAndArtworkResultMap : " + datesAndArtworkResultMap.get("" + dates[i]));
 		}
 
 		return datesAndArtworkResultMap;

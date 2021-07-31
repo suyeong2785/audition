@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <c:set var="pageTitle" value="마이 페이지" />
 <%@ include file="../part/head.jspf"%>
 <div class="con mx-auto">
@@ -55,9 +57,9 @@
 	<div class="profile-introduction ">
 		<c:forEach items="${joinedCareer}" var="career" varStatus="status">
 			<div class="career-input flex items-center">
-				<div>
-					<span>${career.key}</span>
-					<span>${career.value}</span>
+				<div class="flex pl-2">
+					<div class="w-24">${fn:contains(career.key,'-') ? career.key : ''}</div>
+					<div>${career.value}</div>
 				</div>
 			</div>
 		</c:forEach>

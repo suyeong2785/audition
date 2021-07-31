@@ -1,13 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <c:set var="pageTitle" value="회원정보수정" />
 <%@ include file="../part/head.jspf"%>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 <script>
+	//경력박스확인 체크
 	var checkCareerBoxResult = function(form) {
+		
+		/*
 		var dateNeedToStop = 0;
+		
 		let dates = $("input[name='careerDate']").each(function(index, item) {
 			if ($.trim($(this).val()) != "" && $.trim($(this).val()) != null) {
 				return true;
@@ -22,8 +28,7 @@
 		if (dateNeedToStop == 1) {
 			return -1;
 		}
-
-		var dateSize = dates.length;
+		*/
 
 		var artworkNeedToStop = 0;
 		let artworks = $("input[name='careerArtwork']").each(
@@ -47,7 +52,10 @@
 			if ($.trim($(this).val()) != "" && $.trim($(this).val()) != null) {
 				return $.trim($(this).val());
 			}
-		}).get().join(",");
+			
+			return element.innerHTML = ""+index;
+			
+		}).get().join("_");
 
 		artworks = $("input[name='careerArtwork']").map(
 				function(index, element) {
@@ -55,14 +63,16 @@
 							&& $.trim($(this).val()) != null) {
 						return $.trim($(this).val());
 					}
-				}).get().join(",");
+					
+				}).get().join("_");
 
 		form.careerDates.value = dates;
 		form.careerArtworks.value = artworks;
 
 		alert('form.careerDates.value : ' + form.careerDates.value);
 		alert('form.careerArtworks.value : ' + form.careerArtworks.value);
-
+		
+		return 1;
 	}
 
 	function MemberModifyForm__submit(form) {
@@ -131,7 +141,7 @@
 			}
 
 		}
-
+		
 		form.name.value = form.name.value.trim();
 
 		if (form.name.value.length == 0) {
@@ -323,39 +333,62 @@
 				<th>유튜브 url</th>
 				<td>
 					<div class="form-control-box">
-						<input type="text" name="youtubeUrl" />
+						<input type="text" name="youtubeUrl" placeholder="ex) https://www.youtube.com/watch?v=영문/숫자/특수문자 (pc버전)" />
 					</div>
 				</td>
 			</tr>
 			<tr>
-				<th>ISNI 인증</th>
+				<th class="flex">
+					<span>ISNI 인증</span>
+					<span id="ISNI-validation" data-isni-result="1" class="hidden text-green-400">
+						<i class="fas fa-check"></i>
+					</span>
+				</th>
 				<td>
-					<div class="flex">
-						<input id="ISNI-number" class="w-72" type="text"
-							placeholder="본인의 ISNI Number를 입력해주세요" />
+					<div class="ISNI-box flex items-center">
+						<div class="flex-col items-center pr-4">
+							<input id="ISNI-number" type="hidden" name="ISNI_number" />
+							<div class="ISNI-input-box flex items-center">
+								<span class="pr-2">
+									<input id="ISNI-number1"
+										class="w-12 border border-black border-opacity-25 rounded-sm text-center"
+										type="text" maxlength="4" placeholder="0000"
+										value="${loginedMember.ISNI_number != null ? fn:substring(loginedMember.ISNI_number,0,4) : ''}" />
+								</span>
+								
+								<span class="pr-2">
+									<input id="ISNI-number2"
+										class="w-12 border border-black border-opacity-25 rounded-sm text-center"
+										type="text" maxlength="4" placeholder="0000"
+										value="${loginedMember.ISNI_number != null ? fn:substring(loginedMember.ISNI_number,4,8) : ''}" />
+								</span>
+
+								<span class="pr-2">
+									<input id="ISNI-number3"
+										class="w-12 border border-black border-opacity-25 rounded-sm text-center"
+										type="text" maxlength="4" placeholder="0000"
+										value="${loginedMember.ISNI_number != null ? fn:substring(loginedMember.ISNI_number,8,12) : ''}" />
+								</span>
+
+								<span class="pr-2">
+									<input id="ISNI-number4"
+										class="w-12 border border-black border-opacity-25 rounded-sm text-center"
+										type="text" maxlength="4" placeholder="0000"
+										value="${loginedMember.ISNI_number != null ? fn:substring(loginedMember.ISNI_number,12,16) : ''}" />
+								</span>
+							</div>
+							<div id="ISNI-reuslt" class="hidden"></div>
+						</div>
 						<button type="button" onclick="javascript:getISNIInfo()"
-							class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">전송</button>
+							class="mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">검색</button>
 					</div>
 				</td>
 			</tr>
-			<script>
-				function getISNIInfo() {
-
-					var $ISNI_number = $("#ISNI-number").val();
-
-					$.get('/usr/member/getIsniSearchResultAjax', {
-						id : $ISNI_number
-					}, function(data) {
-						alert(data.msg);
-					});
-
-				}
-			</script>
 			<tr>
 				<th>이름</th>
 				<td>
 					<div class="form-control-box">
-						<input type="text" placeholder="이름을 입력해주세요." name="name"
+						<input id="name" type="text" placeholder="이름을 입력해주세요." name="name"
 							maxlength="20" value="${loginedMember.name.trim()}" />
 					</div>
 				</td>
@@ -409,7 +442,7 @@
 									varStatus="status">
 									<div class="career-input flex items-center">
 										<div>
-											<input name="careerDate" type="date" value="${career.key}" />
+											<input name="careerDate" type="date" value="${fn:contains(career.key,'-') ? career.key : ''}" />
 										</div>
 										<div>
 											<input name="careerArtwork" type="text"
@@ -439,15 +472,142 @@
 	</table>
 </form>
 <script>
+	var regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
+	
+	regex.test("2020-09-25");
+
+	$("#ISNI-number1, #ISNI-number2, #ISNI-number3, #ISNI-number4").change(function(){
+		var ISNI_number1 = $("#ISNI-number1").val();
+		var ISNI_number2 = $("#ISNI-number2").val();
+		var ISNI_number3 = $("#ISNI-number3").val();
+		var ISNI_number4 = $("#ISNI-number4").val();
+		
+		$("#ISNI-reuslt").html('');
+		$("#ISNI-validation").css({"display":"none"});
+		
+		if(ISNI_number1.length == 4 && ISNI_number2.length == 4 && ISNI_number3.length == 4 && ISNI_number4.length == 4){
+			getISNIInfo();
+		}else if(ISNI_number1.length != 4){
+			$("#ISNI-reuslt").css({"display":"block"});
+			$("#ISNI-reuslt").html('<span style="color:red;">첫번째칸의 숫자가 4자리가아닙니다.</span>');
+		}else if(ISNI_number2.length != 4){
+			$("#ISNI-reuslt").css({"display":"block"});
+			$("#ISNI-reuslt").html('<span style="color:red;">두번째칸의 숫자가 4자리가아닙니다.</span>');
+		}else if(ISNI_number3.length != 4){
+			$("#ISNI-reuslt").css({"display":"block"});
+			$("#ISNI-reuslt").html('<span style="color:red;">세번째칸의 숫자가 4자리가아닙니다.</span>');
+		}else if(ISNI_number4.length != 4){
+			$("#ISNI-reuslt").css({"display":"block"});
+			$("#ISNI-reuslt").html('<span style="color:red;">네번째칸의 숫자가 4자리가아닙니다.</span>');
+		}
+	});
+	
+	function getISNIInfo() {
+		
+		var ISNI_number1 = $("#ISNI-number1").val();
+		var ISNI_number2 = $("#ISNI-number2").val();
+		var ISNI_number3 = $("#ISNI-number3").val();
+		var ISNI_number4 = $("#ISNI-number4").val();
+		
+		if(ISNI_number1.length == 4 && ISNI_number2.length == 4 && ISNI_number3.length == 4 && ISNI_number4.length == 4){
+		
+		var ISNI_number = $("#ISNI-number").val(
+				ISNI_number1 + ISNI_number2 + ISNI_number3 + ISNI_number4);
+
+		$.get('/usr/member/getMemberByISNINumberAjax',{
+			ISNI_number : ISNI_number.val()
+		}).then(function(data){
+			if(data.resultCode.startsWith('S')){
+				return $.get('/usr/member/getIsniSearchResultAjax', {
+					id : ISNI_number.val()
+				});
+			}
+			
+			$("#ISNI-reuslt").css({"display":"block"});
+			$("#ISNI-reuslt").html('<span style="color:red;">이미사용중인 ISNI번호입니다.</span>');
+			$("#ISNI-validation").data("isniResult", -1);
+			return;
+			
+		}).then(function(data) {
+			var nameCheck = false;
+			if (data.resultCode.startsWith('S')) {
+				
+				for(var i = 0; i < data.body.personalNames.length; i++){
+					if($("#name").val() == data.body.personalNames[i].surname){
+						nameCheck = true;
+						break;
+					}
+				}
+				
+				if(nameCheck == false){
+					$("#ISNI-reuslt").css({"display":"block"});
+					$("#ISNI-reuslt").html('<span style="color:red;">ISNI에 등록된 이름과 다릅니다.</span>');
+					$("#ISNI-validation").data("isniResult", -1);
+					$("#ISNI-validation").css({"display":"none"});
+					return;
+				}
+				
+				$("#ISNI-reuslt").css({"display":"block"});
+				$("#ISNI-reuslt").html('<span style="color:green;">사용가능한 ISNI번호입니다.</span>');
+				$("#ISNI-validation").data("isniResult", 1);
+				$("#ISNI-validation").css({"display":"inline-block"});
+				
+				var ISNIcareer = confirm("ISNI 등록된 경력사항을 가져오시겠습니까?.");
+				if(ISNIcareer){
+					setISNIcareer(data);
+				}
+				return;
+			}
+			
+			$("#ISNI-reuslt").css({"display":"block"});
+			$("#ISNI-reuslt").html('<span style="color:red;">존재하지않는 ISNI번호입니다.</span>');
+			$("#ISNI-validation").data("isniResult", -1);
+			return;
+		});
+
+		}else if(ISNI_number1.length != 4){
+			$("#ISNI-reuslt").css({"display":"block"});
+			$("#ISNI-reuslt").html('<span style="color:red;">첫번째칸의 숫자가 4자리가아닙니다.</span>');
+		}else if(ISNI_number2.length != 4){
+			$("#ISNI-reuslt").css({"display":"block"});
+			$("#ISNI-reuslt").html('<span style="color:red;">두번째칸의 숫자가 4자리가아닙니다.</span>');
+		}else if(ISNI_number3.length != 4){
+			$("#ISNI-reuslt").css({"display":"block"});
+			$("#ISNI-reuslt").html('<span style="color:red;">세번째칸의 숫자가 4자리가아닙니다.</span>');
+		}else if(ISNI_number4.length != 4){
+			$("#ISNI-reuslt").css({"display":"block"});
+			$("#ISNI-reuslt").html('<span style="color:red;">네번째칸의 숫자가 4자리가아닙니다.</span>');
+		}
+		
+	}
+	
+	function setISNIcareer(data){
+		
+		for(var i = 0; i < data.body.titleOfWorks.length; i++){
+			var title = data.body.titleOfWorks[i].title;
+			title = title.replace('@',"");
+			if(i == 0){
+				if($('.career-box').css("display") == "none"){
+					showCareerBox(title);
+				}else{
+					addCareerBox(title);
+				}
+			}else{
+				addCareerBox(title);	
+			}
+		}
+		
+	}
+
 	$(function() {
 		var joinedCareer = '<c:out value="${joinedCareer}" />';
-		
-		if(joinedCareer != null && joinedCareer != "" ){
-			$('#career-box-switch').data("displayStatus",-1);
+
+		if (joinedCareer != null && joinedCareer != "") {
+			$('#career-box-switch').data("displayStatus", -1);
 			$('#career-box-switch').css("display", "none");
 			$('.career-box').css("display", "block");
 		}
-		
+
 	});
 
 	$('#modify-file').on('change', function() {
@@ -476,8 +636,8 @@
 		}
 	}
 
-	function addCareerBox() {
-
+	function addCareerBox(title) {
+		
 		let html = '';
 
 		html += '<div class="career-input flex items-center">';
@@ -485,7 +645,7 @@
 		html += '<input type="date" name="careerDate" />';
 		html += '</div>';
 		html += '<div>';
-		html += '<input name="careerArtwork" type="text" placeholder="작품명 입력해주세요." maxlength="20" />';
+		html += '<input name="careerArtwork" type="text" placeholder="작품명 입력해주세요." maxlength="20" value="'+ (title != null ? title : "") +'"/>';
 		html += '</div>';
 		html += '<button class="text-2xl" onclick="removeCareerBox(this)">';
 		html += '<i class="far fa-minus-square"></i>';
@@ -509,7 +669,7 @@
 
 	}
 
-	function showCareerBox() {
+	function showCareerBox(title) {
 		$('#career-box-switch').data("displayStatus", -1);
 		$('#career-box-switch').css("display", "none");
 
@@ -518,14 +678,16 @@
 		html += '<button type="button" class="absolute top-0 text-2xl" onclick="javascript:addCareerBox()">';
 		html += '<i class="far fa-plus-square"></i>';
 		html += '</button>';
+		
 		html += '<div id="career-input-box" class="pl-8">';
 		html += '<div class="career-input flex items-center">';
 		html += '<div>';
 		html += '<input name="careerDate" type="date" />';
 		html += '</div>';
 		html += '<div>';
-		html += '<input name="careerArtwork" type="text" placeholder="작품명 입력해주세요." name="career" maxlength="20" />';
+		html += '<input name="careerArtwork" type="text" placeholder="작품명 입력해주세요." name="career" maxlength="20" value="'+ (title != null ? title : "") +'"/>';
 		html += '</div>';
+		
 		html += '<button type="button" class="text-2xl" onclick="javascript:removeCareerBoxAndShowSwitch(this)">';
 		html += '<i class="far fa-trash-alt"></i>';
 		html += '</button>';

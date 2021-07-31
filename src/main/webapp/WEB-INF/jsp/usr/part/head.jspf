@@ -35,6 +35,7 @@
 <link rel="stylesheet" href="/resource/keyframes.css" />
 <!-- 공통 JS -->
 <script src="/resource/app.js"></script>
+
 <%="<script>"%>
 var activeProfile = '${activeProfile}';
 <%="</script>"%>

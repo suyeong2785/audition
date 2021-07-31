@@ -224,7 +224,7 @@ public class MemberController {
 		Career career = careerService.getCareerByMember(loginedMemberId, loginedMember.getJobId());
 		if(career != null) {
 			Map<String,String> joinedCareer = careerService.getDatesAndArtworkOfCareerByMember(loginedMemberId,loginedMember.getJobId());
-
+			
 			model.addAttribute("joinedCareer", joinedCareer);
 		}
 
@@ -270,6 +270,20 @@ public class MemberController {
 			e.printStackTrace();
 		}
 			
+		if(isniRecord == null) {
+			return new ResultData("F-1", "ISNI에 일치하는 데이터가 없습니다.");
+		}
 		return new ResultData("S-1", "ISNI에 일치하는 데이터를 찾았습니다.", isniRecord);
+	}
+	
+	@RequestMapping("/usr/member/getMemberByISNINumberAjax")
+	@ResponseBody
+	public ResultData getMemberByISNINumberAjax(String ISNI_number) {
+		Member memberByISNI = memberService.getMemberByISNINumber(ISNI_number);
+		if(memberByISNI != null) {
+			return new ResultData("F-1", "이미 사용중인 ISNI 번호입니다.");
+		}
+		
+		return new ResultData("S-1", "사용가능한 ISNI 번호입니다.");
 	}
 }

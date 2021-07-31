@@ -22,6 +22,7 @@ public class Member {
 	private String loginId;
 	private String youTubeUrl;
 	private String gender;
+	private String ISNI_number;
 
 	@JsonIgnore
 	private String loginPw;

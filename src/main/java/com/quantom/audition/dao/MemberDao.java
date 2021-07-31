@@ -29,4 +29,6 @@ public interface MemberDao {
 
 	void doModifyMemberRecommendation(@Param("id") int id, @Param("recommendationStatus") int recommendationStatus);
 
+	Member getMemberByISNINumber(@Param("ISNI_number") String ISNI_number);
+
 }

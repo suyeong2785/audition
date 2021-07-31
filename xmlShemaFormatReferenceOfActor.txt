@@ -1,0 +1,667 @@
+isni-b
+<responseRecord>
+	<ISNIAssigned>
+		<isniUnformatted>0000000354162657</isniUnformatted>
+		<isniURI>https://isni.org/isni/0000000354162657</isniURI>
+		<mergedISNI>0000000003065927</mergedISNI>
+		<dataConfidence>60</dataConfidence>
+		<ISNIMetadata>
+			<identity>
+				<personOrFiction>
+					<personalName>
+						<surname>전지현</surname>
+						<nameUse>public</nameUse>
+						<source>KOREA</source>
+					</personalName>
+					<personalName>
+						<forename>Chi-hyŏn</forename>
+						<surname>Chŏn</surname>
+						<nameUse>public</nameUse>
+						<source>LCNACO</source>
+					</personalName>
+					<personalName>
+						<forename>Ji hyeon</forename>
+						<surname>Jeon</surname>
+						<nameUse>public</nameUse>
+						<source>VIAF</source>
+						<source>DNB</source>
+						<subsourceIdentifier>1071376187</subsourceIdentifier>
+					</personalName>
+					<personalName>
+						<forename>Gianna</forename>
+						<surname>Jun</surname>
+						<marcDate>1981-...</marcDate>
+						<nameUse>public</nameUse>
+						<source>VIAF</source>
+						<source>SUDOC</source>
+						<subsourceIdentifier>16391270X</subsourceIdentifier>
+					</personalName>
+					<personalName>
+						<forename>Ji-hyun</forename>
+						<surname>Jun</surname>
+						<marcDate>1981-</marcDate>
+						<nameUse>public</nameUse>
+						<source>VIAF</source>
+						<source>BNE</source>
+						<subsourceIdentifier>XX5538733</subsourceIdentifier>
+					</personalName>
+					<personalName>
+						<surname>전지현</surname>
+						<nameTitle>대한민국의 배우</nameTitle>
+						<nameUse>public</nameUse>
+						<source>VIAF</source>
+						<source>WKP</source>
+						<subsourceIdentifier>Q253626</subsourceIdentifier>
+					</personalName>
+					<personalName>
+						<forename>Chi-hyŏn</forename>
+						<surname>Chŏn</surname>
+						<nameTitle>Actress</nameTitle>
+						<marcDate>1981-</marcDate>
+						<nameUse>public</nameUse>
+						<source>NTA</source>
+					</personalName>
+					<personalName>
+						<forename>Gianna</forename>
+						<surname>Jun</surname>
+						<marcDate>1981-...</marcDate>
+						<nameUse>public</nameUse>
+						<source>BNF</source>
+						<subsourceIdentifier>16193987</subsourceIdentifier>
+					</personalName>
+					<creativeActivity>
+						<creationRole source="KOREA">act</creationRole>
+						<creationRole source="LCNACO">aut</creationRole>
+						<creationRole source="VIAF" subsource="BNE">act</creationRole>
+						<creationRole source="NTA">act</creationRole>
+						<creationClass source="KOREA">cre</creationClass>
+						<creationClass source="KOREA">movie</creationClass>
+						<creationClass source="LCNACO">am</creationClass>
+						<creationClass source="VIAF" subsource="BNE">gm</creationClass>
+						<creationClass source="VIAF" subsource="SUDOC">gm</creationClass>
+						<creationClass source="NTA">gm</creationClass>
+						<creationClass source="BNF">gm</creationClass>
+						<titleOfWork source="KOREA">
+							<title>@암살</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@암살</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@베를린</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@베를린</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@도둑들</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@베를린</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@도둑들</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@블러드</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@블러드</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@슈퍼맨이었던 사나이</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@데이지</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@데이지</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@4인용 식탁</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>(@SBS 드라마 스페셜) 해피투게더</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@내 여자친구를 소개합니다</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@시월애</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@4인용 식탁</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@화이트 발렌타인</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@엽기적인 그녀</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@엽기적인 그녀</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@시월애</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@시월애</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@시월애</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@화이트 발렌타인</title>
+						</titleOfWork>
+						<titleOfWork source="KOREA">
+							<title>@도둑들 영화를 만들다</title>
+						</titleOfWork>
+						<titleOfWork source="VIAF" subsource="BNE">
+							<title>@Bereullin</title>
+						</titleOfWork>
+						<titleOfWork source="VIAF" subsource="BNE">
+							<title>@Berlin file</title>
+						</titleOfWork>
+						<titleOfWork source="VIAF" subsource="DNB">
+							<title>@Berlin file</title>
+						</titleOfWork>
+						<titleOfWork source="VIAF" subsource="SUDOC">
+							<title>@Blood the last vampire</title>
+						</titleOfWork>
+						<titleOfWork source="NTA">
+							<title>@200 pound beauty</title>
+						</titleOfWork>
+						<titleOfWork source="NTA">
+							<title>@4인용 식탁</title>
+						</titleOfWork>
+						<titleOfWork source="NTA">
+							<title>@Berlin file</title>
+						</titleOfWork>
+						<titleOfWork source="NTA">
+							<title>@Daisy</title>
+						</titleOfWork>
+						<titleOfWork source="NTA">
+							<title>@Sainyong shikt'ak</title>
+						</titleOfWork>
+						<titleOfWork source="NTA">
+							<title>@table for four</title>
+						</titleOfWork>
+						<titleOfWork source="NTA">
+							<title>@Teiji</title>
+						</titleOfWork>
+						<titleOfWork source="NTA">
+							<title>The @uninvited</title>
+						</titleOfWork>
+						<titleOfWork source="NTA">
+							<title>@Yŏpkijŏk in kŭnyŏ</title>
+						</titleOfWork>
+						<titleOfWork source="NTA">
+							<title>@도둑들</title>
+							<subtitle>The thieves</subtitle>
+						</titleOfWork>
+						<titleOfWork source="BNF">
+							<title>@Blood the last vampire</title>
+						</titleOfWork>
+						<titleOfWork source="BNF">
+							<title>@My sassy girl [Images animées]</title>
+							<statementOfResponsibility>Kwak Jae-Yong, réal.</statementOfResponsibility>
+						</titleOfWork>
+						<identifier>
+							<identifierType>ISBN</identifierType>
+							<identifierValue>9789085140542</identifierValue>
+							<source>NTA</source>
+						</identifier>
+					</creativeActivity>
+					<personalNameVariant>
+						<surname>Jun, Jihyun</surname>
+						<nameUse>public</nameUse>
+						<source>KOREA</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>왕지현</surname>
+						<nameUse>public</nameUse>
+						<source>KOREA</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>Wang, Jihyeon</surname>
+						<nameUse>public</nameUse>
+						<source>KOREA</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>지아나 전</surname>
+						<nameUse>public</nameUse>
+						<source>KOREA</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>Gianna Jun</surname>
+						<nameUse>public</nameUse>
+						<source>KOREA</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>Jeon, Jihyeon</surname>
+						<nameUse>public</nameUse>
+						<source>KOREA</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>CF Queen Ji-hyun</surname>
+						<nameUse>public</nameUse>
+						<source>LCNACO</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>Gianna</surname>
+						<nameUse>public</nameUse>
+						<source>LCNACO</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>전 지현</surname>
+						<nameUse>public</nameUse>
+						<source>LCNACO</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>전지현</surname>
+						<nameUse>public</nameUse>
+						<source>LCNACO</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>Gianna</forename>
+						<surname>Jun</surname>
+						<nameUse>public</nameUse>
+						<source>LCNACO</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>Jee-hyun</forename>
+						<surname>Jeun</surname>
+						<nameUse>public</nameUse>
+						<source>LCNACO</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>Ji-Hyun</forename>
+						<surname>Wang</surname>
+						<nameUse>public</nameUse>
+						<source>LCNACO</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>Ji-hyun</forename>
+						<surname>Jeon</surname>
+						<nameUse>public</nameUse>
+						<source>LCNACO</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>Ji-hyun</forename>
+						<surname>Jun</surname>
+						<nameUse>public</nameUse>
+						<source>LCNACO</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>Zhi-xian</forename>
+						<surname>Quan</surname>
+						<nameUse>public</nameUse>
+						<source>LCNACO</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>Chn̂g Tì-hiân</surname>
+						<source>VIAF</source>
+						<source>WKP</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>Chihyŏn</forename>
+						<surname>Chŏn</surname>
+						<source>VIAF</source>
+						<source>DNB</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>Gianna Jun</surname>
+						<source>VIAF</source>
+						<source>WKP</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>Jun</forename>
+						<surname>Gianna</surname>
+						<source>VIAF</source>
+						<source>DNB</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>Gianna</surname>
+						<marcDate>1981-...</marcDate>
+						<source>VIAF</source>
+						<source>SUDOC</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>Jun Ji</forename>
+						<surname>Hyun</surname>
+						<marcDate>1981-</marcDate>
+						<source>VIAF</source>
+						<source>BNE</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>Huyn Jun</forename>
+						<surname>Ji</surname>
+						<marcDate>1981-</marcDate>
+						<source>VIAF</source>
+						<source>BNE</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>Ji-hyun Jun</surname>
+						<nameTitle>actriz surcoreana</nameTitle>
+						<source>VIAF</source>
+						<source>WKP</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>Jun Ji-hyun</surname>
+						<nameTitle>South Korean actress</nameTitle>
+						<source>VIAF</source>
+						<source>WKP</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>Jun Ji-hyun</surname>
+						<nameTitle>actrice sud-coréenne</nameTitle>
+						<source>VIAF</source>
+						<source>WKP</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>Jun Ji-hyun</surname>
+						<nameTitle>actrice uit Zuid-Korea</nameTitle>
+						<source>VIAF</source>
+						<source>WKP</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>Jun Ji-hyun</surname>
+						<nameTitle>attrice sudcoreana</nameTitle>
+						<source>VIAF</source>
+						<source>WKP</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>Jun Ji-hyun</surname>
+						<nameTitle>südkoreanische Schauspielerin und Fotomodell</nameTitle>
+						<source>VIAF</source>
+						<source>WKP</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>Gianna</forename>
+						<surname>Jun</surname>
+						<source>VIAF</source>
+						<source>DNB</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>Gianna</forename>
+						<surname>Jun</surname>
+						<marcDate>1981-</marcDate>
+						<source>VIAF</source>
+						<source>BNE</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>Ji-hyun</forename>
+						<surname>Jun</surname>
+						<marcDate>1981-...</marcDate>
+						<source>VIAF</source>
+						<source>SUDOC</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>Wang Ji-hyun</surname>
+						<source>VIAF</source>
+						<source>WKP</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>Wang Ji-hyun</surname>
+						<marcDate>1981-</marcDate>
+						<source>VIAF</source>
+						<source>BNE</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>Джианна</forename>
+						<surname>Чон</surname>
+						<source>VIAF</source>
+						<source>WKP</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>Чонь Жи-хёнь</surname>
+						<source>VIAF</source>
+						<source>WKP</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>جون جي هيون</surname>
+						<source>VIAF</source>
+						<source>WKP</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>جون جی-هیون</surname>
+						<nameTitle>بازیگر اهل کره جنوبی</nameTitle>
+						<source>VIAF</source>
+						<source>WKP</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>ช็อน จี-ฮย็อน</surname>
+						<source>VIAF</source>
+						<source>WKP</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>지현</forename>
+						<surname>전</surname>
+						<source>VIAF</source>
+						<source>DNB</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>チョン・ジヒョン</surname>
+						<source>VIAF</source>
+						<source>WKP</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>全智賢</surname>
+						<nameTitle>韓國女演員</nameTitle>
+						<source>VIAF</source>
+						<source>WKP</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>Chi-hyŏn</forename>
+						<surname>Chŏn</surname>
+						<marcDate>1981-</marcDate>
+						<source>NTA</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>Ji-hyun</forename>
+						<surname>Jeon</surname>
+						<marcDate>1981-</marcDate>
+						<source>NTA</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>Gianna</forename>
+						<surname>Jun</surname>
+						<marcDate>1981-</marcDate>
+						<source>NTA</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>Ji-hyun</forename>
+						<surname>Jun</surname>
+						<marcDate>1981-</marcDate>
+						<source>NTA</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>全智賢</surname>
+						<marcDate>1981-</marcDate>
+						<source>NTA</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>전지현</surname>
+						<marcDate>1981-</marcDate>
+						<source>NTA</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<surname>Gianna</surname>
+						<marcDate>1981-...</marcDate>
+						<source>BNF</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>Ji-hyun</forename>
+						<surname>Jun</surname>
+						<marcDate>1981-...</marcDate>
+						<source>BNF</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>Ji-hyeon</forename>
+						<surname>Jeon</surname>
+						<marcDate>1981-...</marcDate>
+						<nameUse>public</nameUse>
+						<source>BNF</source>
+					</personalNameVariant>
+					<personalNameVariant>
+						<forename>지현</forename>
+						<surname>전</surname>
+						<marcDate>1981-...</marcDate>
+						<source>BNF</source>
+					</personalNameVariant>
+				</personOrFiction>
+			</identity>
+			<otherIdentifierOfIdentity>
+				<type>OCoLC</type>
+				<identifier>oca05927017</identifier>
+				<source>LCNACO</source>
+			</otherIdentifierOfIdentity>
+			<sources>
+				<codeOfSource>BNF</codeOfSource>
+				<sourceIdentifier>16193987</sourceIdentifier>
+			</sources>
+			<sources>
+				<codeOfSource>BNF</codeOfSource>
+				<sourceIdentifier>15020199</sourceIdentifier>
+			</sources>
+			<sources>
+				<codeOfSource>VIAF</codeOfSource>
+				<sourceIdentifier>22080954</sourceIdentifier>
+				<reference>
+					<class>ALL</class>
+					<role>CRE</role>
+					<URI>http://viaf.org/viaf/22080954</URI>
+				</reference>
+			</sources>
+			<sources>
+				<codeOfSource>VIAF</codeOfSource>
+				<sourceIdentifier>22419664</sourceIdentifier>
+				<reference>
+					<class>ALL</class>
+					<role>CRE</role>
+					<URI>http://viaf.org/viaf/22419664</URI>
+				</reference>
+			</sources>
+			<sources>
+				<codeOfSource>NTA</codeOfSource>
+				<sourceIdentifier>317792237</sourceIdentifier>
+			</sources>
+			<sources>
+				<codeOfSource>KOREA</codeOfSource>
+				<sourceIdentifier>KAC201718404</sourceIdentifier>
+			</sources>
+			<sources>
+				<codeOfSource>LCNACO</codeOfSource>
+				<sourceIdentifier>nr2002037538</sourceIdentifier>
+			</sources>
+			<externalInformation>
+				<information>Korea Authority File</information>
+				<URI>https://librarian.nl.go.kr/LI/contents/L20101000000.do?id=KAC201718404</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://ar.wikipedia.org/wiki/جون_جي_هيون</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://cdo.wikipedia.org/wiki/Jun_Ji-hyun</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://da.wikipedia.org/wiki/Jun_Ji-hyun</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://de.wikipedia.org/wiki/Jun_Ji-hyun</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://en.wikipedia.org/wiki/Jun_Ji-hyun</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://es.wikipedia.org/wiki/Jun_Ji_Hyun</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://fa.wikipedia.org/wiki/جون_جی-هیون</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://fr.wikipedia.org/wiki/Jeon_Ji-hyeon</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://id.wikipedia.org/wiki/Jun_Ji-hyun</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://it.wikipedia.org/wiki/Jun_Ji-hyun</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://ja.wikipedia.org/wiki/チョン・ジヒョン</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://jv.wikipedia.org/wiki/Jun_Ji_Hyun</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://ko.wikipedia.org/wiki/전지현</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://mn.wikipedia.org/wiki/Чонь_Жи-хёнь</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://ms.wikipedia.org/wiki/Jun_Ji-hyun</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://pl.wikipedia.org/wiki/Jun_Ji-hyun</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://pt.wikipedia.org/wiki/Wang_Ji-hyun</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://ro.wikipedia.org/wiki/Gianna_Jun</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://ru.wikipedia.org/wiki/Чун,_Джианна</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://su.wikipedia.org/wiki/Jun_Ji-hyun</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://th.wikipedia.org/wiki/ช็อน_จี-ฮย็อน</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://tl.wikipedia.org/wiki/Jun_Ji_Hyun</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://vi.wikipedia.org/wiki/Jun_Ji-hyun</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://zh.wikipedia.org/wiki/全智賢</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://zh_min_nan.wikipedia.org/wiki/Chn̂g_Tì-hiân</URI>
+			</externalInformation>
+			<externalInformation>
+				<information>Wikipedia</information>
+				<URI>https://zh_yue.wikipedia.org/wiki/全智賢</URI>
+			</externalInformation>
+		</ISNIMetadata>
+	</ISNIAssigned>
+</responseRecord>

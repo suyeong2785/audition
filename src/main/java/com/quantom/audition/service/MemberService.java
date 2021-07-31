@@ -240,4 +240,8 @@ public class MemberService {
 		
 	}
 
+	public Member getMemberByISNINumber(String ISNI_number) {
+		return memberDao.getMemberByISNINumber(ISNI_number);
+	}
+
 }
