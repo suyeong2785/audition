@@ -1,5 +1,6 @@
 package com.quantom.audition.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,10 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.quantom.audition.dto.Career;
 import com.quantom.audition.dto.File;
+import com.quantom.audition.dto.ISNIRecord;
 import com.quantom.audition.dto.Member;
 import com.quantom.audition.dto.ResultData;
 import com.quantom.audition.service.CareerService;
 import com.quantom.audition.service.FileService;
+import com.quantom.audition.service.IsniSearchService;
 import com.quantom.audition.service.MemberService;
 import com.quantom.audition.util.Util;
 
@@ -32,6 +35,9 @@ public class MemberController {
 	
 	@Autowired
 	private CareerService careerService;
+	
+	@Autowired
+	private IsniSearchService isniSearchService;
 
 	@RequestMapping("/usr/member/findLoginInfo")
 	public String showFindLoginInfo() {
@@ -253,4 +259,17 @@ public class MemberController {
 		return membersRd;
 	}
 	
+	@RequestMapping("/usr/member/getIsniSearchResultAjax")
+	@ResponseBody
+	public ResultData getIsniSearchResultAjax(String id) {
+		ISNIRecord isniRecord = null;
+		try {
+			isniRecord = isniSearchService.get(id);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+		return new ResultData("S-1", "ISNI에 일치하는 데이터를 찾았습니다.", isniRecord);
+	}
 }

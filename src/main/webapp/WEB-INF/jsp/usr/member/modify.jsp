@@ -328,6 +328,30 @@
 				</td>
 			</tr>
 			<tr>
+				<th>ISNI 인증</th>
+				<td>
+					<div class="flex">
+						<input id="ISNI-number" class="w-72" type="text"
+							placeholder="본인의 ISNI Number를 입력해주세요" />
+						<button type="button" onclick="javascript:getISNIInfo()"
+							class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">전송</button>
+					</div>
+				</td>
+			</tr>
+			<script>
+				function getISNIInfo() {
+
+					var $ISNI_number = $("#ISNI-number").val();
+
+					$.get('/usr/member/getIsniSearchResultAjax', {
+						id : $ISNI_number
+					}, function(data) {
+						alert(data.msg);
+					});
+
+				}
+			</script>
+			<tr>
 				<th>이름</th>
 				<td>
 					<div class="form-control-box">

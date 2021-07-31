@@ -481,14 +481,10 @@ label[for] {
   padding-right: 0 !important;
 }
 /* profile 커스텀*/
-.box {
-    border-radius: 70%;
-    overflow: hidden;
-}
 .profile {
-    width: 100%;
-    height: 100%;
     object-fit: cover;
+    border-radius: 70%;
+     overflow: hidden;
 }
 /* loader 커스텀*/
 .loader-img {

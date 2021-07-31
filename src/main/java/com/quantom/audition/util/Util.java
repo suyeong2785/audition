@@ -18,9 +18,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.HtmlUtils;
@@ -480,6 +480,28 @@ public class Util {
 		
 		return 0;
 	}
+	
+	  private final static String BC_REGEX = "(?i)(v\\.Chr|(B|av?)\\.? ?(de )?(J\\.?[ -]?)?C)\\.?$";
+	  private final static String AD_REGEX = "(?i)(n\\.Chr|A\\.? ?D|(d|apr?)\\.? ?(de )?((J\\.?[ -]?)?C|NSJC))\\.?$";
+	  private final static Pattern BC_PATTERN = Pattern.compile(BC_REGEX);
+
+	  public static String cleanDate(String date) {
+	    assert date != null;
+
+	    date = date.trim();
+	    if ("...".equals(date)) date = "....";
+	    else {
+	      if(isBC(date))
+	        date = "-" + date.replaceAll(BC_REGEX, "").trim();
+	      else date = date.replaceAll(AD_REGEX, "").trim();
+	    }
+
+	    return date;
+	  }
+
+	  public static boolean isBC(String date) {
+	    return BC_PATTERN.matcher(date).find();
+	  }
 
 }
 

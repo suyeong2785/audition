@@ -105,12 +105,12 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 				<i class="fas fa-times"></i>
 				<i class="fas fa-bars"></i>
 			</a>
-			<a href="/usr/home/showMyPage" class="box w-10 h-10">
-				<c:if test="${isLogined}">
+			<c:if test="${isLogined}">
+				<a href="/usr/home/showMyPage">
 					<c:choose>
 						<c:when test="${not empty fileForProfile}">
-							<img class="profile" src="${fileForProfile.forPrintGenUrl}"
-								alt="" />
+							<img class="profile w-10 h-10"
+								src="${fileForProfile.forPrintGenUrl}" alt="" />
 						</c:when>
 						<c:otherwise>
 							<span class="profile text-4xl text-green-500">
@@ -118,8 +118,8 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 							</span>
 						</c:otherwise>
 					</c:choose>
-				</c:if>
-			</a>
+				</a>
+			</c:if>
 		</div>
 		<div class="mobile-side-bar flex flex-ai-c">
 			<nav class="menu-box-1 flex-1-0-0">
@@ -192,11 +192,9 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 						<a class="btn btn-info" href="/usr/article/free-list">자유 게시판</a>
 					</li>
 					<c:if test="${isLogined}">
-						<c:if test="${!isAdmin}">
-							<li class="padding-0-10">
-								<a href="/usr/home/showMyPage" class="btn btn-info">마이페이지</a>
-							</li>
-						</c:if>
+						<li class="padding-0-10">
+							<a href="/usr/home/showMyPage" class="btn btn-info">마이페이지</a>
+						</li>
 						<li class="padding-0-10">
 							<a class="btn btn-info"
 								href="/usr/member/checkPassword?redirectUri=${Util.getUriEncoded('/usr/member/modify')}">내
@@ -205,11 +203,11 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 						<li class="padding-0-10">
 							<a class="btn btn-info" href="/usr/member/doLogout">로그아웃</a>
 						</li>
-						<a href="/usr/home/showMyPage" class="box w-24 h-24">
+						<a href="/usr/home/showMyPage">
 							<c:choose>
 								<c:when test="${not empty fileForProfile}">
-									<img class="profile" src="${fileForProfile.forPrintGenUrl}"
-										alt="" />
+									<img class="profile w-24 h-24"
+										src="${fileForProfile.forPrintGenUrl}" alt="" />
 								</c:when>
 								<c:otherwise>
 									<span class="profile text-8xl text-green-500">
@@ -217,6 +215,9 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 									</span>
 								</c:otherwise>
 							</c:choose>
+							<div class="text-center">
+								<span>${loginedMember.name}</span>
+							</div>
 						</a>
 					</c:if>
 					<c:if test="${isLogined == false}">

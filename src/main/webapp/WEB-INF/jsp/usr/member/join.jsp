@@ -78,6 +78,15 @@
 
 			return;
 		}
+		
+		var result = 1;
+		if ($('#career-box-switch').data("displayStatus") == -1) {
+			result = checkCareerBoxResult(form);
+		}
+
+		if (result == -1) {
+			return;
+		}
 
 		form.email.value = form.email.value.trim();
 
@@ -145,12 +154,12 @@
 		var startWriteApplyment = function(fileIdsStr) {
 
 			form.fileIdsStr.value = fileIdsStr;
-			
+
 			form.submit();
 		};
 
-		startUploadFiles(function(data) {		 
-			
+		startUploadFiles(function(data) {
+
 			var idsStr = '';
 			if (data && data.body && data.body.fileIdsStr) {
 				idsStr = data.body.fileIdsStr;
@@ -162,7 +171,8 @@
 	}
 </script>
 <form method="POST" class="table-box table-box-vertical con form1"
-	action="doJoin" onsubmit="javascript:MemberJoinForm__submit(this); return false;">
+	action="doJoin"
+	onsubmit="javascript:MemberJoinForm__submit(this); return false;">
 	<input type="hidden" name="redirectUri" value="/usr/member/login">
 	<input type="hidden" name="loginPwReal">
 	<input type="hidden" name="fileIdsStr">
@@ -262,6 +272,46 @@
 					</div>
 				</td>
 			</tr>
+			<tr id="activity-box" > 
+				<th>
+					<span>활동이력</span>
+				</th>
+				<td class="flex items-center">
+					<button type="button" class="text-2xl"
+						id="career-box-switch" data-displayStatus=-1
+						onclick="javascript:showCareerBox()">
+						<i class="far fa-plus-square"></i>
+					</button>
+					<div class="career-box hidden relative">
+						<c:if test="${joinedCareer != null}">
+							<button type="button" class="absolute top-0 text-2xl"
+								onclick="javascript:addCareerBox()">
+								<i class="far fa-plus-square"></i>
+							</button>
+
+							<div id="career-input-box" class="pl-8">
+								<c:forEach items="${joinedCareer}" var="career"
+									varStatus="status">
+									<div class="career-input flex items-center">
+										<div>
+											<input name="careerDate" type="date" value="${career.key}" />
+										</div>
+										<div>
+											<input name="careerArtwork" type="text"
+												placeholder="작품명 입력해주세요." name="career" maxlength="20"
+												value="${career.value}" />
+										</div>
+										<button type="button" class="text-2xl"
+											onclick="javascript:removeCareerBoxAndShowSwitch(this)">
+											<i class="far fa-trash-alt"></i>
+										</button>
+									</div>
+								</c:forEach>
+							</div>
+						</c:if>
+					</div>
+				</td>
+			</tr>
 			<tr>
 				<th>이메일</th>
 				<td>
@@ -293,6 +343,7 @@
 </form>
 
 <script>
+
 	$('#join-file').on('change', function() {
 
 		const files = $("#join-file")[0].files;

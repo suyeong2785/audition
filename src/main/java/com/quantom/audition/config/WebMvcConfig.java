@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -13,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
 	@Value("${custom.genFileDirPath}")
 	private String genFileDirPath;
-	
+
 	// beforeActionInterceptor 인터셉터 불러오기
 	@Autowired
 	@Qualifier("beforeActionInterceptor")
@@ -45,6 +46,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 				.excludePathPatterns("/gen/**").excludePathPatterns("/resource/**")
 				.excludePathPatterns("/usr/home/main").excludePathPatterns("/usr/member/login")
 				.excludePathPatterns("/usr/member/doLogin").excludePathPatterns("/usr/member/join")
+				.excludePathPatterns("/usr/member/getIsniSearchResultAjax")
 				.excludePathPatterns("/usr/member/doJoin").excludePathPatterns("/usr/article/*-list")
 				.excludePathPatterns("/usr/article/*-detail").excludePathPatterns("/usr/reply/getForPrintReplies")
 				.excludePathPatterns("/usr/file/streamVideo").excludePathPatterns("/usr/file/img")
@@ -65,7 +67,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/gen/**")
-				.addResourceLocations("file:///" + genFileDirPath + "/").setCachePeriod(20);
+		registry.addResourceHandler("/gen/**").addResourceLocations("file:///" + genFileDirPath + "/")
+				.setCachePeriod(20);
+	}
+
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/api/**").allowedOrigins("*").allowCredentials(true).allowedMethods("*");
 	}
 }

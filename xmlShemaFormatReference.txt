@@ -1,0 +1,84 @@
+	<responseRecord>
+		<ISNIAssigned>
+			<isniUnformatted>0000000468426542</isniUnformatted>
+			<isniURI>https://isni.org/isni/0000000468426542</isniURI>
+			<dataConfidence>60</dataConfidence>
+			<ISNIMetadata>
+				<identity>
+					<personOrFiction>
+						<personalName>
+							<surname>조원장</surname>
+							<nameUse>public</nameUse>
+							<source>KOREA</source>
+						</personalName>
+						<creativeActivity>
+							<creationClass source="KOREA">movie</creationClass>
+							<titleOfWork source="KOREA">
+								<title>@앙상블</title>
+							</titleOfWork>
+							<titleOfWork source="KOREA">
+								<title>@하이프 네이션 : 힙합사기꾼</title>
+							</titleOfWork>
+							<titleOfWork source="KOREA">
+								<title>@슬픔보다 더 슬픈 이야기</title>
+							</titleOfWork>
+							<titleOfWork source="KOREA">
+								<title>@고死 : 피의 중간고사</title>
+							</titleOfWork>
+							<titleOfWork source="KOREA">
+								<title>@숙명</title>
+							</titleOfWork>
+							<titleOfWork source="KOREA">
+								<title>@연애, 그 참을 수 없는 가벼움</title>
+							</titleOfWork>
+							<titleOfWork source="KOREA">
+								<title>@6월의 일기</title>
+							</titleOfWork>
+							<titleOfWork source="KOREA">
+								<title>@형사 Duelist</title>
+							</titleOfWork>
+							<titleOfWork source="KOREA">
+								<title>@투 가이즈</title>
+							</titleOfWork>
+							<titleOfWork source="KOREA">
+								<title>@유아독존</title>
+							</titleOfWork>
+							<titleOfWork source="KOREA">
+								<title>@챔피언</title>
+							</titleOfWork>
+							<titleOfWork source="KOREA">
+								<title>@친구</title>
+							</titleOfWork>
+							<titleOfWork source="KOREA">
+								<title>@아나키스트</title>
+							</titleOfWork>
+							<titleOfWork source="KOREA">
+								<title>@인정사정 볼 것 없다</title>
+							</titleOfWork>
+							<titleOfWork source="KOREA">
+								<title>@헐리우드 키드의 생애</title>
+							</titleOfWork>
+						</creativeActivity>
+						<personalNameVariant>
+							<surname>Cho, Wonjang</surname>
+							<nameUse>public</nameUse>
+							<source>KOREA</source>
+						</personalNameVariant>
+						<personalNameVariant>
+							<surname>Jo, Wonjang</surname>
+							<nameUse>public</nameUse>
+							<source>KOREA</source>
+						</personalNameVariant>
+					</personOrFiction>
+				</identity>
+				<sources>
+					<codeOfSource>KOREA</codeOfSource>
+					<sourceIdentifier>KAC2018C1017</sourceIdentifier>
+				</sources>
+				<externalInformation>
+					<information>Korea Authority File</information>
+					<URI>https://librarian.nl.go.kr/LI/contents/L20101000000.do?id=KAC2018C1017</URI>
+				</externalInformation>
+			</ISNIMetadata>
+		</ISNIAssigned>
+	</responseRecord>

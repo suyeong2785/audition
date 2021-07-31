@@ -95,6 +95,15 @@ var param = ${paramJson};
 				<ul>
 					<c:if test="${isLogined}">
 						<li>
+							<a class="flex flex-jc-c" href="/usr/home/main">유저</a>
+						</li>
+						<li>
+							<a class="flex flex-jc-c" href="/adm/member/searchActor">배우검색</a>
+						</li>
+						<li>
+							<a class="flex flex-jc-c" href="/adm/member/addActor">배우추가</a>
+						</li>
+						<li>
 							<a class="flex flex-jc-c" href="/adm/home/showMyPage">마이페이지</a>
 						</li>
 						<li>
@@ -121,7 +130,9 @@ var param = ${paramJson};
 			</a>
 			<nav class="menu-box-1">
 				<ul class="flex flex-ai-c">
-
+					<li class="padding-0-10">
+						<a class="btn btn-info" href="/usr/home/main">유저</a>
+					</li>
 					<li class="padding-0-10">
 						<a class="btn btn-info" href="/adm/actingRole/list">배역리스트</a>
 					</li>

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.quantom.audition.config.AppConfig;
@@ -19,9 +20,11 @@ import com.quantom.audition.dto.Recruitment;
 import com.quantom.audition.dto.Share;
 import com.quantom.audition.service.ApplymentService;
 import com.quantom.audition.service.CareerService;
+import com.quantom.audition.service.IsniSearchService;
 import com.quantom.audition.service.RecruitmentService;
 import com.quantom.audition.service.ShareService;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Controller
 public class HomeController {
 	@Autowired
@@ -39,9 +42,11 @@ public class HomeController {
 	@Autowired
 	CareerService careerService;
 	
+
+	
 	@RequestMapping("/usr/home/main")
 	public String showMain() {
-	    return "redirect:/usr/recruitment/actor-list";
+	    return "usr/home/main";
 	}
 	
 	@RequestMapping("/")
@@ -98,4 +103,5 @@ public class HomeController {
 		
 		return "usr/home/showMyPage";
 	}
+	
 }
