@@ -5,6 +5,8 @@
 
 <c:set var="pageTitle" value="마이 페이지" />
 <%@ include file="../part/head.jspf"%>
+
+<script src="http://www.youtube.com/player_api"></script>
 <div class="con mx-auto">
 	<h2 class="text-center py-2 my-4 border-2 border-black box-border p-4 box-border">자기소개 영상</h2>
 

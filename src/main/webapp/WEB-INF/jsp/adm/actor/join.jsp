@@ -89,6 +89,27 @@
 		if (result == -1) {
 			return;
 		}
+		
+		//YoutubeUrl validation check 함수...
+		function matchYoutubeUrl(url) {
+			var p = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+			if (url.match(p)) {
+				return url.match(p)[1];
+			}
+			return false;
+		}
+
+		form.youTubeUrl.value = form.youTubeUrl.value.trim();
+
+		if (form.youTubeUrl.value.length != 0) {
+			if (matchYoutubeUrl(form.youTubeUrl.value) == false) {
+				form.youTubeUrl.focus();
+				alert('youTube url형식에 맞게 입력해주세요.');
+
+				return;
+			}
+
+		}
 
 		var startUploadFiles = function(onSuccess) {
 			var needToUpload = false;
@@ -162,6 +183,14 @@
 				</td>
 			</tr>
 			<tr>
+				<th>유튜브 url</th>
+				<td>
+					<div class="form-control-box">
+						<input type="text" name="youTubeUrl" placeholder="ex) https://www.youtube.com/watch?v=영문/숫자/특수문자 (pc버전)" />
+					</div>
+				</td>
+			</tr>
+			<tr>
 				<th>이름</th>
 				<td>
 					<div class="form-control-box">
@@ -198,8 +227,7 @@
 				<th>나이</th>
 				<td>
 					<div class="form-control-box">
-						<input type="number" placeholder="나이를 입력해주세요." name="age"
-							maxlength="20" />
+						<input type="number" placeholder="나이를 입력해주세요." name="age" />
 					</div>
 				</td>
 			</tr>
@@ -207,8 +235,7 @@
 				<th>키</th>
 				<td>
 					<div class="form-control-box">
-						<input type="number" placeholder="나이를 입력해주세요." name="age"
-							maxlength="20" />
+						<input type="number" placeholder="나이를 입력해주세요." name="height"/>
 					</div>
 				</td>
 			</tr>
@@ -216,8 +243,7 @@
 				<th>몸무게</th>
 				<td>
 					<div class="form-control-box">
-						<input type="number" placeholder="나이를 입력해주세요." name="age"
-							maxlength="20" />
+						<input type="number" placeholder="나이를 입력해주세요." name="weight" />
 					</div>
 				</td>
 			</tr>

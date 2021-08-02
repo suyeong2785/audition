@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.quantom.audition.dao.ActorDao;
+import com.quantom.audition.dto.Actor;
 import com.quantom.audition.service.CareerService;
 import com.quantom.audition.service.FileService;
 import com.quantom.audition.util.Util;
@@ -40,6 +41,14 @@ public class ActorService {
 			}
 		}
 
+	}
+
+	public List<Actor> getActorListByName(String name) {
+		return actorDao.getActorListByName(name);
+	}
+
+	public Actor getForPrintActorById(int id) {
+		return actorDao.getForPrintActorById(id);
 	}
 
 }
