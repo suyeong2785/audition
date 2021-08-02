@@ -99,10 +99,10 @@ var param = ${paramJson};
 							<a class="flex flex-jc-c" href="/usr/home/main">유저</a>
 						</li>
 						<li>
-							<a class="flex flex-jc-c" href="/adm/member/searchActor">배우검색</a>
+							<a class="flex flex-jc-c" href="/adm/actor/getActor">배우검색</a>
 						</li>
 						<li>
-							<a class="flex flex-jc-c" href="/adm/member/addActor">배우추가</a>
+							<a class="flex flex-jc-c" href="/adm/actor/join">배우추가</a>
 						</li>
 						<li>
 							<a class="flex flex-jc-c" href="/adm/home/showMyPage">마이페이지</a>
@@ -142,10 +142,10 @@ var param = ${paramJson};
 					</li>
 					<c:if test="${isLogined}">
 						<li class="padding-0-10">
-							<a class="btn btn-info" href="/adm/member/searchActor">배우검색</a>
+							<a class="btn btn-info" href="/adm/actor/getActor">배우검색</a>
 						</li>
 						<li class="padding-0-10">
-							<a class="btn btn-info" href="/adm/member/addActor">배우추가</a>
+							<a class="btn btn-info" href="/adm/actor/join">배우추가</a>
 						</li>
 						<li class="padding-0-10">
 							<a class="btn btn-info" href="/adm/home/showMyPage">마이페이지</a>

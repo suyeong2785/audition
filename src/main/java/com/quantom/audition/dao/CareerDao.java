@@ -12,7 +12,7 @@ public interface CareerDao {
 
 	void setCareer(Map<String, Object> param);
 
-	Career getCareerByMember(@Param("memberId") int memberId,@Param("jobId") int jobId);
+	Career getCareerByMember(@Param("id") int id);
 
 	void modifyCareerByMemberIdAndJobId(Map<String, Object> param);
 

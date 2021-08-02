@@ -221,9 +221,13 @@ public class MemberController {
 			return "common/redirect";
 		}
 		
-		Career career = careerService.getCareerByMember(loginedMemberId, loginedMember.getJobId());
+		Career career = null;
+		if(loginedMember.getCareerId() != 0) {
+			career = careerService.getCareerByMember(loginedMember.getCareerId());
+		}
+		
 		if(career != null) {
-			Map<String,String> joinedCareer = careerService.getDatesAndArtworkOfCareerByMember(loginedMemberId,loginedMember.getJobId());
+			Map<String,String> joinedCareer = careerService.getDatesAndArtworkOfCareerByMember(loginedMember.getCareerId());
 			
 			model.addAttribute("joinedCareer", joinedCareer);
 		}
@@ -240,8 +244,24 @@ public class MemberController {
 		param.put("id", loginedMemberId);
 		param.put("jobId", loginedMember.getJobId());
 		
+		Util.changeMapKey(param, "careerDates","date");
+		Util.changeMapKey(param, "careerArtworks","artwork");
+		
+		System.out.println("careerDates : " + param.get("careerDates") );
+		System.out.println("careerArtworks : " + param.get("careerArtworks") );
+		
+		Career career = careerService.getCareerByMember(loginedMember.getCareerId());
+	
+		if (career == null) {
+			careerService.setCareer(param);
+		}else {
+			param.put("id", career.getId());
+			careerService.modifyCareerByMemberIdAndJobId(param);
+		}
+		
 		memberService.modify(param);
-
+		
+		
 		String redirectUri = (String) param.get("redirectUri");
 		model.addAttribute("redirectUri", redirectUri);
 
@@ -286,4 +306,5 @@ public class MemberController {
 		
 		return new ResultData("S-1", "사용가능한 ISNI 번호입니다.");
 	}
+	
 }

@@ -48,7 +48,7 @@
 			return -1;
 		}
 
-		dates = $("input[name='careerDate']").map(function(index, element) {
+		var dates = $("input[name='careerDate']").map(function(index, element) {
 			if ($.trim($(this).val()) != "" && $.trim($(this).val()) != null) {
 				return $.trim($(this).val());
 			}
@@ -217,11 +217,11 @@
 			var needToDelete = form.deleteCheck.value;
 
 			if (needToUpload == false
-					&& form["file__profile__" + loginedMemberId
+					&& form["file__member__" + loginedMemberId
 							+ "__common__attachment__" + fileNo]) {
-				needToUpload = form["file__profile__" + loginedMemberId
+				needToUpload = form["file__member__" + loginedMemberId
 						+ "__common__attachment__" + fileNo]
-						&& form["file__profile__" + loginedMemberId
+						&& form["file__member__" + loginedMemberId
 								+ "__common__attachment__" + fileNo].value.length > 0;
 			}
 
@@ -314,7 +314,7 @@
 						<div>
 							<input id="modify-file" type="file" class="pb-4"
 								accept="${appConfig.getAttachemntFileInputAccept('img')}"
-								name="file__profile__${loginedMemberId}__common__attachment__${fileForProfile != null ? fileForProfile.fileNo : 0 }" />
+								name="file__member__${loginedMemberId}__common__attachment__${fileForProfile != null ? fileForProfile.fileNo : 0 }" />
 							<img id="modify-profile" class="w-20" src="" alt="" />
 						</div>
 						<c:if test="${fileForProfile != null}">
@@ -450,8 +450,8 @@
 												value="${career.value}" />
 										</div>
 										<button type="button" class="text-2xl"
-											onclick="javascript:removeCareerBoxAndShowSwitch(this)">
-											<i class="far fa-trash-alt"></i>
+											onclick="javascript:removeCareerBox(this)">
+											<i class="far fa-minus-square"></i>
 										</button>
 									</div>
 								</c:forEach>
@@ -472,9 +472,6 @@
 	</table>
 </form>
 <script>
-	var regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
-	
-	regex.test("2020-09-25");
 
 	$("#ISNI-number1, #ISNI-number2, #ISNI-number3, #ISNI-number4").change(function(){
 		var ISNI_number1 = $("#ISNI-number1").val();

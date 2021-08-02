@@ -127,25 +127,6 @@ public class MemberService {
 			}
 		}
 		
-		Util.changeMapKey(param, "careerDates","date");
-		Util.changeMapKey(param, "careerArtworks","artwork");
-		Util.changeMapKey(param, "id","memberId");
-		
-		System.out.println("careerDates : " + param.get("careerDates") );
-		System.out.println("careerArtworks : " + param.get("careerArtworks") );
-		
-		int memberId = Util.getAsInt(param.get("memberId"));
-		int jobId = Util.getAsInt(param.get("jobId"));
-		
-		Career career = careerService.getCareerByMember(memberId, jobId);
-	
-		if (career == null) {
-			careerService.setCareer(param);
-		}else {
-			param.put("id", career.getId());
-			careerService.modifyCareerByMemberIdAndJobId(param);
-		}
-		
 	}
 
 	public Member getMemberByNameAndEmail(String name, String email) {

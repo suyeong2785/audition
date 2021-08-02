@@ -182,6 +182,7 @@
 		
 	function closeCastingDirectorList(){
 	
+		$('#search-close-button').css({"display":"none"});
 		$('#search-result').empty();
 	}
 	

@@ -128,9 +128,9 @@
 			var needToUpload = false;
 
 			if (needToUpload == false
-					&& form.file__profile__0__common__attachment__1) {
-				needToUpload = form.file__profile__0__common__attachment__1
-						&& form.file__profile__0__common__attachment__1.value.length > 0;
+					&& form.file__member__0__common__attachment__1) {
+				needToUpload = form.file__member__0__common__attachment__1
+						&& form.file__member__0__common__attachment__1.value.length > 0;
 			}
 
 			if (needToUpload == false) {
@@ -214,7 +214,7 @@
 					<div class="form-control-box">
 						<input id="join-file" type="file"
 							accept="${appConfig.getAttachemntFileInputAccept('img')}"
-							name="file__profile__0__common__attachment__1" />
+							name="file__member__0__common__attachment__1" />
 						<img id="join-profile" class="w-20" src="" alt="" />
 					</div>
 				</td>

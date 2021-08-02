@@ -83,6 +83,7 @@
 			<if test="cellphoneNo != null and cellphoneNo.length() > 0">`cellphoneNo` = #{cellphoneNo},</if>
 			<if test="youtubeUrl != null and youtubeUrl.length() > 0">`youtubeUrl` = #{youtubeUrl},</if>
 			<if test="loginPw != null and loginPw.length() > 0">`loginPw` = #{loginPw},</if>
+			<if test="loginPw != null and loginPw.length() > 0">`careerId` = #{careerId},</if>
 			<if test="ISNI_number != null and ISNI_number.length() > 0">`ISNI_number` = #{ISNI_number},</if>
 		</set>
 		WHERE id = #{id}

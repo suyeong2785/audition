@@ -4,22 +4,20 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.quantom.audition.dao.CareerDao">
 
-	<insert id="setCareer" useGeneratedKeys="true" keyProperty="id">
+	<insert id="setCareer" useGeneratedKeys="true" keyProperty="careerId">
 		INSERT
 		INTO `career`
 		SET regDate = NOW(),
 		updateDate = NOW(),
 		jobId = #{jobId},
 		date = #{date},
-		memberId = #{memberId},
 		artwork = #{artwork}
 	</insert>
 	
 	<select id="getCareerByMember" resultType="Career">
 		SELECT
 		* FROM career
-		WHERE memberId = #{memberId}
-		AND jobId = #{jobId}
+		WHERE id = #{id}
 		
 	</select>
 	
@@ -28,9 +26,7 @@
 		SET updateDate = NOW(),
 		date = #{date},
 		artwork = #{artwork}
-		WHERE memberId = #{memberId}
-		AND jobId = #{jobId}
-		AND id = #{id}
+		WHERE id = #{id}
 	</update>
 	
 	

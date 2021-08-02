@@ -108,9 +108,9 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 			isAdmin = loginedMember.isAdmin();
 			isCastingDirector= loginedMember.isCastingDirector();		
 			
-			if(fileService.getFileRelTypeCodeAndRelIdAndTypeCodeAndType2Code("profile",
+			if(fileService.getFileRelTypeCodeAndRelIdAndTypeCodeAndType2Code("member",
 					loginedMemberId, "common", "attachment") != null) {
-				fileForProfile = fileService.getFileRelTypeCodeAndRelIdAndTypeCodeAndType2Code("profile",
+				fileForProfile = fileService.getFileRelTypeCodeAndRelIdAndTypeCodeAndType2Code("member",
 						loginedMemberId, "common", "attachment");
 			};
 		}

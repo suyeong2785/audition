@@ -18,6 +18,7 @@ public class Member {
 	private boolean authStatus;
 	private int authority;
 	private int jobId;
+	private int careerId;
 	private int age;
 	private String loginId;
 	private String youTubeUrl;

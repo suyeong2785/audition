@@ -495,7 +495,29 @@ recommendeeId INT UNSIGNED NOT NULL,
 recommendationStatus TINYINT NOT NULL
 );
 
+#member 테이블에 ISNI Number 컬럼추가(이후의 ISNI와의 연동을 위한 사전작업)
+ALTER TABLE `member` ADD COLUMN `ISNI_number` CHAR(16) NOT NULL; 
 
+
+#admin으로 배우정보 추가 검색할수있도록 관리할 actor 테이블을 추가
+CREATE TABLE `actor`(
+id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+regDate DATETIME NOT NULL,
+updateDate DATETIME NOT NULL,
+`name` VARCHAR(10) NOT NULL,
+nickname VARCHAR(10) NOT NULL,
+gender CHAR(2) NOT NULL,
+age TINYINT UNSIGNED DEFAULT 0 NOT NULL,
+height TINYINT UNSIGNED DEFAULT 0 NOT NULL,
+weight TINYINT UNSIGNED DEFAULT 0 NOT NULL,
+careerId INT UNSIGNED NOT NULL,
+email VARCHAR(30) NOT NULL,
+phone CHAR(11) NOT NULL
+);
+
+ALTER TABLE `member` ADD COLUMN careerId INT UNSIGNED NOT NULL AFTER loginId;
+
+ALTER TABLE `career` DROP COLUMN memberId;
 
 /*
 select * from `file`;
@@ -508,4 +530,6 @@ select * from `attr`;
 select * from  reply;
 select * from `career`;
 select * from  share;
+select * from  recommendation;
+select * from  actor;
 */

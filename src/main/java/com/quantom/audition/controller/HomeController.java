@@ -94,9 +94,9 @@ public class HomeController {
 		List<Applyment> applymentResults = applymentService.getApplymenResultInfoByMemberId(loginedMember.getId());
 		model.addAttribute("applymentResults",applymentResults);
 		
-		Career career = careerService.getCareerByMember(loginedMember.getId(), loginedMember.getJobId());
+		Career career = careerService.getCareerByMember(loginedMember.getCareerId());
 		if(career != null) {
-			Map<String,String> joinedCareer = careerService.getDatesAndArtworkOfCareerByMember(loginedMember.getId(),loginedMember.getJobId());
+			Map<String,String> joinedCareer = careerService.getDatesAndArtworkOfCareerByMember(loginedMember.getCareerId());
 
 			model.addAttribute("joinedCareer", joinedCareer);
 		}

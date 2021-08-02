@@ -24,13 +24,13 @@ public class CareerService {
 
 	}
 
-	public Career getCareerByMember(int memberId, int jobId) {
-		return careerDao.getCareerByMember(memberId, jobId);
+	public Career getCareerByMember(int id) {
+		return careerDao.getCareerByMember(id);
 
 	}
 
-	public Map<String, String> getDatesAndArtworkOfCareerByMember(int memberId, int jobId) {
-		Career career = careerDao.getCareerByMember(memberId, jobId);
+	public Map<String, String> getDatesAndArtworkOfCareerByMember(int id) {
+		Career career = careerDao.getCareerByMember(id);
 
 		String[] dates = career.getDate().split("_");
 
