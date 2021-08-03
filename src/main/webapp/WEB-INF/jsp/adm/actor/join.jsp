@@ -11,25 +11,6 @@
 	//경력박스확인 체크
 	var checkCareerBoxResult = function(form) {
 
-		/*
-		var dateNeedToStop = 0;
-		
-		let dates = $("input[name='careerDate']").each(function(index, item) {
-			if ($.trim($(this).val()) != "" && $.trim($(this).val()) != null) {
-				return true;
-			}
-
-			alert('경력날짜의 ' + (index + 1) + '번째 칸이 비어있습니다.');
-			dateNeedToStop = 1;
-			$(this).focus();
-			return false;
-		});
-
-		if (dateNeedToStop == 1) {
-			return -1;
-		}
-		 */
-
 		var artworkNeedToStop = 0;
 		let artworks = $("input[name='careerArtwork']").each(
 				function(index, item) {
@@ -69,9 +50,6 @@
 		form.careerDates.value = dates;
 		form.careerArtworks.value = artworks;
 
-		alert('form.careerDates.value : ' + form.careerDates.value);
-		alert('form.careerArtworks.value : ' + form.careerArtworks.value);
-
 		return 1;
 	}
 
@@ -87,6 +65,88 @@
 		}
 
 		if (result == -1) {
+			return;
+		}
+		
+		form.name.value = form.name.value.trim();
+		
+		if(form.name.value.length == 0){
+			form.name.focus();
+			alert('이름은 필수입력사항 입니다.');
+			
+			return;
+		}
+		
+		if (form.name.value.length > 10) {
+			form.name.focus();
+			alert('이름을 아홉자리수 이상 입력할 수 없습니다.');
+			
+			return;
+		}
+		
+		form.nickname.value = form.nickname.value.trim();
+		
+		if (form.nickname.value.length > 10) {
+			form.nickname.focus();
+			alert('활동명을 아홉자리수 이상 입력할 수 없습니다.');
+			
+			return;
+		}
+		
+		form.age.value = form.age.value.trim();
+		
+		if (form.age.value.length > 3) {
+			form.age.focus();
+			alert('나이를 두자리수 이상 입력할 수 없습니다.');
+			return;
+		}
+		
+		if(form.age.value > 255){
+			alert('나이를 255살 이상 입력할 수 없습니다.');
+			form.age.focus();
+			return;
+		}
+		
+		if (form.gender[0].checked == false && form.gender[1].checked == false) {
+			alert('성별은 필수입력사항입니다.');
+			
+			return;
+		}
+		
+		form.weight.value = form.weight.value.trim();
+		
+		if (form.weight.value.length > 3) {
+			form.weight.focus();
+			alert('몸무게를 세자리수 이상 입력할 수 없습니다.');
+			return;
+		}
+		
+		if(form.weight.value > 255){
+			alert('몸무게를 255kg이상 입력할 수 없습니다.');
+			form.weight.focus();
+			return;
+		}
+		
+		form.height.value = form.height.value.trim();
+		
+		if (form.height.value.length > 3) {
+			form.height.focus();
+			alert('키를 세자리수 이상 입력할 수 없습니다.');
+			return;
+		}
+		
+		if(form.height.value > 255){
+			alert('키를 255cm이상 입력할 수 없습니다.');
+			form.height.focus();
+			return;
+		}
+		
+		form.phone.value = form.phone.value.trim();
+		
+		if (form.phone.value.length > 11 || form.phone.value.length < 11 ) {
+			form.phone.focus();
+			alert('전화번호 열한자리수를 입력해주세요.');
+		
 			return;
 		}
 		
@@ -158,7 +218,7 @@
 	}
 </script>
 
-<form method="POST" class="table-box table-box-vertical con form1"
+<form method="POST" class="table-box table-box-vertical con form1 relative"
 	action="doJoin"
 	onsubmit="javascript:ActorJoinForm__submit(this); return false;">
 	<input type="hidden" name="redirectUri" value="/adm/home/showMyPage">
@@ -166,6 +226,9 @@
 	<input type="hidden" name="careerDates" />
 	<input type="hidden" name="careerArtworks" />
 	<input type="hidden" name="jobId" value="1" />
+	<div class="absolute -top-6 ">
+	<span class="text-gray-500">*필수 입력사항입니다.</span>
+	</div>
 	<table>
 		<colgroup>
 			<col class="table-first-col">
@@ -191,7 +254,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th>이름</th>
+				<th>이름*</th>
 				<td>
 					<div class="form-control-box">
 						<input type="text" placeholder="이름을 입력해주세요." name="name"
@@ -209,7 +272,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th>성별</th>
+				<th>성별*</th>
 				<td>
 					<div class="form-control-box">
 						<label>
@@ -365,8 +428,7 @@
 		html += '<input name="careerDate" type="date" />';
 		html += '</div>';
 		html += '<div>';
-		html += '<input name="careerArtwork" type="text" placeholder="작품명 입력해주세요." name="career" maxlength="20" value="'
-				+ (title != null ? title : "") + '"/>';
+		html += '<input name="careerArtwork" type="text" placeholder="작품명 입력해주세요." name="career" maxlength="20"/>';
 		html += '</div>';
 
 		html += '<button type="button" class="text-2xl" onclick="javascript:removeCareerBoxAndShowSwitch(this)">';

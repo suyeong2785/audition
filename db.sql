@@ -519,6 +519,10 @@ ALTER TABLE `member` ADD COLUMN careerId INT UNSIGNED NOT NULL AFTER loginId;
 
 ALTER TABLE `career` DROP COLUMN memberId;
 
+ALTER TABLE `actor` ADD COLUMN youTubeUrl VARCHAR(100) NOT NULL ; 
+
+ALTER TABLE `actor` MODIFY COLUMN careerId INT UNSIGNED NOT NULL DEFAULT 0 AFTER email;
+
 /*
 select * from `file`;
 SELECT * FROM `actingRole`;

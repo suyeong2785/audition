@@ -6,18 +6,20 @@
 
 	<insert id="join" useGeneratedKeys="true" keyProperty="id">
 	INSERT INTO `actor`
-	SET regDate = NOW(),
-	updateDate = NOW(),
-		<if test="name != null and name.length() > 0">`name` = #{name},</if>
-		<if test="nickname != null and nickname.length() > 0">`nickname` = #{nickname},</if>
-		<if test="gender != null and gender.length() > 0">`gender` = #{gender},</if>
-		<if test="age > 0">`age` = #{age},</if>
-		<if test="height > 0">`height` = #{height},</if>
-		<if test="weight  > 0">`weight` = #{weight},</if>
-		<if test="careerId > 0">`careerId` = #{careerId},</if>
-		<if test="email != null and email.length() > 0">`email` = #{email},</if>
-		<if test="phone != null and phone.length() > 0">`phone` = #{phone},</if>
-		<if test="youTubeUrl != null and youTubeUrl.length() > 0">`youTubeUrl` = #{youTubeUrl}</if>
+		<set>
+			regDate = NOW(),
+			updateDate = NOW(),
+			<if test="name != null and name.length() > 0">`name` = #{name},</if>
+			<if test="nickname != null and nickname.length() > 0">`nickname` = #{nickname},</if>
+			<if test="gender != null and gender.length() > 0">`gender` = #{gender},</if>
+			<if test="age > 0">`age` = #{age},</if>
+			<if test="height > 0">`height` = #{height},</if>
+			<if test="weight  > 0">`weight` = #{weight},</if>
+			<if test="careerId > 0">`careerId` = #{careerId},</if>
+			<if test="email != null and email.length() > 0">`email` = #{email},</if>
+			<if test="youTubeUrl != null and youTubeUrl.length() > 0">`youTubeUrl` = #{youTubeUrl},</if>
+			<if test="phone != null and phone.length() > 0">`phone` = #{phone},</if>
+		</set>
 	</insert>
 	
 	<select id="getActorListByName" resultType="Actor">

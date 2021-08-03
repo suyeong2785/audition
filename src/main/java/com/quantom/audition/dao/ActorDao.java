@@ -15,6 +15,6 @@ public interface ActorDao {
 
 	List<Actor> getActorListByName(@Param("name") String name);
 
-	Actor getForPrintActorById(int id);
+	Actor getForPrintActorById(@Param("id") int id);
 
 }

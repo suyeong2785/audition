@@ -5,9 +5,6 @@
 <%@ include file="../part/head.jspf"%>
 
 <div class="con mx-auto mb-4">
-	<div class="flex border-2 border-black box-border p-2 mb-2">
-		<div class="text-center flex-grow">캐스팅 검색</div>
-	</div>
 	<div
 		class="relative flex justify-center items-center text-white text-center h-12 md:h-14 text-2xl md:text-4xl mb-4">
 		<!-- 검색 상자 -->
@@ -17,16 +14,17 @@
 				type="text" placeholder="지원자를 공유할 캐스팅디렉터님의 아이디를 입력해주세요" />
 		</div>
 		<!-- 검색 버튼 -->
-		<button onclick="getCastingDirectorList()"
+		<button onclick="getActorListByName()"
 			class="flex justify-center items-center h-full bg-green-400 text-white text-center h-full px-4 text-2xl md:text-3xl hover:bg-green-500">
 			<i class="fas fa-search"></i>
 		</button>
 		<!-- 검색 닫기버튼 -->
-		<button onclick="closeCastingDirectorList()" id="search-close-button"
+		<button onclick="closeActorList()" id="search-close-button"
 			class=" hidden justify-center items-center h-full bg-green-400 text-white text-center h-full px-4 text-2xl md:text-3xl hover:bg-green-500">
 			<i class="fas fa-times"></i>
 		</button>
 	</div>
+	
 	<div id="search-result"></div>
 </div>
 <div class="popup-1" id="actor-decision-form-modal">
@@ -51,17 +49,17 @@
 				onclick="hideApplicantDecisonModal()">닫기</button>
 		</div>
 	</div>
-
 </div>
 
 <script>
-	function closeCastingDirectorList() {
+	
+	function closeActorList() {
 
 		$('#search-close-button').css("display", "none");
 		$('#search-result').empty();
 	}
 
-	function getCastingDirectorList() {
+	function getActorListByName(sort) {
 
 		//양쪽 공백제거
 		var $actor_search_input = $.trim($('#actor-search-input').val());
@@ -73,8 +71,65 @@
 
 		$.get('../../adm/actor/getActorListByNameAjax', {
 			name : $actor_search_input
-		}, CastingDirectorList, 'json');
+		},function(data){
+			if(sort != null && sort != ''){
+				data.body.sort = sort;
+				
+				getSortedActorListBy(data);
+			}else{
+				CastingDirectorList(data);
+			}
+			
+		}, 'json');
 
+	}
+	
+	function getSortedActorListBy(data){
+		var actors = data.body.actors;
+		var sort = data.body.sort;
+		
+		if(sort != null && sort != ''){
+			if(sort == "ascendingSortByName" ){
+				actors = actors.sort(function(a, b){
+					return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+				});
+				
+				data.body.actors = actors;
+				
+			}else if(sort == "descendingSortByName"){
+				actors = actors.sort(function(a, b){
+					return a.name > b.name ? -1 : a.name < b.name ? 1 : 0;
+				});
+				
+				data.body.actors = actors;
+			}else if(sort == "ascendingSortByAge"){
+				actors = actors.sort(function(a, b){
+					return a.age < b.age ? -1 : a.age > b.age ? 1 : 0;
+				});
+				
+				data.body.actors = actors;
+			}else if(sort == "descendingSortByAge"){
+				actors = actors.sort(function(a, b){
+					return a.age > b.age ? -1 : a.age < b.age ? 1 : 0;
+				});
+				
+				data.body.actors = actors;
+			}else if(sort == "ascendingSortByGender"){
+				actors = actors.sort(function(a, b){
+					return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+				});
+				
+				data.body.actors = actors;
+			}else if(sort == "descendingSortByGender"){
+				actors = actors.sort(function(a, b){
+					return a.age > b.age ? -1 : a.age < b.age ? 1 : 0;
+				});
+				
+				data.body.actors = actors;
+			}
+		}
+		
+		CastingDirectorList(data);
 	}
 
 	function CastingDirectorList(data) {
@@ -86,16 +141,43 @@
 		if (data.resultCode.startsWith('F') == true) {
 			$('#search-close-button').css("display", "none");
 		}
+		
+		drawActorHeader();
 
 		var actors = null;
+		var sort = data.body.sort;
 
 		if (data && data.body && data.body.actors) {
 			actors = data.body.actors;
+			
+			if(sort != null && sort != ''){
 
-			$('#search-close-button').css("display", "flex");
+				if(sort == "ascendingSortByName"){
+					$('#ascending-sortByName-button').css("display", "none");
+					$('#descending-sortByName-button').css("display", "inline-block");
+					
+				}else if(sort == "descendingSortByName"){
+					$('#ascending-sortByName-button').css("display", "inline-block");
+					$('#descending-sortByName-button').css("display", "none");
+					
+				}else if(sort == "ascendingSortByGender"){
+					$('#ascending-sortByGender-button').css("display", "none");
+					$('#descending-sortByGender-button').css("display", "inline-block");
+					
+				}else if(sort == "descendingSortByGender"){
+					$('#ascending-sortByGender-button').css("display", "inline-block");
+					$('#descending-sortByGender-button').css("display", "none");
+					
+				}else if(sort == "ascendingSortByAge"){
+					$('#ascending-sortByAge-button').css("display", "none");
+					$('#descending-sortByAge-button').css("display", "inline-block");
+					
+				}else if(sort == "descendingSortByAge"){
+					$('#ascending-sortByAge-button').css("display", "inline-block");
+					$('#descending-sortByAge-button').css("display", "none");
+				}
+			}	
 		}
-
-		drawActorHeader();
 
 		var $search_result = $('#search-result');
 
@@ -116,7 +198,6 @@
 				html = html.replace(/{actor.id}/gi, "'" + actor.id + "'")
 						.replace( /{actor.youTubeUrl}/gi, "'" + actor.youTubeUrl + "'")
 						.replace(/{actor.careerId}/gi, "'" + actor.careerId + "'");
-
 			});
 
 		$('#search-result').append(html);
@@ -124,19 +205,50 @@
 	}
 
 	function drawActorHeader() {
-
+		
 		var $search_result = $('#search-result');
-
+		
 		html = '';
 
 		html += '<div class="flex justify-center text-center border-2 border-black box-border p-4">';
 		html += '<div class="flex-1">번호</div>';
-		html += '<div class="flex-1">이름</div>';
-		html += '<div class="flex-1">활동명</div>';
-		html += '<div class="flex-1">성별</div>';
-		html += '<div class="flex-1">나이</div>';
+		html += '<div class="flex-1">';
+		html += '<span class="pr-2">이름</span>';
+		html += '<button onclick="getActorListByName({ascendingSortByName})" id="ascending-sortByName-button" class="text-lg">';
+		html += '<i class="fas fa-caret-down"></i>';
+		html += '<button>';
+		html += '<button onclick="getActorListByName({descendingSortByName})" id="descending-sortByName-button" class="text-lg hidden">';
+		html += '<i class="fas fa-caret-up"></i>';
+		html += '<button>';
 		html += '</div>';
-
+		html += '<div class="flex-1">활동명</div>';
+		html += '<div class="flex-1">';
+		html += '<span class="pr-2">성별</span>';
+		html += '<button onclick="getActorListByName({ascendingSortByGender})" id="ascending-sortByGender-button" class="text-lg">';
+		html += '<i id="sort-icon" class="fas fa-caret-down"></i>';
+		html += '<button>';
+		html += '<button onclick="getActorListByName({descendingSortByGender})" id="descending-sortByGender-button" class="text-lg hidden">';
+		html += '<i class="fas fa-caret-up"></i>';
+		html += '<button>';
+		html += '</div>';
+		html += '<div class="flex-1">';
+		html += '<span class="pr-2">나이</span>';
+		html += '<button onclick="getActorListByName({ascendingSortByAge})" id="ascending-sortByAge-button" class="text-lg">';
+		html += '<i id="sort-icon" class="fas fa-caret-down"></i>';
+		html += '<button>';
+		html += '<button onclick="getActorListByName({descendingSortByAge})" id="descending-sortByAge-button" class="text-lg hidden">';
+		html += '<i class="fas fa-caret-up"></i>';
+		html += '<button>';
+		html += '</div>';
+		html += '</div>';
+		
+		html = html.replace(/{ascendingSortByName}/gi, "'ascendingSortByName'")
+		.replace( /{descendingSortByName}/gi, "'descendingSortByName'")
+		.replace(/{ascendingSortByGender}/gi, "'ascendingSortByGender'")
+		.replace(/{descendingSortByGender}/gi, "'descendingSortByGender'")
+		.replace(/{ascendingSortByAge}/gi, "'ascendingSortByAge'")
+		.replace(/{descendingSortByAge}/gi, "'descendingSortByAge'");
+		
 		$search_result.prepend(html);
 	}
 

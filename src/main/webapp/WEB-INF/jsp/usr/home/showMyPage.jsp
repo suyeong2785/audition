@@ -94,10 +94,6 @@
 
 	let loginedMemberYouTubeUrl = '<c:out value="${loginedMember.youTubeUrl}" />';
 
-	//alert("loginedMemberYouTubeUrl : " + loginedMemberYouTubeUrl);
-	//alert("YouTubeGetID(loginedMemberYouTubeUrl) : "
-	//		+ YouTubeGetID(loginedMemberYouTubeUrl));
-
 	if (loginedMemberYouTubeUrl != '' && loginedMemberYouTubeUrl != null) {
 		var tag = document.createElement('script');
 

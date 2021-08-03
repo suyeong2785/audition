@@ -47,7 +47,11 @@ public class ActorController {
 		System.out.println("careerDates : " + param.get("careerDates"));
 		System.out.println("careerArtworks : " + param.get("careerArtworks"));
 
-		careerService.setCareer(param);
+		if(Util.getAsStr(param.get("artwork")) != null && Util.getAsStr(param.get("artwork")) != "" ) {
+			careerService.setCareer(param);
+		}else {
+			param.put("careerId", "");
+		}
 		
 		actorService.join(param);
 
