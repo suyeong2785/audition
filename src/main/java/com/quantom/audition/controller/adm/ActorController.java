@@ -81,18 +81,18 @@ public class ActorController {
 	public ResultData getForPrintActorById(@RequestParam Map<String, Object> param) {
 		int id = Util.getAsInt(param.get("id"));
 		
-		Actor ForPrintactor = actorService.getForPrintActorById(id);
+		Actor forPrintactor = actorService.getForPrintActorById(id);
 		
 		File fileForProfile = null;
 		if(fileForProfile == null) {
 			fileForProfile = fileService.getFileRelTypeCodeAndRelIdAndTypeCodeAndType2Code("actor", id, "common", "attachment");
 		}	
 				
-		if(ForPrintactor == null) {
+		if(forPrintactor == null) {
 			return new ResultData("F-1", "일치하는 검색결과가 없습니다.");
 		}
 		
-		return new ResultData("S-1", "배우 검색성공!","ForPrintactor",ForPrintactor,"fileForProfile",fileForProfile);
+		return new ResultData("S-1", "배우 검색성공!","forPrintactor",forPrintactor,"fileForProfile",fileForProfile);
 	}
 
 }

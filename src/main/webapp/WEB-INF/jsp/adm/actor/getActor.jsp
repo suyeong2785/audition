@@ -40,7 +40,11 @@
 					영상 youTubeUrl을 올려주세요</a>
 			</div>
 		</div>
-		<div id="profile"></div>
+		<div class="flex items-center">
+			<div id="profile" class="box w-32 h-32 mr-8"></div>
+			<div id="actorInfo"></div>
+		</div>
+		<div id="career-box"></div>
 		<div id="button-box" class="button-box flex justify-center">
 			<button
 				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
@@ -167,7 +171,8 @@
 		$.get('../../adm/actor/getForPrintActorByIdAjax', {
 			id : actorId
 		}, function(data) {
-			alert(data.msg);
+			showForPrintActorinfo(data);
+			showProfileImage(data);
 		}, 'json');
 		
 		if (actorYouTubeUrl != "" && actorYouTubeUrl != null) {
@@ -182,6 +187,76 @@
 
 		$("#actor-decision-form-modal").css("display", "block");
 
+	}
+	
+	function showForPrintActorinfo(data){
+		var actor = data.body.forPrintactor;
+		
+		var joinedDates = null;
+		var joinedArtworks = null;
+		var careerDates = [];
+		var careerArtworks = [];
+
+		html = '';
+		html += '<div>';
+		html += '<div>이름 : ' + actor.name + '</div>';
+		html += '<div>활동명 : ' + actor.nickname + '</div>';
+		html += '<div>나이 : ' + actor.age + '</div>';
+		html += '<div>성별 : ' + actor.gender + '</div>';
+		html += '<div>키 : ' + actor.height + '</div>';
+		html += '<div>몸무게 : ' + actor.weight + '</div>';
+		html += '<div>전화번호 : ' + actor.phone + '</div>';
+		html += '<div>이메일 : ' + actor.email + '</div>';
+		html += '</div>';
+		
+		$('#actorInfo').html(html);
+		
+		if(actor.extra != null ){
+			joinedDates = actor.extra.careerDate;
+			careerDates = joinedDates.split("_");
+			joinedArtworks = actor.extra.careerArtwork;
+			careerArtworks = joinedArtworks.split("_");
+			
+			careerhtml = '';
+			careerhtml += '<div>';
+			
+			for(var i = 0; i < careerDates.length; i++){
+				careerhtml += '<div class="flex">';
+				careerhtml += '<div class="w-24">' + (careerDates[i].indexOf('-') != -1 ? careerDates[i] : '' ) + '</div>';
+				careerhtml += '<div>' + careerArtworks[i] + '</div>';	
+				careerhtml += '</div>';
+			}
+			
+			careerhtml += '</div>'; 
+			
+			$('#career-box').html(careerhtml);
+			
+		}else{
+			$('#career-box').empty();
+		}
+		
+	}
+	
+	function showProfileImage(data){
+		
+		var profile = null;
+		var html = '';
+		
+		if(data.body.fileForProfile != null){
+			profile = data.body.fileForProfile;
+			
+			html += '<div class="profile"><img src="'+ profile.forPrintGenUrl +'" alt="" /></div>';
+			
+			$('#profile').html(html);
+		}else{
+			
+			html += '<div class="profile text-9xl text-green-500">';
+			html += '<i class="fas fa-user-circle"></i>';
+			html += '</div>';
+			
+			$('#profile').html(html);
+		}
+		
 	}
 </script>
 
