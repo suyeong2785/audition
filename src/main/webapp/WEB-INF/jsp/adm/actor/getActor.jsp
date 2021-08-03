@@ -116,13 +116,13 @@
 				data.body.actors = actors;
 			}else if(sort == "ascendingSortByGender"){
 				actors = actors.sort(function(a, b){
-					return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+					return a.gender < b.gender ? -1 : a.gender > b.gender ? 1 : 0;
 				});
 				
 				data.body.actors = actors;
 			}else if(sort == "descendingSortByGender"){
 				actors = actors.sort(function(a, b){
-					return a.age > b.age ? -1 : a.age < b.age ? 1 : 0;
+					return a.gender > b.gender ? -1 : a.gender < b.gender ? 1 : 0;
 				});
 				
 				data.body.actors = actors;
