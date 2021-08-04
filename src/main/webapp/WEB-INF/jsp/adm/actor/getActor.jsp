@@ -33,21 +33,37 @@
 		<div
 			class="relative flex justify-center items-center text-center h-12 md:h-14 text-2xl md:text-4xl mb-4">
 			<c:set var="searchType" value="${param.searchType}" />
-			<select name="searchType">
-				<option value="name" selected>이름</option>
-				<option value="nickname">활동명</option>
-				<option value="email">이메일</option>
-				<option value="phone">전화번호</option>
-			</select>
+			<div
+				class="relative flex justify-center items-center w-20 text-gray-700">
+				<select name="searchType"
+					class="w-20 h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-l-md appearance-none focus:shadow-outline">
+					<option value="name" selected>이름</option>
+					<option value="nickname">활동명</option>
+					<option value="email">이메일</option>
+					<option value="phone">전화번호</option>
+				</select>
+				<div
+					class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-xs">
+					<i class="fas fa-caret-down"></i>
+				</div>
+			</div>
 			<c:set var="itemsInAPage" value="${param.itemsInAPage}" />
-			<select name="itemsInAPage">
-				<option selected="selected">5</option>
-				<option>6</option>
-				<option>7</option>
-				<option>8</option>
-				<option>9</option>
-				<option>10</option>
-			</select>
+			<div
+				class="relative flex justify-center items-center w-12 text-gray-700">
+				<select name="itemsInAPage"
+					class="w-12 h-10 pl-3 pr-6 text-base placeholder-gray-600 border appearance-none focus:shadow-outline">
+					<option selected="selected">5</option>
+					<option>6</option>
+					<option>7</option>
+					<option>8</option>
+					<option>9</option>
+					<option>10</option>
+				</select>
+				<div
+					class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-xs">
+					<i class="fas fa-caret-down"></i>
+				</div>
+			</div>
 			<script>
 				const param__searchType = '${param.searchType}';
 
@@ -62,7 +78,7 @@
 				}
 			</script>
 			<!-- 검색 상자 -->
-			<div class="search-box flex-grow h-full ">
+			<div class="search-box flex-grow h-10 ">
 				<c:set var="searchKeyword" value="${param.searchKeyword}" />
 				<input name="searchKeyword"
 					class="bg-gray-200 block w-full h-full text-xl px-4 text-black"
@@ -72,13 +88,13 @@
 
 			<!-- 검색 버튼 -->
 			<button type="submit"
-				class="flex justify-center items-center h-full bg-green-400 text-white text-center h-full px-4 text-2xl md:text-3xl hover:bg-green-500">
+				class="flex justify-center items-center h-10 bg-green-400 text-white text-center px-4 text-2xl md:text-3xl hover:bg-green-500">
 				<i class="fas fa-search"></i>
 			</button>
 
 			<!-- 검색 닫기버튼 -->
 			<button onclick="closeActorList()" id="search-close-button"
-				class=" hidden justify-center items-center h-full bg-green-400 text-white text-center h-full px-4 text-2xl md:text-3xl hover:bg-green-500">
+				class=" hidden justify-center items-center h-10 bg-green-400 text-white text-center px-4 text-2xl md:text-3xl hover:bg-green-500">
 				<i class="fas fa-times"></i>
 			</button>
 		</div>
@@ -174,12 +190,14 @@
 						<c:if test="${param.page != i}">
 							<c:set var="reactivePagination" value="3"></c:set>
 							<c:choose>
-								<c:when test="${(param.page - reactivePagination) >= i || (param.page + reactivePagination) <= i}">
+								<c:when
+									test="${(param.page - reactivePagination) >= i || (param.page + reactivePagination) <= i}">
 									<a href="${url}&page=${i}" aria-current="page"
 										class="${pageStyle} text-gray-500 hover:bg-gray-50 hidden sm:inline-flex">
 										${i} </a>
 								</c:when>
-								<c:when test="${(param.page - reactivePagination) <= i && (param.page + reactivePagination) >= i}">
+								<c:when
+									test="${(param.page - reactivePagination) <= i && (param.page + reactivePagination) >= i}">
 									<a href="${url}&page=${i}" aria-current="page"
 										class="${pageStyle} text-gray-500 hover:bg-gray-50 inline-flex">
 										${i} </a>
@@ -204,19 +222,31 @@
 <div class="popup-1" id="actor-decision-form-modal">
 	<div class="content mx-auto ">
 		<div
-			class="profile-box con border-2 border-black box-border bg-gray-300 text-center">
+			class="profile-box con border-2 border-black box-border bg-gray-300 text-center my-8">
 			<div id="player" class="w-full h-80 md:h-96"></div>
-			<div id="no-player" class="w-full h-full ">
+			<div id="no-player" class="w-full h-full py-8">
 				<a
 					href="/usr/member/checkPassword?redirectUri=${Util.getUriEncoded('/adm/actor/modify')}">자기소개
 					영상 youTubeUrl을 올려주세요</a>
 			</div>
 		</div>
-		<div class="flex items-center">
-			<div id="profile" class="box w-32 h-32 mr-8"></div>
-			<div id="actorInfo"></div>
+		<div
+			class="px-4 py-3 leading-normal text-indigo-700 border border-indigo-500 rounded-lg text-center">
+			<i class="fas fa-id-card"></i>
+			<span>개인정보</span>
 		</div>
-		<div id="career-box"></div>
+		<div class="flex items-center">
+			<div id="profile"
+				class="ml-8 flex items-center justify-center w-44 h-full"></div>
+			<div class="flex-grow"></div>
+			<div id="actorInfo" class="p-8"></div>
+		</div>
+		<div
+			class="px-4 py-3 leading-normal text-indigo-700 border border-indigo-500 rounded-lg text-center">
+			<i class="far fa-file-alt"></i>
+			<span>경력사항</span>
+		</div>
+		<div id="career-box" class="flex items-center justify-center py-8"></div>
 		<div id="button-box" class="button-box flex justify-center">
 			<button
 				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
@@ -353,9 +383,8 @@
 
 			for (var i = 0; i < careerDates.length; i++) {
 				careerhtml += '<div class="flex">';
-				careerhtml += '<div class="w-24">'
-						+ (careerDates[i].indexOf('-') != -1 ? careerDates[i]
-								: '') + '</div>';
+				careerhtml += '<div class="w-20 text-center">'+ (careerDates[i].indexOf('-') != -1 ? careerDates[i] : '') + '</div>';
+				careerhtml += '<div class="w-10"></div>';
 				careerhtml += '<div>' + careerArtworks[i] + '</div>';
 				careerhtml += '</div>';
 			}
@@ -378,12 +407,12 @@
 		if (data.body.fileForProfile != null) {
 			profile = data.body.fileForProfile;
 
-			html += '<div class="profile"><img src="'+ profile.forPrintGenUrl +'" alt="" /></div>';
+			html += '<div><img class="inline object-cover w-24 h-24 md:w-44 md:h-44 rounded-full" src="'+ profile.forPrintGenUrl +'" alt="" /></div>';
 
 			$('#profile').html(html);
 		} else {
 
-			html += '<div class="profile text-9xl text-green-500">';
+			html += '<div class="inline object-cover w-24 h-24 md:w-44 md:h-44 rounded-full text-9xl text-green-500">';
 			html += '<i class="fas fa-user-circle"></i>';
 			html += '</div>';
 

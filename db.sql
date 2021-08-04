@@ -521,7 +521,39 @@ ALTER TABLE `career` DROP COLUMN memberId;
 
 ALTER TABLE `actor` ADD COLUMN youTubeUrl VARCHAR(100) NOT NULL ; 
 
+ALTER TABLE actor ADD COLUMN delDate DATETIME AFTER `updateDate`,
+ADD COLUMN delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 AFTER `delDate`,
+ADD COLUMN displayStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 AFTER `delStatus`;
+
 ALTER TABLE `actor` MODIFY COLUMN careerId INT UNSIGNED NOT NULL DEFAULT 0 AFTER email;
+
+ALTER TABLE `actor` MODIFY COLUMN email VARCHAR(30) NULL AFTER careerId;
+
+ALTER TABLE `actor` MODIFY COLUMN phone CHAR(11) NULL AFTER youTubeUrl;
+
+ALTER TABLE `actor` MODIFY COLUMN youTubeUrl VARCHAR(100) NULL;
+
+ALTER TABLE `actor` MODIFY COLUMN nickname VARCHAR(10) NULL;
+
+ALTER TABLE `actor` MODIFY COLUMN delStatus VARCHAR(10) NULL;
+
+INSERT INTO `actor`
+SET regDate = NOW(),
+updateDate = NOW(),
+`name` = '유한나',
+`gender` = 'W',
+`age` = FLOOR(RAND()*100),
+height = FLOOR(RAND()*100),
+weight = FLOOR(RAND()*100),
+email = 'qkdtpwls@gamil.com'; 
+
+
+INSERT INTO `board`
+SET regDate = NOW(),
+updateDAte = NOW(),
+`code` = 'actor',
+`name` = '배우';
+
 
 /*
 select * from `file`;

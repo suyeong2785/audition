@@ -161,7 +161,7 @@ var param = ${paramJson};
 						<a href="/adm/home/showMyPage" class="box w-24 h-24">
 							<c:choose>
 								<c:when test="${not empty fileForProfile}">
-									<img class="profile" src="${fileForProfile.forPrintGenUrl}"
+									<img class="inline object-cover w-16 h-16 mr-2 rounded-full" src="${fileForProfile.forPrintGenUrl}"
 										alt="" />
 								</c:when>
 								<c:otherwise>
