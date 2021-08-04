@@ -51,4 +51,12 @@ public class ActorService {
 		return actorDao.getForPrintActorById(id);
 	}
 
+	public List<Actor> getActorListByKeywordAndKeywordTypeAndLimit(Map<String, Object> param) {
+		return actorDao.getActorListByKeywordAndKeywordTypeAndLimit(param);
+	}
+
+	public int getActorCountByKeywordAndKeywordType(Map<String, Object> param) {
+		return actorDao.getActorCountByKeywordAndKeywordType(param);
+	}
+
 }

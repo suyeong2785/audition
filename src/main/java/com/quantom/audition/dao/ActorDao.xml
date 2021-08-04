@@ -5,7 +5,7 @@
 <mapper namespace="com.quantom.audition.dao.ActorDao">
 
 	<insert id="join" useGeneratedKeys="true" keyProperty="id">
-	INSERT INTO `actor`
+		INSERT INTO `actor`
 		<set>
 			regDate = NOW(),
 			updateDate = NOW(),
@@ -21,7 +21,7 @@
 			<if test="phone != null and phone.length() > 0">`phone` = #{phone},</if>
 		</set>
 	</insert>
-	
+
 	<select id="getActorListByName" resultType="Actor">
 		SELECT *
 		FROM `actor`
@@ -29,14 +29,77 @@
 	</select>
 
 	<select id="getForPrintActorById" resultMap="actor">
-		SELECT A.*, C.date AS extra__careerDate 
+		SELECT A.*, C.date
+		AS extra__careerDate
 		, C.artwork AS extra__careerArtwork
 		FROM actor AS A
 		LEFT JOIN career AS C
 		ON A.careerId = C.id
 		WHERE A.id = #{id}
 	</select>
-	
+
+	<select id="getActorListByKeywordAndKeywordTypeAndLimit"
+		resultType="Actor">
+		SELECT *
+		FROM `actor`
+		WHERE 1
+		<if test="searchType == 'name'">
+			AND name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		<if test="searchType == 'nickname'">
+			AND nickname LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		<if test="searchType == 'email'">
+			AND email LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		<if test="searchType == 'phone'">
+			AND phone LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		<if test="sort == 'ascendingSortByName'">
+			ORDER BY name ASC
+		</if>
+		<if test="sort == 'descendingSortByName'">
+			ORDER BY name DESC
+		</if>
+		<if test="sort == 'ascendingSortByGender'">
+			ORDER BY gender ASC
+		</if>
+		<if test="sort == 'descendingSortByGender'">
+			ORDER BY gender DESC
+		</if>
+		<if test="sort == 'ascendingSortByAge'">
+			ORDER BY age ASC
+		</if>
+		<if test="sort == 'descendingSortByAge'">
+			ORDER BY age DESC
+		</if>
+		<if test="limitStart != null and limitTake != null">
+			LIMIT #{limitStart} , #{limitTake}
+		</if>
+	</select>
+
+	<select id="getActorCountByKeywordAndKeywordType"
+		resultType="int">
+		SELECT COUNT(id)
+		FROM `actor`
+		WHERE 1
+		<if test="searchType == 'name'">
+			AND name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		<if test="searchType == 'nickname'">
+			AND nickname LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		<if test="searchType == 'email'">
+			AND email LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		<if test="searchType == 'phone'">
+			AND phone LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+
+	</select>
+
+
+
 	<resultMap type="Actor" id="actor">
 		<id property="id" column="id" />
 		<id property="regDate" column="regDate" />
@@ -56,6 +119,6 @@
 			<id property="careerArtwork" column="extra__careerArtwork" />
 		</association>
 	</resultMap>
-	
+
 </mapper>
 

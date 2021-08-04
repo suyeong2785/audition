@@ -10,25 +10,6 @@
 <script>
 	//경력박스확인 체크
 	var checkCareerBoxResult = function(form) {
-		
-		/*
-		var dateNeedToStop = 0;
-		
-		let dates = $("input[name='careerDate']").each(function(index, item) {
-			if ($.trim($(this).val()) != "" && $.trim($(this).val()) != null) {
-				return true;
-			}
-
-			alert('경력날짜의 ' + (index + 1) + '번째 칸이 비어있습니다.');
-			dateNeedToStop = 1;
-			$(this).focus();
-			return false;
-		});
-
-		if (dateNeedToStop == 1) {
-			return -1;
-		}
-		*/
 
 		var artworkNeedToStop = 0;
 		let artworks = $("input[name='careerArtwork']").each(

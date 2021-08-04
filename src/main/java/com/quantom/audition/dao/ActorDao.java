@@ -17,4 +17,8 @@ public interface ActorDao {
 
 	Actor getForPrintActorById(@Param("id") int id);
 
+	List<Actor> getActorListByKeywordAndKeywordTypeAndLimit(Map<String, Object> param);
+
+	int getActorCountByKeywordAndKeywordType(Map<String, Object> param);
+
 }
