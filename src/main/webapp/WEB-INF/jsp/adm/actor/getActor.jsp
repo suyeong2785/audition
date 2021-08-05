@@ -412,8 +412,8 @@
 			$('#profile').html(html);
 		} else {
 
-			html += '<div class="inline object-cover w-24 h-24 md:w-44 md:h-44 rounded-full text-9xl text-green-500">';
-			html += '<i class="fas fa-user-circle"></i>';
+			html += '<div class="flex items-center justify-center w-24 h-24 md:w-44 md:h-44">';
+			html += '<span class="text-9xl text-green-500 text-center"><i class="fas fa-user-circle"></i></span>';
 			html += '</div>';
 
 			$('#profile').html(html);
