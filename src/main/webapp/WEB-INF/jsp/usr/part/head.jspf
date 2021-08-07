@@ -93,11 +93,13 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 			<a href="/usr/home/main" class="logo img-box">
 				<img src="/resource/img/mobile_header.svg" alt="" />
 			</a>
+			<!-- 
 			<c:if test="${isLogined}">
-				<a href="/usr/member/doLogout" class="absolute right-4">
+				<a href="/usr/member/doLogout" class="absolute right-12">
 					<i class="fas fa-sign-out-alt"></i>
 				</a>
 			</c:if>
+			 -->
 			<c:if test="${isLogined == false}">
 				<a href="/usr/member/login" class="absolute right-4">
 					<i class="fas fa-user"></i>
@@ -105,7 +107,7 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 			</c:if>
 
 			<c:if test="${isLogined}">
-				<a href="/usr/home/showMyPage">
+				<a href="/usr/home/showMyPage" class="absolute right-2">
 					<c:choose>
 						<c:when test="${not empty fileForProfile}">
 							<img class="profile w-10 h-10"
