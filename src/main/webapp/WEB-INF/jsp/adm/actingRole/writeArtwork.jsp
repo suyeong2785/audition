@@ -1,7 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:set var="pageTitle" value="배역추가" />
 <%@ include file="../part/head.jspf"%>
 <%@ include file="../../part/toastuiEditor.jspf"%>
 
@@ -17,55 +17,66 @@
 		form.submit();
 	}
 </script>
-<form method="POST" class="table-box table-box-vertical con form1" action="doWriteArtwork" onsubmit="ArtworkWriteForm__submit(this); return false;">
+<div class="con p-4">
+	<span>Casting Call 등록</span>
+</div>
+
+<form method="POST" class="bg-gray-200 p-2 w-full h-full"
+	action="doWriteArtwork"
+	onsubmit="ArtworkWriteForm__submit(this); return false;">
 	<input type="hidden" name="redirectUri" value="detailArtwork?id=#id">
-	<table>
-		<colgroup>
-			<col class="table-first-col">
-			<col />
-		</colgroup>
-		<tbody>
-			<tr>
-				<th>이름</th>
-				<td>
-					<div class="form-control-box">
-						<input type="text" placeholder="이름을 입력해주세요." name="name" maxlength="100" />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>프로덕션명</th>
-				<td>
-					<div class="form-control-box">
-						<input type="text" placeholder="프로덕션명을 입력해주세요." name="productionName" maxlength="100" />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>감독명</th>
-				<td>
-					<div class="form-control-box">
-						<input type="text" placeholder="감독명을 입력해주세요." name="directorName" maxlength="100" />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>기타</th>
-				<td>
-					<div class="form-control-box">
-						<textarea maxlength="300" name="etc" placeholder="기타를 입력해주세요." class="height-300"></textarea>
-					</div>
-				</td>
-			</tr>
-			<tr class="tr-do">
-				<th>작성</th>
-				<td>
-					<button class="btn btn-primary" type="submit">작성</button>
-					<a class="btn btn-info" href="${listUrl}">리스트</a>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+	<div class="con">
+		<div class="text-xs">캐스팅콜 등록에 관한설명</div>
+		<div class="text-xs pb-4">캐스팅 콜 등록에 관한 설명 설명 설명 설명 설명 설명 설명 설명
+			설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명</div>
+
+		<label>
+			<input class="text-sm cursor-pointer hidden" type="file" multiple>
+			<div
+				class=" mb-4 w-full text-center text bg-gray-500 text-white border border-gray-300 rounded-full font-semibold cursor-pointer p-1 px-3 hover:bg-gray-600">
+				대표 이미지를 선택해주세요</div>
+		</label>
+		<div class="form-control-box pb-4 flex-grow">
+			<input
+				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+				type="text" placeholder="장르/종류" name="genre" maxlength="100" />
+		</div>
+		<div class="form-control-box pb-4 flex-grow">
+			<input
+				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+				type="text" placeholder="영화제목" name="name" maxlength="100" />
+		</div>
+		<div class="form-control-box w-full pb-4">
+			<input
+				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+				type="text" placeholder="영화사" name="productionName"
+				maxlength="100" />
+		</div>
+		<div class="form-control-box w-full pb-4 flex items-center">
+			<input
+				class="border rounded-full flex-grow py-2 pl-2 focus:outline-none focus:shadow-outline"
+				type="date" name="castingStart" />
+			<span>~</span>
+			<input
+				class="border rounded-full flex-grow py-2 pl-2 focus:outline-none focus:shadow-outline"
+				type="date" name="castingEnd" />
+		</div>
+		<div class="form-control-box w-full pb-4">
+			<input
+				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+				type="text" placeholder="감독명을 입력해주세요." name="directorName"
+				maxlength="100" />
+		</div>
+		<div class="form-control-box w-full pb-4">
+			<textarea
+				class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-72"
+				maxlength="300" name="etc" placeholder="기타를 입력해주세요."></textarea>
+		</div>
+
+		<button class="btn btn-primary" type="submit">작성</button>
+		<a class="btn btn-info" href="${listUrl}">리스트</a>
+	</div>
 </form>
+
 
 <%@ include file="../part/foot.jspf"%>

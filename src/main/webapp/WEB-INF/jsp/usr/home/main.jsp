@@ -4,7 +4,7 @@
 <%@ include file="../part/head.jspf"%>
 
 <!-- rollingBanner -->
-<div class="con md:my-8">
+<div class="con">
 	<div class="swiper-container rollingBanner mx-auto max-h-96">
 		<div class="swiper-wrapper ">
 			<div class="swiper-slide flex items-center justify-center">

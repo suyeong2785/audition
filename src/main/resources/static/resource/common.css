@@ -242,10 +242,6 @@ label[for] {
 
 
 /* 테이블 관련 */
-.table-box {
-  border-top: 3px solid black;
-  box-sizing: border-box;
-}
 
 .table-box>table {
   width: 100%;

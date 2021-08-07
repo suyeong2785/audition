@@ -58,10 +58,6 @@ h3 {
 }
 
 @media (min-width :768px) {
-    .outer-box {
-        padding-top: 30px;
-    }
-
     .page-title-box {
         margin-top: 30px;
         margin-bottom: 30px;
@@ -82,7 +78,6 @@ h3 {
     left: 0;
     right: 0;
     background-color: white;
-    height: 55px;
     z-index: 10;
 }
 

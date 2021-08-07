@@ -83,9 +83,9 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 		});
 	</script>
 
-	<div class="outer-box">
+	<div class="outer-box pt-14">
 		<div
-			class="mobile-top-bar visible-on-sm-down flex flex-ai-c justify-center relative">
+			class="mobile-top-bar h-14 flex flex-ai-c justify-center relative">
 			<a class="btn-toggle-mobile-side-bar absolute left-4">
 				<i class="fas fa-times"></i>
 				<i class="fas fa-bars"></i>
@@ -170,6 +170,7 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 				</ul>
 			</nav>
 		</div>
+		<!-- 
 		<div class="top-bar con flex flex-ai-c flex-jc-sb visible-on-md-up">
 			<a href="/usr/home/main" class="logo img-box">
 				<img src="/resource/img/mobile_header.svg" alt="" />
@@ -237,6 +238,7 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 				</ul>
 			</nav>
 		</div>
+		 -->
 		<c:if test="${pageTitle != null && pageTitle.length() != 0}">
 			<h1 class="page-title-box con">${pageTitle}</h1>
 		</c:if>

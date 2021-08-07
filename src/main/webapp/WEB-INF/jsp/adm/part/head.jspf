@@ -65,41 +65,44 @@ var param = ${paramJson};
 		});
 	</script>
 
-	<div class="outer-box">
-		<div class="mobile-top-bar visible-on-sm-down flex flex flex-ai-c">
-			<a href="/usr/home/main" class="logo img-box">
-				<img src="/resource/img/mobile_header.svg" alt="" />
-			</a>
-			<div class="flex-1-0-0"></div>
-			<c:if test="${isLogined}">
-				<a href="/usr/member/doLogout">
-					<i class="fas fa-sign-out-alt"></i>
-				</a>
-			</c:if>
-			<c:if test="${isLogined == false}">
-				<a href="/usr/member/login">
-					<i class="fas fa-user"></i>
-				</a>
-			</c:if>
-			<a class="btn-toggle-mobile-side-bar">
+	<div class="outer-box pt-14">
+		<div
+			class="mobile-top-bar h-14 flex flex-ai-c justify-center relative">
+			<a class="btn-toggle-mobile-side-bar absolute left-4">
 				<i class="fas fa-times"></i>
 				<i class="fas fa-bars"></i>
 			</a>
-			<a href="/adm/home/showMyPage" class="box w-10 h-10">
-				<c:if test="${isLogined}">
+			<a href="/usr/home/main" class="logo img-box">
+				<img src="/resource/img/mobile_header.svg" alt="" />
+			</a>
+			<!-- 
+			<c:if test="${isLogined}">
+				<a href="/usr/member/doLogout" class="absolute right-12">
+					<i class="fas fa-sign-out-alt"></i>
+				</a>
+			</c:if>
+			 -->
+			<c:if test="${isLogined == false}">
+				<a href="/usr/member/login" class="absolute right-4">
+					<i class="fas fa-user"></i>
+				</a>
+			</c:if>
+
+			<c:if test="${isLogined}">
+				<a href="/usr/home/showMyPage" class="absolute right-2">
 					<c:choose>
 						<c:when test="${not empty fileForProfile}">
-							<img class="profile" src="${fileForProfile.forPrintGenUrl}"
-								alt="" />
+							<img class="profile w-10 h-10"
+								src="${fileForProfile.forPrintGenUrl}" alt="" />
 						</c:when>
 						<c:otherwise>
-							<span class="profile text-4xl text-green-500">
+							<span class="profile text-4xl md:text-8xl text-green-500">
 								<i class="fas fa-user-circle"></i>
 							</span>
 						</c:otherwise>
 					</c:choose>
-				</c:if>
-			</a>
+				</a>
+			</c:if>
 		</div>
 		<div class="mobile-side-bar flex flex-ai-c">
 			<nav class="menu-box-1 flex-1-0-0">
@@ -135,7 +138,8 @@ var param = ${paramJson};
 				</ul>
 			</nav>
 		</div>
-		<div class="top-bar con flex flex-ai-c flex-jc-sb visible-on-md-up">
+		<!--  
+			<div class="top-bar con flex flex-ai-c flex-jc-sb visible-on-md-up">
 			<a href="/usr/home/main" class="logo img-box">
 				<img src="/resource/img/mobile_header.svg" alt="" />
 			</a>
@@ -185,6 +189,7 @@ var param = ${paramJson};
 				</ul>
 			</nav>
 		</div>
+		-->
 		<c:if test="${pageTitle != null && pageTitle.length() != 0}">
 			<h1 class="page-title-box con">${pageTitle}</h1>
 		</c:if>
