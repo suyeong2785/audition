@@ -1,5 +1,13 @@
 @charset "UTF-8";
 
+html{
+	height: 100%;
+}
+
+body {
+	height: 100%;
+}
+
 html,
 input,
 button,
@@ -49,14 +57,9 @@ h3 {
     }
 }
 
-.outer-box {
-    padding-bottom: 30px;
-}
-
 @media (min-width :768px) {
     .outer-box {
         padding-top: 30px;
-        padding-bottom: 30px;
     }
 
     .page-title-box {
@@ -66,19 +69,11 @@ h3 {
 }
 
 @media (max-width :768px) {
-    .outer-box {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
 
     .page-title-box {
         margin-top: 20px;
         margin-bottom: 20px;
     }
-}
-
-.top-bar .logo {
-    width: 100px;
 }
 
 .mobile-top-bar {
@@ -93,10 +88,6 @@ h3 {
     z-index: 10;
 }
 
-.mobile-top-bar .logo {
-    width: 50px;
-}
-
 .mobile-top-bar a {
     margin-right: 10px;
 }
@@ -107,10 +98,6 @@ h3 {
 
 .mobile-top-bar a>i {
     font-size: 1.5rem;
-}
-
-.mobile-top-bar .btn-toggle-mobile-side-bar {
-    position: relative;
 }
 
 .mobile-top-bar .btn-toggle-mobile-side-bar>:first-child {
@@ -202,7 +189,7 @@ h3 {
     max-height: 100vh;
     padding: 10px;
     box-sizing: border-box;
-    max-width: 500px;
+    max-width: 600px;
     width: 100%;
     background-color: white;
 }
@@ -322,3 +309,70 @@ h3 {
     left: 12px;
 }
 
+/* swiper 커스텀*/
+.swiper-slide {
+	text-align: center;
+	font-size: 18px;
+	/* Center slide text vertically */
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	align-items: center;
+}
+
+.swiper-slide img {
+	object-fit: cover;
+}
+
+/* profile 커스텀*/
+.profile {
+    object-fit: cover;
+    border-radius: 70%;
+     overflow: hidden;
+}
+/* loader 커스텀*/
+.loader-img {
+  width: 120px;
+  height: 120px;
+  -webkit-animation: 2s linear infinite; 
+  animation:  2s linear infinite;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  z-index: 100;
+}
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 180px;
+  height: 180px;
+  -webkit-animation: spin 2s linear infinite; 
+  animation: spin 2s linear infinite;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  z-index: 100;
+  
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform:translate(-50%, -50%) rotate(0deg); }
+  100% { -webkit-transform:translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform:translate(-50%, -50%) rotate(0deg); }
+  100% { transform:translate(-50%, -50%) rotate(360deg); }
+}

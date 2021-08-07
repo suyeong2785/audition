@@ -2,5 +2,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 </div>
+
+<footer>
+	<div class="foo_div">
+		<img src="/resource/img/logo_1@3x.png" alt="" />
+	</div>
+	<div class="foo_div1">
+		<span>(주)Quantom D&C</span><span>|</span>
+		<span>대표 : 조원장</span><span>|</span>
+		<span>사업자등록번호 : 000-00-00000</span><span>|</span>
+		<p>주소 : 서울 강남구 영동대로 645, 4층</p>
+		<p>Auditon tree</p>
+		<span><i class="fab fa-facebook-square"></i></span>
+		<span><i class="fab fa-youtube"></i></span>
+		<span><i class="fab fa-twitter"></i></span>
+		<span><i class="fab fa-line"></i></span>
+	</div>
+</footer>
 </body>
 </html>

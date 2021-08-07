@@ -1,27 +1,142 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="오디션트리" />
 <%@ include file="../part/head.jspf"%>
 
-<h1 class="con">알파테스트 기간입니다.(v0.01)</h1>
-
-<h2 class="con">
-	기능 리스트
-	</h1>
-
-	<div class="con">
-		<ul>
-			<li>- 회원가입</li>
-			<li>- 로그인</li>
-			<li>- 로그아웃</li>
-			<li>- 자유게시판</li>
-			<li>- 모집신청</li>
-		</ul>
-
+<!-- rollingBanner -->
+<div class="h-full con my-8">
+	<div class="swiper-container rollingBanner w-full h-full mx-auto">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide flex items-center justify-center">
+				<img src="/resource/img/banner1.jpg" alt="" />
+			</div>
+			<div class="swiper-slide flex items-center justify-center">
+				<img src="/resource/img/banner2.jpg" alt="" />
+			</div>
+			<div class="swiper-slide flex items-center justify-center">
+				<img src="/resource/img/banner3.jpg" alt="" />
+			</div>
+		</div>
+		<div class="swiper-button-next"></div>
+		<div class="swiper-button-prev"></div>
+		<div class="swiper-pagination"></div>
 	</div>
 
+	<h1 class="font-bold text-xl py-4 pl-4">Casting Call</h1>
+	<!-- Swiper -->
+	<div class="swiper-container castingCall mx-auto max-height-360">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide flex-col ">
+				<img class="min-width-120" src="/resource/img/castingCall_1.png"
+					alt="" />
+				<span class="text-sm">영화내용</span>
+			</div>
+			<div class="swiper-slide flex-col">
+				<img class="min-width-120" src="/resource/img/castingCall_2.png"
+					alt="" />
+				<span class="text-sm">영화내용</span>
+			</div>
+			<div class="swiper-slide flex-col">
+				<img class="min-width-120" src="/resource/img/castingCall_3.png"
+					alt="" />
+				<span class="text-sm">영화내용</span>
+			</div>
+			<div class="swiper-slide flex-col">
+				<img class="min-width-120" src="/resource/img/castingCall_4.png"
+					alt="" />
+				<span class="text-sm">영화내용</span>
+			</div>
+			<div class="swiper-slide flex-col ">
+				<img class="min-width-120" src="/resource/img/castingCall_5.png"
+					alt="" />
+				<span class="text-sm">영화내용</span>
+			</div>
+		</div>
+		<div class="swiper-pagination"></div>
+	</div>
 
+	<h1 class="font-bold text-xl py-4 pl-4">Auditions</h1>
+	<!-- Swiper -->
+	<div class="swiper-container auditions mx-auto max-height-360">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide flex-col ">
+				<img class="min-width-120" src="/resource/img/auditions_1.png"
+					alt="" />
+				<span class="text-sm">영화내용</span>
+			</div>
+			<div class="swiper-slide flex-col">
+				<img class="min-width-120" src="/resource/img/auditions_2.png"
+					alt="" />
+				<span class="text-sm">영화내용</span>
+			</div>
+			<div class="swiper-slide flex-col">
+				<img class="min-width-120" src="/resource/img/auditions_3.png"
+					alt="" />
+				<span class="text-sm">영화내용</span>
+			</div>
+			<div class="swiper-slide flex-col">
+				<img class="min-width-120" src="/resource/img/auditions_4.png"
+					alt="" />
+				<span class="text-sm">영화내용</span>
+			</div>
+			<div class="swiper-slide flex-col ">
+				<img class="min-width-120" src="/resource/img/auditions_5.png"
+					alt="" />
+				<span class="text-sm">영화내용</span>
+			</div>
+		</div>
+		<div class="swiper-pagination"></div>
+	</div>
+</div>
 
+<div class="news-box bg-gray-100 p-4 ">
+	<div class="con">
+	<h1 class="font-bold text-xl py-4">News</h1>
+	<hr />
+	<div class="overflow-ellipsis whitespace-nowrap overflow-hidden py-2">내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보</div>
+	<hr />
+	<div class="overflow-ellipsis whitespace-nowrap overflow-hidden py-2">내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보</div>
+	<hr />
+	<div class="overflow-ellipsis whitespace-nowrap overflow-hidden py-2">내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보</div>
+	<hr />
+	<div class="overflow-ellipsis whitespace-nowrap overflow-hidden py-2">내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보</div>
+	<hr />
+	<div class="overflow-ellipsis whitespace-nowrap overflow-hidden py-2">내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보내용정보</div>
+	<hr />
+	</div>
+</div>
 
-	<%@ include file="../part/foot.jspf"%>
+<!-- Initialize Swiper -->
+<script>
+	var rollingBanner = new Swiper(".rollingBanner", {
+		slidesPerView : 1,
+		loop : true,
+		mousewheel : true,
+		autoplay : {
+			delay : 2500,
+			disableOnInteraction : false,
+		},
+		pagination : {
+			el : ".swiper-pagination",
+			clickable : true,
+		},
+		navigation : {
+			nextEl : ".swiper-button-next",
+			prevEl : ".swiper-button-prev",
+		},
+	});
+
+	var swiper = new Swiper(".castingCall", {
+		slidesPerView : 3,
+		spaceBetween : 30,
+		mousewheel : true,
+	});
+
+	var swiper = new Swiper(".auditions", {
+		slidesPerView : 3,
+		spaceBetween : 30,
+		mousewheel : true,
+	});
+</script>
+
+<%@ include file="../part/foot.jspf"%>

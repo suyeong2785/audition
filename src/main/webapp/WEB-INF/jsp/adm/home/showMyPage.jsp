@@ -38,8 +38,7 @@
 				onclick="showSharedRecruitments(${acceptedShare.requesterId})">
 				<strong>${acceptedShare.extra.memberName}</strong>님의 지원자들
 			</div>
-			<div id="${acceptedShare.requesterId}"
-				class="border-2 hidden"
+			<div id="${acceptedShare.requesterId}" class="border-2 hidden"
 				data-display-status="0">
 				<div
 					class="flex justify-center text-center border-2 border-black box-border p-4">
@@ -169,8 +168,8 @@
 			<i class="fas fa-search"></i>
 		</button>
 		<!-- 검색 버튼 -->
-		<button onclick="closeCastingDirectorList()"
-			id="search-close-button" class=" hidden justify-center items-center h-full bg-green-400 text-white text-center h-full px-4 text-2xl md:text-3xl hover:bg-green-500">
+		<button onclick="closeCastingDirectorList()" id="search-close-button"
+			class=" hidden justify-center items-center h-full bg-green-400 text-white text-center h-full px-4 text-2xl md:text-3xl hover:bg-green-500">
 			<i class="fas fa-times"></i>
 		</button>
 	</div>
@@ -287,9 +286,7 @@
 						onclick="showApplicantList( ${recruitment.id} , ${recruitment.memberId} )">${recruitment.forPrintTitle}</div>
 				</div>
 				<div class="${recruitment.id} border-2 hidden"
-					data-display-status="0">
-					
-				</div>
+					data-display-status="0"></div>
 		</c:if>
 	</c:forEach>
 </div>
@@ -299,11 +296,15 @@
 		<div id="button-box" class="button-box flex justify-center">
 			<button id="recommendation-button"
 				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-				onclick="doRecommendMember()">추천</button>
+				onclick="doRecommendMember()">
+				<i class="fas fa-heart"></i>
+			</button>
 			<span id="decision-button-box"> </span>
 			<button
 				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-				onclick="hideApplicantDecisonModal()">닫기</button>
+				onclick="hideApplicantDecisonModal()">
+				<i class="fas fa-sign-out-alt"></i>
+			</button>
 		</div>
 	</div>
 
@@ -522,8 +523,11 @@ var ApplymentList__applymentsCount = 0;
 	  
 	  var decision_button_html = '';
 	  
-	  decision_button_html += "<button class='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow' onclick='ChangeApplymentResult(2)'>불합격</button>";
-	  decision_button_html += "<button class='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow' onclick='ChangeApplymentResult(1)'>합격</button>";
+	  decision_button_html += "<button class='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow' onclick='ChangeApplymentResult(2)'>";
+	  decision_button_html += "<i class='fas fa-times'></i>";
+	  decision_button_html += "</button>";
+	  decision_button_html += "<button class='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow' onclick='ChangeApplymentResult(1)'>";
+	  decision_button_html += "<i class='far fa-circle'></i></button>";
 	  
 	  var undecidedApplicant = 0;
 	  
@@ -563,51 +567,20 @@ var ApplymentList__applymentsCount = 0;
 			var applyment = data.body.applyment;	
 			
 			var html = '';
-			for (var fileNo = 1; fileNo <= 3; fileNo++) {
-	            var file = null;
-	            if (applyment.extra.file__common__attachment && applyment.extra.file__common__attachment[fileNo]) {
-	                file = applyment.extra.file__common__attachment[fileNo];
-	            }
+			var fileNo = 1;
+            var file = null;
+            
+            if (applyment.extra.file__common__attachment && applyment.extra.file__common__attachment[fileNo]) {
+                file = applyment.extra.file__common__attachment[fileNo];
+            }
 
-	            html += '<div class="video-box hidden md:block" data-video-name="applyment__' + applyment.id + '__common__attachment__' + fileNo + '" data-file-no="' + fileNo + '">';
+            html += '<div class="max-w-screen-sm block" data-video-name="applyment__' + applyment.id + '__common__attachment__' + fileNo + '" data-file-no="' + fileNo + '">';
 
-	            if (file && file.fileExtTypeCode == 'video') {
-	                html += '<video preload="auto" controls src="' + file.forPrintGenUrl + '"></video>';
-	            }
+            if (file && file.fileExtTypeCode == 'video') {
+                html += '<video preload="auto" controls src="' + file.forPrintGenUrl + '"></video>';
+            }
 
-	            html += '</div>';
-
-	            html += '<div class="img-box img-box-auto" data-img-name="applyment__' + applyment.id + '__common__attachment__' + fileNo + '" data-file-no="' + fileNo + '">';
-
-	            if (file && file.fileExtTypeCode == 'img') {
-	                html += '<img src="' + file.forPrintGenUrl + '">';
-	            }
-
-	            html += '</div>';
-	        }
-			
-			for (var fileNo = 1; fileNo <= 3; fileNo++) {
-	            var file = null;
-	            if (applyment.extra.file__common__attachment && applyment.extra.file__common__attachment[fileNo]) {
-	                file = applyment.extra.file__common__attachment[fileNo];
-	            }
-
-	            html += '<div class=" visible-on-sm-down" data-video-name="applyment__' + applyment.id + '__common__attachment__' + fileNo + '" data-file-no="' + fileNo + '">';
-
-	            if (file && file.fileExtTypeCode == 'video') {
-	                html += '<video preload="auto" controls src="' + file.forPrintGenUrl + '"></video>';
-	            }
-
-	            html += '</div>';
-
-	            html += '<div class="img-box img-box-auto" data-img-name="applyment__' + applyment.id + '__common__attachment__' + fileNo + '" data-file-no="' + fileNo + '">';
-
-	            if (file && file.fileExtTypeCode == 'img') {
-	                html += '<img src="' + file.forPrintGenUrl + '">';
-	            }
-
-	            html += '</div>';
-	        }
+            html += '</div>';
 
 	        return '<div class="media-box">' + html + "</div>";
 	}

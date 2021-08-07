@@ -21,12 +21,18 @@
 <!-- 제이쿼리 불러오기 -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <!-- lodash 불러오기 -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 <!-- 테일윈드 불러오기 -->
 <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
 	rel="stylesheet">
+<!-- swiper 불러오기 -->
+<link rel="stylesheet"
+	href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <!-- 공통(라이브러리) CSS -->
 <link rel="stylesheet" href="/resource/common.css" />
 <!-- 공통(라이브러리) JS -->
@@ -45,20 +51,24 @@ var param = ${paramJson};
 </head>
 <body>
 	<!-- 로딩화면 -->
-	<img class="loader-img absolute " src="/resource/img/logo_1@3x.png"
-		alt="" />
-	<div class="loader"></div>
+	<div
+		class="loader-background bg-gray-200 bg-opacity-20 w-full h-full absolute z-40">
+		<img class="loader-img absolute " src="/resource/img/logo_1@3x.png"
+			alt="" />
+		<div class="loader"></div>
+	</div>
 	<script>
 		$(window).on('load', function() {
 			$('.loader').fadeOut();
 			$('.loader-img').fadeOut();
+			$('.loader-background').fadeOut();
 		});
 	</script>
 
 	<div class="outer-box">
 		<div class="mobile-top-bar visible-on-sm-down flex flex flex-ai-c">
 			<a href="/usr/home/main" class="logo img-box">
-				<img src="/resource/img/logo_1@3x.png" alt="" />
+				<img src="/resource/img/mobile_header.svg" alt="" />
 			</a>
 			<div class="flex-1-0-0"></div>
 			<c:if test="${isLogined}">
@@ -127,7 +137,7 @@ var param = ${paramJson};
 		</div>
 		<div class="top-bar con flex flex-ai-c flex-jc-sb visible-on-md-up">
 			<a href="/usr/home/main" class="logo img-box">
-				<img src="/resource/img/logo_1@3x.png" alt="" />
+				<img src="/resource/img/mobile_header.svg" alt="" />
 			</a>
 			<nav class="menu-box-1">
 				<ul class="flex flex-ai-c">
@@ -161,8 +171,8 @@ var param = ${paramJson};
 						<a href="/adm/home/showMyPage" class="box w-24 h-24">
 							<c:choose>
 								<c:when test="${not empty fileForProfile}">
-									<img class="inline object-cover w-16 h-16 mr-2 rounded-full" src="${fileForProfile.forPrintGenUrl}"
-										alt="" />
+									<img class="inline object-cover w-16 h-16 mr-2 rounded-full"
+										src="${fileForProfile.forPrintGenUrl}" alt="" />
 								</c:when>
 								<c:otherwise>
 									<span class="profile text-8xl text-green-500">

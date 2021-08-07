@@ -98,53 +98,56 @@
 				<i class="fas fa-times"></i>
 			</button>
 		</div>
-		<div
-			class="flex justify-center text-center border-2 border-black box-border p-4">
-			<c:set var="sort" value="${param.sort}" />
-			<input type="hidden" name="sort" />
-			<script>
-				const param__sort = '${param.sort}';
 
-				if (param__sort) {
-					$('input[name="sort"]').val(param__sort);
-				}
-			</script>
-			<div class="flex-1">번호</div>
-			<div class="flex-1">
-				<span class="pr-2">이름</span>
-				<button id="ascending-sortByName-button" class="text-lg"
-					onclick="doSortActorList('ascendingSortByName')" type="submit">
-					<i class="fas fa-caret-down"></i>
-				</button>
-				<button id="descending-sortByName-button" class="text-lg hidden"
-					onclick="doSortActorList('descendingSortByName')" type="submit">
-					<i class="fas fa-caret-up"></i>
-				</button>
+		<c:if test="${actors != null}">
+			<div
+				class="flex justify-center text-center border-2 border-black box-border p-4">
+				<c:set var="sort" value="${param.sort}" />
+				<input type="hidden" name="sort" />
+				<script>
+					const param__sort = '${param.sort}';
+
+					if (param__sort) {
+						$('input[name="sort"]').val(param__sort);
+					}
+				</script>
+				<div class="flex-1">번호</div>
+				<div class="flex-1">
+					<span class="pr-2">이름</span>
+					<button id="ascending-sortByName-button" class="text-lg"
+						onclick="doSortActorList('ascendingSortByName')" type="submit">
+						<i class="fas fa-caret-down"></i>
+					</button>
+					<button id="descending-sortByName-button" class="text-lg hidden"
+						onclick="doSortActorList('descendingSortByName')" type="submit">
+						<i class="fas fa-caret-up"></i>
+					</button>
+				</div>
+				<div class="flex-1">활동명</div>
+				<div class="flex-1">
+					<span class="pr-2">성별</span>
+					<button id="ascending-sortByGender-button" class="text-lg"
+						onclick="doSortActorList('ascendingSortByGender')" type="submit">
+						<i id="sort-icon" class="fas fa-caret-down"></i>
+					</button>
+					<button id="descending-sortByGender-button" class="text-lg hidden"
+						onclick="doSortActorList('descendingSortByGender')" type="submit">
+						<i class="fas fa-caret-up"></i>
+					</button>
+				</div>
+				<div class="flex-1">
+					<span class="pr-2">나이</span>
+					<button id="ascending-sortByAge-button" class="text-lg"
+						onclick="doSortActorList('ascendingSortByAge')" type="submit">
+						<i id="sort-icon" class="fas fa-caret-down"></i>
+					</button>
+					<button id="descending-sortByAge-button" class="text-lg hidden"
+						onclick="doSortActorList('descendingSortByAge')" type="submit">
+						<i class="fas fa-caret-up"></i>
+					</button>
+				</div>
 			</div>
-			<div class="flex-1">활동명</div>
-			<div class="flex-1">
-				<span class="pr-2">성별</span>
-				<button id="ascending-sortByGender-button" class="text-lg"
-					onclick="doSortActorList('ascendingSortByGender')" type="submit">
-					<i id="sort-icon" class="fas fa-caret-down"></i>
-				</button>
-				<button id="descending-sortByGender-button" class="text-lg hidden"
-					onclick="doSortActorList('descendingSortByGender')" type="submit">
-					<i class="fas fa-caret-up"></i>
-				</button>
-			</div>
-			<div class="flex-1">
-				<span class="pr-2">나이</span>
-				<button id="ascending-sortByAge-button" class="text-lg"
-					onclick="doSortActorList('ascendingSortByAge')" type="submit">
-					<i id="sort-icon" class="fas fa-caret-down"></i>
-				</button>
-				<button id="descending-sortByAge-button" class="text-lg hidden"
-					onclick="doSortActorList('descendingSortByAge')" type="submit">
-					<i class="fas fa-caret-up"></i>
-				</button>
-			</div>
-		</div>
+		</c:if>
 	</form>
 
 	<div id="search-result">
@@ -162,62 +165,65 @@
 	</div>
 
 	<!-- pagination -->
-	<div
-		class="bg-white px-4 py-3 flex items-center justify-center border-t border-gray-200 sm:px-6">
-		<div class="flex items-center justify-between">
-			<div>
-				<nav
-					class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
-					aria-label="Pagination">
-					<c:set var="url"
-						value="../../adm/actor/showActorListBySearch?searchType=${searchType}&searchKeyword=${searchKeyword}&itemsInAPage=${itemsInAPage}&sort=${sort}" />
-					<a href="${url}&page=1"
-						class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-						<i class="fas fa-angle-double-left"></i>
-					</a>
-					<a href="${url}&page=${param.page - 1}"
-						class="relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-						<i class="fas fa-chevron-left"></i>
-					</a>
-					<c:forEach begin="${pageMenuStart}" end="${pageMenuEnd}" var="i">
-						<c:set var="pageStyle"
-							value="bg-white border-gray-300 relative items-center px-4 py-2 border text-sm font-medium" />
-						<c:if test="${param.page == i}">
-							<a href="${url}&page=${i}" aria-current="page"
-								class="${pageStyle} text-red-500 hover:bg-red-50 inline-flex">
-								${i} </a>
-						</c:if>
-						<c:if test="${param.page != i}">
-							<c:set var="reactivePagination" value="3"></c:set>
-							<c:choose>
-								<c:when
-									test="${(param.page - reactivePagination) >= i || (param.page + reactivePagination) <= i}">
-									<a href="${url}&page=${i}" aria-current="page"
-										class="${pageStyle} text-gray-500 hover:bg-gray-50 hidden sm:inline-flex">
-										${i} </a>
-								</c:when>
-								<c:when
-									test="${(param.page - reactivePagination) <= i && (param.page + reactivePagination) >= i}">
-									<a href="${url}&page=${i}" aria-current="page"
-										class="${pageStyle} text-gray-500 hover:bg-gray-50 inline-flex">
-										${i} </a>
-								</c:when>
-							</c:choose>
+	<c:if test="${actors != null}">
+		<div
+			class="bg-white px-4 py-3 flex items-center justify-center border-t border-gray-200 sm:px-6">
+			<div class="flex items-center justify-between">
+				<div>
+					<nav
+						class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+						aria-label="Pagination">
+						<c:set var="url"
+							value="../../adm/actor/showActorListBySearch?searchType=${searchType}&searchKeyword=${searchKeyword}&itemsInAPage=${itemsInAPage}&sort=${sort}" />
+						<a href="${url}&page=1"
+							class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+							<i class="fas fa-angle-double-left"></i>
+						</a>
+						<a href="${url}&page=${param.page - 1}"
+							class="relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+							<i class="fas fa-chevron-left"></i>
+						</a>
+						<c:forEach begin="${pageMenuStart}" end="${pageMenuEnd}" var="i">
+							<c:set var="pageStyle"
+								value="bg-white border-gray-300 relative items-center px-4 py-2 border text-sm font-medium" />
+							<c:if test="${param.page == i}">
+								<a href="${url}&page=${i}" aria-current="page"
+									class="${pageStyle} text-red-500 hover:bg-red-50 inline-flex">
+									${i} </a>
+							</c:if>
+							<c:if test="${param.page != i}">
+								<c:set var="reactivePagination" value="3"></c:set>
+								<c:choose>
+									<c:when
+										test="${(param.page - reactivePagination) >= i || (param.page + reactivePagination) <= i}">
+										<a href="${url}&page=${i}" aria-current="page"
+											class="${pageStyle} text-gray-500 hover:bg-gray-50 hidden sm:inline-flex">
+											${i} </a>
+									</c:when>
+									<c:when
+										test="${(param.page - reactivePagination) <= i && (param.page + reactivePagination) >= i}">
+										<a href="${url}&page=${i}" aria-current="page"
+											class="${pageStyle} text-gray-500 hover:bg-gray-50 inline-flex">
+											${i} </a>
+									</c:when>
+								</c:choose>
 
-						</c:if>
-					</c:forEach>
-					<a href="${url}&page=${param.page + 1}"
-						class="relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-						<i class="fas fa-chevron-right"></i>
-					</a>
-					<a href="${url}&page=${totalPage}"
-						class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-						<i class="fas fa-angle-double-right"></i>
-					</a>
-				</nav>
+							</c:if>
+						</c:forEach>
+						<a href="${url}&page=${param.page + 1}"
+							class="relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+							<i class="fas fa-chevron-right"></i>
+						</a>
+						<a href="${url}&page=${totalPage}"
+							class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+							<i class="fas fa-angle-double-right"></i>
+						</a>
+					</nav>
+				</div>
 			</div>
 		</div>
-	</div>
+	</c:if>
+
 </div>
 <div class="popup-1" id="actor-decision-form-modal">
 	<div class="content mx-auto ">
@@ -229,6 +235,7 @@
 					href="/usr/member/checkPassword?redirectUri=${Util.getUriEncoded('/adm/actor/modify')}">자기소개
 					영상 youTubeUrl을 올려주세요</a>
 			</div>
+
 		</div>
 		<div
 			class="px-4 py-3 leading-normal text-indigo-700 border border-indigo-500 rounded-lg text-center">
@@ -383,7 +390,9 @@
 
 			for (var i = 0; i < careerDates.length; i++) {
 				careerhtml += '<div class="flex">';
-				careerhtml += '<div class="w-20 text-center">'+ (careerDates[i].indexOf('-') != -1 ? careerDates[i] : '') + '</div>';
+				careerhtml += '<div class="w-20 text-center">'
+						+ (careerDates[i].indexOf('-') != -1 ? careerDates[i]
+								: '') + '</div>';
 				careerhtml += '<div class="w-10"></div>';
 				careerhtml += '<div>' + careerArtworks[i] + '</div>';
 				careerhtml += '</div>';

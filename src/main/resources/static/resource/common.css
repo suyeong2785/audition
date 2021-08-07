@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 /* 노말라이즈 */
-body, ul, li {
+html, body, ul, li {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -80,6 +80,8 @@ label[for] {
 .video-box>video {
   width: 100%;
   display: block;
+  padding-bottom: 10px;
+  padding-top: 10px;
 }
 
 .con {
@@ -174,6 +176,15 @@ label[for] {
 .min-width-100 {
   min-width: 100px;
 }
+
+.min-width-120 {
+  min-width: 120px;
+}
+
+.max-height-360 {
+  max-height: 360px;
+}
+
 /* absolute 관련*/
 .top-50 {
 	top: 50%;
@@ -479,48 +490,4 @@ label[for] {
 .tui-editor-contents pre {
   padding-left: 0 !important;
   padding-right: 0 !important;
-}
-/* profile 커스텀*/
-.profile {
-    object-fit: cover;
-    border-radius: 70%;
-     overflow: hidden;
-}
-/* loader 커스텀*/
-.loader-img {
-  width: 120px;
-  height: 120px;
-  -webkit-animation: 2s linear infinite; 
-  animation:  2s linear infinite;
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  z-index: 100;
-}
-
-.loader {
-  border: 16px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 16px solid #3498db;
-  width: 180px;
-  height: 180px;
-  -webkit-animation: spin 2s linear infinite; 
-  animation: spin 2s linear infinite;
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  z-index: 100;
-  
-}
-
-@-webkit-keyframes spin {
-  0% { -webkit-transform:translate(-50%, -50%) rotate(0deg); }
-  100% { -webkit-transform:translate(-50%, -50%) rotate(360deg); }
-}
-
-@keyframes spin {
-  0% { transform:translate(-50%, -50%) rotate(0deg); }
-  100% { transform:translate(-50%, -50%) rotate(360deg); }
 }
