@@ -181,6 +181,10 @@ label[for] {
   min-width: 120px;
 }
 
+.min-width-140 {
+  min-width: 140px;
+}
+
 .max-height-360 {
   max-height: 360px;
 }
@@ -487,10 +491,20 @@ label[for] {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
+.line-clamp-1{
+	display: -webkit-box;
+	-webkit-line-clamp:2;
+	-webkit-box-orient: vertical;
+}
 
 .line-clamp-2{
 	display: -webkit-box;
 	-webkit-line-clamp:2;
+	-webkit-box-orient: vertical;
+}
+.line-clamp-5{
+	display: -webkit-box;
+	-webkit-line-clamp:5;
 	-webkit-box-orient: vertical;
 }
 
