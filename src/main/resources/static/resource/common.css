@@ -494,3 +494,6 @@ label[for] {
 	-webkit-box-orient: vertical;
 }
 
+.font-size-0{
+	font-size: 0;
+}

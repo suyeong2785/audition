@@ -18,15 +18,15 @@
 	}
 </script>
 <div class="con p-4">
-	<span>Casting Call 등록</span>
+	<span class="font-bold text-xl">Casting Call 등록</span>
 </div>
 
-<form method="POST" class="bg-gray-200 p-2 w-full h-full"
+<form method="POST" class="bg-gray-200 p-4 w-full h-full"
 	action="doWriteArtwork"
 	onsubmit="ArtworkWriteForm__submit(this); return false;">
 	<input type="hidden" name="redirectUri" value="detailArtwork?id=#id">
 	<div class="con">
-		<div class="text-xs">캐스팅콜 등록에 관한설명</div>
+		<div class="text-sm font-bold">캐스팅콜 등록에 관한설명</div>
 		<div class="text-xs pb-4">캐스팅 콜 등록에 관한 설명 설명 설명 설명 설명 설명 설명 설명
 			설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명</div>
 
@@ -52,6 +52,7 @@
 				type="text" placeholder="영화사" name="productionName"
 				maxlength="100" />
 		</div>
+		<div class="pb-4 text-center">모집일정</div>
 		<div class="form-control-box w-full pb-4 flex items-center">
 			<input
 				class="border rounded-full flex-grow py-2 pl-2 focus:outline-none focus:shadow-outline"

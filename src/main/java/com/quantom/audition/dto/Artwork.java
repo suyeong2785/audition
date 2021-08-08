@@ -19,17 +19,9 @@ public class Artwork {
 	private String etc;
 	private Map<String, Object> extra;
 	
-	public String getTitle() {
-		String title = name + "(감독 : " + directorName + ")(제작사 : " + productionName + ")";
 
-		return title;
-	}
-	
 	public String getDetailLink() {
 		return "./detailArtwork?id=" + id;
 	}
-	
-	public String getForPrintTitle() {
-		return getTitle();
-	}
+
 }

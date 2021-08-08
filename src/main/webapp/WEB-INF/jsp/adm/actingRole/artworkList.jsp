@@ -1,44 +1,51 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="작품 리스트" />
 <%@ include file="../part/head.jspf"%>
-<div class="table-box table-box-data con">
-    <table>
-        <colgroup>
-            <col width="100" />
-            <col width="200" />
-        </colgroup>
-        <thead>
-            <tr>
-                <th>번호</th>
-                <th>날짜</th>
-                <th>제목</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach items="${artworks}" var="artwork">
-                <tr>
-                    <td>${artwork.id}</td>
-                    <td>${artwork.regDate}</td>
-                    <td>
-                        <a href="${artwork.getDetailLink()}" class="block width-100p text-overflow-el">${artwork.forPrintTitle}</a>
-                    </td>
-                    <td class="visible-on-sm-down">
-                        <a href="${artwork.getDetailLink()}" class="flex flex-row-wrap flex-ai-c">
-                            <span class="badge badge-primary bold margin-right-10">${artwork.id}</span>
-                            <div class="title flex-1-0-0 text-overflow-el">${artwork.forPrintTitle}</div>
-                            <div class="width-100p"></div>
-                            <div class="writer">${artwork.extra.writer}</div>
-                            &nbsp;|&nbsp;
-                            <div class="reg-date">${artwork.regDate}</div>
-                        </a>
-                    </td>
-                </tr>
-            </c:forEach>
-        </tbody>
-    </table>
-</div>
-<div class="btn-box con margin-top-20">
-    <a class="btn btn-primary" href="./writeArtwork">작품추가</a>
+<div class="con flex-col ">
+	<div class="flex items-center justify-center">
+		<div class="flex-grow"></div>
+		<div class="flex justify-center items-center max-w-screen-sm flex-4">
+			<div class="text-center py-8">작품리스트</div>
+			<div class="flex-grow"></div>
+			<div class="flex items-center justify-center">
+				<a
+					class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+					href="./writeArtwork">
+					<i class="fas fa-plus"></i>
+					<span>작품추가</span>
+				</a>
+			</div>
+		</div>
+		<div class="flex-grow"></div>
+	</div>
+	<c:forEach items="${artworks}" var="artwork">
+		<div class="flex justify-center mb-4 ">
+			<div class="flex-grow"></div>
+			<div
+				class="bg-gray-200 h-20 py-4 max-w-screen-sm rounded-full flex items-center justify-center flex-4">
+				<a href="${artwork.getDetailLink()}">
+					<img class="inline object-cover w-20 h-20 rounded-full"
+						src="/resource/img/castingCall_1.png" alt="" />
+				</a>
+				<a href="${artwork.getDetailLink()}">
+					<div class="px-4">
+						<div class="title flex-1-0-0 text-overflow-el">${artwork.name}</div>
+						<div class="writer">${artwork.extra.writer}</div>
+						<div class="flex items-center">
+							<div>지원자 : 000명</div>
+							<div class="flex-grow"></div>
+						</div>
+					</div>
+				</a>
+				<div class="flex-grow"></div>
+				<div>
+					<img class="inline object-cover w-14 h-14 mr-2 rounded-full"
+						src="/resource/img/castingCall_1.png" alt="" />
+				</div>
+			</div>
+			<div class="flex-grow"></div>
+		</div>
+	</c:forEach>
 </div>
 <%@ include file="../part/foot.jspf"%>
