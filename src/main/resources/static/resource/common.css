@@ -185,9 +185,20 @@ label[for] {
   min-width: 140px;
 }
 
+.min-width-140 {
+  min-width: 140px;
+}
+
+.min-width-152 {
+  min-width: 152px;
+}
+
+.min-height {}
+
 .max-height-360 {
   max-height: 360px;
 }
+
 
 /* absolute 관련*/
 .top-50 {
