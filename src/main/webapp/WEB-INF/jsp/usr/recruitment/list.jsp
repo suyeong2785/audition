@@ -5,11 +5,11 @@
 <!-- PC용 -->
 <div class="con flex-col">
 	<div class="px-4 text-center">
-		<div class="inline-block">
-			<div class="block">
-				<div class="float-left text-xl font-bold">Auditions</div>
+		<div class="inline-block ">
+			<div class="flex justify-between">
+				<div class="text-xl font-bold">Auditions</div>
 
-				<div class="float-right">
+				<div class="">
 					<a href="#" class="flex items-center justify-center">
 						<img src="/resource/img/sort_icon.svg" alt="" />
 						<span>정렬</span>
@@ -27,18 +27,29 @@
 
 			<c:forEach items="${recruitments}" var="recruitment">
 				<div
-					class="flex justify-center items-center py-4 flex-grow clear-both">
+					class="flex justify-center items-center py-4 flex-grow">
 					<div class="max-h-40 pr-4 ">
-						<img class="max-h-40 min-width-140"
-							src="/resource/img/castingCall_1.png" alt="" />
+						<a href="${recruitment.getDetailLink(job.code)}">
+							<img class="max-h-40 min-width-140"
+								src="/resource/img/castingCall_1.png" alt="" />
+						</a>
 					</div>
-					<a href="${recruitment.getDetailLink(job.code)}">
-						<div class="max-w-md">
-							<div class="font-bold overflow-hidden line-clamp-1 text-left">${recruitment.extra.artworkName}</div>
-							<div class="text-xs text-left my-2 overflow-hidden line-clamp-5 text-left">내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용</div>
-							<div class="text-xs text-left">${recruitment.regDate}</div>
+
+					<div class="self-stretch max-w-md flex flex-col max-h-40 justify-center">
+						<div class="font-bold overflow-hidden line-clamp-1 self-start ">
+							<a href="${recruitment.getDetailLink(job.code)}" class="block">${recruitment.extra.artworkName}</a>
 						</div>
-					</a>
+						<div
+							class="text-xs my-2 text-left overflow-ellipsis overflow-hidden self-start box-border flex items-center">
+							<a href="${recruitment.getDetailLink(job.code)}"
+								class="inline-block line-clamp-6">내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용</a>
+						</div>
+						<div class="text-xs self-start">
+							<a href="${recruitment.getDetailLink(job.code)}" class="block">${recruitment.regDate}</a>
+						</div>
+
+					</div>
+
 				</div>
 			</c:forEach>
 		</div>
