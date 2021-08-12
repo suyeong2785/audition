@@ -9,25 +9,27 @@
 			<div class="flex justify-between">
 				<div class="text-xl font-bold">Auditions</div>
 
-				<div class="">
+				<c:if test="${actorCanWrite}">
+					<div>
+						<a
+							class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+							href="./${job.code}-write">
+							<i class="fas fa-plus"></i>
+							<span>신규모집</span>
+						</a>
+					</div>
+				</c:if>
+
+				<div>
 					<a href="#" class="flex items-center justify-center">
 						<img src="/resource/img/sort_icon.svg" alt="" />
 						<span>정렬</span>
 					</a>
 				</div>
-				<!-- 
-				<c:if test="${actorCanWrite}">
-				<a class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4" href="./${job.code}-write">
-					<i class="fas fa-plus"></i>
-					<span>신규모집</span>
-				</a>
-				</c:if>
-				 -->
 			</div>
 
 			<c:forEach items="${recruitments}" var="recruitment">
-				<div
-					class="flex justify-center items-center py-4 flex-grow">
+				<div class="flex justify-center items-center py-4 flex-grow">
 					<div class="max-h-40 pr-4 ">
 						<a href="${recruitment.getDetailLink(job.code)}">
 							<img class="max-h-40 min-width-140"
@@ -35,7 +37,8 @@
 						</a>
 					</div>
 
-					<div class="self-stretch max-w-md flex flex-col max-h-40 justify-center">
+					<div
+						class="self-stretch max-w-md flex flex-col max-h-40 justify-center">
 						<div class="font-bold overflow-hidden line-clamp-1 self-start ">
 							<a href="${recruitment.getDetailLink(job.code)}" class="block">${recruitment.extra.artworkName}</a>
 						</div>

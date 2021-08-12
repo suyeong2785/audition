@@ -25,8 +25,48 @@
 			<div
 				class="bg-gray-200 h-20 py-4 max-w-screen-sm rounded-full flex items-center justify-center flex-4">
 				<a href="${artwork.getDetailLink()}">
-					<img class="inline object-cover w-20 h-20 rounded-full"
-						src="/resource/img/castingCall_1.png" alt="" />
+					<c:choose>
+						<c:when test="${artwork.genre == 'action'}">
+							<c:set var="bgColor" value="bg-red-200"></c:set>
+						</c:when>
+						<c:when test="${artwork.genre == 'SF'}">
+							<c:set var="bgColor" value="bg-indigo-600"></c:set>
+						</c:when>
+						<c:when test="${artwork.genre == 'comedy'}">
+							<c:set var="bgColor" value="bg-yellow-500"></c:set>
+						</c:when>
+						<c:when test="${artwork.genre == 'thriller'}">
+							<c:set var="bgColor" value="bg-purple-300"></c:set>
+						</c:when>
+						<c:when test="${artwork.genre == 'war'}">
+							<c:set var="bgColor" value="bg-gray-700"></c:set>
+						</c:when>
+						<c:when test="${artwork.genre == 'sports'}">
+							<c:set var="bgColor" value="bg-blue-500"></c:set>
+						</c:when>
+						<c:when test="${artwork.genre == 'fantasy'}">
+							<c:set var="bgColor" value="bg-purple-600"></c:set>
+						</c:when>
+						<c:when test="${artwork.genre == 'music'}">
+							<c:set var="bgColor" value="bg-green-500"></c:set>
+						</c:when>
+						<c:when test="${artwork.genre == 'romance'}">
+							<c:set var="bgColor" value="bg-pink-400"></c:set>
+						</c:when>
+					</c:choose>
+					<c:choose>
+						<c:when
+							test="${artwork.forPrintGenUrlForArtwork != null && artwork.forPrintGenUrlForArtwork != ''}">
+							<img class="object-cover w-20 h-20 rounded-full"
+								src="${artwork.forPrintGenUrlForArtwork}" alt="" />
+						</c:when>
+						<c:when
+							test="${artwork.forPrintGenUrlForArtwork == null || artwork.forPrintGenUrlForArtwork == ''}">
+							<div
+								class="${bgColor} text-white object-cover w-20 h-20 rounded-full flex justify-center items-center">${artwork.genre}</div>
+						</c:when>
+					</c:choose>
+
 				</a>
 				<a href="${artwork.getDetailLink()}">
 					<div class="px-4">
@@ -41,7 +81,7 @@
 				<div class="flex-grow"></div>
 				<div>
 					<img class="inline object-cover w-14 h-14 mr-2 rounded-full"
-						src="/resource/img/castingCall_1.png" alt="" />
+						src="${artwork.forPrintGenUrlForMember}" alt="" />
 				</div>
 			</div>
 			<div class="flex-grow"></div>

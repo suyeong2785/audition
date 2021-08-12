@@ -15,6 +15,8 @@ public interface ActingRoleDao {
 	List<ActingRole> getRoles();
 
 	List<Artwork> getArtworks();
+	
+	List<Artwork> getForPrintArtworks();
 
 	void write(Map<String, Object> param);
 

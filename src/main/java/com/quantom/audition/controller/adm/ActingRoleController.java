@@ -24,7 +24,7 @@ public class ActingRoleController {
 	
 	@RequestMapping("/adm/actingRole/artworkList")
 	public String showArtworkList(Model model) {
-		List<Artwork> artworks = actingRoleService.getArtworks();
+		List<Artwork> artworks = actingRoleService.getForPrintArtworks();
 
 		model.addAttribute("artworks", artworks);
 
@@ -38,8 +38,7 @@ public class ActingRoleController {
 	
 	@RequestMapping("/adm/actingRole/doWriteArtwork")
 	public String doWriteArtwork(@RequestParam Map<String, Object> param, HttpServletRequest req, Model model) {
-		Map<String, Object> newParam = Util.getNewMapOf(param, "name", "productionName", "directorName", "etc");
-		int newArtworkId = actingRoleService.writeArtwork(newParam);
+		int newArtworkId = actingRoleService.writeArtwork(param);
 
 		String redirectUri = (String) param.get("redirectUri");
 		redirectUri = redirectUri.replace("#id", newArtworkId + "");

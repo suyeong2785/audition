@@ -547,13 +547,26 @@ height = FLOOR(RAND()*100),
 weight = FLOOR(RAND()*100),
 email = 'qkdtpwls@gamil.com'; 
 
-
 INSERT INTO `board`
 SET regDate = NOW(),
 updateDAte = NOW(),
 `code` = 'actor',
 `name` = '배우';
 
+ALTER TABLE `artwork` ADD COLUMN `genre` VARCHAR(10) NOT NULL AFTER NAME;
+ALTER TABLE `artwork` ADD COLUMN `investor` VARCHAR(15) NOT NULL AFTER NAME;
+ALTER TABLE `artwork` MODIFY COLUMN `investor` TEXT NOT NULL AFTER genre;
+ALTER TABLE `artwork` ADD COLUMN `leadActor` TEXT NOT NULL AFTER directorName;
+ALTER TABLE `artwork` ADD COLUMN `startDate` DATETIME NULL AFTER updateDate;
+ALTER TABLE `artwork` ADD COLUMN `endDate` DATETIME NULL AFTER startDate;
+ALTER TABLE `artwork` ADD COLUMN `actingRole` TEXT NULL AFTER `leadActor`;
+ALTER TABLE `artwork` ADD COLUMN `actingRoleGender` TEXT NULL AFTER `actingRole`;
+ALTER TABLE `artwork` ADD COLUMN `actingRoleAge` TEXT NULL AFTER `actingRoleGender`;
+ALTER TABLE `artwork` ADD COLUMN `memberId` INT NOT NULL AFTER `endDate`;
+
+UPDATE `artwork`
+SET memberId = 1
+WHERE memberId = 0;
 
 /*
 select * from `file`;
@@ -569,3 +582,5 @@ select * from  share;
 select * from  recommendation;
 select * from  actor;
 */
+
+DESC `artwork`
