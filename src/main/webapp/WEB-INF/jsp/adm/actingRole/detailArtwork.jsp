@@ -43,49 +43,63 @@
 				</c:when>
 				<c:when
 					test="${artwork.forPrintGenUrlForArtwork == null || artwork.forPrintGenUrlForArtwork == ''}">
-					<div class="${bgColor} text-white h-44 md:h-96 flex-grow text-7xl md:text-9xl flex justify-center items-center">${artwork.genre}</div>
+					<div
+						class="${bgColor} text-white h-44 md:h-96 flex-grow text-7xl md:text-9xl flex justify-center items-center">${artwork.genre}</div>
 				</c:when>
 
 			</c:choose>
 		</div>
 		<div class="p-6">
-			<div>
-				<span>번호</span>
-				<span>${artwork.id}</span>
+			<div class="flex">
+				<div class="w-24">번호</div>
+				<div>${artwork.id}</div>
 			</div>
-			<div>
-				<span>등록날짜</span>
-				<span>${artwork.regDate}</span>
+			<div class="flex">
+				<div class="w-24">등록날짜</div>
+				<div>${artwork.regDate}</div>
 			</div>
-			<div>
-				<span>작품이름</span>
-				<span>${artwork.name}</span>
+			<div class="flex">
+				<div class="w-24">작품이름</div>
+				<div>${artwork.name}</div>
 			</div>
-			<div>
-				<span>장르</span>
-				<span>${artwork.genre}</span>
+			<div class="flex">
+				<div class="w-24">장르</div>
+				<div>${artwork.genre}</div>
 			</div>
-			<div>
-				<span>투자사</span>
-				<span>${artwork.investor}</span>
+			<div class="flex">
+				<div class="w-24">투자사</div>
+				<div>${artwork.investor}</div>
 			</div>
-			<div>
-				<span>제작사</span>
-				<span>${artwork.productionName}</span>
+			<div class="flex">
+				<div class="w-24">제작사</div>
+				<div>${artwork.productionName}</div>
 			</div>
-			<div>
-				<span>주연</span>
-				<span>${artwork.leadActor}</span>
-			</div>
-
-			<div>
-				<span>감독</span>
-				<span>${artwork.directorName}</span>
+			<div class="flex">
+				<div class="w-24">주연</div>
+				<div>${artwork.leadActor}</div>
 			</div>
 
-			<div class="pt-4 text-sm">
-				<span>모집기간</span>
-				<span>${artwork.startDate} ~ ${artwork.endDate}</span>
+			<div class="flex">
+				<div class="w-24">감독</div>
+				<div>${artwork.directorName}</div>
+			</div>
+
+			<div class="flex">
+				<div class="w-24">모집배역</div>
+				<div>
+					<c:forEach var="i" begin="0" end="${fn:length(actingRoles)-1}">
+						<div>
+							<span>${actingRoles[i]}</span>
+							<span>${actingGenders[i]}</span>
+							<span>${actingAges[i]}</span>
+						</div>
+					</c:forEach>
+				</div>
+			</div>
+
+			<div class="flex">
+				<div class="w-24">모집기간</div>
+				<div>${artwork.startDate} ~ ${artwork.endDate}</div>
 			</div>
 
 		</div>
@@ -108,6 +122,5 @@
 
 	<a href="${listUrl}" class="btn btn-info">목록</a>
 </div>
-
 
 <%@ include file="../part/foot.jspf"%>

@@ -80,8 +80,19 @@
 				</a>
 				<div class="flex-grow"></div>
 				<div>
-					<img class="inline object-cover w-14 h-14 mr-2 rounded-full"
-						src="${artwork.forPrintGenUrlForMember}" alt="" />
+					<c:choose>
+						<c:when
+							test="${artwork.forPrintGenUrlForMember != null && artwork.forPrintGenUrlForMember != ''}">
+							<img class="inline object-cover w-14 h-14 mr-2 rounded-full"
+								src="${artwork.forPrintGenUrlForMember}" alt="" />
+						</c:when>
+						<c:when
+							test="${artwork.forPrintGenUrlForMember == null || artwork.forPrintGenUrlForMember == ''}">
+							<div class="flex justify-center items-center w-14 h-14 mr-2 text-5xl text-gray-600">
+								<i class="fas fa-user-circle"></i>
+							</div>
+						</c:when>
+					</c:choose>
 				</div>
 			</div>
 			<div class="flex-grow"></div>

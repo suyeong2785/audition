@@ -1,7 +1,9 @@
 package com.quantom.audition.controller.adm;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -57,8 +59,24 @@ public class ActingRoleController {
 
 		Member loginedMember = (Member)req.getAttribute("loginedMember");
 		Artwork artwork = actingRoleService.getForPrintArtworkById(loginedMember, id);
+		
+		String actingRole = artwork.getActingRole();
+		String actingGender = artwork.getActingRoleGender();
+		String actingAge = artwork.getActingRoleAge();
+		
+		List<String> actingRoles = Arrays.asList(actingRole.split("_")).stream().map(s -> s.trim())
+				.collect(Collectors.toList());
+		
+		List<String> actingGenders = Arrays.asList(actingGender.split("_")).stream().map(s -> s.trim())
+				.collect(Collectors.toList());
+		
+		List<String> actingAges = Arrays.asList(actingAge.split("_")).stream().map(s -> s.trim())
+				.collect(Collectors.toList());
 
 		model.addAttribute("artwork", artwork);
+		model.addAttribute("actingRoles", actingRoles);
+		model.addAttribute("actingGenders", actingGenders);
+		model.addAttribute("actingAges", actingAges);
 
 		return "adm/actingRole/detailArtwork";
 	}
