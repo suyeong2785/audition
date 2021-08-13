@@ -23,7 +23,7 @@ import com.quantom.audition.util.Util;
 public class ActingRoleController {
 	@Autowired
 	private ActingRoleService actingRoleService;
-	
+
 	@RequestMapping("/adm/actingRole/artworkList")
 	public String showArtworkList(Model model) {
 		List<Artwork> artworks = actingRoleService.getForPrintArtworks();
@@ -32,12 +32,12 @@ public class ActingRoleController {
 
 		return "adm/actingRole/artworkList";
 	}
-	
+
 	@RequestMapping("/adm/actingRole/writeArtwork")
 	public String showWriteArtwork(Model model) {
 		return "adm/actingRole/writeArtwork";
 	}
-	
+
 	@RequestMapping("/adm/actingRole/doWriteArtwork")
 	public String doWriteArtwork(@RequestParam Map<String, Object> param, HttpServletRequest req, Model model) {
 		int newArtworkId = actingRoleService.writeArtwork(param);
@@ -47,67 +47,76 @@ public class ActingRoleController {
 
 		return "redirect:" + redirectUri;
 	}
-	
+
 	@RequestMapping("/adm/actingRole/detailArtwork")
-	public String showDetailArtwork(Model model, @RequestParam Map<String, Object> param, HttpServletRequest req, String listUrl) {
-		if ( listUrl == null ) {
+	public String showDetailArtwork(Model model, @RequestParam Map<String, Object> param, HttpServletRequest req,
+			String listUrl) {
+		if (listUrl == null) {
 			listUrl = "./artworkList";
 		}
 		model.addAttribute("listUrl", listUrl);
-				
+
 		int id = Integer.parseInt((String) param.get("id"));
 
-		Member loginedMember = (Member)req.getAttribute("loginedMember");
+		Member loginedMember = (Member) req.getAttribute("loginedMember");
 		Artwork artwork = actingRoleService.getForPrintArtworkById(loginedMember, id);
-		
-		String actingRole = artwork.getActingRole();
-		String actingGender = artwork.getActingRoleGender();
-		String actingAge = artwork.getActingRoleAge();
-		
-		List<String> actingRoles = Arrays.asList(actingRole.split("_")).stream().map(s -> s.trim())
-				.collect(Collectors.toList());
-		
-		List<String> actingGenders = Arrays.asList(actingGender.split("_")).stream().map(s -> s.trim())
-				.collect(Collectors.toList());
-		
-		List<String> actingAges = Arrays.asList(actingAge.split("_")).stream().map(s -> s.trim())
-				.collect(Collectors.toList());
+
+		if (artwork.getActingRole() != null) {
+			String actingRole = artwork.getActingRole();
+			List<String> actingRoles = Arrays.asList(actingRole.split("_")).stream().map(s -> s.trim())
+					.collect(Collectors.toList());
+			model.addAttribute("actingRoles", actingRoles);
+		}
+		if (artwork.getActingRoleGender() != null) {
+			String actingGender = artwork.getActingRoleGender();
+			List<String> actingGenders = Arrays.asList(actingGender.split("_")).stream().map(s -> s.trim())
+					.collect(Collectors.toList());
+			model.addAttribute("actingGenders", actingGenders);
+			
+		}
+		if (artwork.getActingRoleAge() != null) {
+			String actingAge = artwork.getActingRoleAge();
+			List<String> actingAges = Arrays.asList(actingAge.split("_")).stream().map(s -> s.trim())
+					.collect(Collectors.toList());
+			model.addAttribute("actingAges", actingAges);
+		}
 
 		model.addAttribute("artwork", artwork);
-		model.addAttribute("actingRoles", actingRoles);
-		model.addAttribute("actingGenders", actingGenders);
-		model.addAttribute("actingAges", actingAges);
+		
+		
+		
 
 		return "adm/actingRole/detailArtwork";
 	}
-	
+
 	@RequestMapping("/adm/actingRole/modifyArtwork")
-	public String showModifyArtwork(Model model, @RequestParam Map<String, Object> param, HttpServletRequest req, String listUrl) {
-		if ( listUrl == null ) {
+	public String showModifyArtwork(Model model, @RequestParam Map<String, Object> param, HttpServletRequest req,
+			String listUrl) {
+		if (listUrl == null) {
 			listUrl = "./list";
 		}
 		model.addAttribute("listUrl", listUrl);
-				
+
 		int id = Integer.parseInt((String) param.get("id"));
 
-		Member loginedMember = (Member)req.getAttribute("loginedMember");
+		Member loginedMember = (Member) req.getAttribute("loginedMember");
 		Artwork artwork = actingRoleService.getForPrintArtworkById(loginedMember, id);
 
 		model.addAttribute("artwork", artwork);
 
 		return "adm/actingRole/modifyArtwork";
 	}
-	
+
 	@RequestMapping("/adm/actingRole/doModifyArtwork")
 	public String doModifyArtwork(@RequestParam Map<String, Object> param, HttpServletRequest req, Model model) {
 		Map<String, Object> newParam = Util.getNewMapOf(param, "id", "name", "productionName", "directorName", "etc");
 		actingRoleService.modifyArtwork(newParam);
 
 		String redirectUri = (String) param.get("redirectUri");
-		
+
 		return "redirect:" + redirectUri;
 	}
-	
+
 	@RequestMapping("/adm/actingRole/doDeleteArtwork")
 	public String doModifyArtwork(int id, String listUrl) {
 		actingRoleService.deleteArtwork(id);
@@ -123,19 +132,20 @@ public class ActingRoleController {
 
 		return "adm/actingRole/list";
 	}
-	
+
 	@RequestMapping("/adm/actingRole/write")
 	public String showWrite(Model model) {
 		List<Artwork> artworks = actingRoleService.getArtworks();
-		
+
 		model.addAttribute("artworks", artworks);
-		
+
 		return "adm/actingRole/write";
 	}
-	
+
 	@RequestMapping("/adm/actingRole/doWrite")
 	public String doWrite(@RequestParam Map<String, Object> param, HttpServletRequest req, Model model) {
-		Map<String, Object> newParam = Util.getNewMapOf(param, "artworkId", "name", "age", "gender", "character", "scenesCount", "scriptStatus", "auditionStatus", "shootingsCount", "etc");
+		Map<String, Object> newParam = Util.getNewMapOf(param, "artworkId", "name", "age", "gender", "character",
+				"scenesCount", "scriptStatus", "auditionStatus", "shootingsCount", "etc");
 		int newActingRoleId = actingRoleService.write(newParam);
 
 		String redirectUri = (String) param.get("redirectUri");
@@ -143,34 +153,36 @@ public class ActingRoleController {
 
 		return "redirect:" + redirectUri;
 	}
-	
+
 	@RequestMapping("/adm/actingRole/doModify")
 	public String doModify(@RequestParam Map<String, Object> param, HttpServletRequest req, Model model) {
-		Map<String, Object> newParam = Util.getNewMapOf(param, "id", "artworkId", "name", "age", "gender", "character", "scenesCount", "scriptStatus", "auditionStatus", "shootingsCount", "etc");
+		Map<String, Object> newParam = Util.getNewMapOf(param, "id", "artworkId", "name", "age", "gender", "character",
+				"scenesCount", "scriptStatus", "auditionStatus", "shootingsCount", "etc");
 		actingRoleService.modify(newParam);
 
 		String redirectUri = (String) param.get("redirectUri");
-		
+
 		return "redirect:" + redirectUri;
 	}
-	
+
 	@RequestMapping("/adm/actingRole/doDelete")
 	public String doModify(int id, String listUrl) {
 		actingRoleService.delete(id);
 
 		return "redirect:" + listUrl;
 	}
-	
+
 	@RequestMapping("/adm/actingRole/detail")
-	public String showDetail(Model model, @RequestParam Map<String, Object> param, HttpServletRequest req, String listUrl) {
-		if ( listUrl == null ) {
+	public String showDetail(Model model, @RequestParam Map<String, Object> param, HttpServletRequest req,
+			String listUrl) {
+		if (listUrl == null) {
 			listUrl = "./list";
 		}
 		model.addAttribute("listUrl", listUrl);
-				
+
 		int id = Integer.parseInt((String) param.get("id"));
-		
-		Member loginedMember = (Member)req.getAttribute("loginedMember");
+
+		Member loginedMember = (Member) req.getAttribute("loginedMember");
 
 		ActingRole actingRole = actingRoleService.getForPrintActingRoleById(loginedMember, id);
 
@@ -178,17 +190,18 @@ public class ActingRoleController {
 
 		return "adm/actingRole/detail";
 	}
-	
+
 	@RequestMapping("/adm/actingRole/modify")
-	public String showModify(Model model, @RequestParam Map<String, Object> param, HttpServletRequest req, String listUrl) {
-		if ( listUrl == null ) {
+	public String showModify(Model model, @RequestParam Map<String, Object> param, HttpServletRequest req,
+			String listUrl) {
+		if (listUrl == null) {
 			listUrl = "./list";
 		}
 		model.addAttribute("listUrl", listUrl);
-				
+
 		int id = Integer.parseInt((String) param.get("id"));
-		
-		Member loginedMember = (Member)req.getAttribute("loginedMember");
+
+		Member loginedMember = (Member) req.getAttribute("loginedMember");
 
 		ActingRole actingRole = actingRoleService.getForPrintActingRoleById(loginedMember, id);
 

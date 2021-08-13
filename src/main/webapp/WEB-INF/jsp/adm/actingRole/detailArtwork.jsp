@@ -51,43 +51,44 @@
 		</div>
 		<div class="p-6">
 			<div class="flex">
-				<div class="w-24">번호</div>
+				<div class="min-width-96">번호</div>
 				<div>${artwork.id}</div>
 			</div>
 			<div class="flex">
-				<div class="w-24">등록날짜</div>
+				<div class="min-width-96">등록날짜</div>
 				<div>${artwork.regDate}</div>
 			</div>
 			<div class="flex">
-				<div class="w-24">작품이름</div>
+				<div class="min-width-96">작품이름</div>
 				<div>${artwork.name}</div>
 			</div>
 			<div class="flex">
-				<div class="w-24">장르</div>
+				<div class="min-width-96">장르</div>
 				<div>${artwork.genre}</div>
 			</div>
 			<div class="flex">
-				<div class="w-24">투자사</div>
+				<div class="min-width-96">투자사</div>
 				<div>${artwork.investor}</div>
 			</div>
 			<div class="flex">
-				<div class="w-24">제작사</div>
+				<div class="min-width-96">제작사</div>
 				<div>${artwork.productionName}</div>
 			</div>
 			<div class="flex">
-				<div class="w-24">주연</div>
+				<div class="min-width-96">주연</div>
 				<div>${artwork.leadActor}</div>
 			</div>
 
 			<div class="flex">
-				<div class="w-24">감독</div>
+				<div class="min-width-96">감독</div>
 				<div>${artwork.directorName}</div>
 			</div>
 
 			<div class="flex">
-				<div class="w-24">모집배역</div>
+				<div class="min-width-96">모집배역</div>
 				<div>
-					<c:forEach var="i" begin="0" end="${fn:length(actingRoles)-1}">
+					<c:forEach var="i" begin="0"
+						end="${fn:length(actingRoles)-1 > 0 ? fn:length(actingRoles)-1 : 0}">
 						<div>
 							<span>${actingRoles[i]}</span>
 							<span>${actingGenders[i]}</span>
@@ -98,17 +99,19 @@
 			</div>
 
 			<div class="flex">
-				<div class="w-24">모집기간</div>
-				<div>${artwork.startDate} ~ ${artwork.endDate}</div>
+				<div class="min-width-96">모집기간</div>
+				<div>${artwork.startDate}~ ${artwork.endDate}</div>
 			</div>
 
 		</div>
 	</div>
 </div>
-<div class="bg-gray-100">
+<div class="bg-gray-100 ">
 	<div class="con p-6">
-		<span>줄거리</span>
-		<span class="text-sm">${artwork.etc}</span>
+		<div class="flex">
+			<div class="min-width-96">줄거리</div>
+			<div class="text-sm">${artwork.etc}</div>
+		</div>
 	</div>
 </div>
 

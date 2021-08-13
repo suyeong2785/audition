@@ -74,6 +74,7 @@
 		startDate =
 		#{startDate},
 		endDate = #{endDate},
+		memberId = #{memberId},
 		name = #{name},
 		genre = #{genre},
 		investor = #{investor},

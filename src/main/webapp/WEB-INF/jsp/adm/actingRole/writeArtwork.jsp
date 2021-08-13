@@ -121,11 +121,9 @@
 		}
 
 		form.investor.value = form.investor.value.trim();
-
+		
 		if (form.investor.value.length == 0) {
-			form.investor.focus();
-			alert('투자사를 입력해주세요.');
-
+			form.investor.value = "개별안내";
 			return;
 		}
 
@@ -139,20 +137,16 @@
 		}
 
 		form.directorName.value = form.directorName.value.trim();
-
+		
 		if (form.directorName.value.length == 0) {
-			form.directorName.focus();
-			alert('감독이름을 입력해주세요.');
-
+			form.directorName.value = "개별안내";
 			return;
 		}
 
 		form.leadActor.value = form.leadActor.value.trim();
-
-		if (form.leadActor.value == 0) {
-			form.leadActor.focus();
-			alert('주연(출연)을 입력해주세요.');
-
+		
+		if (form.leadActor.value.length == 0) {
+			form.leadActor.value = "개별안내";
 			return;
 		}
 
@@ -250,6 +244,7 @@
 	<input type="hidden" name="actingRole" />
 	<input type="hidden" name="actingRoleGender" />
 	<input type="hidden" name="actingRoleAge" />
+	<input type="hidden" name="memberId" value="${loginedMemberId}"/>
 
 	<div class="con">
 		<div class="text-sm font-bold">캐스팅콜 등록에 관한설명</div>
