@@ -40,8 +40,11 @@ public class RecruitmentController {
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
 		model.addAttribute("actorCanWrite", appConfig.actorCanWrite("recruitment", loginedMember));
 
-		List<Recruitment> recruitments = recruitmentService.getForPrintRecruitments();
+		List<Recruitment> recruitments = null;
 
+		if(recruitmentService.getForPrintRecruitments().isEmpty() == false) {
+			recruitments = recruitmentService.getForPrintRecruitments();
+		}
 		model.addAttribute("recruitments", recruitments);
 
 		return "usr/recruitment/list";

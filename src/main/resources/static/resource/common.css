@@ -150,6 +150,10 @@ label[for] {
 	padding: 50%;
 }
 
+.padding-bottom-25{
+	padding-bottom: 25%;
+}
+
 .margin-right-10 {
 	margin-right: 10px;
 }
@@ -214,6 +218,10 @@ label[for] {
 	max-width: 277.5px;
 }
 
+.max-width-624{
+	max-width: 624px;
+}
+
 .max-height-360 {
 	max-height: 360px;
 }
@@ -244,6 +252,18 @@ label[for] {
 .top-50 {
 	top: 50%;
 	transform: translateY(20);
+}
+/* grid 관련*/
+.grid-column-auto-800{
+	grid-template-columns: minmax(auto, 800px);
+}
+
+.grid-columns-1fr-2fr{
+	grid-template-columns: minmax(140px,160px) auto;
+}
+
+.grid-row-140-160{
+	grid-template-rows: minmax(140px,160px);
 }
 
 /* flex 관련 */

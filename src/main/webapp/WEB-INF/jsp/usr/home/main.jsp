@@ -62,21 +62,32 @@
 						<c:choose>
 							<c:when
 								test="${artwork.forPrintGenUrlForArtwork != null && artwork.forPrintGenUrlForArtwork != ''}">
-								<div style="background-image: url(${artwork.forPrintGenUrlForArtwork});"
-									class="castingCall-image bg-no-repeat bg-center object-cover overflow-hidden flex justify-center items-center padding-bottom-100 top-0 left-0">
-								</div>
+								<a href="../../adm/actingRole/${artwork.getDetailLink()}">
+									<div
+										style="background-image: url(${artwork.forPrintGenUrlForArtwork});"
+										class="castingCall-image bg-no-repeat bg-center object-cover overflow-hidden flex justify-center items-center padding-bottom-100 top-0 left-0 rounded-xl">
+									</div>
+								</a>
 							</c:when>
 							<c:when
 								test="${artwork.forPrintGenUrlForArtwork == null || artwork.forPrintGenUrlForArtwork == ''}">
-								<div class="${bgColor} text-white padding-bottom-100 top-0 left-0"></div>
+								<a href="../../adm/actingRole/${artwork.getDetailLink()}">
+									<div
+										class="${bgColor} text-white rounded-xl padding-bottom-100 top-0 left-0 relative">
+										<span
+											class="absolute text-4xl top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2 capitalize">${artwork.genre}</span>
+									</div>
+								</a>
 							</c:when>
 						</c:choose>
-						<div>
-							<div class="text-sm text-left font-bold py-2">${artwork.name}</div>
-							<div class="text-xs text-left h-8 overflow-hidden line-clamp-2">${artwork.etc}</div>
-							<div class="text-xs text-left">${artwork.startDate}~
-								${artwork.endDate}</div>
-						</div>
+						<a href="../../adm/actingRole/${artwork.getDetailLink()}">
+							<div>
+								<div class="text-sm text-left font-bold py-2">${artwork.name}</div>
+								<div class="text-xs text-left h-8 overflow-hidden line-clamp-2">${artwork.etc}</div>
+								<div class="text-xs text-left">${artwork.startDate}~
+									${artwork.endDate}</div>
+							</div>
+						</a>
 					</div>
 				</c:forEach>
 			</div>
