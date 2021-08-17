@@ -138,58 +138,6 @@ var param = ${paramJson};
 				</ul>
 			</nav>
 		</div>
-		<!--  
-			<div class="top-bar con flex flex-ai-c flex-jc-sb visible-on-md-up">
-			<a href="/usr/home/main" class="logo img-box">
-				<img src="/resource/img/mobile_header.svg" alt="" />
-			</a>
-			<nav class="menu-box-1">
-				<ul class="flex flex-ai-c">
-					<li class="padding-0-10">
-						<a class="btn btn-info" href="/usr/home/main">유저</a>
-					</li>
-					<li class="padding-0-10">
-						<a class="btn btn-info" href="/adm/actingRole/list">배역리스트</a>
-					</li>
-					<li class="padding-0-10">
-						<a class="btn btn-info" href="/adm/actingRole/artworkList">작품리스트</a>
-					</li>
-					<c:if test="${isLogined}">
-						<li class="padding-0-10">
-							<a class="btn btn-info" href="/adm/actor/getActor">배우검색</a>
-						</li>
-						<li class="padding-0-10">
-							<a class="btn btn-info" href="/adm/actor/join">배우추가</a>
-						</li>
-						<li class="padding-0-10">
-							<a class="btn btn-info" href="/adm/home/showMyPage">마이페이지</a>
-						</li>
-						<li class="padding-0-10">
-							<a class="btn btn-info"
-								href="/usr/member/checkPassword?redirectUri=${Util.getUriEncoded('/usr/member/modify')}">내
-								정보수정</a>
-						</li>
-						<li class="padding-0-10">
-							<a class="btn btn-info" href="/usr/member/doLogout">로그아웃</a>
-						</li>
-						<a href="/adm/home/showMyPage" class="box w-24 h-24">
-							<c:choose>
-								<c:when test="${not empty fileForProfile}">
-									<img class="inline object-cover w-16 h-16 mr-2 rounded-full"
-										src="${fileForProfile.forPrintGenUrl}" alt="" />
-								</c:when>
-								<c:otherwise>
-									<span class="profile text-8xl text-green-500">
-										<i class="fas fa-user-circle"></i>
-									</span>
-								</c:otherwise>
-							</c:choose>
-						</a>
-					</c:if>
-				</ul>
-			</nav>
-		</div>
-		-->
 		<c:if test="${pageTitle != null && pageTitle.length() != 0}">
 			<h1 class="page-title-box con">${pageTitle}</h1>
 		</c:if>

@@ -65,7 +65,7 @@
 								<a href="../../adm/actingRole/${artwork.getDetailLink()}">
 									<div
 										style="background-image: url(${artwork.forPrintGenUrlForArtwork});"
-										class="castingCall-image bg-no-repeat bg-center object-cover overflow-hidden flex justify-center items-center padding-bottom-100 top-0 left-0 rounded-xl">
+										class="castingCall-image bg-no-repeat bg-center object-cover overflow-hidden flex justify-center items-center padding-bottom-50 top-0 left-0 rounded-xl">
 									</div>
 								</a>
 							</c:when>
@@ -73,7 +73,7 @@
 								test="${artwork.forPrintGenUrlForArtwork == null || artwork.forPrintGenUrlForArtwork == ''}">
 								<a href="../../adm/actingRole/${artwork.getDetailLink()}">
 									<div
-										class="${bgColor} text-white rounded-xl padding-bottom-100 top-0 left-0 relative">
+										class="${bgColor} text-white rounded-xl padding-bottom-50 top-0 left-0 relative">
 										<span
 											class="absolute text-4xl top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2 capitalize">${artwork.genre}</span>
 									</div>

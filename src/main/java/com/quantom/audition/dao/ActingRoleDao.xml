@@ -152,19 +152,21 @@
 		INTO actingRole
 		SET regDate = NOW(),
 		updateDate = NOW(),
-		artworkId =
-		#{artworkId},
+		startDate = #{startDate},
+		endDate = #{endDate},
+		artworkId = #{artworkId},
+		thumbnailStatus = #{thumbnailStatus},
 		name = #{name},
+		pay = #{pay},
 		age = #{age},
 		gender = #{gender},
-		`character` = #{character},
-		scenesCount = #{scenesCount},
-		scriptStatus =
-		#{scriptStatus},
-		auditionStatus = #{auditionStatus},
-		shootingsCount =
-		#{shootingsCount},
-		etc = #{etc}
+		job = #{job},
+		feature = #{feature},
+		region = #{region},
+		schedule = #{schedule},
+		shotAngle = #{shotAngle},
+		scriptStatus = #{scriptStatus},
+		shootingsCount = #{shootingsCount}
 	</insert>
 
 	<delete id="delete">

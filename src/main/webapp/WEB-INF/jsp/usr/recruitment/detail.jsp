@@ -348,9 +348,7 @@
 				*/
 				URL.revokeObjectURL(file);
 			},100);
-			
-			
-			
+
 		} else {
 			//파일이 없는 경우 내용을 지워준다.
 			$("#totalTime").html("");

@@ -43,6 +43,8 @@ public class AppConfig {
 		switch (fileExtTypeCode) {
 		case "img":
 			return "image/gif,image/jpeg,image/png";
+		case "document":
+			return ".pdf,.dov,.hwp";
 		default:
 			return "video/mp4,video/quicktime,video/x-msvideo";
 		}

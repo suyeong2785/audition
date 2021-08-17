@@ -144,9 +144,8 @@ public class ActingRoleController {
 
 	@RequestMapping("/adm/actingRole/doWrite")
 	public String doWrite(@RequestParam Map<String, Object> param, HttpServletRequest req, Model model) {
-		Map<String, Object> newParam = Util.getNewMapOf(param, "artworkId", "name", "age", "gender", "character",
-				"scenesCount", "scriptStatus", "auditionStatus", "shootingsCount", "etc");
-		int newActingRoleId = actingRoleService.write(newParam);
+		
+		int newActingRoleId = actingRoleService.write(param);
 
 		String redirectUri = (String) param.get("redirectUri");
 		redirectUri = redirectUri.replace("#id", newActingRoleId + "");

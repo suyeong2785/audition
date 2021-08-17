@@ -58,14 +58,15 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 	});
 </script>
 
-<!-- 구글 웹 마스터 인증코드 -->
+<!-- 구글 웹 마스터 인증코드 
 <meta name="google-site-verification"
 	content="f18pCJNXQZFxWyHdwR1NI63OBAIGqNcL-ZywOncwNIM" />
+	-->
 
-<!-- 애드센스 인증용 코드 -->
+<!-- 애드센스 인증용 코드 
 <script data-ad-client="ca-pub-1005451568380744" async
 	src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
+-->
 </head>
 <body>
 	<!-- 로딩화면 -->
@@ -170,75 +171,7 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 				</ul>
 			</nav>
 		</div>
-		<!-- 
-		<div class="top-bar con flex flex-ai-c flex-jc-sb visible-on-md-up">
-			<a href="/usr/home/main" class="logo img-box">
-				<img src="/resource/img/mobile_header.svg" alt="" />
-			</a>
-			<nav class="menu-box-1">
-				<ul class="flex flex-ai-c">
-					<c:if test="${isAdmin}">
-						<li class="padding-0-10">
-							<a class="btn btn-danger" href="/adm/home/showMyPage">관리자</a>
-						</li>
-					</c:if>
-					<c:if test="${isCastingDirector}">
-						<li class="padding-0-10">
-							<a class="btn btn-warning" href="/adm/home/showMyPage">캐스팅</a>
-						</li>
-					</c:if>
-					<li class="padding-0-10">
-						<a href="/usr/recruitment/actor-list" class="btn btn-primary">배우모집</a>
-					</li>
-					<li class="padding-0-10">
-						<a class="btn btn-info" href="/usr/article/free-list">자유 게시판</a>
-					</li>
-					<c:if test="${isLogined}">
-						<li class="padding-0-10">
-							<a href="/usr/home/showMyPage" class="btn btn-info">마이페이지</a>
-						</li>
-						<li class="padding-0-10">
-							<a class="btn btn-info"
-								href="/usr/member/checkPassword?redirectUri=${Util.getUriEncoded('/usr/member/modify')}">내
-								정보수정</a>
-						</li>
-						<li class="padding-0-10">
-							<a class="btn btn-info" href="/usr/member/doLogout">로그아웃</a>
-						</li>
-						<a href="/usr/home/showMyPage">
-							<c:choose>
-								<c:when test="${not empty fileForProfile}">
-									<img class="profile w-24 h-24"
-										src="${fileForProfile.forPrintGenUrl}" alt="" />
-								</c:when>
-								<c:otherwise>
-									<span class="profile text-8xl text-green-500">
-										<i class="fas fa-user-circle"></i>
-									</span>
-								</c:otherwise>
-							</c:choose>
-							<div class="text-center">
-								<span>${loginedMember.name}</span>
-							</div>
-						</a>
-					</c:if>
-					<c:if test="${isLogined == false}">
-						<li class="padding-0-10">
-							<a class="btn btn-info"
-								href="/usr/member/login?redirectUri=${encodedAfterLoginUri}">로그인</a>
-						</li>
-						<li class="padding-0-10">
-							<a class="btn btn-info" href="/usr/member/join">회원가입</a>
-						</li>
-						<li class="padding-0-10">
-							<a class="btn btn-info" href="/usr/member/findLoginInfo">아이디/비번
-								찾기</a>
-						</li>
-					</c:if>
-				</ul>
-			</nav>
-		</div>
-		 -->
+
 		<c:if test="${pageTitle != null && pageTitle.length() != 0}">
 			<h1 class="page-title-box con">${pageTitle}</h1>
 		</c:if>
