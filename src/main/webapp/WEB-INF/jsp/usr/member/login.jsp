@@ -7,8 +7,45 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 
+<style>
+.toast-top-center {
+	display:none;
+}
+</style>
+
 <script>
+	function setPositionOfToastr(targetInputName, msg){
+		
+		toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'slideDown',
+                timeOut: 2000,
+                extendedTimeOut: 1,
+                positionClass : "toast-top-center"
+         };
+		
+		var loginIdCoordinate = $('input[name='+ targetInputName +']').offset();
+		
+		toastr.options.onShown = function() { 
+			
+			$('.toast').addClass(targetInputName);
+			$('#toast-container').css("display","block");
+			$('.toast').css({"display" : "block" , "position" : "absolute"});
+			var height = loginIdCoordinate.top - $("."+ targetInputName).outerHeight();
+			$("."+ targetInputName).offset({ left : loginIdCoordinate.left, top : height });
+			
+		}
+		
+		toastr.warning(msg);
+		
+	}
+	
 	function MemberLoginForm__submit(form) {
+		if($('.toast')){
+			window.toastr.remove();
+		}
+		
 		if (isNowLoading()) {
 			alert('처리중입니다.');
 			return;
@@ -21,15 +58,22 @@
 
 		if (form.loginId.value.length == 0) {
 			form.loginId.focus();
-			alert('로그인 아이디를 입력해주세요.');
-
+			
+			
+			var msg = "로그인 아이디를 입력해주세요";
+			var targetInputName = "loginId"
+			var toastr = setPositionOfToastr(targetInputName,msg);
+			
 			return;
 		}
 
 		if (form.loginId.value.length < 4) {
 			form.loginId.focus();
-			alert('로그인 아이디 4자 이상 입력해주세요.');
 
+			var msg = "로그인 아이디 4자 이상 입력해주세요.";
+			var targetInputName = "loginId"
+			setPositionOfToastr(targetInputName,msg);
+			
 			return;
 		}
 
@@ -37,15 +81,20 @@
 
 		if (form.loginPw.value.length == 0) {
 			form.loginPw.focus();
-			alert('로그인 비밀번호를 입력해주세요.');
-
+			
+			var msg = "로그인 비밀번호를 입력해주세요.";
+			var targetInputName = "loginPw"
+			var toastr = setPositionOfToastr(targetInputName,msg);
 			return;
 		}
 
 		if (form.loginPw.value.length < 5) {
 			form.loginPw.focus();
-			alert('로그인 비밀번호를 5자 이상 입력해주세요.');
-
+			
+			var msg = "로그인 비밀번호를 5자 이상 입력해주세요.";
+			var targetInputName = "loginPw"
+			var toastr = setPositionOfToastr(targetInputName,msg);
+			
 			return;
 		}
 

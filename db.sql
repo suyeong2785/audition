@@ -569,13 +569,33 @@ SET memberId = 1
 WHERE memberId = 0;
 
 /*
+text는 디폴트 값 설정이안됨..
+ALTER TABLE `artwork` MODIFY COLUMN `investor` TEXT NOT NULL DEFAULT '개별안내' AFTER genre;
+ALTER TABLE `artwork` MODIFY COLUMN `leadActor` TEXT NOT NULL DEFAULT '개별안내' AFTER directorName;
+ALTER TABLE `artwork` MODIFY COLUMN `directorName` TEXT NOT NULL DEFAULT '개별안내' AFTER productionName;
+*/
+
+ALTER TABLE `actingRole` ADD COLUMN feature TEXT NOT NULL AFTER job;
+ALTER TABLE `actingRole` ADD COLUMN region VARCHAR(9) NOT NULL AFTER feature;
+ALTER TABLE `actingRole` ADD COLUMN `schedule` VARCHAR(20) NOT NULL AFTER region;
+ALTER TABLE `actingRole` ADD COLUMN `shotAngle` CHAR(2) NOT NULL AFTER `schedule`;
+ALTER TABLE `actingRole` DROP COLUMN scenesCount;
+ALTER TABLE `actingRole` DROP COLUMN realName;
+ALTER TABLE `actingRole` DROP COLUMN auditionStatus;
+ALTER TABLE `actingRole` DROP COLUMN `character`;
+ALTER TABLE `actingRole` DROP COLUMN `etc`;
+ALTER TABLE `actingRole` ADD COLUMN thumbnailStatus TINYINT DEFAULT 0 NOT NULL AFTER artworkId;
+ALTER TABLE `actingRole` ADD COLUMN startDate DATETIME AFTER updateDate;
+ALTER TABLE `actingRole` ADD COLUMN endDate DATETIME AFTER startDate;
+ALTER TABLE `actingRole` MODIFY COLUMN gender CHAR(1) NOT NULL AFTER age;
+/*
 select * from `file`;
 SELECT * FROM `actingRole`;
 SELECT * FROM `recruitment`;
 SELECT * FROM `applyment`;
-SELECT * FROM `artwork`;
 select * from `member`;
 select * from `attr`;
+select * from `artwork`;
 select * from  reply;
 select * from `career`;
 select * from  share;
@@ -583,4 +603,4 @@ select * from  recommendation;
 select * from  actor;
 */
 
-DESC `artwork`
+DESC `actingRole`;
