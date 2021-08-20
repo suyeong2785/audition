@@ -22,12 +22,10 @@
 		ACR.job AS extra__actingRoleJob,
 		ACR.scriptStatus AS
 		extra__actingScriptStatus,
-		ACR.scenesCount AS
-		extra__actingRoleScenesCount,
 		ACR.shootingsCount AS
 		extra__actingRoleShootingsCount,
-		ACR.character AS
-		extra__actingRoleCharacter,
+		ACR.feature AS
+		extra__actingRoleFeature,
 		ACR.pay AS extra__actingRolePay,
 		ARW.name AS
 		extra__artworkName,
@@ -56,12 +54,10 @@
 		ACR.job AS extra__actingRoleJob,
 		ACR.scriptStatus AS
 		extra__actingScriptStatus,
-		ACR.scenesCount AS
-		extra__actingRoleScenesCount,
 		ACR.shootingsCount AS
 		extra__actingRoleShootingsCount,
-		ACR.character AS
-		extra__actingRoleCharacter,
+		ACR.feature AS
+		extra__actingRoleFeature,
 		ACR.pay AS extra__actingRolePay,
 		ARW.name AS
 		extra__artworkName,
@@ -91,12 +87,10 @@
 		ACR.job AS extra__actingRoleJob,
 		ACR.scriptStatus AS
 		extra__actingScriptStatus,
-		ACR.scenesCount AS
-		extra__actingRoleScenesCount,
 		ACR.shootingsCount AS
 		extra__actingRoleShootingsCount,
-		ACR.character AS
-		extra__actingRoleCharacter,
+		ACR.feature AS
+		extra__actingRoleFeature,
 		ACR.pay AS extra__actingRolePay,
 		ARW.name AS
 		extra__artworkName,
@@ -197,14 +191,12 @@
 			<id property="actingRoleGender" column="extra__actingRoleGender" />
 			<id property="actingRoleAge" column="extra__actingRoleAge" />
 			<id property="actingRoleJob" column="extra__actingRoleJob" />
-			<id property="actingRoleScenesCount"
-				column="extra__actingRoleScenesCount" />
 			<id property="actingRoleShootingsCount"
 				column="extra__actingRoleShootingsCount" />
 			<id property="actingRolePay" column="extra__actingRolePay" />
 			<id property="productionName" column="extra__productionName" />
-			<id property="actingRoleCharacter"
-				column="extra__actingRoleCharacter" />
+			<id property="actingRoleFeature"
+				column="extra__actingRoleFeature" />
 		</association>
 	</resultMap>
 

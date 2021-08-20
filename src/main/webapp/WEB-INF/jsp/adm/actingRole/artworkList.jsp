@@ -6,7 +6,7 @@
 	<div class="flex items-center justify-center">
 		<div class="flex-grow"></div>
 		<div class="flex justify-center items-center max-w-screen-sm flex-4">
-			<div class="text-center py-8 text-xl font-bold">Artwork List</div>
+			<div class="text-center py-8 text-xl font-bold">CastingCall</div>
 			<div class="flex-grow"></div>
 			<div class="flex items-center justify-center">
 				<a class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
