@@ -1,80 +1,120 @@
 <%@ page import="com.quantom.audition.util.Util"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:set var="pageTitle" value="배역정보" />
 <%@ include file="../part/head.jspf"%>
 
-<div class="actingRole-detail-box table-box table-box-vertical con">
-	<table>
-		<colgroup>
-			<col class="table-first-col">
-		</colgroup>
-		<tbody>
-			<tr>
-				<th>번호</th>
-				<td>${actingRole.id}</td>
-			</tr>
-			<tr>
-				<th>날짜</th>
-				<td>${actingRole.regDate}</td>
-			</tr>
-			<tr>
-				<th>제목</th>
-				<td>${actingRole.forPrintTitle}</td>
-			</tr>
-			<tr>
-				<th>artworkId</th>
-				<td>${actingRole.artworkId}</td>
-			</tr>
-			<tr>
-				<th>name</th>
-				<td>${actingRole.name}</td>
-			</tr>
-			
-			<tr>
-				<th>age</th>
-				<td>${actingRole.age}</td>
-			</tr>
-			
-			<tr>
-				<th>gender</th>
-				<td>${actingRole.gender}</td>
-			</tr>
-			
-			<tr>
-				<th>character</th>
-				<td>${actingRole.character}</td>
-			</tr>
-			
-			<tr>
-				<th>scenesCount</th>
-				<td>${actingRole.scenesCount}</td>
-			</tr>
-			<tr>
-				<th>scriptStatus</th>
-				<td>${actingRole.scriptStatus}</td>
-			</tr>
-			<tr>
-				<th>auditionStatus</th>
-				<td>${actingRole.auditionStatus}</td>
-			</tr>
-			<tr>
-				<th>shootingsCount</th>
-				<td>${actingRole.shootingsCount}</td>
-			</tr>
-			<tr>
-				<th>etc</th>
-				<td>${actingRole.etc}</td>
-			</tr>
-		</tbody>
-	</table>
+<div class="con">
+	<div class=" flex flex-col">
+		<div class="flex items-center justify-center max-h-96 overflow-hidden">
+			<c:choose>
+				<c:when test="${actingRole.files != '[]'}">
+					<c:forEach items="${actingRole.files}" var="file">
+						<c:choose>
+							<c:when test="${file.typeCode == 'thumbnail'}">
+								<img src="${file.forPrintGenUrl}" alt="" />
+							</c:when>
+						</c:choose>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<div
+						class="bg-gray-300 text-white h-44 md:h-96 flex-grow text-7xl md:text-9xl flex justify-center items-center">${actingRole.name}</div>
+				</c:otherwise>
+			</c:choose>
+		</div>
+		<div class="p-6">
+			<div class="flex">
+				<div class="min-width-96">작품이름</div>
+				<div>${actingRole.extra.artworkName}</div>
+			</div>
+			<div class="flex">
+				<div class="min-width-96">배역명</div>
+				<div>${actingRole.name}</div>
+			</div>
+			<div class="flex">
+				<div class="min-width-96">연령/성별</div>
+				<div>${actingRole.age}/${actingRole.gender}</div>
+			</div>
+			<div class="flex">
+				<div class="min-width-96">직업</div>
+				<div>${actingRole.job}</div>
+			</div>
+			<div class="flex">
+				<div class="min-width-96">주요사항</div>
+				<div>${actingRole.feature}</div>
+			</div>
+			<div class="flex">
+				<div class="min-width-96">촬영일정</div>
+				<div>${actingRole.schedule}/${actingRole.shootingsCount}회</div>
+			</div>
+			<div class="flex">
+				<div class="min-width-96">촬영지역</div>
+				<div>${actingRole.region}</div>
+			</div>
+			<div class="flex">
+				<div class="min-width-96">출연료</div>
+				<div>${actingRole.pay}</div>
+			</div>
+			<div class="flex">
+				<div class="min-width-96">모집기간</div>
+				<div>${fn:split(actingRole.startDate,' ')[0]}~
+					${fn:split(actingRole.endDate,' ')[0]}</div>
+			</div>
+			<c:choose>
+				<c:when test="${actingRole.files != '[]'}">
+					<c:forEach items="${actingRole.files}" var="file">
+						<c:choose>
+							<c:when test="${file.typeCode == 'script'}">
+								<div class="flex">
+									<div class="min-width-96">지정연기 대본</div>
+									<div>
+										<a href="${file.forPrintGenUrl}" download>오디션 대본 다운로드</a>
+									</div>
+								</div>
+							</c:when>
+						</c:choose>
+					</c:forEach>
+				</c:when>
+			</c:choose>
+
+		</div>
+	</div>
 </div>
 
+<c:choose>
+	<c:when test="${actingRole.files != '[]'}">
+		<c:forEach items="${actingRole.files}" var="file">
+			<c:choose>
+				<c:when test="${file.typeCode == 'guide'}">
+					<div class="bg-gray-100 ">
+						<div class="con p-6">
+							<div class="flex">
+								<div class="flex">
+									<div class="min-width-96">오디션 가이드영상</div>
+									<div>
+										<video controls="controls" src="${file.forPrintGenUrl}"></video>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</c:when>
+			</c:choose>
+		</c:forEach>
+	</c:when>
+</c:choose>
+
+
+
 <div class="btn-box con margin-top-20">
-	<a class="btn btn-info" href="modify?id=${actingRole.id}&listUrl=${Util.getUriEncoded(listUrl)}">수정</a>
-	<a class="btn btn-danger" href="doDelete?id=${actingRole.id}&listUrl=${Util.getUriEncoded(listUrl)}" onclick="if ( confirm('삭제하시겠습니까?') == false ) return false;">삭제</a>
-	
+	<a class="btn btn-info"
+		href="modify?id=${actingRole.id}&listUrl=${Util.getUriEncoded(listUrl)}">수정</a>
+	<a class="btn btn-danger"
+		href="doDelete?id=${actingRole.id}&listUrl=${Util.getUriEncoded(listUrl)}"
+		onclick="if ( confirm('삭제하시겠습니까?') == false ) return false;">삭제</a>
+
 	<a href="${listUrl}" class="btn btn-info">목록</a>
 </div>
 

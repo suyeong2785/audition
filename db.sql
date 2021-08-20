@@ -515,10 +515,13 @@ email VARCHAR(30) NOT NULL,
 phone CHAR(11) NOT NULL
 );
 
+#member테이블에 경력 db연결 
 ALTER TABLE `member` ADD COLUMN careerId INT UNSIGNED NOT NULL AFTER loginId;
 
+#career테이블에 member db연결 
 ALTER TABLE `career` DROP COLUMN memberId;
 
+#career테이블에 모달창으로 보여줄 데이터들 추가 및수정 
 ALTER TABLE `actor` ADD COLUMN youTubeUrl VARCHAR(100) NOT NULL ; 
 
 ALTER TABLE actor ADD COLUMN delDate DATETIME AFTER `updateDate`,
@@ -537,6 +540,7 @@ ALTER TABLE `actor` MODIFY COLUMN nickname VARCHAR(10) NULL;
 
 ALTER TABLE `actor` MODIFY COLUMN delStatus VARCHAR(10) NULL;
 
+#배우db에 테스트 데이터추가
 INSERT INTO `actor`
 SET regDate = NOW(),
 updateDate = NOW(),
@@ -553,6 +557,7 @@ updateDAte = NOW(),
 `code` = 'actor',
 `name` = '배우';
 
+#actingRole을 조PD님이 주신 ppt자료에 맞춰서 변경
 ALTER TABLE `artwork` ADD COLUMN `genre` VARCHAR(10) NOT NULL AFTER NAME;
 ALTER TABLE `artwork` ADD COLUMN `investor` VARCHAR(15) NOT NULL AFTER NAME;
 ALTER TABLE `artwork` MODIFY COLUMN `investor` TEXT NOT NULL AFTER genre;
@@ -575,6 +580,7 @@ ALTER TABLE `artwork` MODIFY COLUMN `leadActor` TEXT NOT NULL DEFAULT '개별안
 ALTER TABLE `artwork` MODIFY COLUMN `directorName` TEXT NOT NULL DEFAULT '개별안내' AFTER productionName;
 */
 
+#actingRole을 조PD님이 주신 ppt자료에 맞춰서 변경
 ALTER TABLE `actingRole` ADD COLUMN feature TEXT NOT NULL AFTER job;
 ALTER TABLE `actingRole` ADD COLUMN region VARCHAR(9) NOT NULL AFTER feature;
 ALTER TABLE `actingRole` ADD COLUMN `schedule` VARCHAR(20) NOT NULL AFTER region;
@@ -587,7 +593,12 @@ ALTER TABLE `actingRole` DROP COLUMN `etc`;
 ALTER TABLE `actingRole` ADD COLUMN thumbnailStatus TINYINT DEFAULT 0 NOT NULL AFTER artworkId;
 ALTER TABLE `actingRole` ADD COLUMN startDate DATETIME AFTER updateDate;
 ALTER TABLE `actingRole` ADD COLUMN endDate DATETIME AFTER startDate;
-ALTER TABLE `actingRole` MODIFY COLUMN gender CHAR(1) NOT NULL AFTER age;
+ALTER TABLE `actingRole` MODIFY COLUMN gender CHAR(2) NOT NULL AFTER age;
+
+#actingRole에 memberId에 관리자id 추가
+UPDATE actingRole
+SET memberId = 1
+WHERE memberId = 0;
 /*
 select * from `file`;
 SELECT * FROM `actingRole`;
@@ -604,3 +615,4 @@ select * from  actor;
 */
 
 DESC `actingRole`;
+DESC `artwork`;

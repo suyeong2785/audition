@@ -37,6 +37,10 @@ public class ActingRoleService {
 	public List<Artwork> getForPrintArtworks() {
 		return actingRoleDao.getForPrintArtworks();
 	}
+	
+	public List<ActingRole> getActingRolesForPrintList(Map<String, Object> param) {
+		return actingRoleDao.getActingRolesForPrintList(param);
+	}
 
 	public int write(Map<String, Object> param) {
 		actingRoleDao.write(param);
@@ -61,7 +65,11 @@ public class ActingRoleService {
 	public ActingRole getForPrintActingRoleById(Member loginedMember, int id) {
 		return actingRoleDao.getForPrintActingRoleById(id);
 	}
-
+	
+	public ActingRole getActingRoleForPrintDetailById(int id) {
+		return actingRoleDao.getActingRoleForPrintDetailById(id);
+	}
+	
 	public void modify(Map<String, Object> param) {
 		actingRoleDao.modify(param);
 	}

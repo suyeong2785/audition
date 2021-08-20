@@ -82,6 +82,10 @@ public class Util {
 			return "video";
 		case "mp3":
 			return "audio";
+		case "pdf":
+		case "doc":
+		case "hwp":
+			return "document";	
 		}
 
 		return "etc";
@@ -105,6 +109,12 @@ public class Util {
 		case "avi":
 			return ext;
 		case "mp3":
+			return ext;
+		case "pdf":
+			return ext;
+		case "doc":
+			return ext;
+		case "hwp":
 			return ext;
 		}
 

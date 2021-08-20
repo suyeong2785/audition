@@ -17,10 +17,14 @@ public interface ActingRoleDao {
 	List<Artwork> getArtworks();
 	
 	List<Artwork> getForPrintArtworks();
+	
+	List<ActingRole> getActingRolesForPrintList(Map<String, Object> param);
 
 	void write(Map<String, Object> param);
 
 	ActingRole getForPrintActingRoleById(@Param("id") int id);
+	
+	ActingRole getActingRoleForPrintDetailById(@Param("id") int id);
 
 	void modify(Map<String, Object> param);
 	
@@ -33,4 +37,5 @@ public interface ActingRoleDao {
 	void modifyArtwork(Map<String, Object> param);
 
 	void deleteArtwork(@Param("id") int id);
+
 }

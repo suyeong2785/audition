@@ -13,11 +13,11 @@
 			return;
 		}
 
-		form.name.value = form.name.value.trim();
+		form.thumbnailStatus.value = form.thumbnailStatus.value.trim();
 
-		if (form.name.value.length == 0) {
+		if (form.thumbnailStatus.value.length == 0 || form.thumbnailStatus.value.length == null) {
 			form.name.focus();
-			alert('');
+			alert('썸네일 이미지를 등록해주세요');
 
 			return;
 		}
@@ -26,56 +26,72 @@
 
 		if (form.genre.value.length == 0) {
 			form.genre.focus();
+			
 			alert('장르를 입력해주세요');
 
 			return;
 		}
+		
+		form.actingRole.value = form.actingRole.value.trim();
 
-		form.investor.value = form.investor.value.trim();
-
-		if (form.investor.value.length == 0) {
-			form.investor.value = "개별안내";
-			return;
-		}
-
-		form.productionName.value = form.productionName.value.trim();
-
-		if (form.productionName.value.length == 0) {
-			form.productionName.focus();
-			alert('제작사를 입력해주세요.');
+		if (form.actingRole.value.length == 0) {
+			form.actingRole.focus();
+			alert('배역을 선택해주세요');
 
 			return;
 		}
+		
+		form.job.value = form.job.value.trim();
 
-		form.directorName.value = form.directorName.value.trim();
+		if (form.job.value.length == 0) {
+			form.job.focus();
+			alert('직업을 입력해주세요');
 
-		if (form.directorName.value.length == 0) {
-			form.directorName.value = "개별안내";
 			return;
 		}
+		
+		form.feature.value = form.feature.value.trim();
 
-		form.leadActor.value = form.leadActor.value.trim();
+		if (form.feature.value.length == 0) {
+			form.feature.focus();
+			alert('주요사항을 입력해주세요');
 
-		if (form.leadActor.value.length == 0) {
-			form.leadActor.value = "개별안내";
 			return;
 		}
+		
+		form.schedule.value = form.schedule.value.trim();
 
-		var result = 1;
-		if ($('#actingRole-box-switch').attr("data-displayStatus") == "-1") {
-			result = checkActingRoleBoxResult(form);
-		}
+		if (form.schedule.value.length == 0) {
+			form.schedule.focus();
+			alert('촬영일정을 입력해주세요');
 
-		if (result == -1) {
 			return;
 		}
+		
+		form.shootingsCount.value = form.shootingsCount.value.trim();
 
-		form.etc.value = form.etc.value.trim();
+		if (form.shootingsCount.value.length == 0) {
+			form.shootingsCount.focus();
+			
+			alert('촬영횟수를 입력해주세요');
 
-		if (form.etc.value == 0) {
-			form.etc.focus();
-			alert('줄거리를 입력해주세요.');
+			return;
+		}
+		
+		form.region.value = form.region.value.trim();
 
+		if (form.region.value.length == 0) {
+			form.region.focus();
+			
+			alert('촬영지역를 입력해주세요');
+
+			return;
+		}
+		
+		form.pay.value = form.pay.value.trim();
+
+		if (form.pay.value.length == 0) {
+			form.pay.value = "개별협의"
 			return;
 		}
 
@@ -98,11 +114,12 @@
 		}
 
 		var startUploadFiles = function(onSuccess) {
+			
 			var needToUpload = false;
 
 			if (form.file__actingRole__0__thumbnail__attachment__1) {
-				needToUpload = form.file__artwork__0__common__attachment__1 
-				&& form.file__artwork__0__common__attachment__1.value.length > 0;
+				needToUpload = form.file__actingRole__0__thumbnail__attachment__1 
+				&& form.file__actingRole__0__thumbnail__attachment__1.value.length > 0;
 				
 			}else if(form.file__actingRole__0__script__attachment__1){
 				needToUpload = form.file__actingRole__0__script__attachment__1 
@@ -134,7 +151,7 @@
 		var startWriteApplyment = function(fileIdsStr) {
 
 			form.fileIdsStr.value = fileIdsStr;
-
+			
 			form.submit();
 		};
 
@@ -155,9 +172,9 @@
 </div>
 
 <form method="POST" class="bg-gray-200 p-4 w-full h-full"
-	action="doWrite"
-	onsubmit="ActingRoleWriteForm__submit(this); return false;">
-	<input type="hidden" name="redirectUri" value="detailArtwork?id=#id">
+	onsubmit="ActingRoleWriteForm__submit(this); return false;"
+	action="doWrite">
+	<input type="hidden" name="redirectUri" value="detail?id=#id">
 	<input type="hidden" name="fileIdsStr">
 	<input type="hidden" name="memberId" value="${loginedMemberId}" />
 
@@ -168,6 +185,7 @@
 		
 		<!-- 섬네일 -->
 		<div class="flex justify-center">
+			<input type="hidden" name="thumbnailStatus" />
 			<label class="flex-grow">
 				<input id="actingRole-file" class="text-sm cursor-pointer hidden "
 					accept="${appConfig.getAttachemntFileInputAccept('img')}"
@@ -180,14 +198,16 @@
 		
 		<!-- 영화목록 -->
 		<div class="mb-4 flex-grow relative">
+			<input type="hidden" name="artworkId" value="" />
 			<select name="genre"
 				class="text-center shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 				style="width: 100%; text-align-last: center;">
-				<option hidden="" disabled="disabled" selected="selected" value="">선택하세요</option>
+				<option selected="selected" value="">선택하세요</option>
 				<c:forEach items="${artworks}" var="artwork">
 					<option value="${artwork.actingRole}"
 						value2="${artwork.actingRoleGender}"
-						value3="${artwork.actingRoleAge}">${artwork.name}</option>
+						value3="${artwork.actingRoleAge}"
+						value4="${artwork.id}">${artwork.name}</option>
 				</c:forEach>
 			</select>
 			<div
@@ -252,11 +272,11 @@
 		<div class="flex pb-4">
 			<input
 				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-				type="number" placeholder="촬영횟수" name="shootingCount" />
+				type="number" placeholder="촬영횟수" name="shootingsCount" />
 		</div>
 		
 		<!-- 촬영지역 -->
-		<div class="text-center pb-4">지역</div>
+		<div class="text-center pb-4">촬영지역</div>
 		
 		<div class="flex pb-4">
 			<input type="hidden" name="region" />
@@ -270,7 +290,7 @@
 		<div class="w-full pb-4">
 			<input
 				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-				type="text" placeholder="출연료(선택 또는 작성)" name="pay"
+				type="text" placeholder="출연료(미작성시 개별협의 자동등록)" name="pay"
 				maxlength="100" />
 		</div>
 		
@@ -279,6 +299,7 @@
 		<div class="w-full pb-4">
 			<select name="shotAngle"
 				class="text-center shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+				<option selected="selected" value="">선택해주세요</option>
 				<option value="BS">Bust Shot</option>
 				<option value="WS">Waist Shot</option>
 				<option value="KS">Knee Shot</option>
@@ -291,6 +312,7 @@
 		<div class="w-full pb-4">
 			<select name="scriptStatus"
 				class="text-center shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+				<option selected="selected" value="">선택해주세요</option>
 				<option value="0">자유연기</option>
 				<option value="1">지정연기</option>
 			</select>
@@ -357,10 +379,11 @@
 			const fileName = file.name;
 			
 			$('#actingRole-thumbnail').html("파일이름 : " + fileName);
-
+			$('input[name="thumbnailStatus"]').val(1);
 		} else {
 			//파일이 없는 경우 내용을 지워준다.
 			$('#actingRole-thumbnail').html("대표 이미지를 선택해주세요");
+			$('input[name="thumbnailStatus"]').val("");
 		}
 	});
 	
@@ -406,7 +429,6 @@
 		}else{
 			$('input[name="schedule"]').attr("type", "text");
 		}
-		
 	});
 	
 	//오디션가이드영상 올릴시 작동
@@ -492,6 +514,7 @@
 			var actingRole = option.val(); //기본 value값
 			var actingRoleGender = option.attr("value2"); //지정 value2 값
 			var actingRoleAge = option.attr("value3"); //지정 value3값
+			var artworkId = option.attr("value4"); //지정 value4값
 
 			actingRoles = actingRole.split('_');
 			actingRoleGenders = actingRoleGender.split('_');
@@ -501,7 +524,7 @@
 
 			html += '<option value="">선택하세요</option>';
 			for (var i = 0; i < actingRoles.length; i++) {
-				html += '<option value="'+ actingRoles[i] + '" value2="'+ actingRoleGenders[i] + '" value3="'+ actingRoleAges[i] + '">'
+				html += '<option value="'+ actingRoles[i] + '" value2="'+ (actingRoleGenders[i]) + '" value3="'+ actingRoleAges[i] + '">'
 						+ actingRoles[i]
 						+ '/'
 						+ actingRoleGenders[i]
@@ -512,8 +535,10 @@
 			$('select[name="actingRole"]').removeAttr(
 					"disabled");
 			$('select[name="actingRole"]').append(html);
+			$('input[name="artworkId"]').val(artworkId);
 
 		} else {
+			$('input[name="artworkId"]').val("");
 			$('select[name="actingRole"]').attr("disabled",
 					"disabled");
 		}
@@ -531,16 +556,8 @@
 			console.log(option.attr("value3"));
 			
 			$('input[name="name"]').val(option.val()); //기본 value값
-			nameVal = $('input[name="name"]').val();
-			console.log("nameVal : " + nameVal);
-			
 			$('input[name="gender"]').val(option.attr("value2")); //지정 value2 값
-			genderVal = $('input[name="gender"]').val();
-			console.log("genderVal : " + genderVal);
-			
-			$('input[name="age"]').val(option.attr("value3"));
-			ageVal = $('input[name="age"]').val();
-			console.log("ageVal : " + ageVal);
+			$('input[name="age"]').val(option.attr("value3")); //지정 value3 값
 		}
 		
 	});

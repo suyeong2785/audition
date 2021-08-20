@@ -14,32 +14,6 @@
 </style>
 
 <script>
-	function setPositionOfToastr(targetInputName, msg){
-		
-		toastr.options = {
-                closeButton: true,
-                progressBar: true,
-                showMethod: 'slideDown',
-                timeOut: 2000,
-                extendedTimeOut: 1,
-                positionClass : "toast-top-center"
-         };
-		
-		var loginIdCoordinate = $('input[name='+ targetInputName +']').offset();
-		
-		toastr.options.onShown = function() { 
-			
-			$('.toast').addClass(targetInputName);
-			$('#toast-container').css("display","block");
-			$('.toast').css({"display" : "block" , "position" : "absolute"});
-			var height = loginIdCoordinate.top - $("."+ targetInputName).outerHeight();
-			$("."+ targetInputName).offset({ left : loginIdCoordinate.left, top : height });
-			
-		}
-		
-		toastr.warning(msg);
-		
-	}
 	
 	function MemberLoginForm__submit(form) {
 		if($('.toast')){
@@ -58,7 +32,6 @@
 
 		if (form.loginId.value.length == 0) {
 			form.loginId.focus();
-			
 			
 			var msg = "로그인 아이디를 입력해주세요";
 			var targetInputName = "loginId"

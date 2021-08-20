@@ -1,6 +1,7 @@
 package com.quantom.audition.controller.adm;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -125,8 +126,12 @@ public class ActingRoleController {
 	}
 
 	@RequestMapping("/adm/actingRole/list")
-	public String showList(Model model) {
-		List<ActingRole> actingRoles = actingRoleService.getForPrintRoles();
+	public String showList(Model model,HttpServletRequest req) {
+		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("typeCode", "thumbnail");
+		param.put("memberId", (int)req.getAttribute("loginedMemberId"));
+		
+		List<ActingRole> actingRoles = actingRoleService.getActingRolesForPrintList(param);
 
 		model.addAttribute("actingRoles", actingRoles);
 
@@ -183,7 +188,7 @@ public class ActingRoleController {
 
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
 
-		ActingRole actingRole = actingRoleService.getForPrintActingRoleById(loginedMember, id);
+		ActingRole actingRole = actingRoleService.getActingRoleForPrintDetailById(id);
 
 		model.addAttribute("actingRole", actingRole);
 
