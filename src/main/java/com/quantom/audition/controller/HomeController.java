@@ -1,5 +1,6 @@
 package com.quantom.audition.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.quantom.audition.config.AppConfig;
-import com.quantom.audition.controller.adm.ActingRoleController;
+import com.quantom.audition.dto.ActingRole;
 import com.quantom.audition.dto.Applyment;
 import com.quantom.audition.dto.Artwork;
 import com.quantom.audition.dto.Career;
@@ -23,7 +24,6 @@ import com.quantom.audition.dto.Share;
 import com.quantom.audition.service.ActingRoleService;
 import com.quantom.audition.service.ApplymentService;
 import com.quantom.audition.service.CareerService;
-import com.quantom.audition.service.IsniSearchService;
 import com.quantom.audition.service.RecruitmentService;
 import com.quantom.audition.service.ShareService;
 
@@ -49,10 +49,21 @@ public class HomeController {
 	ActingRoleService actingRoleService;
 
 	@RequestMapping("/usr/home/main")
-	public String showMain(Model model) {
+	public String showMain(Model model, HttpServletRequest req) {
+		// CastingCall(artworks) 가져오기
 		List<Artwork> artworks = actingRoleService.getForPrintArtworks();
 
 		model.addAttribute("artworks", artworks);
+
+		// Auditions(actingRoles) 가져오기
+		Map<String, Object> param = new HashMap<String, Object>();
+
+		param.put("typeCode", "thumbnail");
+		param.put("memberId", (int) req.getAttribute("loginedMemberId"));
+
+		List<ActingRole> actingRoles = actingRoleService.getActingRolesForPrintList(param);
+
+		model.addAttribute("actingRoles", actingRoles);
 
 		return "usr/home/main";
 	}
