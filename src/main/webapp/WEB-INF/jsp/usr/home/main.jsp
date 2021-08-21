@@ -6,6 +6,10 @@
 <!-- rollingBanner -->
 <div class="con">
 	<div class="swiper-container rollingBanner mx-auto max-h-96">
+		<div
+			class="absolute bottom-0 right-0 padding-banner-uppper-font text-4xl font-banner text-white z-50">FREE</div>
+		<div
+			class="absolute bottom-0 right-0 padding-banner-font text-4xl font-banner text-white z-50">PRIVATE</div>
 		<div class="swiper-wrapper ">
 			<div class="swiper-slide flex items-center justify-center">
 				<img src="/resource/img/banner1.jpg" alt="" />
@@ -76,7 +80,7 @@
 									<div
 										class="${bgColor} text-white rounded-xl padding-bottom-50 top-0 left-0 relative">
 										<span
-											class="absolute text-4xl top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2 capitalize">${artwork.genre}</span>
+											class="absolute font-catingCall top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2 capitalize">${artwork.genre}</span>
 									</div>
 								</a>
 							</c:when>
@@ -127,7 +131,7 @@
 									<div
 										class="bg-gray-400 text-white rounded-xl padding-bottom-50 top-0 left-0 relative">
 										<span
-											class="absolute text-4xl top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2 capitalize">${actingRole.name}</span>
+											class="absolute font-auditions top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2 capitalize">${actingRole.name}</span>
 									</div>
 								</a>
 							</c:when>
@@ -188,10 +192,6 @@
 		autoplay : {
 			delay : 2500,
 			disableOnInteraction : false,
-		},
-		pagination : {
-			el : ".swiper-pagination",
-			clickable : true,
 		},
 		navigation : {
 			nextEl : ".swiper-button-next",
