@@ -7,22 +7,26 @@
 
 <div class="con">
 	<div class=" flex flex-col">
-		<div class="flex items-center justify-center max-h-96 overflow-hidden">
-			<c:choose>
-				<c:when test="${actingRole.files != '[]'}">
-					<c:forEach items="${actingRole.files}" var="file">
-						<c:choose>
-							<c:when test="${file.typeCode == 'thumbnail'}">
-								<img src="${file.forPrintGenUrl}" alt="" />
-							</c:when>
-						</c:choose>
-					</c:forEach>
-				</c:when>
-				<c:otherwise>
-					<div
-						class="bg-gray-300 text-white h-44 md:h-96 flex-grow text-7xl md:text-9xl flex justify-center items-center">${actingRole.name}</div>
-				</c:otherwise>
-			</c:choose>
+		<div class="max-height-360 relative">
+			<div
+				class="padding-bottom-50">
+				<c:choose>
+					<c:when test="${actingRole.files != '[]'}">
+						<c:forEach items="${actingRole.files}" var="file">
+							<c:choose>
+								<c:when test="${file.typeCode == 'thumbnail'}">
+									<img class="absolute top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2 h-full"
+										src="${file.forPrintGenUrl}" alt="" />
+								</c:when>
+							</c:choose>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<div
+							class="bg-gray-300 text-white h-44 md:h-96 flex-grow text-7xl md:text-9xl flex justify-center items-center">${actingRole.name}</div>
+					</c:otherwise>
+				</c:choose>
+			</div>
 		</div>
 		<div class="p-6">
 			<div class="flex">

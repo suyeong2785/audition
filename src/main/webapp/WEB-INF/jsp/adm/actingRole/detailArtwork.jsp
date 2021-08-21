@@ -6,48 +6,51 @@
 
 <div class="con">
 	<div class=" flex flex-col">
-		<div class="flex items-center justify-center max-h-96 overflow-hidden">
-			<c:choose>
-				<c:when test="${artwork.genre == 'action'}">
-					<c:set var="bgColor" value="bg-red-200"></c:set>
-				</c:when>
-				<c:when test="${artwork.genre == 'SF'}">
-					<c:set var="bgColor" value="bg-indigo-600"></c:set>
-				</c:when>
-				<c:when test="${artwork.genre == 'comedy'}">
-					<c:set var="bgColor" value="bg-yellow-500"></c:set>
-				</c:when>
-				<c:when test="${artwork.genre == 'thriller'}">
-					<c:set var="bgColor" value="bg-purple-300"></c:set>
-				</c:when>
-				<c:when test="${artwork.genre == 'war'}">
-					<c:set var="bgColor" value="bg-gray-700"></c:set>
-				</c:when>
-				<c:when test="${artwork.genre == 'sports'}">
-					<c:set var="bgColor" value="bg-blue-500"></c:set>
-				</c:when>
-				<c:when test="${artwork.genre == 'fantasy'}">
-					<c:set var="bgColor" value="bg-purple-600"></c:set>
-				</c:when>
-				<c:when test="${artwork.genre == 'music'}">
-					<c:set var="bgColor" value="bg-green-500"></c:set>
-				</c:when>
-				<c:when test="${artwork.genre == 'romance'}">
-					<c:set var="bgColor" value="bg-pink-400"></c:set>
-				</c:when>
-			</c:choose>
-			<c:choose>
-				<c:when
-					test="${artwork.forPrintGenUrlForArtwork != null && artwork.forPrintGenUrlForArtwork != ''}">
-					<img src="${artwork.forPrintGenUrlForArtwork}" alt="" />
-				</c:when>
-				<c:when
-					test="${artwork.forPrintGenUrlForArtwork == null || artwork.forPrintGenUrlForArtwork == ''}">
-					<div
-						class="${bgColor} text-white h-44 md:h-96 flex-grow text-7xl md:text-9xl flex justify-center items-center">${artwork.genre}</div>
-				</c:when>
+		<div class="max-height-360 relative ">
+			<div
+				class="padding-bottom-50">
+				<c:choose>
+					<c:when test="${artwork.genre == 'action'}">
+						<c:set var="bgColor" value="bg-red-200"></c:set>
+					</c:when>
+					<c:when test="${artwork.genre == 'SF'}">
+						<c:set var="bgColor" value="bg-indigo-600"></c:set>
+					</c:when>
+					<c:when test="${artwork.genre == 'comedy'}">
+						<c:set var="bgColor" value="bg-yellow-500"></c:set>
+					</c:when>
+					<c:when test="${artwork.genre == 'thriller'}">
+						<c:set var="bgColor" value="bg-purple-300"></c:set>
+					</c:when>
+					<c:when test="${artwork.genre == 'war'}">
+						<c:set var="bgColor" value="bg-gray-700"></c:set>
+					</c:when>
+					<c:when test="${artwork.genre == 'sports'}">
+						<c:set var="bgColor" value="bg-blue-500"></c:set>
+					</c:when>
+					<c:when test="${artwork.genre == 'fantasy'}">
+						<c:set var="bgColor" value="bg-purple-600"></c:set>
+					</c:when>
+					<c:when test="${artwork.genre == 'music'}">
+						<c:set var="bgColor" value="bg-green-500"></c:set>
+					</c:when>
+					<c:when test="${artwork.genre == 'romance'}">
+						<c:set var="bgColor" value="bg-pink-400"></c:set>
+					</c:when>
+				</c:choose>
+				<c:choose>
+					<c:when
+						test="${artwork.forPrintGenUrlForArtwork != null && artwork.forPrintGenUrlForArtwork != ''}">
+						<img class="absolute top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2 h-full" src="${artwork.forPrintGenUrlForArtwork}" alt="" />
+					</c:when>
+					<c:when
+						test="${artwork.forPrintGenUrlForArtwork == null || artwork.forPrintGenUrlForArtwork == ''}">
+						<div
+							class="${bgColor} text-white h-44 md:h-96 flex-grow text-7xl md:text-9xl flex justify-center items-center">${artwork.genre}</div>
+					</c:when>
 
-			</c:choose>
+				</c:choose>
+			</div>
 		</div>
 		<div class="p-6">
 			<div class="flex">
@@ -100,7 +103,7 @@
 
 			<div class="flex">
 				<div class="min-width-96">모집기간</div>
-				<div>${artwork.startDate}~ ${artwork.endDate}</div>
+				<div>${artwork.startDate}~${artwork.endDate}</div>
 			</div>
 
 		</div>

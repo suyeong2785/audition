@@ -418,7 +418,7 @@
 		</div>
 
 		<!-- 오디션 대본 -->
-		<div class="flex justify-center">
+		<div id="script-box" class=" flex-col justify-center mb-4 hidden ">
 			<input type="text" class="w-0 h-0" name="scriptStatus" value="0" />
 			<label class="flex-grow" >
 				<input type="file" class="text-sm cursor-pointer hidden"
@@ -426,13 +426,13 @@
 					name="file__actingRole__0__script__attachment__1"
 					accept="${appConfig.getAttachemntFileInputAccept('document')}" />
 				<div id="script"
-					class="hidden w-full text-center text bg-gray-500 text-white border border-gray-300 rounded-full font-semibold cursor-pointer p-1 px-3 hover:bg-gray-600">
+					class="w-full text-center text bg-gray-500 text-white border border-gray-300 rounded-full font-semibold cursor-pointer p-1 px-3 hover:bg-gray-600">
 					대본을 업로드 해주세요.</div>
 			</label>
 		</div>
 
 		<!-- 오디션 가이드영상 -->
-		<div class="flex justify-center">
+		<div class="flex flex-col justify-center">
 			<input type="number" class="w-0 h-0" name="videoStatus" />
 			<label class="flex-grow">
 				<input id="actingRole-video-input" type="file"
@@ -491,13 +491,14 @@
 	});
 	
 	// 지정연기/자유연기 여부에 따라 대본첨부 input 표시
+	
 	$('select[name="requestedActing"]').change(function() {
-		$('#script').css("display","none");
+		$('#script-box').css("display","none");
 		
 		var optionVal = $('select[name="requestedActing"] > option:selected').val();
 		
 		if(optionVal == "1"){
-			$('#script').css("display","block");
+			$('#script-box').css("display","flex");
 		}
 
 	});
@@ -517,7 +518,6 @@
 			var fileName = file.name;
 			scriptResult.val('1');
 			script.html("파일이름 : " + fileName);
-			script.css("display","block");
 			
 		}else {
 			//파일이 없는 경우 내용을 지워준다.

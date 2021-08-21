@@ -64,8 +64,9 @@
 								test="${artwork.forPrintGenUrlForArtwork != null && artwork.forPrintGenUrlForArtwork != ''}">
 								<a href="../../adm/actingRole/${artwork.getDetailLink()}">
 									<div
-										class="relative castingCall-image bg-no-repeat bg-center object-scale-down overflow-hidden padding-bottom-50 top-0 left-0 rounded-xl">
-										<img class="absolute top-0 left-0 w-full h-full" src="${artwork.forPrintGenUrlForArtwork}" alt="" />
+										class="relative castingCall-image padding-bottom-50 top-0 left-0 rounded-xl">
+										<img class="absolute top-0 left-0 w-full h-full rounded-xl"
+											src="${artwork.forPrintGenUrlForArtwork}" alt="" />
 									</div>
 								</a>
 							</c:when>
@@ -84,12 +85,21 @@
 							<div>
 								<div class="text-sm text-left font-bold py-2">${artwork.name}</div>
 								<div class="text-xs text-left h-8 overflow-hidden line-clamp-2">${artwork.etc}</div>
-								<div class="text-xs text-left">${fn:split(artwork.startDate,' ')[0]} ~
-									${fn:split(artwork.endDate,' ')[0]}</div>
+								<div class="text-xs text-left">${fn:split(artwork.startDate,' ')[0]}
+									~ ${fn:split(artwork.endDate,' ')[0]}</div>
 							</div>
 						</a>
 					</div>
 				</c:forEach>
+				<div class="swiper-slide relative">
+					<a href="../../adm/actingRole/artworkList">
+						<div
+							class="relative castingCall-image padding-bottom-50 top-0 left-0 rounded-xl">
+							<img class="absolute top-0 left-0 w-full h-full rounded-xl"
+								src="/resource/img/castingCall_5.png" alt="" />
+						</div>
+					</a>
+				</div>
 			</div>
 			<div class="swiper-pagination"></div>
 		</div>
@@ -103,17 +113,16 @@
 				<c:forEach items="${actingRoles}" var="actingRole">
 					<div class="swiper-slide relative">
 						<c:choose>
-							<c:when
-								test="${actingRole.files != '[]'}">
+							<c:when test="${actingRole.files != '[]'}">
 								<a href="../../adm/actingRole/${actingRole.getDetailLink()}">
 									<div
 										class="relative castingCall-image bg-no-repeat bg-center object-scale-down overflow-hidden padding-bottom-50 top-0 left-0 rounded-xl">
-										<img class="absolute top-0 left-0 w-full h-full" src="${actingRole.files[0].forPrintGenUrl}" alt="" />
+										<img class="absolute top-0 left-0 w-full h-full rounded-xl"
+											src="${actingRole.files[0].forPrintGenUrl}" alt="" />
 									</div>
 								</a>
 							</c:when>
-							<c:when
-								 test="${actingRole.files == '[]'}">
+							<c:when test="${actingRole.files == '[]'}">
 								<a href="../../adm/actingRole/${actingRole.getDetailLink()}">
 									<div
 										class="bg-gray-400 text-white rounded-xl padding-bottom-50 top-0 left-0 relative">
@@ -127,11 +136,21 @@
 							<div>
 								<div class="text-sm text-left font-bold py-2">${actingRole.name}</div>
 								<div class="text-xs text-left h-8 overflow-hidden line-clamp-2">${actingRole.feature}</div>
-								<div class="text-xs text-left">${fn:split(actingRole.startDate,' ')[0]} ~ ${fn:split(actingRole.endDate,' ')[0]}</div>
+								<div class="text-xs text-left">${fn:split(actingRole.startDate,' ')[0]}
+									~ ${fn:split(actingRole.endDate,' ')[0]}</div>
 							</div>
 						</a>
 					</div>
 				</c:forEach>
+				<div class="swiper-slide relative">
+					<a href="../../adm/actingRole/list">
+						<div
+							class="relative castingCall-image padding-bottom-50 top-0 left-0 rounded-xl">
+							<img class="absolute top-0 left-0 w-full h-full rounded-xl"
+								src="/resource/img/auditions_5.png" alt="" />
+						</div>
+					</a>
+				</div>
 			</div>
 			<div class="swiper-pagination"></div>
 		</div>
