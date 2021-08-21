@@ -46,7 +46,7 @@
 					<c:when
 						test="${artwork.forPrintGenUrlForArtwork == null || artwork.forPrintGenUrlForArtwork == ''}">
 						<div
-							class="${bgColor} text-white h-44 md:h-96 flex-grow text-7xl md:text-9xl flex justify-center items-center">${artwork.genre}</div>
+							class="flex justify-center items-center absolute text-7xl h-full w-full ${bgColor} text-white top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2 capitalize">${artwork.genre}</div>
 					</c:when>
 
 				</c:choose>
