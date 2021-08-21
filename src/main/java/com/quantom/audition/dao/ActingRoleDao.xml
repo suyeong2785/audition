@@ -245,6 +245,7 @@
 		schedule = #{schedule},
 		shotAngle = #{shotAngle},
 		scriptStatus = #{scriptStatus},
+		videoStatus = #{videoStatus},
 		shootingsCount = #{shootingsCount}
 	</insert>
 

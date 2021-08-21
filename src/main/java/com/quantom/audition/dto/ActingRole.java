@@ -30,6 +30,7 @@ public class ActingRole {
 	private String schedule;
 	private String shotAngle;
 	private boolean scriptStatus;
+	private boolean videoStatus;
 	private String scenesCount;
 	private String shootingsCount;
 

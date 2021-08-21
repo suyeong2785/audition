@@ -49,29 +49,37 @@ document.documentElement.addEventListener('touchend', function(event) {
 }, false);
 
 //alert대신 사용할 toastr api
-function setPositionOfToastr(targetInputName, msg){
-		
-		toastr.options = {
-                closeButton: true,
-                progressBar: true,
-                showMethod: 'slideDown',
-                timeOut: 2000,
-                extendedTimeOut: 1,
-                positionClass : "toast-top-center"
-         };
-		
-		var loginIdCoordinate = $('input[name='+ targetInputName +']').offset();
-		
-		toastr.options.onShown = function() { 
-			
-			$('.toast').addClass(targetInputName);
-			$('#toast-container').css("display","block");
-			$('.toast').css({"display" : "block" , "position" : "absolute"});
-			var height = loginIdCoordinate.top - $("."+ targetInputName).outerHeight();
-			$("."+ targetInputName).offset({ left : loginIdCoordinate.left, top : height });
-			
-		}
-		
-		toastr.warning(msg);
-		
+function setPositionOfToastr(targetType, targetName, msg) {
+
+	toastr.options = {
+		closeButton: true,
+		progressBar: true,
+		showMethod: 'slideDown',
+		timeOut: 2000,
+		extendedTimeOut: 1,
+		positionClass: "toast-top-center"
+	};
+	var loginIdCoordinate = null;
+
+	if (targetType == "input" || targetType == "select") {
+		loginIdCoordinate = $(targetType + '[name=' + targetName + ']').offset();
+	} else if(targetType == "class"){
+		loginIdCoordinate = $( '.' + targetName).offset();
+	
+	} else if(targetType == "id"){
+		loginIdCoordinate = $( '#' + targetName).offset();
 	}
+
+	toastr.options.onShown = function() {
+
+		$('.toast').addClass(targetName);
+		$('#toast-container').css("display", "block");
+		$('.toast').css({ "display": "block", "position": "absolute" });
+		var height = loginIdCoordinate.top - $("." + targetName).outerHeight();
+		$("." + targetName).offset({ left: loginIdCoordinate.left, top: height });
+
+	}
+
+	toastr.warning(msg);
+
+}

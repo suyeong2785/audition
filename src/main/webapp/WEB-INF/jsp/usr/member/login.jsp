@@ -34,8 +34,9 @@
 			form.loginId.focus();
 			
 			var msg = "로그인 아이디를 입력해주세요";
-			var targetInputName = "loginId"
-			var toastr = setPositionOfToastr(targetInputName,msg);
+			var targetName = "loginId"
+			var tagType = "select"
+			var toastr = setPositionOfToastr(tagType,targetName,msg);
 			
 			return;
 		}

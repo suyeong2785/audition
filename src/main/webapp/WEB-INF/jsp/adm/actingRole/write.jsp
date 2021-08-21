@@ -5,9 +5,19 @@
 <%@ include file="../part/head.jspf"%>
 <%@ include file="../../part/toastuiEditor.jspf"%>
 
-<script>
+<style>
+.toast-top-center {
+	display:none;
+	z-index: 100;
+}
+</style>
 
+<script>
 	function ActingRoleWriteForm__submit(form) {
+		if($('.toast')){
+			window.toastr.remove();
+		}
+		
 		if (isNowLoading()) {
 			alert('처리중입니다.');
 			return;
@@ -15,9 +25,13 @@
 
 		form.thumbnailStatus.value = form.thumbnailStatus.value.trim();
 
-		if (form.thumbnailStatus.value.length == 0 || form.thumbnailStatus.value.length == null) {
-			form.name.focus();
-			alert('썸네일 이미지를 등록해주세요');
+		if (form.thumbnailStatus.value == 0 ) {
+			form.thumbnailStatus.focus();
+
+			var msg = "썸네일 이미지를 등록해주세요";
+			var targetName = "thumbnailStatus"
+			var targetType = "input";
+			var toastr = setPositionOfToastr(targetType,targetName,msg);
 
 			return;
 		}
@@ -27,7 +41,10 @@
 		if (form.genre.value.length == 0) {
 			form.genre.focus();
 			
-			alert('장르를 입력해주세요');
+			var msg = "장르를 입력해주세요";
+			var targetName = "genre"
+			var targetType = "select";
+			var toastr = setPositionOfToastr(targetType,targetName,msg);
 
 			return;
 		}
@@ -36,7 +53,11 @@
 
 		if (form.actingRole.value.length == 0) {
 			form.actingRole.focus();
-			alert('배역을 선택해주세요');
+			
+			var msg = "배역을 선택해주세요";
+			var targetName = "actingRole"
+			var targetType = "select";
+			var toastr = setPositionOfToastr(targetType,targetName,msg);
 
 			return;
 		}
@@ -45,7 +66,11 @@
 
 		if (form.job.value.length == 0) {
 			form.job.focus();
-			alert('직업을 입력해주세요');
+			
+			var msg = "직업을 입력해주세요";
+			var targetName = "job"
+			var targetType = "input";
+			var toastr = setPositionOfToastr(targetType,targetName,msg);
 
 			return;
 		}
@@ -54,8 +79,12 @@
 
 		if (form.feature.value.length == 0) {
 			form.feature.focus();
-			alert('주요사항을 입력해주세요');
 
+			var msg = "주요사항을 입력해주세요";
+			var targetName = "feature"
+			var targetType = "input";
+			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			
 			return;
 		}
 		
@@ -63,8 +92,12 @@
 
 		if (form.schedule.value.length == 0) {
 			form.schedule.focus();
-			alert('촬영일정을 입력해주세요');
-
+			
+			var msg = "촬영일정을 입력해주세요";
+			var targetName = "schedule"
+			var targetType = "input";
+			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			
 			return;
 		}
 		
@@ -73,7 +106,10 @@
 		if (form.shootingsCount.value.length == 0) {
 			form.shootingsCount.focus();
 			
-			alert('촬영횟수를 입력해주세요');
+			var msg = "촬영횟수를 입력해주세요";
+			var targetName = "shootingsCount"
+			var targetType = "input";
+			var toastr = setPositionOfToastr(targetType,targetName,msg);
 
 			return;
 		}
@@ -81,10 +117,16 @@
 		form.region.value = form.region.value.trim();
 
 		if (form.region.value.length == 0) {
-			form.region.focus();
-			
-			alert('촬영지역를 입력해주세요');
+			var targetOffset = $('select[name="sido"]').offset();
+			window.scrollTo({top : targetOffset.top - 500, behavior:'auto'});
 
+			form.sido.focus();
+
+			var msg = "촬영지역를 입력해주세요";
+			var targetName = "sido"
+			var targetType = "select";
+			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			
 			return;
 		}
 		
@@ -92,15 +134,68 @@
 
 		if (form.pay.value.length == 0) {
 			form.pay.value = "개별협의"
-			return;
 		}
 
+		form.shotAngle.value = form.shotAngle.value.trim();
+
+		if (form.shotAngle.value == 0) {
+			form.shotAngle.focus();
+			
+			var msg = "요청하는 촬영방식을 입력해주세요.";
+			var targetName = "shotAngle"
+			var targetType = "select";
+			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			
+			return;
+		}
+		
+		if (form.requestedActing.value == '') {
+			form.requestedActing.focus();
+			
+			var msg = "요청하는 연기방식을 입력해주세요.";
+			var targetName = "requestedActing"
+			var targetType = "select";
+			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			
+			return;
+		}
+		
+		form.scriptStatus.value = form.scriptStatus.value.trim();
+		
+		if (form.requestedActing.value == 1) {
+			if(form.scriptStatus.value == 0){
+				form.scriptStatus.focus();
+			
+				var msg = "대본을 업로드해주세요";
+				var targetName = "scriptStatus"
+				var targetType = "input";
+				var toastr = setPositionOfToastr(targetType,targetName,msg);
+				
+				return;
+			}
+		}
+		
+		if (form.videoStatus.value != 1) {
+			form.videoStatus.focus();
+			
+			var msg = "가이드영상을 업로드해주세요";
+			var targetName = "videoStatus"
+			var targetType = "input";
+			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			
+			return;
+		}
+		
 		form.startDate.value = form.startDate.value.trim();
 
 		if (form.startDate.value == 0) {
 			form.startDate.focus();
-			alert('모집시작일을 입력해주세요.');
-
+			
+			var msg = "모집시작일을 입력해주세요.";
+			var targetName = "startDate"
+			var targetType = "input";
+			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			
 			return;
 		}
 
@@ -108,7 +203,11 @@
 
 		if (form.endDate.value == 0) {
 			form.endDate.focus();
-			alert('마감일을 입력해주세요.');
+			
+			var msg = "마감일을 입력해주세요";
+			var targetName = "endDate"
+			var targetType = "input";
+			var toastr = setPositionOfToastr(targetType,targetName,msg);
 
 			return;
 		}
@@ -185,9 +284,9 @@
 		
 		<!-- 섬네일 -->
 		<div class="flex justify-center">
-			<input type="hidden" name="thumbnailStatus" />
-			<label class="flex-grow">
-				<input id="actingRole-file" class="text-sm cursor-pointer hidden "
+			<input type="text" class="h-0 w-0" name="thumbnailStatus" value="0"/>
+			<label class="flex-grow" for="thumbnail-file">
+				<input id="thumbnail-file" class="text-sm cursor-pointer hidden "
 					accept="${appConfig.getAttachemntFileInputAccept('img')}"
 					name="file__actingRole__0__thumbnail__attachment__1" type="file">
 				<div id="actingRole-thumbnail"
@@ -310,7 +409,7 @@
 
 		<!-- 오디션영상 지정/자유연기 -->
 		<div class="w-full pb-4">
-			<select name="scriptStatus"
+			<select name="requestedActing"
 				class="text-center shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
 				<option selected="selected" value="">선택해주세요</option>
 				<option value="0">자유연기</option>
@@ -319,9 +418,10 @@
 		</div>
 
 		<!-- 오디션 대본 -->
-		<div class="w-full pb-4">
-			<label class="flex-grow">
-				<input type="file" class="text-sm cursor-pointer hidden "
+		<div class="flex justify-center">
+			<input type="text" class="w-0 h-0" name="scriptStatus" value="0" />
+			<label class="flex-grow" >
+				<input type="file" class="text-sm cursor-pointer hidden"
 					id="actingRole-script-input"
 					name="file__actingRole__0__script__attachment__1"
 					accept="${appConfig.getAttachemntFileInputAccept('document')}" />
@@ -332,7 +432,8 @@
 		</div>
 
 		<!-- 오디션 가이드영상 -->
-		<div class="w-full pb-4">
+		<div class="flex justify-center">
+			<input type="number" class="w-0 h-0" name="videoStatus" />
 			<label class="flex-grow">
 				<input id="actingRole-video-input" type="file"
 					class="text-sm cursor-pointer hidden "
@@ -368,7 +469,7 @@
 </form>
 
 <script>
-	const actingRoleThumbnail = $('#actingRole-file');
+	const actingRoleThumbnail = $('#thumbnail-file');
 	
 	actingRoleThumbnail.on('change', function() {
 
@@ -378,20 +479,22 @@
 		if (files.length != 0) {
 			const fileName = file.name;
 			
+			$('input[name="thumbnailStatus"]').val('1');
 			$('#actingRole-thumbnail').html("파일이름 : " + fileName);
-			$('input[name="thumbnailStatus"]').val(1);
+			
 		} else {
 			//파일이 없는 경우 내용을 지워준다.
+			$('input[name="thumbnailStatus"]').val('0');
 			$('#actingRole-thumbnail').html("대표 이미지를 선택해주세요");
-			$('input[name="thumbnailStatus"]').val("");
+			
 		}
 	});
 	
 	// 지정연기/자유연기 여부에 따라 대본첨부 input 표시
-	$('select[name="scriptStatus"]').change(function() {
+	$('select[name="requestedActing"]').change(function() {
 		$('#script').css("display","none");
 		
-		var optionVal = $("select[name='scriptStatus'] > option:selected").val();
+		var optionVal = $('select[name="requestedActing"] > option:selected').val();
 		
 		if(optionVal == "1"){
 			$('#script').css("display","block");
@@ -400,21 +503,25 @@
 	});
 	
 	//pdf파일 첨부시 #script에 파일이름을 표시해준다.
-	const scriptInput = $('#actingRole-script-input');
-	const script = $('#script');
+	var scriptInput = $('#actingRole-script-input');
+	var script = $('#script');
+	var scriptResult = $('input[name="scriptStatus"]');
 	
-	scriptInput.change(function(){
+	scriptInput.on('change', function() {
+		
 		const files = scriptInput[0].files;
 		const file = scriptInput[0].files[0];
 		
 		if(files.length != 0){
 			
-			let fileName = file.name;
+			var fileName = file.name;
+			scriptResult.val('1');
 			script.html("파일이름 : " + fileName);
 			script.css("display","block");
 			
 		}else {
 			//파일이 없는 경우 내용을 지워준다.
+			scriptResult.val('0');
 			script.html("대본을 업로드 해주세요.");
 		}
 		
@@ -453,6 +560,7 @@
 				
 				// 동영상 재생시간이 1분 30초 이상이 넘어간다면 초기화 후,알림창띄움
 				if(duration > 90){
+					$('input[name="videoStatus"]').val(0);
 					alert('동영상이 1분 30초를 넘겨서는 안됩니다!');
 					
 					videoInput.val("");
@@ -468,7 +576,7 @@
 					return;
 					
 				}else{
-					
+					$('input[name="videoStatus"]').val(1);
 					$("#guide-video").html("파일이름 : " + fileName + "<br>" + "총 재생시간 : "
 							+ (oneMinute > 0 ? oneMinute + "분 " : "") + 
 					(duration - oneMinute * 60) + "초");
@@ -478,6 +586,7 @@
 
 		} else {
 			//파일이 없는 경우 내용을 지워준다.
+			$('input[name="videoStatus"]').val(0);
 			videoForDisplay.css("display","none");
 			$("#guide-video").html("가이드 영상을 올려주세요.");
 			videoForDisplay.attr("src", "");
@@ -485,10 +594,10 @@
 		}
 	});
 	
-	$('#actingRole-file').on('change', function() {
+	$('#thumbnail-file').on('change', function() {
 
-		const files = $("#actingRole-file")[0].files;
-		const file = $("#actingRole-file")[0].files[0];
+		const files = $("#thumbnail-file")[0].files;
+		const file = $("#thumbnail-file")[0].files[0];
 
 		if (files.length != 0) {
 			const imgurl = URL.createObjectURL(file);
@@ -646,7 +755,11 @@
 		
 		var option = $("select[name='sido'] > option:selected");
 		
-		$("input[name=region]").val(option.val());
+		$("input[name=region]").val("");
+		
+		if(option.val() != "시/도 선택"){
+			$("input[name=region]").val(option.val());	
+		}
 	});
 	
 	$("select[name=gugun]").change(function() {

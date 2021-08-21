@@ -97,7 +97,7 @@
 
 	<h1 class="font-bold text-xl py-4 pl-4">Auditions</h1>
 	<!-- Swiper -->
-	<div class="mx-auto max-height-360 pb-4">
+	<div class="mx-auto max-height-360 mb-4">
 		<div class="swiper-container castingCall ">
 			<div class="swiper-wrapper max-height-360">
 				<c:forEach items="${actingRoles}" var="actingRole">
