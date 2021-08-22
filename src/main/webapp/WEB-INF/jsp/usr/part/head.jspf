@@ -141,7 +141,7 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 						</li>
 					</c:if>
 					<li>
-						<a href="/usr/recruitment/actor-list" class="flex flex-jc-c">배우모집</a>
+						<a href="/usr/actingRole/list" class="flex flex-jc-c">배우모집</a>
 					</li>
 					<li>
 						<a class="flex flex-jc-c" href="/usr/article/free-list">자유 게시판</a>

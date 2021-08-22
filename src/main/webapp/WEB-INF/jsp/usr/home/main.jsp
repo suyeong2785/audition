@@ -7,9 +7,9 @@
 <div class="con">
 	<div class="swiper-container rollingBanner mx-auto max-h-96">
 		<div
-			class="absolute bottom-0 right-0 padding-banner-uppper-font text-4xl font-banner text-white z-50">FREE</div>
+			class="absolute opacity-75 bottom-0 right-0 padding-banner-uppper-font text-4xl font-banner text-white z-50">FREE</div>
 		<div
-			class="absolute bottom-0 right-0 padding-banner-font text-4xl font-banner text-white z-50">PRIVATE</div>
+			class="absolute opacity-75 bottom-0 right-0 padding-banner-font text-4xl font-banner text-white z-50">PRIVATE</div>
 		<div class="swiper-wrapper ">
 			<div class="swiper-slide flex items-center justify-center">
 				<img src="/resource/img/banner1.jpg" alt="" />
@@ -147,7 +147,7 @@
 					</div>
 				</c:forEach>
 				<div class="swiper-slide relative">
-					<a href="../../adm/actingRole/list">
+					<a href="../../usr/actingRole/list">
 						<div
 							class="relative castingCall-image padding-bottom-50 top-0 left-0 rounded-xl">
 							<img class="absolute top-0 left-0 w-full h-full rounded-xl"

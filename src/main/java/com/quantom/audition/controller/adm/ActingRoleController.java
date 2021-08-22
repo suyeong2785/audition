@@ -11,9 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.quantom.audition.config.AppConfig;
 import com.quantom.audition.dto.ActingRole;
 import com.quantom.audition.dto.Artwork;
 import com.quantom.audition.dto.Member;
@@ -22,11 +24,23 @@ import com.quantom.audition.util.Util;
 
 @Controller
 public class ActingRoleController {
+	
+	@Autowired
+	private AppConfig appConfig;
 	@Autowired
 	private ActingRoleService actingRoleService;
 
 	@RequestMapping("/adm/actingRole/artworkList")
-	public String showArtworkList(Model model) {
+	public String showAdmArtworkList(Model model) {
+		List<Artwork> artworks = actingRoleService.getForPrintArtworks();
+
+		model.addAttribute("artworks", artworks);
+
+		return "adm/actingRole/artworkList";
+	}
+	
+	@RequestMapping("/usr/actingRole/artworkList")
+	public String showUsrArtworkList(Model model) {
 		List<Artwork> artworks = actingRoleService.getForPrintArtworks();
 
 		model.addAttribute("artworks", artworks);
@@ -137,6 +151,23 @@ public class ActingRoleController {
 
 		return "adm/actingRole/list";
 	}
+	
+	@RequestMapping("/usr/actingRole/list")
+	public String showUsrActingRoleList(Model model,HttpServletRequest req) {
+		
+		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("typeCode", "thumbnail");
+		param.put("memberId", (int)req.getAttribute("loginedMemberId"));
+		
+		List<ActingRole> actingRoles = actingRoleService.getActingRolesForPrintList(param);
+
+		model.addAttribute("actingRoles", actingRoles);
+		
+		Member loginedMember = (Member) req.getAttribute("loginedMember");
+		model.addAttribute("actorCanWrite", appConfig.actorCanWrite("recruitment", loginedMember));
+
+		return "usr/actingRole/list";
+	}
 
 	@RequestMapping("/adm/actingRole/write")
 	public String showWrite(Model model) {
@@ -176,8 +207,8 @@ public class ActingRoleController {
 		return "redirect:" + listUrl;
 	}
 
-	@RequestMapping("/adm/actingRole/detail")
-	public String showDetail(Model model, @RequestParam Map<String, Object> param, HttpServletRequest req,
+	@RequestMapping("/{authority}/actingRole/detail")
+	public String showDetail(Model model,@PathVariable("authority") String authority, @RequestParam Map<String, Object> param, HttpServletRequest req,
 			String listUrl) {
 		if (listUrl == null) {
 			listUrl = "./list";

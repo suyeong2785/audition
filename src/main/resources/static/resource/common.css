@@ -268,11 +268,11 @@ label[for] {
 }
 
 .grid-columns-1fr-2fr{
-	grid-template-columns: minmax(140px,160px) auto;
+	grid-template-columns: minmax(97.6px,160px) minmax(182px,auto);
 }
 
 .grid-row-140-160{
-	grid-template-rows: minmax(140px,160px);
+	grid-template-rows: minmax(97.6px,auto);
 }
 
 /* flex 관련 */

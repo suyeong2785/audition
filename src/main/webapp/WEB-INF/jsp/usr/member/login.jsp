@@ -9,17 +9,16 @@
 
 <style>
 .toast-top-center {
-	display:none;
+	display: none;
 }
 </style>
 
 <script>
-	
 	function MemberLoginForm__submit(form) {
-		if($('.toast')){
+		if ($('.toast')) {
 			window.toastr.remove();
 		}
-		
+
 		if (isNowLoading()) {
 			alert('처리중입니다.');
 			return;
@@ -32,12 +31,12 @@
 
 		if (form.loginId.value.length == 0) {
 			form.loginId.focus();
-			
+
 			var msg = "로그인 아이디를 입력해주세요";
-			var targetName = "loginId"
-			var tagType = "select"
-			var toastr = setPositionOfToastr(tagType,targetName,msg);
-			
+			var targetName = "loginId";
+			var targetType = "input";
+			setPositionOfToastr(targetType, targetName, msg);
+
 			return;
 		}
 
@@ -45,9 +44,10 @@
 			form.loginId.focus();
 
 			var msg = "로그인 아이디 4자 이상 입력해주세요.";
-			var targetInputName = "loginId"
-			setPositionOfToastr(targetInputName,msg);
-			
+			var targetName = "loginId";
+			var targetType = "input";
+			setPositionOfToastr(targetType, targetName, msg);
+
 			return;
 		}
 
@@ -55,20 +55,23 @@
 
 		if (form.loginPw.value.length == 0) {
 			form.loginPw.focus();
-			
+
 			var msg = "로그인 비밀번호를 입력해주세요.";
-			var targetInputName = "loginPw"
-			var toastr = setPositionOfToastr(targetInputName,msg);
+			var targetName = "loginPw";
+			var targetType = "input";
+			setPositionOfToastr(targetType, targetName, msg);
+			
 			return;
 		}
 
 		if (form.loginPw.value.length < 5) {
 			form.loginPw.focus();
-			
+
 			var msg = "로그인 비밀번호를 5자 이상 입력해주세요.";
-			var targetInputName = "loginPw"
-			var toastr = setPositionOfToastr(targetInputName,msg);
-			
+			var targetName = "loginPw"
+			var targetType = "input";
+			setPositionOfToastr(targetType, targetName, msg);
+
 			return;
 		}
 
@@ -90,8 +93,7 @@
 	<div class="form-control-box px-8 pb-4">
 		<input type="text"
 			class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-			placeholder="아이디" name="loginId" maxlength="30"
-			autofocus="autofocus" />
+			placeholder="아이디" name="loginId" maxlength="30" autofocus="autofocus" />
 	</div>
 	<div class="form-control-box px-8 pb-4">
 		<input type="password"
