@@ -155,7 +155,6 @@ public class ActingRoleController {
 		model.addAttribute("actingRoles", actingRoles);
 
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
-		model.addAttribute("actorCanWrite", appConfig.actorCanWrite("recruitment", loginedMember));
 
 		String url = "usr/actingRole/list";
 

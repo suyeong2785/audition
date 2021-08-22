@@ -6,7 +6,7 @@
 <div class="grid justify-center grid-column-auto-800 p-4 gap-y-4">
 	<div class="flex justify-between">
 		<div class="text-xl font-bold">usr Auditions</div>
-		<c:if test="${actorCanWrite}">
+		<c:if test="${isAdmin == true || isCastingDirector == true}">
 			<div>
 				<a
 					class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
