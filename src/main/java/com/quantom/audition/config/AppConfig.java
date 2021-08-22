@@ -69,6 +69,15 @@ public class AppConfig {
 
 		return false;
 	}
+	
+	public boolean actorIsWriter(String relTypeCode, Member actor) {
+		switch (relTypeCode) {
+		case "recruitment":
+			return actor.getId() == 1 || actor.getId() == 2;
+		}
+
+		return false;
+	}
 
 	public String getAttachmentFileInputDisplayName(String relTypeCode, int fileNo) {
 		switch (relTypeCode) {

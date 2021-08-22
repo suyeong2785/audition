@@ -66,7 +66,7 @@
 						<c:choose>
 							<c:when
 								test="${artwork.forPrintGenUrlForArtwork != null && artwork.forPrintGenUrlForArtwork != ''}">
-								<a href="../../adm/actingRole/${artwork.getDetailLink()}">
+								<a href="../../usr/actingRole/${artwork.getDetailLink()}">
 									<div
 										class="relative castingCall-image padding-bottom-50 top-0 left-0 rounded-xl">
 										<img class="absolute top-0 left-0 w-full h-full rounded-xl"
@@ -76,7 +76,7 @@
 							</c:when>
 							<c:when
 								test="${artwork.forPrintGenUrlForArtwork == null || artwork.forPrintGenUrlForArtwork == ''}">
-								<a href="../../adm/actingRole/${artwork.getDetailLink()}">
+								<a href="../../usr/actingRole/${artwork.getDetailLink()}">
 									<div
 										class="${bgColor} text-white rounded-xl padding-bottom-50 top-0 left-0 relative">
 										<span
@@ -85,7 +85,7 @@
 								</a>
 							</c:when>
 						</c:choose>
-						<a href="../../adm/actingRole/${artwork.getDetailLink()}">
+						<a href="../../usr/actingRole/${artwork.getDetailLink()}">
 							<div>
 								<div class="text-sm text-left font-bold py-2">${artwork.name}</div>
 								<div class="text-xs text-left h-8 overflow-hidden line-clamp-2">${artwork.etc}</div>
@@ -96,7 +96,7 @@
 					</div>
 				</c:forEach>
 				<div class="swiper-slide relative">
-					<a href="../../adm/actingRole/artworkList">
+					<a href="../../usr/actingRole/artworkList">
 						<div
 							class="relative castingCall-image padding-bottom-50 top-0 left-0 rounded-xl">
 							<img class="absolute top-0 left-0 w-full h-full rounded-xl"
@@ -118,7 +118,7 @@
 					<div class="swiper-slide relative">
 						<c:choose>
 							<c:when test="${actingRole.files != '[]'}">
-								<a href="../../adm/actingRole/${actingRole.getDetailLink()}">
+								<a href="../../usr/actingRole/${actingRole.getDetailLink()}">
 									<div
 										class="relative castingCall-image bg-no-repeat bg-center object-scale-down overflow-hidden padding-bottom-50 top-0 left-0 rounded-xl">
 										<img class="absolute top-0 left-0 w-full h-full rounded-xl"
@@ -127,7 +127,7 @@
 								</a>
 							</c:when>
 							<c:when test="${actingRole.files == '[]'}">
-								<a href="../../adm/actingRole/${actingRole.getDetailLink()}">
+								<a href="../../usr/actingRole/${actingRole.getDetailLink()}">
 									<div
 										class="bg-gray-400 text-white rounded-xl padding-bottom-50 top-0 left-0 relative">
 										<span
@@ -136,7 +136,7 @@
 								</a>
 							</c:when>
 						</c:choose>
-						<a href="../../adm/actingRole/${actingRole.getDetailLink()}">
+						<a href="../../usr/actingRole/${actingRole.getDetailLink()}">
 							<div>
 								<div class="text-sm text-left font-bold py-2">${actingRole.name}</div>
 								<div class="text-xs text-left h-8 overflow-hidden line-clamp-2">${actingRole.feature}</div>

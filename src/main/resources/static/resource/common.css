@@ -495,6 +495,7 @@ label[for] {
 }
 
 /* 버튼관련 */
+/*
 .btn {
 	font-size: 1rem;
 	line-height: 1rem;
@@ -513,6 +514,7 @@ label[for] {
 	text-align: center;
 	justify-content: center;
 }
+*/
 
 .btn-success {
 	background-color: #28a745;
@@ -604,7 +606,7 @@ label[for] {
 .line-clamp-1 {
 	word-wrap: break-word;
 	display: -webkit-box;
-	-webkit-line-clamp: 2;
+	-webkit-line-clamp: 1;
 	-webkit-box-orient: vertical;
 }
 

@@ -94,7 +94,10 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 		boolean isLogined = false;
 		boolean isAdmin = false;
 		boolean isCastingDirector = false;
+		boolean isUser = false;
+		
 		int loginedMemberId = 0;
+		
 		Member loginedMember = null;
 		String loginedDate = null;
 		File fileForProfile = null;
@@ -105,6 +108,7 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 			isLogined = true;
 			loginedMember = memberService.getMemberById(loginedMemberId);
 
+			isUser = loginedMember.isUser(); 
 			isAdmin = loginedMember.isAdmin();
 			isCastingDirector= loginedMember.isCastingDirector();		
 			
@@ -120,6 +124,7 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 		request.setAttribute("isLogined", isLogined);
 		request.setAttribute("isAdmin", isAdmin);
 		request.setAttribute("isCastingDirector", isCastingDirector);
+		request.setAttribute("isUser", isUser);
 		request.setAttribute("loginedMember", loginedMember);
 
 		request.setAttribute("activeProfile", activeProfile);

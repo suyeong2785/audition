@@ -7,7 +7,7 @@
 
 <div class="con">
 	<div class=" flex flex-col">
-		<div class="max-height-360 relative">
+		<div class="max-height-360 relative overflow-hidden">
 			<div class="padding-bottom-50">
 				<c:choose>
 					<c:when test="${actingRole.files != '[]'}">

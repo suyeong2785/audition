@@ -24,13 +24,14 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 <!-- 테일윈드 불러오기 -->
-<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
-	rel="stylesheet">
+<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 <!-- swiper 불러오기 -->
 <link rel="stylesheet"
 	href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 <!-- Swiper JS -->
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<!-- DaisyUI CSS Tailwind라이브러리 -->
+<link href="https://cdn.jsdelivr.net/npm/daisyui@1.13.0/dist/full.css">
 <!-- toastr css 라이브러리 -->
 <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 <!-- toastr js 라이브러리 -->

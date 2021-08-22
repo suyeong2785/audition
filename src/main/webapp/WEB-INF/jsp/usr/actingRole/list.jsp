@@ -5,7 +5,7 @@
 <!-- PC용 -->
 <div class="grid justify-center grid-column-auto-800 p-4 gap-y-4">
 	<div class="flex justify-between">
-		<div class="text-xl font-bold">Auditions</div>
+		<div class="text-xl font-bold">usr Auditions</div>
 		<c:if test="${actorCanWrite}">
 			<div>
 				<a
@@ -30,11 +30,12 @@
 					class="grid grid-columns-1fr-2fr grid-row-140-160 gap-x-2.5 bg-gray-100 place-content-stretch">
 					<a href="${actingRole.getDetailLink()}">
 						<c:if test="${actingRole.files != '[]'}">
-							<img src="${actingRole.files[0].forPrintGenUrl}" alt="" />
+							<img class="bg-gray-200" src="${actingRole.files[0].forPrintGenUrl}" alt="" />
 						</c:if>
 						<c:if test="${actingRole.files == '[]'}">
 							<div class="relative bg-gray-400 padding-bottom-50">
-								<div class="absolute top-0 left-0 text-white w-full h-full rounded-xl flex justify-center items-center">${actingRole.name}</div>
+								<div
+									class="absolute top-0 left-0 text-white w-full h-full rounded-xl flex justify-center items-center">${actingRole.name}</div>
 							</div>
 						</c:if>
 					</a>

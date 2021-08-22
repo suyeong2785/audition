@@ -24,28 +24,25 @@ import com.quantom.audition.util.Util;
 
 @Controller
 public class ActingRoleController {
-	
+
 	@Autowired
 	private AppConfig appConfig;
 	@Autowired
 	private ActingRoleService actingRoleService;
 
-	@RequestMapping("/adm/actingRole/artworkList")
-	public String showAdmArtworkList(Model model) {
+	@RequestMapping("/{authority}/actingRole/artworkList")
+	public String showAdmArtworkList(Model model, @PathVariable("authority") String authority) {
 		List<Artwork> artworks = actingRoleService.getForPrintArtworks();
 
 		model.addAttribute("artworks", artworks);
 
-		return "adm/actingRole/artworkList";
-	}
-	
-	@RequestMapping("/usr/actingRole/artworkList")
-	public String showUsrArtworkList(Model model) {
-		List<Artwork> artworks = actingRoleService.getForPrintArtworks();
+		String url = "usr/actingRole/artworkList";
 
-		model.addAttribute("artworks", artworks);
+		if (authority.equals("adm")) {
+			url = "adm/actingRole/artworkList";
+		}
 
-		return "adm/actingRole/artworkList";
+		return url;
 	}
 
 	@RequestMapping("/adm/actingRole/writeArtwork")
@@ -63,13 +60,9 @@ public class ActingRoleController {
 		return "redirect:" + redirectUri;
 	}
 
-	@RequestMapping("/adm/actingRole/detailArtwork")
-	public String showDetailArtwork(Model model, @RequestParam Map<String, Object> param, HttpServletRequest req,
-			String listUrl) {
-		if (listUrl == null) {
-			listUrl = "./artworkList";
-		}
-		model.addAttribute("listUrl", listUrl);
+	@RequestMapping("/{authority}/actingRole/detailArtwork")
+	public String showDetailArtwork(Model model, @PathVariable("authority") String authority,
+			@RequestParam Map<String, Object> param, HttpServletRequest req, String listUrl) {
 
 		int id = Integer.parseInt((String) param.get("id"));
 
@@ -87,7 +80,7 @@ public class ActingRoleController {
 			List<String> actingGenders = Arrays.asList(actingGender.split("_")).stream().map(s -> s.trim())
 					.collect(Collectors.toList());
 			model.addAttribute("actingGenders", actingGenders);
-			
+
 		}
 		if (artwork.getActingRoleAge() != null) {
 			String actingAge = artwork.getActingRoleAge();
@@ -97,11 +90,23 @@ public class ActingRoleController {
 		}
 
 		model.addAttribute("artwork", artwork);
-		
-		
-		
 
-		return "adm/actingRole/detailArtwork";
+		String url = "usr/actingRole/detailArtwork";
+
+		if (listUrl == null) {
+			listUrl = "../../usr/actingRole/artworkList";
+		}
+
+		if (authority.equals("adm")) {
+			
+			url = "adm/actingRole/detailArtwork";
+			listUrl = "adm/actingRole/artworkList";
+
+		}
+		
+		model.addAttribute("listUrl", listUrl);
+
+		return url;
 	}
 
 	@RequestMapping("/adm/actingRole/modifyArtwork")
@@ -139,34 +144,26 @@ public class ActingRoleController {
 		return "redirect:" + listUrl;
 	}
 
-	@RequestMapping("/adm/actingRole/list")
-	public String showList(Model model,HttpServletRequest req) {
-		Map<String,Object> param = new HashMap<String, Object>();
+	@RequestMapping("/{authority}/actingRole/list")
+	public String showList(Model model, HttpServletRequest req, @PathVariable("authority") String authority) {
+		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("typeCode", "thumbnail");
-		param.put("memberId", (int)req.getAttribute("loginedMemberId"));
-		
+		param.put("memberId", (int) req.getAttribute("loginedMemberId"));
+
 		List<ActingRole> actingRoles = actingRoleService.getActingRolesForPrintList(param);
 
 		model.addAttribute("actingRoles", actingRoles);
 
-		return "adm/actingRole/list";
-	}
-	
-	@RequestMapping("/usr/actingRole/list")
-	public String showUsrActingRoleList(Model model,HttpServletRequest req) {
-		
-		Map<String,Object> param = new HashMap<String, Object>();
-		param.put("typeCode", "thumbnail");
-		param.put("memberId", (int)req.getAttribute("loginedMemberId"));
-		
-		List<ActingRole> actingRoles = actingRoleService.getActingRolesForPrintList(param);
-
-		model.addAttribute("actingRoles", actingRoles);
-		
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
 		model.addAttribute("actorCanWrite", appConfig.actorCanWrite("recruitment", loginedMember));
 
-		return "usr/actingRole/list";
+		String url = "usr/actingRole/list";
+
+		if (authority.equals("adm")) {
+			url = "adm/actingRole/list";
+		}
+
+		return url;
 	}
 
 	@RequestMapping("/adm/actingRole/write")
@@ -180,7 +177,7 @@ public class ActingRoleController {
 
 	@RequestMapping("/adm/actingRole/doWrite")
 	public String doWrite(@RequestParam Map<String, Object> param, HttpServletRequest req, Model model) {
-		
+
 		int newActingRoleId = actingRoleService.write(param);
 
 		String redirectUri = (String) param.get("redirectUri");
@@ -208,8 +205,8 @@ public class ActingRoleController {
 	}
 
 	@RequestMapping("/{authority}/actingRole/detail")
-	public String showDetail(Model model,@PathVariable("authority") String authority, @RequestParam Map<String, Object> param, HttpServletRequest req,
-			String listUrl) {
+	public String showDetail(Model model, @PathVariable("authority") String authority,
+			@RequestParam Map<String, Object> param, HttpServletRequest req, String listUrl) {
 		if (listUrl == null) {
 			listUrl = "./list";
 		}
@@ -223,7 +220,13 @@ public class ActingRoleController {
 
 		model.addAttribute("actingRole", actingRole);
 
-		return "adm/actingRole/detail";
+		String url = "usr/actingRole/detail";
+
+		if (authority.equals("adm")) {
+			url = "adm/actingRole/detail";
+		}
+
+		return url;
 	}
 
 	@RequestMapping("/adm/actingRole/modify")

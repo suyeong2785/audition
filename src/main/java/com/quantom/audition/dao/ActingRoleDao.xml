@@ -157,13 +157,19 @@
 		artwork__name,
 		ARW.genre AS
 		artwork__genre,
-		ARW.directorName AS artwork__directorName
+		ARW.directorName AS artwork__directorName,
+		M.id AS writer__id,
+		M.authority AS writer__authority
 		FROM
 		actingRole AS
 		ACR
 		LEFT OUTER
 		JOIN artwork AS ARW
 		ON ACR.artworkId = ARW.id
+		LEFT OUTER
+		JOIN member
+		AS M
+		ON ARW.memberId = M.id
 		LEFT OUTER
 		JOIN file
 		AS ACRF
@@ -202,13 +208,19 @@
 		artwork__name,
 		ARW.genre AS
 		artwork__genre,
-		ARW.directorName AS artwork__directorName
+		ARW.directorName AS artwork__directorName,
+		M.id AS writer__id,
+		M.authority AS writer__authority
 		FROM
 		actingRole AS
 		ACR
 		LEFT OUTER
 		JOIN artwork AS ARW
 		ON ACR.artworkId = ARW.id
+		LEFT OUTER
+		JOIN member
+		AS M
+		ON ARW.memberId = M.id
 		LEFT OUTER
 		JOIN file
 		AS ACRF
@@ -339,6 +351,8 @@
 			<id property="fileRelTypeCodeForMember" column="member__relTypeCode" />
 			<id property="fileExtForMember" column="member__fileExt" />
 			<id property="fileDirForMember" column="member__fileDir" />
+			<id property="writerId" column="writer__id" />
+			<id property="writerAuthority" column="writer__authority" />
 		</association>
 		<collection property="files" resultMap="files" ofType="Post" columnPrefix="actingRole__"/>
 	</resultMap>

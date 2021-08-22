@@ -2,11 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="../part/head.jspf"%>
+
 <div class="con flex-col ">
 	<div class="flex items-center justify-center">
 		<div class="flex-grow"></div>
 		<div class="flex justify-center items-center max-w-screen-sm flex-4">
-			<div class="text-center py-8 text-xl font-bold">Audtions</div>
+			<div class="text-center py-8 text-xl font-bold">adm Audtions</div>
 			<div class="flex-grow"></div>
 			<div class="flex items-center justify-center">
 				<a

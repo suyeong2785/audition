@@ -47,4 +47,12 @@ public class Member {
 
 		return false;
 	}
+	
+	public boolean isUser() {
+		if (authority == 2 ) {
+			return true;
+		}
+
+		return false;
+	}
 }
