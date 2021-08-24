@@ -12,6 +12,7 @@ import com.quantom.audition.dao.ActingRoleDao;
 import com.quantom.audition.dto.ActingRole;
 import com.quantom.audition.dto.Artwork;
 import com.quantom.audition.dto.Member;
+import com.quantom.audition.dto.Recruitment;
 import com.quantom.audition.util.Util;
 
 @Service
@@ -62,6 +63,10 @@ public class ActingRoleService {
 		return id;
 	}
 
+	public ActingRole getActingRoleById(int id) {
+		return actingRoleDao.getActingRoleById(id);
+	}
+	
 	public ActingRole getForPrintActingRoleById(Member loginedMember, int id) {
 		return actingRoleDao.getForPrintActingRoleById(id);
 	}

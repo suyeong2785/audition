@@ -5,6 +5,8 @@
 <%@ include file="../part/head.jspf"%>
 <%@ include file="../../part/toastuiEditor.jspf"%>
 
+<script src="http://www.youtube.com/player_api"></script>
+
 <div class="con">
 	<div class=" flex flex-col">
 		<div class="max-height-360 relative overflow-hidden">
@@ -48,7 +50,11 @@
 			</div>
 			<div class="flex">
 				<div class="min-width-96">촬영일정</div>
-				<div>${actingRole.schedule}/${actingRole.shootingsCount}회</div>
+				<div>${actingRole.schedule}</div>
+			</div>
+			<div class="flex">
+				<div class="min-width-96">촬영횟수</div>
+				<div>${actingRole.shootingsCount}회</div>
 			</div>
 			<div class="flex">
 				<div class="min-width-96">촬영지역</div>
@@ -83,44 +89,75 @@
 		</div>
 	</div>
 </div>
+
 <div class="bg-gray-100 ">
 	<div class="con p-6">
 		<div class="flex">
 			<div class="min-width-96">주요사항</div>
 			<div>${actingRole.feature}</div>
 		</div>
+		<c:if
+			test="${actingRole.guideVideoUrl != null && actingRole.guideVideoUrl != ''}">
+			<div class="min-width-96">오디션 가이드영상</div>
+			<div class="relative h-0 padding-bottom-video">
+				<div id="player" class="absolute top-0 left-0 w-full h-full "></div>
+			</div>
+		</c:if>
 	</div>
 </div>
 
-<c:choose>
-	<c:when test="${actingRole.files != '[]'}">
-		<c:forEach items="${actingRole.files}" var="file">
-			<c:choose>
-				<c:when test="${file.typeCode == 'guide'}">
-					<div class="bg-gray-100 ">
-						<div class="con p-6">
-							<div class="flex">
-								<div class="flex">
-									<div class="min-width-96">오디션 가이드영상</div>
-									<div>
-										<video controls="controls" src="${file.forPrintGenUrl}"></video>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</c:when>
-			</c:choose>
-		</c:forEach>
-	</c:when>
-</c:choose>
-
-<div class="text-xl flex justify-center items-center py-8">지원하기</div>
+<a href="/usr/applyment/write?id=${actingRole.id}">
+	<div class="text-xl flex justify-center items-center py-8">지원하기</div>
+</a>
 
 <div class="grid grid-cols-2 py-8">
 	<div class="flex justify-center items-center">관심오디션저장</div>
 	<div class="flex justify-center items-center">리스트보기</div>
 </div>
+
+<script>
+	function YouTubeGetID(url) {
+		url = (url || '').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+		return (url[2] !== undefined) ? url[2].split(/[^0-9a-z_\-]/i)[0]
+				: url[0];
+	}
+
+	let guideVideoUrl = '<c:out value="${actingRole.guideVideoUrl}" />';
+
+	if (guideVideoUrl != '' && guideVideoUrl != null) {
+		var tag = document.createElement('script');
+
+		tag.src = "https://www.youtube.com/iframe_api";
+		var firstScriptTag = document.getElementsByTagName('script')[0];
+		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+		var player;
+
+		function onYouTubeIframeAPIReady() {
+			player = new YT.Player('player', {
+				videoId : YouTubeGetID(guideVideoUrl),
+				playerVars : {
+					'modestbranding' : 1,
+					'controls' : 1,
+					'showinfo' : 1,
+					'rel' : 0,
+					'loop' : 1,
+					'playlist' : YouTubeGetID(guideVideoUrl)
+				},
+				events : {
+					'onReady' : onPlayerReady,
+					'onStateChange' : onPlayerStateChange
+				}
+			});
+		}
+
+		function onPlayerReady(event) {
+		}
+
+		function onPlayerStateChange() {
+		}
+	}
+</script>
 
 </div>
 </body>

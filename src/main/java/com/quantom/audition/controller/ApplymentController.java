@@ -8,14 +8,18 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.quantom.audition.config.AppConfig;
+import com.quantom.audition.dto.ActingRole;
 import com.quantom.audition.dto.Applyment;
 import com.quantom.audition.dto.Member;
 import com.quantom.audition.dto.ResultData;
+import com.quantom.audition.service.ActingRoleService;
 import com.quantom.audition.service.ApplymentService;
 import com.quantom.audition.service.FileService;
 import com.quantom.audition.service.RecruitmentService;
@@ -27,6 +31,8 @@ public class ApplymentController {
 	private ApplymentService applymentService;
 	@Autowired
 	private RecruitmentService recruitmentService;
+	@Autowired
+	private ActingRoleService actingRoleService;
 	@Autowired
 	private AppConfig appConfig;
 	@Autowired
@@ -96,6 +102,28 @@ public class ApplymentController {
 		rsDataBody.put("applyment", applyment);
 
 		return new ResultData("S-1", "1개의 신청을 불러왔습니다.", rsDataBody);
+	}
+	
+	@RequestMapping("/usr/applyment/write")
+	public String write(Model model,int id, HttpServletRequest request) {
+		ActingRole actingRole = actingRoleService.getActingRoleForPrintDetailById(id);
+		model.addAttribute("actingRole", actingRole);
+		
+		return "usr/applyment/write";
+	}
+	
+	@RequestMapping("/usr/applyment/doWrite")
+	public String doWrite(@RequestParam Map<String, Object> param, HttpServletRequest request) {
+		Map<String, Object> rsDataBody = new HashMap<>();
+
+		Member loginedMember = (Member) request.getAttribute("loginedMember");
+		param.put("memberId", request.getAttribute("loginedMemberId"));
+
+		int newApplymentId = applymentService.writeApplyment(param);
+
+		String redirectUri = (String) param.get("redirectUri");
+
+		return "redirect:" + redirectUri;
 	}
 
 	@RequestMapping("/usr/applyment/doWriteApplymentAjax")

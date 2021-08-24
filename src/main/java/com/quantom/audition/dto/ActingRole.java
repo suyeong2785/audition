@@ -17,6 +17,7 @@ public class ActingRole {
 	private String updateDate;
 	private String startDate;
 	private String endDate;
+	private boolean completeStatus;
 	private int memberId;
 	private int artworkId;
 	private boolean thumbnailStatus;
@@ -29,8 +30,8 @@ public class ActingRole {
 	private String region;
 	private String schedule;
 	private String shotAngle;
+	private String guideVideoUrl;
 	private boolean scriptStatus;
-	private boolean videoStatus;
 	private String scenesCount;
 	private String shootingsCount;
 

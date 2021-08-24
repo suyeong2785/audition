@@ -595,8 +595,21 @@ ALTER TABLE `actingRole` ADD COLUMN startDate DATETIME AFTER updateDate;
 ALTER TABLE `actingRole` ADD COLUMN endDate DATETIME AFTER startDate;
 ALTER TABLE `actingRole` MODIFY COLUMN gender CHAR(2) NOT NULL AFTER age;
 
+
+#actingRole에 memberId에 관리자id 추가
+UPDATE actingRole
+SET memberId = 1
+WHERE memberId = 0;
+
 # actingRole에 videoStatus 추가
 ALTER TABLE `actingRole` ADD COLUMN videoStatus TINYINT NOT NULL DEFAULT 0 AFTER scriptStatus ;
+
+# actingRole에 videoStatus 삭제(동영상업로드대신 유튜브 url대체위함)
+ALTER TABLE `actingRole` DROP COLUMN videoStatus;
+
+# actingRole에 guideVideoUrl 추가(동영상업로드대신 유튜브 url대체위함)
+ALTER TABLE `actingRole` ADD COLUMN guideVideoUrl VARCHAR(100) NOT NULL AFTER shotAngle ;
+
 /*
 select * from `file`;
 SELECT * FROM `actingRole`;

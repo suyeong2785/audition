@@ -127,5 +127,23 @@ public class HomeController {
 
 		return "usr/home/showMyPage";
 	}
+	
+	@RequestMapping("/usr/home/showMyAudition")
+	public String showMyAudition(Model model, HttpServletRequest req) {
+		Member loginedMember = (Member) req.getAttribute("loginedMember");
+
+		List<Applyment> applymentResults = applymentService.getApplymenResultInfoByMemberId(loginedMember.getId());
+		model.addAttribute("applymentResults", applymentResults);
+
+		Career career = careerService.getCareerByMember(loginedMember.getCareerId());
+		if (career != null) {
+			Map<String, String> joinedCareer = careerService
+					.getDatesAndArtworkOfCareerByMember(loginedMember.getCareerId());
+
+			model.addAttribute("joinedCareer", joinedCareer);
+		}
+
+		return "usr/home/showMyAudition";
+	}
 
 }

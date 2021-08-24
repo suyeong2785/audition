@@ -19,7 +19,8 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
 <!-- 테일윈드 불러오기 -->
-<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+	rel="stylesheet">
 <!-- swiper 불러오기 -->
 <link rel="stylesheet"
 	href="https://unpkg.com/swiper/swiper-bundle.min.css" />
@@ -152,6 +153,9 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 						<a class="flex flex-jc-c" href="/usr/article/free-list">자유 게시판</a>
 					</li>
 					<c:if test="${isLogined}">
+						<li>
+							<a href="/usr/home/showMyAudition" class="flex flex-jc-c">내가지원한 오디션</a>
+						</li>
 						<li>
 							<a href="/usr/home/showMyPage" class="flex flex-jc-c">마이페이지</a>
 						</li>

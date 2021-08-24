@@ -25,9 +25,9 @@ public class Applyment {
 	private int result;
 	private String relTypeCode;
 	private int memberId;
-	private String body;
 	private Map<String, Object> extra;
 
+	/*
 	@JsonProperty("forPrintBody")
 	public String getForPrintBody() {
 		String bodyForPrint = HtmlUtils.htmlEscape(body);
@@ -35,6 +35,7 @@ public class Applyment {
 
 		return bodyForPrint;
 	}
+	*/
 
 	@JsonProperty("forPrintApplymentResult")
 	public String getForPrintApplymentResult() {

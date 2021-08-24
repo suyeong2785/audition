@@ -121,7 +121,7 @@ h3 {
     top: 55px;
     bottom: 0;
     transition: left .3s;
-    z-index: 9;
+    z-index: 100;
 }
 
 .mobile-side-bar-actived .mobile-side-bar {
@@ -311,6 +311,11 @@ h3 {
     object-fit: cover;
     border-radius: 70%;
      overflow: hidden;
+}
+/* toastr 커스텀*/
+.toast-top-center {
+	display: none;
+	z-index: 100;
 }
 /* loader 커스텀*/
 .loader-img {

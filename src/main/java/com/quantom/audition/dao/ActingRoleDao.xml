@@ -64,6 +64,14 @@
 		WHERE A.id =
 		#{id}
 	</select>
+	
+	<select id="getActingRoleById" resultType="ActingRole">
+		SELECT *
+		FROM
+		actingRole
+		WHERE
+		id = #{id}
+	</select>
 
 	<insert id="writeArtwork" useGeneratedKeys="true"
 		keyProperty="id">
@@ -257,7 +265,7 @@
 		schedule = #{schedule},
 		shotAngle = #{shotAngle},
 		scriptStatus = #{scriptStatus},
-		videoStatus = #{videoStatus},
+		guideVideoUrl = #{guideVideoUrl},
 		shootingsCount = #{shootingsCount}
 	</insert>
 
@@ -329,6 +337,7 @@
 		<id property="region" column="region" />
 		<id property="schedule" column="schedule" />
 		<id property="shotAngle" column="shotAngle" />
+		<id property="guideVideoUrl" column="guideVideoUrl" />
 		<id property="scriptStatus" column="scriptStatus" />
 		<id property="shootingsCount" column="shootingsCount" />
 	</resultMap>

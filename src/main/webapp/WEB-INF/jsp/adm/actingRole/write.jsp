@@ -5,12 +5,6 @@
 <%@ include file="../part/head.jspf"%>
 <%@ include file="../../part/toastuiEditor.jspf"%>
 
-<style>
-.toast-top-center {
-	display:none;
-	z-index: 100;
-}
-</style>
 
 <script>
 	function ActingRoleWriteForm__submit(form) {
@@ -149,6 +143,21 @@
 			return;
 		}
 		
+		//가이드영상 주소넣어줌
+		if (form.shotAngle.value != 0) {
+			if(form.shotAngle.value == "BS"){
+				form.guideVideoUrl.value = "v=rtOvBOTyX00";
+			}else if(form.shotAngle.value == "WS"){
+				form.guideVideoUrl.value = "v=JRfuAukYTKg";
+			}else if(form.shotAngle.value == "KS"){
+				form.guideVideoUrl.value = "v=uO59tfQ2TbA";
+			}else if(form.shotAngle.value == "FS"){
+				form.guideVideoUrl.value = "v=kTHNpusq654";
+			}else if(form.shotAngle.value == "CU"){
+				form.guideVideoUrl.value = "v=PT2_F-1esPk";
+			}
+		}
+		
 		if (form.requestedActing.value == '') {
 			form.requestedActing.focus();
 			
@@ -173,17 +182,6 @@
 				
 				return;
 			}
-		}
-		
-		if (form.videoStatus.value != 1) {
-			form.videoStatus.focus();
-			
-			var msg = "가이드영상을 업로드해주세요";
-			var targetName = "videoStatus"
-			var targetType = "input";
-			var toastr = setPositionOfToastr(targetType,targetName,msg);
-			
-			return;
 		}
 		
 		form.startDate.value = form.startDate.value.trim();
@@ -281,10 +279,10 @@
 		<div class="text-sm font-bold">캐스팅콜 등록에 관한설명</div>
 		<div class="text-xs pb-4">캐스팅 콜 등록에 관한 설명 설명 설명 설명 설명 설명 설명 설명
 			설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명</div>
-		
+
 		<!-- 섬네일 -->
 		<div class="flex justify-center">
-			<input type="text" class="h-0 w-0" name="thumbnailStatus" value="0"/>
+			<input type="text" class="h-0 w-0" name="thumbnailStatus" value="0" />
 			<label class="flex-grow" for="thumbnail-file">
 				<input id="thumbnail-file" class="text-sm cursor-pointer hidden "
 					accept="${appConfig.getAttachemntFileInputAccept('img')}"
@@ -294,7 +292,7 @@
 					대표 이미지를 선택해주세요</div>
 			</label>
 		</div>
-		
+
 		<!-- 영화목록 -->
 		<div class="mb-4 flex-grow relative">
 			<input type="hidden" name="artworkId" value="" />
@@ -305,8 +303,7 @@
 				<c:forEach items="${artworks}" var="artwork">
 					<option value="${artwork.actingRole}"
 						value2="${artwork.actingRoleGender}"
-						value3="${artwork.actingRoleAge}"
-						value4="${artwork.id}">${artwork.name}</option>
+						value3="${artwork.actingRoleAge}" value4="${artwork.id}">${artwork.name}</option>
 				</c:forEach>
 			</select>
 			<div
@@ -314,7 +311,7 @@
 				<i class="fas fa-chevron-down"></i>
 			</div>
 		</div>
-		
+
 		<!-- 배역목록 -->
 		<div class="mb-4 flex-grow relative">
 			<input type="hidden" name="name" />
@@ -328,55 +325,57 @@
 				<i class="fas fa-chevron-down"></i>
 			</div>
 		</div>
-		
+
 		<!-- 배역직업 -->
 		<div class="w-full pb-4">
 			<input
 				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 				type="text" placeholder="직업" name="job" maxlength="100" />
 		</div>
-		
+
 		<!-- 배역특징 -->
 		<div class="w-full pb-4">
 			<input
 				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 				type="text" placeholder="주요사항" name="feature" maxlength="100" />
 		</div>
-		
+
 		<!-- 촬영일정 -->
 		<div class="text-center pb-4">
 			<span>촬영일정</span>
 			<div>
-				<label for="month">월
-					<input id ="month" name="scheduleOption" type="radio" value="month" />
+				<label for="month">
+					월
+					<input id="month" name="scheduleOption" type="radio" value="month" />
 				</label>
 				<label for="date">
 					일
-					<input id ="date" name="scheduleOption" type="radio" value="date"/>
+					<input id="date" name="scheduleOption" type="radio" value="date" />
 				</label>
 				<label for="typing">
 					직접입력
-					<input id="typing" name="scheduleOption" type="radio" value="typing"/>
+					<input id="typing" name="scheduleOption" type="radio"
+						value="typing" />
 				</label>
 			</div>
 		</div>
-		
+
 		<div class="flex pb-4">
 			<input
 				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 				type="month" name="schedule" />
 		</div>
-		
+
 		<!-- 촬영횟수 -->
 		<div class="flex pb-4">
 			<input
 				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 				type="number" placeholder="촬영횟수" name="shootingsCount" />
 		</div>
-		
+
 		<!-- 촬영지역 -->
 		<div class="text-center pb-4">촬영지역</div>
-		
+
 		<div class="flex pb-4">
 			<input type="hidden" name="region" />
 			<select name="sido" id="sido1"
@@ -384,7 +383,7 @@
 			<select name="gugun" id="gugun1"
 				class="text-center shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></select>
 		</div>
-		
+
 		<!-- 출연료 -->
 		<div class="w-full pb-4">
 			<input
@@ -392,10 +391,11 @@
 				type="text" placeholder="출연료(미작성시 개별협의 자동등록)" name="pay"
 				maxlength="100" />
 		</div>
-		
+
 		<!-- 오디션영상 촬영앵글 -->
 		<div class="text-center pb-4">오디션영상 요청사항</div>
 		<div class="w-full pb-4">
+			<input type="hidden" name="guideVideoUrl" />
 			<select name="shotAngle"
 				class="text-center shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
 				<option selected="selected" value="">선택해주세요</option>
@@ -420,7 +420,7 @@
 		<!-- 오디션 대본 -->
 		<div id="script-box" class=" flex-col justify-center mb-4 hidden ">
 			<input type="text" class="w-0 h-0" name="scriptStatus" value="0" />
-			<label class="flex-grow" >
+			<label class="flex-grow">
 				<input type="file" class="text-sm cursor-pointer hidden"
 					id="actingRole-script-input"
 					name="file__actingRole__0__script__attachment__1"
@@ -431,33 +431,17 @@
 			</label>
 		</div>
 
-		<!-- 오디션 가이드영상 -->
-		<div class="flex flex-col justify-center">
-			<input type="number" class="w-0 h-0" name="videoStatus" />
-			<label class="flex-grow">
-				<input id="actingRole-video-input" type="file"
-					class="text-sm cursor-pointer hidden "
-					name="file__actingRole__0__guide__attachment__1"
-					accept="${appConfig.getAttachemntFileInputAccept('video')}" />
-				<div id="guide-video"
-					class=" w-full text-center text bg-gray-500 text-white border border-gray-300 rounded-full font-semibold cursor-pointer p-1 px-3 hover:bg-gray-600">
-					가이드 영상을 올려주세요</div>
-			</label>
-			<video id="actingRole-video"
-				class="hidden pt-4 mx-auto max-height-360" controls src=""></video>
-		</div>
-
 		<!-- 오디션 모집일정 -->
 		<div class="pb-4 text-center">모집일정</div>
 		<div class="w-full pb-4 flex items-center">
 			<span class="pr-2">From</span>
-				<input
+			<input
 				class="border rounded-full flex-grow py-2 pl-2 focus:outline-none focus:shadow-outline"
 				type="date" name="startDate" />
 		</div>
 		<div class="w-full pb-4 flex items-center">
 			<span class="pr-2">Until</span>
-				<input
+			<input
 				class="border rounded-full flex-grow py-2 pl-2 focus:outline-none focus:shadow-outline"
 				type="date" name="endDate" />
 		</div>
@@ -535,62 +519,6 @@
 			$('input[name="schedule"]').attr("type", "date");
 		}else{
 			$('input[name="schedule"]').attr("type", "text");
-		}
-	});
-	
-	//오디션가이드영상 올릴시 작동
-	let videoInput = $('#actingRole-video-input');
-	let videoForDisplay = $('#actingRole-video');
-	
-	videoInput.on("change", function() {
-		const video = document.createElement ( "VIDEO" );
-		const files = videoInput[0].files;
-		const file = files[0];
-		
-		if(files.length != 0){
-			const fileName = file.name;
-			const videourl = URL.createObjectURL(file);
-			
-			videoForDisplay.attr("src", videourl);
-			videoForDisplay.css("display","block");
-			
-			videoForDisplay.on('loadedmetadata',function(){
-				var duration =  Math.floor(videoForDisplay[0].duration);
-				var oneMinute = Math.floor(videoForDisplay[0].duration > 60 ? videoForDisplay[0].duration/60 : 0);
-				
-				// 동영상 재생시간이 1분 30초 이상이 넘어간다면 초기화 후,알림창띄움
-				if(duration > 90){
-					$('input[name="videoStatus"]').val(0);
-					alert('동영상이 1분 30초를 넘겨서는 안됩니다!');
-					
-					videoInput.val("");
-					videoForDisplay.css("display","none");
-					videoForDisplay.attr("src", "");
-					URL.revokeObjectURL(file);
-					
-					//jquery html이 동작이 안되서 약간 동작을 이후에 해줌
-					setTimeout(() => {
-						$("#guide-video").html("가이드 영상을 올려주세요.");
-					}, 100);
-					
-					return;
-					
-				}else{
-					$('input[name="videoStatus"]').val(1);
-					$("#guide-video").html("파일이름 : " + fileName + "<br>" + "총 재생시간 : "
-							+ (oneMinute > 0 ? oneMinute + "분 " : "") + 
-					(duration - oneMinute * 60) + "초");
-				}
-				
-			});
-
-		} else {
-			//파일이 없는 경우 내용을 지워준다.
-			$('input[name="videoStatus"]').val(0);
-			videoForDisplay.css("display","none");
-			$("#guide-video").html("가이드 영상을 올려주세요.");
-			videoForDisplay.attr("src", "");
-			URL.revokeObjectURL(file);
 		}
 	});
 	

@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.quantom.audition.dto.ActingRole;
 import com.quantom.audition.dto.Artwork;
+import com.quantom.audition.dto.Recruitment;
 
 @Mapper
 public interface ActingRoleDao {
@@ -21,6 +22,8 @@ public interface ActingRoleDao {
 	List<ActingRole> getActingRolesForPrintList(Map<String, Object> param);
 
 	void write(Map<String, Object> param);
+	
+	ActingRole getActingRoleById(@Param("id") int id);
 
 	ActingRole getForPrintActingRoleById(@Param("id") int id);
 	

@@ -109,8 +109,6 @@
 		SET regDate = NOW(),
 		updateDate =
 		NOW(),
-		body =
-		#{body},
 		memberId = #{memberId},
 		relTypeCode =
 		#{relTypeCode},
@@ -182,14 +180,9 @@
 		ON Apply.memberId =
 		Mem.id
 		LEFT OUTER
-		JOIN `recruitment` AS
-		Recruit
-		ON Apply.relId =
-		Recruit.id
-		LEFT OUTER
 		JOIN `actingRole` AS Act
 		ON
-		Recruit.roleId = Act.id
+		Apply.relId = Act.id
 		LEFT OUTER JOIN
 		`artwork` AS Art
 		ON Act.artworkId
@@ -210,7 +203,6 @@
 		UPDATE applyment
 		<set>
 			updateDate = NOW(),
-			<if test="body != null">body = #{body},</if>
 		</set>
 		WHERE id = #{id}
 	</update>
@@ -240,7 +232,6 @@
 		<id property="delStatus" column="delStatus" />
 		<id property="displayStatus" column="displayStatus" />
 		<id property="hideStatus" column="hideStatus" />
-		<id property="body" column="body" />
 		<id property="memberId" column="memberId" />
 		<id property="relId" column="relId" />
 		<id property="result" column="result" />
@@ -264,7 +255,6 @@
 		<id property="delStatus" column="delStatus" />
 		<id property="displayStatus" column="displayStatus" />
 		<id property="hideStatus" column="hideStatus" />
-		<id property="body" column="body" />
 		<id property="memberId" column="memberId" />
 		<id property="relId" column="relId" />
 		<id property="result" column="result" />

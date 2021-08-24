@@ -17,6 +17,9 @@ label[for] {
 }
 
 /* 라이브러리 */
+.font-thin{
+	font-weight: 10;
+}
 .break-all {
 	word-break: break-all;
 }
@@ -150,6 +153,10 @@ label[for] {
 	padding: 50%;
 }
 
+.padding-bottom-video {
+	padding-bottom: 56.25%;
+}
+
 .padding-bottom-25{
 	padding-bottom: 25%;
 }
@@ -265,6 +272,10 @@ label[for] {
 /* grid 관련*/
 .grid-column-auto-800{
 	grid-template-columns: minmax(auto, 800px);
+}
+
+.grid-column-2fr-1fr{
+	grid-template-columns: 2fr 1fr;
 }
 
 .grid-columns-1fr-2fr{

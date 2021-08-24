@@ -25,7 +25,6 @@ public class Member {
 	private String gender;
 	private String ISNI_number;
 
-	@JsonIgnore
 	private String loginPw;
 	private String name;
 	private String nickname;

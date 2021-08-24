@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.quantom.audition.config.AppConfig;
 import com.quantom.audition.dao.ApplymentDao;
 import com.quantom.audition.dao.RecruitmentDao;
+import com.quantom.audition.dto.ActingRole;
 import com.quantom.audition.dto.Applyment;
 import com.quantom.audition.dto.File;
 import com.quantom.audition.dto.Member;
@@ -25,6 +26,8 @@ public class ApplymentService {
 	private ApplymentDao applymentDao;
 	@Autowired
 	private FileService fileService;
+	@Autowired
+	private ActingRoleService actingRoleService;
 	@Autowired
 	private AppConfig appConfig;
 	@Autowired
@@ -226,9 +229,9 @@ public class ApplymentService {
 	}
 
 	public ResultData checkActorCanWriteApplyment(Member actor, String relTypeCode, int relId) {
-		Recruitment recruitment = recruitmentService.getRecruitmentById(relId);
+		ActingRole actingRole = actingRoleService.getActingRoleById(relId);
 
-		if (recruitment.isCompleteStatus()) {
+		if (actingRole.isCompleteStatus()) {
 			return new ResultData("F-2", "마감되었습니다.");
 		}
 
