@@ -10,7 +10,8 @@
 	<div class="flex items-center px-4">
 		<div class="font-black">마이 프로필</div>
 		<div class="flex-grow"></div>
-		<a href="/usr/member/checkPassword?redirectUri=${Util.getUriEncoded('/usr/member/modify')}">
+		<a
+			href="/usr/member/checkPassword?redirectUri=${Util.getUriEncoded('/usr/member/modify')}">
 			<div>프로필수정</div>
 		</a>
 	</div>
@@ -18,7 +19,9 @@
 		<c:choose>
 			<c:when
 				test="${loginedMember.youTubeUrl != '' && loginedMember.youTubeUrl != null }">
-				<div id="player" class="w-full h-80 md:h-96"></div>
+				<div class="relative h-0 padding-bottom-video">
+					<div id="player" class="absolute top-0 left-0 w-full h-full "></div>
+				</div>
 			</c:when>
 			<c:otherwise>
 				<a class="flex items-center justify-center w-full h-full font-black"

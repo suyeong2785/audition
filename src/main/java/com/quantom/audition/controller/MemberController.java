@@ -256,6 +256,7 @@ public class MemberController {
 			careerService.modifyCareerByMemberIdAndJobId(param);
 		}
 		
+		param.put("id", loginedMemberId);
 		memberService.modify(param);
 		
 		

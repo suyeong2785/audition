@@ -77,12 +77,12 @@
 		UPDATE member
 		<set>
 			updateDate = NOW(),
+			`youTubeUrl` = #{youTubeUrl},
 			<if test="name != null and name.length() > 0">`name` = #{name},</if>
 			<if test="careerId != null and careerId > 0">`careerId` = #{careerId},</if>
 			<if test="nickname != null and nickname.length() > 0">`nickname` = #{nickname},</if>
 			<if test="email != null and email.length() > 0">`email` = #{email},</if>
 			<if test="cellphoneNo != null and cellphoneNo.length() > 0">`cellphoneNo` = #{cellphoneNo},</if>
-			<if test="youtubeUrl != null and youtubeUrl.length() > 0">`youtubeUrl` = #{youtubeUrl},</if>
 			<if test="loginPw != null and loginPw.length() > 0">`loginPw` = #{loginPw},</if>
 			<if test="loginPw != null and loginPw.length() > 0">`careerId` = #{careerId},</if>
 			<if test="ISNI_number != null and ISNI_number.length() > 0">`ISNI_number` = #{ISNI_number},</if>

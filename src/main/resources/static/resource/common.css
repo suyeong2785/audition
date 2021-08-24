@@ -229,6 +229,9 @@ label[for] {
 .max-height-500 {
 	max-height: 500px;
 }
+.max-height-700 {
+	max-height: 700px;
+}
 
 .max-width-277 {
 	max-width: 277.5px;
@@ -277,15 +280,6 @@ label[for] {
 .grid-column-2fr-1fr{
 	grid-template-columns: 2fr 1fr;
 }
-
-.grid-columns-1fr-2fr{
-	grid-template-columns: minmax(97.6px,160px) minmax(182px,auto);
-}
-
-.grid-row-140-160{
-	grid-template-rows: minmax(97.6px,auto);
-}
-
 /* flex 관련 */
 .flex {
 	display: flex;

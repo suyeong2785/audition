@@ -27,7 +27,7 @@
 		<c:when test="${artworks != null && artworks != ''}">
 			<c:forEach items="${artworks}" var="artwork">
 				<div
-					class="grid grid-columns-1fr-2fr grid-row-140-160 gap-x-2.5 bg-gray-100 place-content-stretch">
+					class="grid grid-columns-artworkList grid-row-artworkList gap-x-2.5 bg-gray-100 place-content-stretch">
 					<a href="${artwork.getDetailLink()}">
 						<c:choose>
 							<c:when test="${artwork.genre == 'action'}">

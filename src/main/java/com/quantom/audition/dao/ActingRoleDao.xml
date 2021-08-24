@@ -363,7 +363,7 @@
 			<id property="writerId" column="writer__id" />
 			<id property="writerAuthority" column="writer__authority" />
 		</association>
-		<collection property="files" resultMap="files" ofType="Post" columnPrefix="actingRole__"/>
+		<collection property="files" resultMap="files" ofType="File" columnPrefix="actingRole__"/>
 	</resultMap>
 	
   	<resultMap id="files" type="File">

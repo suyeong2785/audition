@@ -1,8 +1,7 @@
 package com.quantom.audition.dto;
 
+import java.util.List;
 import java.util.Map;
-
-import org.springframework.web.util.HtmlUtils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -25,6 +24,9 @@ public class Applyment {
 	private int result;
 	private String relTypeCode;
 	private int memberId;
+	
+	private List<File> files;
+	
 	private Map<String, Object> extra;
 
 	/*

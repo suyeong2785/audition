@@ -319,7 +319,26 @@ h3 {
 }
 /* showMyPage 커스텀*/
 .grid-rows-layout-myPage{
-	grid-template-rows: 50px 300px 200px 250px minmax(10%,50%);
+	grid-template-rows: 50px minmax(auto,auto) 200px 250px minmax(10%,50%);
+}
+/* showMyAudition 커스텀*/
+.font-myAudition {
+	font-size: 5vmin;
+}
+.grid-columns-myAudition{
+	grid-template-columns: minmax(68px,100px) minmax(150px,auto) 50px;
+}
+
+.grid-row-myAudition{
+	grid-template-rows: minmax(68px,auto);
+}
+/* artworklist 커스텀*/
+.grid-columns-artworkList{
+	grid-template-columns: minmax(97.6px,160px) minmax(182px,auto);
+}
+
+.grid-row-artworkList{
+	grid-template-rows: minmax(97.6px,auto);
 }
 
 /* loader 커스텀*/

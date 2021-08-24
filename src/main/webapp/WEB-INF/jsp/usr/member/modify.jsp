@@ -49,9 +49,6 @@
 
 		form.careerDates.value = dates;
 		form.careerArtworks.value = artworks;
-
-		alert('form.careerDates.value : ' + form.careerDates.value);
-		alert('form.careerArtworks.value : ' + form.careerArtworks.value);
 		
 		return 1;
 	}
@@ -104,11 +101,11 @@
 			return false;
 		}
 
-		form.youtubeUrl.value = form.youtubeUrl.value.trim();
+		form.youTubeUrl.value = form.youTubeUrl.value.trim();
 
-		if (form.youtubeUrl.value.length != 0) {
-			if (matchYoutubeUrl(form.youtubeUrl.value) == false) {
-				form.youtubeUrl.focus();
+		if (form.youTubeUrl.value.length != 0) {
+			if (matchYoutubeUrl(form.youTubeUrl.value) == false) {
+				form.youTubeUrl.focus();
 				alert('youTube url형식에 맞게 입력해주세요.');
 
 				return;
@@ -306,7 +303,7 @@
 				<th>유튜브 url</th>
 				<td>
 					<div class="form-control-box">
-						<input type="text" name="youtubeUrl" placeholder="ex) https://www.youtube.com/watch?v=영문/숫자/특수문자 (pc버전)" />
+						<input type="text" name="youTubeUrl" placeholder="ex) https://www.youtube.com/watch?v=영문/숫자/특수문자 (pc버전)" />
 					</div>
 				</td>
 			</tr>
