@@ -78,6 +78,7 @@
 		<set>
 			updateDate = NOW(),
 			<if test="name != null and name.length() > 0">`name` = #{name},</if>
+			<if test="careerId != null and careerId > 0">`careerId` = #{careerId},</if>
 			<if test="nickname != null and nickname.length() > 0">`nickname` = #{nickname},</if>
 			<if test="email != null and email.length() > 0">`email` = #{email},</if>
 			<if test="cellphoneNo != null and cellphoneNo.length() > 0">`cellphoneNo` = #{cellphoneNo},</if>

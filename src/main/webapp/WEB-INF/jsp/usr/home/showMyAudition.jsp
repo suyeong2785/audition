@@ -3,7 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<c:set var="pageTitle" value="마이 페이지" />
 <%@ include file="../part/head.jspf"%>
 
 <script src="http://www.youtube.com/player_api"></script>

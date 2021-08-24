@@ -317,6 +317,11 @@ h3 {
 	display: none;
 	z-index: 100;
 }
+/* showMyPage 커스텀*/
+.grid-rows-layout-myPage{
+	grid-template-rows: 50px 300px 200px 250px minmax(10%,50%);
+}
+
 /* loader 커스텀*/
 .loader-img {
   width: 120px;

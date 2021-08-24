@@ -3,86 +3,77 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<c:set var="pageTitle" value="마이 페이지" />
 <%@ include file="../part/head.jspf"%>
 
 <script src="http://www.youtube.com/player_api"></script>
-<div class="con mx-auto">
-	<h2 class="text-center py-2 my-4 border-2 border-black box-border p-4 box-border">자기소개 영상</h2>
-
-	<div
-		class="profile-box con border-2 border-black box-border bg-gray-300 text-center">
+<div class="grid grid-rows-layout-myPage con mx-auto">
+	<div class="flex items-center px-4">
+		<div class="font-black">마이 프로필</div>
+		<div class="flex-grow"></div>
+		<a href="/usr/member/checkPassword?redirectUri=${Util.getUriEncoded('/usr/member/modify')}">
+			<div>프로필수정</div>
+		</a>
+	</div>
+	<div class="profile-box text-center bg-gray-300">
 		<c:choose>
 			<c:when
 				test="${loginedMember.youTubeUrl != '' && loginedMember.youTubeUrl != null }">
 				<div id="player" class="w-full h-80 md:h-96"></div>
 			</c:when>
 			<c:otherwise>
-				<div class="w-full h-full ">
-					<a
-						href="/usr/member/checkPassword?redirectUri=${Util.getUriEncoded('/usr/member/modify')}">자기소개
-						영상 youTubeUrl을 올려주세요</a>
-				</div>
+				<a class="flex items-center justify-center w-full h-full font-black"
+					href="/usr/member/checkPassword?redirectUri=${Util.getUriEncoded('/usr/member/modify')}">
+					자기소개 영상 youTubeUrl을 올려주세요 </a>
+
 			</c:otherwise>
 		</c:choose>
 	</div>
 
-	<h2 class="text-center py-2 my-4 border-2 border-black box-border p-4 box-border">프로필</h2>
-	<div class="flex">
-		<div class="profile-image">
-			<a
-				href="/usr/member/checkPassword?redirectUri=${Util.getUriEncoded('/usr/member/modify')}"
-				class="box w-8 h-8 md:w-24 md:h-24 ">
-				<c:choose>
-					<c:when test="${not empty fileForProfile}">
-						<img class="w-24 h-24 md:w-40 md:h-40 mr-8 md:mr-14"
-							src="${fileForProfile.forPrintGenUrl}" alt="" />
-					</c:when>
-					<c:otherwise>
-						<span class="profile text-8xl text-green-500">
-							<i class="fas fa-user-circle"></i>
-						</span>
-					</c:otherwise>
-				</c:choose>
-			</a>
-		</div>
-		<div class="profile-info">
-			<div>이름 : ${loginedMember.name}</div>
-			<div>활동명 : ${loginedMember.nickname}</div>
-			<div>나이 : ${loginedMember.age}</div>
-			<div>성별 : ${loginedMember.gender}</div>
-		</div>
+	<div class="flex items-center justify-center">
+		<c:choose>
+			<c:when test="${not empty fileForProfile}">
+				<img class="rounded-full w-40 h-40 bg-gray-100"
+					src="${fileForProfile.forPrintGenUrl}" alt="" />
+			</c:when>
+			<c:otherwise>
+				<a
+					href="/usr/member/checkPassword?redirectUri=${Util.getUriEncoded('/usr/member/modify')}">
+					<span class="profile text-8xl text-green-500">
+						<i class="fas fa-user-circle"></i>
+					</span>
+				</a>
+			</c:otherwise>
+		</c:choose>
 	</div>
 
-	<h2
-		class="text-center py-2 my-4 border-2 border-black box-border p-4 box-border">경력사항</h2>
-	<div class="profile-introduction ">
-		<c:forEach items="${joinedCareer}" var="career" varStatus="status">
-			<div class="career-input flex items-center">
-				<div class="flex pl-2">
-					<div class="w-24">${fn:contains(career.key,'-') ? career.key : ''}</div>
-					<div>${career.value}</div>
+	<div
+		class="profile-info flex flex-col items-center justify-center bg-gray-200 font-bold">
+		<div class="font-black text-2xl pb-8">${loginedMember.name}</div>
+		<div>${loginedMember.cellphoneNo}</div>
+		<div>${loginedMember.email}</div>
+		<div>${loginedMember.age}살</div>
+		<div>${loginedMember.gender}</div>
+	</div>
+
+	<div
+		class="profile-introduction flex flex-col justify-center items-center items-stretch">
+		<c:choose>
+			<c:when test="${joinedCareer != null && joinedCareer != ''}">
+				<div class="career pl-8 flex-grow py-8">
+					<c:forEach items="${joinedCareer}" var="career" varStatus="status">
+						<div class="flex pl-2">
+							<div class="w-24">${fn:contains(career.key,'-') ? career.key : ''}</div>
+							<div>${career.value}</div>
+						</div>
+					</c:forEach>
 				</div>
-			</div>
-		</c:forEach>
-	</div>
-
-	<div class=" my-4">
-		<div class="flex justify-center border-2 border-black box-border p-4">
-			<div class="text-center ">지원결과 알림</div>
+			</c:when>
+		</c:choose>
+		<div class="flex flex-col items-center jusfity-center flex-grow py-8">
+			<div class="flex-grow flex items-center font-black">관심오디션</div>
+			<div class="flex-grow flex items-center">#뮤지컬#광고#실버모델</div>
 		</div>
 	</div>
-	<div>
-		<c:forEach items="${applymentResults}" var="applymentResult">
-			<div>
-				<div class="p-4">
-					<div class="">${applymentResult.forPrintApplymentResult}</div>
-
-				</div>
-			</div>
-		</c:forEach>
-	</div>
-
 </div>
 <script>
 	//유튜브 url에서 videoid추출하는 함수 stackoverflow에서 찾음 제일간단...
@@ -129,4 +120,6 @@
 	}
 </script>
 
-<%@ include file="../part/foot.jspf"%>
+</div>
+</body>
+</html>

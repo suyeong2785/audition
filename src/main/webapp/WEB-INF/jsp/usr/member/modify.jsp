@@ -113,7 +113,6 @@
 
 				return;
 			}
-
 		}
 		
 		form.name.value = form.name.value.trim();

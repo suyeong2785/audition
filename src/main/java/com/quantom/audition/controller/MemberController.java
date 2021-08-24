@@ -247,9 +247,6 @@ public class MemberController {
 		Util.changeMapKey(param, "careerDates","date");
 		Util.changeMapKey(param, "careerArtworks","artwork");
 		
-		System.out.println("careerDates : " + param.get("careerDates") );
-		System.out.println("careerArtworks : " + param.get("careerArtworks") );
-		
 		Career career = careerService.getCareerByMember(loginedMember.getCareerId());
 	
 		if (career == null) {
