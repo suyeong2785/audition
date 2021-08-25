@@ -19,10 +19,10 @@ import com.quantom.audition.dto.Artwork;
 import com.quantom.audition.dto.Career;
 import com.quantom.audition.dto.Job;
 import com.quantom.audition.dto.Member;
-import com.quantom.audition.dto.Recruitment;
 import com.quantom.audition.dto.Share;
 import com.quantom.audition.service.ActingRoleService;
 import com.quantom.audition.service.ApplymentService;
+import com.quantom.audition.service.ArtworkService;
 import com.quantom.audition.service.CareerService;
 import com.quantom.audition.service.RecruitmentService;
 import com.quantom.audition.service.ShareService;
@@ -47,11 +47,14 @@ public class HomeController {
 
 	@Autowired
 	ActingRoleService actingRoleService;
+	
+	@Autowired
+	ArtworkService artworkService;
 
 	@RequestMapping("/usr/home/main")
 	public String showMain(Model model, HttpServletRequest req) {
 		// CastingCall(artworks) 가져오기
-		List<Artwork> artworks = actingRoleService.getForPrintArtworks();
+		List<Artwork> artworks = artworkService.getForPrintArtworks();
 
 		model.addAttribute("artworks", artworks);
 
@@ -71,7 +74,7 @@ public class HomeController {
 	@RequestMapping("/")
 	public String showIndex(Model model) {
 
-		List<Artwork> artworks = actingRoleService.getForPrintArtworks();
+		List<Artwork> artworks = artworkService.getForPrintArtworks();
 
 		model.addAttribute("artworks", artworks);
 
@@ -101,9 +104,12 @@ public class HomeController {
 		model.addAttribute("acceptedShares", acceptedShares);
 
 		// 내가 올린 recruitments를 가져옴
-		List<Recruitment> recruitments = recruitmentService.getForPrintRecruitmentsByLoginId(loginedMember.getId());
+		//List<Recruitment> recruitments = recruitmentService.getForPrintRecruitmentsByLoginId(loginedMember.getId());
 
-		model.addAttribute("recruitments", recruitments);
+		// recruitment의 역할을 artwork가 대체
+		List<Artwork> artworks = artworkService.getForPrintArtworksByLoginId(loginedMember.getId());
+		
+		model.addAttribute("artworks", artworks);
 
 		return "adm/home/showMyPage";
 	}

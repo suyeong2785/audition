@@ -15,10 +15,6 @@ public interface ActingRoleDao {
 
 	List<ActingRole> getRoles();
 
-	List<Artwork> getArtworks();
-	
-	List<Artwork> getForPrintArtworks();
-	
 	List<ActingRole> getActingRolesForPrintList(Map<String, Object> param);
 
 	void write(Map<String, Object> param);
@@ -32,13 +28,5 @@ public interface ActingRoleDao {
 	void modify(Map<String, Object> param);
 	
 	void delete(@Param("id") int id);
-
-	void writeArtwork(Map<String, Object> param);
-
-	Artwork getForPrintArtworkById(@Param("id") int id);
-
-	void modifyArtwork(Map<String, Object> param);
-
-	void deleteArtwork(@Param("id") int id);
 
 }

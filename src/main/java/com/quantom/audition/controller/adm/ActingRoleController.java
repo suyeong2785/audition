@@ -20,6 +20,7 @@ import com.quantom.audition.dto.ActingRole;
 import com.quantom.audition.dto.Artwork;
 import com.quantom.audition.dto.Member;
 import com.quantom.audition.service.ActingRoleService;
+import com.quantom.audition.service.ArtworkService;
 import com.quantom.audition.util.Util;
 
 @Controller
@@ -29,10 +30,12 @@ public class ActingRoleController {
 	private AppConfig appConfig;
 	@Autowired
 	private ActingRoleService actingRoleService;
+	@Autowired
+	private ArtworkService artworkService;
 
 	@RequestMapping("/{authority}/actingRole/artworkList")
 	public String showAdmArtworkList(Model model, @PathVariable("authority") String authority) {
-		List<Artwork> artworks = actingRoleService.getForPrintArtworks();
+		List<Artwork> artworks = artworkService.getForPrintArtworks();
 
 		model.addAttribute("artworks", artworks);
 
@@ -52,7 +55,7 @@ public class ActingRoleController {
 
 	@RequestMapping("/adm/actingRole/doWriteArtwork")
 	public String doWriteArtwork(@RequestParam Map<String, Object> param, HttpServletRequest req, Model model) {
-		int newArtworkId = actingRoleService.writeArtwork(param);
+		int newArtworkId = artworkService.writeArtwork(param);
 
 		String redirectUri = (String) param.get("redirectUri");
 		redirectUri = redirectUri.replace("#id", newArtworkId + "");
@@ -67,7 +70,7 @@ public class ActingRoleController {
 		int id = Integer.parseInt((String) param.get("id"));
 
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
-		Artwork artwork = actingRoleService.getForPrintArtworkById(loginedMember, id);
+		Artwork artwork = artworkService.getForPrintArtworkById(loginedMember, id);
 
 		if (artwork.getActingRole() != null) {
 			String actingRole = artwork.getActingRole();
@@ -120,7 +123,7 @@ public class ActingRoleController {
 		int id = Integer.parseInt((String) param.get("id"));
 
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
-		Artwork artwork = actingRoleService.getForPrintArtworkById(loginedMember, id);
+		Artwork artwork = artworkService.getForPrintArtworkById(loginedMember, id);
 
 		model.addAttribute("artwork", artwork);
 
@@ -130,7 +133,7 @@ public class ActingRoleController {
 	@RequestMapping("/adm/actingRole/doModifyArtwork")
 	public String doModifyArtwork(@RequestParam Map<String, Object> param, HttpServletRequest req, Model model) {
 		Map<String, Object> newParam = Util.getNewMapOf(param, "id", "name", "productionName", "directorName", "etc");
-		actingRoleService.modifyArtwork(newParam);
+		artworkService.modifyArtwork(newParam);
 
 		String redirectUri = (String) param.get("redirectUri");
 
@@ -139,7 +142,7 @@ public class ActingRoleController {
 
 	@RequestMapping("/adm/actingRole/doDeleteArtwork")
 	public String doModifyArtwork(int id, String listUrl) {
-		actingRoleService.deleteArtwork(id);
+		artworkService.deleteArtwork(id);
 
 		return "redirect:" + listUrl;
 	}
@@ -167,7 +170,7 @@ public class ActingRoleController {
 
 	@RequestMapping("/adm/actingRole/write")
 	public String showWrite(Model model) {
-		List<Artwork> artworks = actingRoleService.getArtworks();
+		List<Artwork> artworks = artworkService.getArtworks();
 
 		model.addAttribute("artworks", artworks);
 
