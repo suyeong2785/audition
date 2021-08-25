@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -56,6 +58,7 @@ public class ActingRole {
 		return getTitle();
 	}
 
+	@JsonIgnore
 	public String getForPrintGenUrlForActingRole() {
 		if (files.isEmpty() == false) {
 			for (File file : files) {
@@ -67,6 +70,7 @@ public class ActingRole {
 		return null;
 	}
 
+	@JsonIgnore
 	public String getForPrintGenUrlForMember() {
 		if (extra != null) {
 			if (extra.get("fileIdForMember") != null) {

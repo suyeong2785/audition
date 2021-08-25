@@ -12,7 +12,7 @@
 	var checkCareerBoxResult = function(form) {
 
 		var artworkNeedToStop = 0;
-		let artworks = $("input[name='careerArtwork']").each(
+		$("input[name='careerArtwork']").each(
 				function(index, item) {
 					if ($.trim($(this).val()) != ""
 							&& $.trim($(this).val()) != null) {

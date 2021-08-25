@@ -11,6 +11,14 @@
 		WHERE
 		id = #{id}
 	</select>
+	
+	<select id="getActingRolesForPrintListByArtworkId" resultType="ActingRole">
+		SELECT *
+		FROM
+		actingRole
+		WHERE
+		artworkId = #{artworkId}
+	</select>
 
 	<select id="getForPrintActingRoleById" resultMap="actingRole">
 		SELECT ACR.*,

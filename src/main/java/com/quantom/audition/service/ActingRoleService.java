@@ -34,6 +34,10 @@ public class ActingRoleService {
 	public List<ActingRole> getActingRolesForPrintList(Map<String, Object> param) {
 		return actingRoleDao.getActingRolesForPrintList(param);
 	}
+	
+	public List<ActingRole> getActingRolesForPrintListByArtworkId(String artworkId) {
+		return actingRoleDao.getActingRolesForPrintListByArtworkId(artworkId);
+	}
 
 	public int write(Map<String, Object> param) {
 		actingRoleDao.write(param);

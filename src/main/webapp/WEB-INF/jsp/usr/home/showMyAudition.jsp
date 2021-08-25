@@ -25,7 +25,7 @@
 				<div
 					class="bg-gray-400 text-white object-cover w-20 h-20 rounded-full flex justify-center items-center">${applymentResult.name}</div>
 			</c:if>
-			<div class="grid  items-center">
+			<div class="grid items-center">
 				<div>
 					<div class="font-black text-sm">${applymentResult.extra.artworkName}</div>
 					<div class="title text-overflow-el text-xs">
