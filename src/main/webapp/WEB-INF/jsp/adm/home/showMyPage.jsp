@@ -96,7 +96,7 @@
 				class="absolute bottom-0 right-0 ${actingRoleBg} h-1/2 w-1/2 z-10 hidden"></div>
 		</div>
 		<div
-			class="actingRoleList flex justify-center items-center text-gray-600 " >
+			class="actingRoleList flex justify-center items-center text-gray-600 ">
 			<!-- 각각의 작품에 해당하는 배역목록을 보여줌  -->
 			<div id="actingRoleList${artwork.id}" data-display-status="-1"
 				class="flex-col flex-grow hidden ${actingRoleBg} p-4 rounded-b-3xl leading-10"></div>
@@ -109,20 +109,24 @@
 	$(document).mouseup(function(e){ 
 		if($('.artworkList-box').has(e.target).length === 0  && $('.actingRoleList').has(e.target).length === 0){ 
 			$('[id^="actingRoleList"]').css("display","none");
+			$('[id^="actingRoleList"]').empty();
 			$('[id^="artwork-left-background"]').css("display","none");
 			$('[id^="artwork-right-background"]').css("display","none");
 			}
 		});
 	
 	function showActingRoleList(artworkId) {
-		$('[id^="actingRoleList"]').data("displayStatus", -1);
-		$('[id^="actingRoleList"]').css("display","none");
-		$('[id^="artwork-left-background"]').css("display","none");
-		$('[id^="artwork-right-background"]').css("display","none");
+		
+		$('[id^="actingRoleList"]').not('#actingRoleList'+ artworkId).css("display","none");
+		$('[id^="actingRoleList"]').not('#actingRoleList'+ artworkId).data("displayStatus",-1);
+		$('[id^="artwork-left-background"]').not('#artwork-left-background'+ artworkId).css("display","none");
+		$('[id^="artwork-left-background"]').not('#artwork-right-background'+ artworkId).css("display","none");
 		
 		$.get('../../adm/actingRole/getActingRoleListAjax',{
-			artworkId : artworkId 
+			artworkId : artworkId
 		},function(data){
+			
+			
 			drawActingRoleList(data,artworkId);
 		},'json');
 		
@@ -147,8 +151,9 @@
 			html += '<div>'+ actingRole.job +'</div>';
 			html += '</div>';
 			
-			$('#actingRoleList'+ artworkId).append(html);
 		});
+		
+		$('#actingRoleList'+ artworkId).append(html);
 		
 		if($('#actingRoleList'+ artworkId).data("displayStatus") == 1){
 			$('#actingRoleList'+ artworkId).data("displayStatus", -1);

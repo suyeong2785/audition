@@ -30,13 +30,13 @@ public class ActingRoleService {
 	public List<ActingRole> getForPrintRoles() {
 		return actingRoleDao.getRoles();
 	}
-	
+
 	public List<ActingRole> getActingRolesForPrintList(Map<String, Object> param) {
 		return actingRoleDao.getActingRolesForPrintList(param);
 	}
-	
-	public List<ActingRole> getActingRolesForPrintListByArtworkId(String artworkId) {
-		return actingRoleDao.getActingRolesForPrintListByArtworkId(artworkId);
+
+	public List<ActingRole> getActingRolesForPrintListByArtworkId(Map<String, Object> param) {
+		return actingRoleDao.getActingRolesForPrintListByArtworkId(param);
 	}
 
 	public int write(Map<String, Object> param) {
@@ -62,21 +62,25 @@ public class ActingRoleService {
 	public ActingRole getActingRoleById(int id) {
 		return actingRoleDao.getActingRoleById(id);
 	}
-	
+
 	public ActingRole getForPrintActingRoleById(Member loginedMember, int id) {
 		return actingRoleDao.getForPrintActingRoleById(id);
 	}
-	
+
 	public ActingRole getActingRoleForPrintDetailById(int id) {
 		return actingRoleDao.getActingRoleForPrintDetailById(id);
 	}
-	
+
 	public void modify(Map<String, Object> param) {
 		actingRoleDao.modify(param);
 	}
 
 	public void delete(int id) {
 		actingRoleDao.delete(id);
+	}
+
+	public int getActingRolesCountByArtworkId(Map<String, Object> param) {
+		return actingRoleDao.getActingRolesCountByArtworkId(param);
 	}
 
 }

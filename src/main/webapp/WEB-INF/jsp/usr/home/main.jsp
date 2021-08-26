@@ -4,8 +4,8 @@
 <%@ include file="../part/head.jspf"%>
 
 <!-- rollingBanner -->
-<div class="con">
-	<div class="swiper-container rollingBanner mx-auto max-h-96">
+<div class="con overflow-hidden">
+	<div class="swiper-container rollingBanner mx-auto max-h-96 relative overflow-hidden">
 		<div
 			class="absolute opacity-75 bottom-0 right-0 padding-banner-uppper-font text-4xl font-banner text-white z-50">FREE</div>
 		<div

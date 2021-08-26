@@ -56,11 +56,11 @@ public class ActingRoleController {
 	
 	@RequestMapping("/adm/actingRole/getActingRoleListAjax")
 	@ResponseBody
-	public ResultData getActingRoleListAjax(HttpServletRequest req,@RequestParam("artworkId") String artworkId) {
+	public ResultData getActingRoleListAjax(HttpServletRequest req,@RequestParam Map<String,Object> param) {
 
 		Map<String, Object> rsDataBody = new HashMap<>();
 		
-		List<ActingRole> actingRoles = actingRoleService.getActingRolesForPrintListByArtworkId(artworkId);
+		List<ActingRole> actingRoles = actingRoleService.getActingRolesForPrintListByArtworkId(param);
 		
 		if(actingRoles.isEmpty()) {
 			return new ResultData("F-1", "해당하는 작품의 배역리스트가 없습니다.");

@@ -17,8 +17,10 @@ public interface ActingRoleDao {
 
 	List<ActingRole> getActingRolesForPrintList(Map<String, Object> param);
 	
-	List<ActingRole> getActingRolesForPrintListByArtworkId(@Param("artworkId") String artworkId);
+	List<ActingRole> getActingRolesForPrintListByArtworkId(Map<String, Object> param);
 
+	int getActingRolesCountByArtworkId(Map<String, Object> param);
+	
 	void write(Map<String, Object> param);
 	
 	ActingRole getActingRoleById(@Param("id") int id);

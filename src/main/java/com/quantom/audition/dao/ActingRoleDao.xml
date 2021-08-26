@@ -19,6 +19,14 @@
 		WHERE
 		artworkId = #{artworkId}
 	</select>
+	
+	<select id="getActingRolesCountByArtworkId" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		actingRole
+		WHERE
+		artworkId = #{artworkId}
+	</select>
 
 	<select id="getForPrintActingRoleById" resultMap="actingRole">
 		SELECT ACR.*,
