@@ -78,7 +78,7 @@ h3 {
     left: 0;
     right: 0;
     background-color: white;
-    z-index: 10;
+    z-index: 100;
 }
 
 .mobile-top-bar a {
@@ -316,6 +316,13 @@ h3 {
 .toast-top-center {
 	display: none;
 	z-index: 100;
+}
+/* 관리자 showMyPage*/
+.grid-columns-adm-myPage{
+	grid-template-columns: minmax(68px,100px) minmax(150px,auto) 50px;
+}
+.grid-row-adm-myPage{
+	grid-template-rows: minmax(68px,auto);
 }
 /* showMyPage 커스텀*/
 .grid-rows-layout-myPage{

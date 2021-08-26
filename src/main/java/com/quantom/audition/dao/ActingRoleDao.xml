@@ -18,6 +18,9 @@
 		actingRole
 		WHERE
 		artworkId = #{artworkId}
+		<if test="limitStart != null and limitTake != null">
+			LIMIT #{limitStart} , #{limitTake} 
+		</if>
 	</select>
 	
 	<select id="getActingRolesCountByArtworkId" resultType="int">

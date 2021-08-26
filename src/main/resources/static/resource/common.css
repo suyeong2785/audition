@@ -289,13 +289,6 @@ label[for] {
 	grid-template-rows: minmax(97.6px,auto);
 }
 /* flex 관련 */
-.flex {
-	display: flex;
-}
-
-.inline-flex {
-	display: inline-flex;
-}
 
 .flex-ai-c {
 	align-items: center;
@@ -319,6 +312,13 @@ label[for] {
 
 .flex-1-0-0 {
 	flex: 1 0 0;
+}
+
+.flex-2-0-0 {
+	flex: 2 0 0;
+}
+.flex-3-0-0 {
+	flex: 3 0 0;
 }
 
 .flex-1 {

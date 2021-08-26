@@ -22,8 +22,10 @@
 				</div>
 			</c:if>
 			<c:if test="${applymentResult.files == '[]'}">
-				<div
-					class="bg-gray-400 text-white object-cover w-20 h-20 rounded-full flex justify-center items-center">${applymentResult.name}</div>
+				<div class="relative padding-bottom-50 overlow-hidden">
+					<div
+						class="absolute top-0 left-0 bg-gray-400 text-white w-full h-full rounded-full flex justify-center items-center">${applymentResult.extra.actingName}</div>
+				</div>
 			</c:if>
 			<div class="grid items-center">
 				<div>

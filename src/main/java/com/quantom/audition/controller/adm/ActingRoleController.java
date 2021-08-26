@@ -53,12 +53,17 @@ public class ActingRoleController {
 
 		return url;
 	}
-	
-	@RequestMapping("/adm/actingRole/getActingRoleListAjax")
-	@ResponseBody
-	public ResultData getActingRoleListAjax(HttpServletRequest req,@RequestParam Map<String,Object> param) {
 
+	@RequestMapping("/adm/actingRole/getActingRoleListByArtworkIdAjax")
+	@ResponseBody
+	public ResultData getActingRoleListByArtworkIdAjax(HttpServletRequest req,@RequestParam Map<String,Object> param) {
+		
 		Map<String, Object> rsDataBody = new HashMap<>();
+		
+		if(param.get("limitStart") != null && param.get("limitStart") != "") {
+			param.put("limitStart", Integer.parseInt((String)param.get("limitStart")));
+			param.put("limitTake", Integer.parseInt((String)param.get("limitTake")));	
+		}
 		
 		List<ActingRole> actingRoles = actingRoleService.getActingRolesForPrintListByArtworkId(param);
 		
