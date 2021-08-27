@@ -20,7 +20,7 @@
 		<div class="relative flex flex-col mt-4">
 			<div
 				class="artworkList-box z-20 grid grid-columns-adm-myPage grid-row-adm-myPage gap-x-2.5 bg-gray-100 place-content-stretch bg-gray-200 rounded-full place-content-stretch"
-				onclick="showActingRoleList(${artwork.id},1)">
+				onclick="showActingRoleList(${artwork.id},'${artwork.name}', 1)">
 				<c:choose>
 					<c:when test="${artwork.genre == 'action'}">
 						<c:set var="bgColor" value="bg-red-200"></c:set>
@@ -120,7 +120,7 @@
 			}
 		});
 	
-	function showActingRoleList(artworkId, page) {
+	function showActingRoleList(artworkId,artworkName, page) {
 		
 		var itemsInAPage = 3;
 		
@@ -141,7 +141,7 @@
 			limitTake : limitTake
 			
 		},function(data){
-			drawActingRoleList(data, artworkId, page, itemsInAPage, totalCount);
+			drawActingRoleList(data, artworkId, artworkName, page, itemsInAPage, totalCount);
 			
 		},'json');
 		
@@ -153,12 +153,12 @@
 			dataType : 'json',
 			}).then(function(data){
 				totalCount = data.body.actingRoles.length;
-				actingRoleList(totalCount);
+				actingRoleList(totalCount,artworkName);
 			});
 		
 	}
 	
-	function drawActingRoleList(data, artworkId, page, itemsInAPage, totalCount){
+	function drawActingRoleList(data, artworkId, artworkName, page, itemsInAPage, totalCount){
 		$('#actingRoleList'+ artworkId).empty();
 		
 		if(data && data.body && data.body.actingRoles){
@@ -170,13 +170,14 @@
 		var html = '';
 		
 		$.each(actingRoles, function(index, actingRole){
+			html += '<a href="../applyment/showMyApplyments?artworkName='+ artworkName +'&actingRoleName='+ actingRole.name +'&relTypeCode=actingRole&relId='+ actingRole.id +'">';
 			html += '<div class="flex justify-between justify-items-stretch bg-gray-200 mb-2 rounded-full px-8 font-black">';
 			html += '<div class="flex-1-0-0 ">'+ actingRole.id +'</div>';
 			html += '<div class="flex-3-0-0 text-center">'+ actingRole.name +'역</div>';
 			html += '<div class="flex-2-0-0 text-center">'+ actingRole.gender +'</div>';
 			html += '<div class="flex-3-0-0 text-right">'+ actingRole.job +'</div>';
 			html += '</div>';
-			
+			html += '</a>';
 		});
 		
 		html += '<div class="flex items-center justify-center sm:px-6">';
@@ -305,21 +306,22 @@
 		var html = '';
 		
 		$.each(actingRoles, function(index, actingRole){
+			html += '<a href="../applyment/showMyApplyments">';
 			html += '<div class="flex justify-between justify-items-stretch bg-gray-200 mb-2 rounded-full px-8 font-black">';
 			html += '<div class="flex-1-0-0 ">'+ actingRole.id +'</div>';
 			html += '<div class="flex-3-0-0 text-center">'+ actingRole.name +'역</div>';
 			html += '<div class="flex-2-0-0 text-center">'+ actingRole.gender +'</div>';
 			html += '<div class="flex-3-0-0 text-right">'+ actingRole.job +'</div>';
 			html += '</div>';
-			
+			html += '</a>';
 		});
 		
 		html += '<div class="flex items-center justify-center sm:px-6">';
-		html += '<div id="pagination-mobile'+artworkId+'" class="flex justify-between sm:hidden">';
+		html += '<div id="pagination-mobile'+ artworkId +'" class="flex justify-between sm:hidden">';
 		html += '</div>';
 		html += '<div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-center">';
 		html += '<div>';
-		html += '<nav id="pagination'+artworkId+'" class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">';
+		html += '<nav id="pagination'+ artworkId +'" class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">';
 		html += '</nav>';
 		html += '</div>';
 		html += '</div>';

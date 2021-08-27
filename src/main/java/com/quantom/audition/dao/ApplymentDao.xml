@@ -41,7 +41,8 @@
 		M.name AS extra__writerRealName,
 		M.cellphoneNo AS
 		extra__writerCellphoneNo,
-		M.email AS extra__writerEmail,
+		M.email AS
+		extra__writerEmail,
 		M.nickname AS
 		extra__writer
 		FROM applyment AS AM
@@ -75,7 +76,42 @@
 		AND AM.id = #{id}
 	</select>
 
-	<select id="getForPrintApplymentsByResult" resultMap="applyment">
+	<select id="getForPrintApplymentsByRelIdAndRelTypeCode"
+		resultMap="applymentForAudition">
+		SELECT AP.*,
+		M.id AS member__id,
+		M.name AS member__name,
+		M.age AS member__age,
+		M.gender AS member__gender,
+		MF.id AS file__member__Id,
+		MF.updateDate AS file__member__updateDate,
+		MF.relTypeCode AS file__member__relTypeCode,
+		MF.fileExt AS file__member__fileExt,
+		MF.fileDir AS file__member__fileDir,
+		AF.id AS file__applyment__id,
+		AF.updateDate AS file__applyment__updateDate,
+		AF.relTypeCode AS file__applyment__relTypeCode,
+		AF.fileExt AS file__applyment__fileExt,
+		AF.fileDir AS file__applyment__fileDir
+		FROM applyment AS AP
+		LEFT OUTER
+		JOIN member AS M
+		ON M.Id = AP.memberId
+		LEFT OUTER
+		JOIN file AS MF
+		ON MF.relId = M.id
+		AND MF.relTypeCode = "member"
+		LEFT OUTER
+		JOIN file AS AF
+		ON AF.relTypeCode = "applyment"
+		AND AF.relId = AP.id
+		WHERE AP.relTypeCode = #{relTypeCode}
+		AND AP.relId = #{relId}
+		AND AP.Result = 0
+	</select>
+
+	<select id="getForPrintApplymentsByResult"
+		resultMap="applymentAndRecommendatin">
 		SELECT
 		AM.*,
 		M.nickname AS extra__writer,
@@ -91,13 +127,16 @@
 		extra__writer,
 		M.recommendation AS
 		extra__writerRecommendation
-		FROM applyment AS AM
+		FROM
+		applyment AS AM
 		INNER JOIN member AS M
 		ON AM.memberId
 		= M.id
-		WHERE AM.displayStatus = 1
-		AND AM.relId = #{relId} 
-		AND AM.relTypeCode = #{relTypeCode}
+		WHERE
+		AM.displayStatus = 1
+		AND AM.relId = #{relId}
+		AND AM.relTypeCode =
+		#{relTypeCode}
 		AND AM.id <![CDATA[ >= ]]>
 		#{from}
 		AND AM.result = 0
@@ -166,14 +205,16 @@
 		SELECT Apply.*,
 		Act.name AS
 		extra__actingName,
-		Act.job AS extra__actingJob,
+		Act.job AS
+		extra__actingJob,
 		Act.gender AS
 		extra__actingGender,
 		Act.StartDate AS
 		extra__actingStartDate,
 		Act.EndDate AS
 		extra__actingEndDate,
-		Art.name AS extra__artworkName,
+		Art.name AS
+		extra__artworkName,
 		Art.productionName
 		AS extra__ProductionName,
 		Art.directorName AS extra__directorName,
@@ -181,23 +222,27 @@
 		artwork__id,
 		ARTF.updateDate AS artwork__updateDate,
 		ARTF.relTypeCode
-		AS artwork__relTypeCode,
+		AS
+		artwork__relTypeCode,
 		ARTF.fileExt AS
 		artwork__fileExt,
 		ARTF.typeCode AS
 		artwork__typeCode,
 		ARTF.fileDir AS artwork__fileDir
 		FROM
-		applyment AS Apply
+		applyment AS
+		Apply
 		LEFT OUTER
 		JOIN `actingRole` AS Act
 		ON
 		Apply.relId = Act.id
-		LEFT OUTER JOIN
+		LEFT
+		OUTER JOIN
 		`artwork` AS Art
 		ON Act.artworkId
 		= Art.id
-		LEFT OUTER JOIN `file` AS ARTF
+		LEFT OUTER JOIN
+		`file` AS ARTF
 		ON ARTF.relId = Art.id
 		AND ARTF.relTypeCode = "artwork"
 		WHERE Apply.MemberId =
@@ -249,6 +294,10 @@
 		<id property="relId" column="relId" />
 		<id property="result" column="result" />
 		<id property="relTypeCode" column="relTypeCode" />
+	</resultMap>
+
+	<resultMap type="Applyment" id="applymentAndRecommendatin"
+		extends="applyment">
 		<association property="extra" javaType="map">
 			<id property="writer" column="extra__writer" />
 			<id property="writerAge" column="extra__age" />
@@ -256,22 +305,13 @@
 			<id property="writerCellphoneNo" column="extra__writerCellphoneNo" />
 			<id property="writerEmail" column="extra__writerEmail" />
 			<id property="writerRealName" column="extra__writerRealName" />
-			<id property="writerRecommendation" column="extra__writerRecommendation" />
+			<id property="writerRecommendation"
+				column="extra__writerRecommendation" />
 		</association>
 	</resultMap>
 
-	<resultMap type="Applyment" id="applymentResult">
-		<id property="id" column="id" />
-		<id property="regDate" column="regDate" />
-		<id property="updateDate" column="updateDate" />
-		<id property="delDate" column="delDate" />
-		<id property="delStatus" column="delStatus" />
-		<id property="displayStatus" column="displayStatus" />
-		<id property="hideStatus" column="hideStatus" />
-		<id property="memberId" column="memberId" />
-		<id property="relId" column="relId" />
-		<id property="result" column="result" />
-		<id property="relTypeCode" column="relTypeCode" />
+	<resultMap type="Applyment" id="applymentResult"
+		extends="applyment">
 		<association property="extra" javaType="map">
 			<id property="actingName" column="extra__actingName" />
 			<id property="actingJob" column="extra__actingJob" />
@@ -282,15 +322,40 @@
 			<id property="ProductionName" column="extra__ProductionName" />
 			<id property="directorName" column="extra__directorName" />
 		</association>
-		<collection property="files" resultMap="files" ofType="File" columnPrefix="artwork__"/>
+		<collection property="files" resultMap="files"
+			ofType="File" columnPrefix="artwork__" />
 	</resultMap>
-	
+
+	<resultMap type="Applyment" id="applymentForAudition"
+		extends="applyment">
+		<association property="extra" javaType="map">
+			<id property="memberId" column="member__id" />
+			<id property="memberName" column="member__name" />
+			<id property="memberAge" column="member__age" />
+			<id property="memberGender" column="member__gender" />
+			<id property="fileIdForMember" column="file__member__id" />
+			<id property="fileUpdateDateForMember"
+				column="file__member__updateDate" />
+			<id property="fileRelTypeCodeForMember"
+				column="file__member__relTypeCode" />
+			<id property="fileExtForMember" column="file__member__fileExt" />
+			<id property="fileDirForMember" column="file__member__fileDir" />
+			<id property="fileIdForApplyment" column="file__applyment__id" />
+			<id property="fileUpdateDateForApplyment"
+				column="file__applyment__updateDate" />
+			<id property="fileRelTypeCodeForApplyment"
+				column="file__applyment__relTypeCode" />
+			<id property="fileExtForApplyment" column="file__applyment__fileExt" />
+			<id property="fileDirForApplyment" column="file__applyment__fileDir" />
+		</association>
+	</resultMap>
+
 	<resultMap id="files" type="File">
-			<id property="id" column="id" />
-			<id property="updateDate" column="updateDate" />
-			<id property="relTypeCode" column="relTypeCode" />
-			<id property="typeCode" column="typeCode" />
-			<id property="fileExt" column="fileExt" />
-			<id property="fileDir" column="fileDir" />
+		<id property="id" column="id" />
+		<id property="updateDate" column="updateDate" />
+		<id property="relTypeCode" column="relTypeCode" />
+		<id property="typeCode" column="typeCode" />
+		<id property="fileExt" column="fileExt" />
+		<id property="fileDir" column="fileDir" />
 	</resultMap>
 </mapper>

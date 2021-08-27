@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -102,6 +101,18 @@ public class ApplymentController {
 		rsDataBody.put("applyment", applyment);
 
 		return new ResultData("S-1", "1개의 신청을 불러왔습니다.", rsDataBody);
+	}
+	
+	@RequestMapping("/adm/applyment/showMyApplyments")
+	public String showMyApplyments(Model model,@RequestParam Map<String, Object> param) {
+		
+		List<Applyment> applyments = applymentService.getForPrintApplymentsByRelIdAndRelTypeCode(param);
+
+		model.addAttribute("applyments", applyments);
+		model.addAttribute("artworkName", param.get("artworkName"));
+		model.addAttribute("actingRoleName", param.get("actingRoleName"));
+		
+		return "/adm/applyment/showMyApplyments";
 	}
 	
 	@RequestMapping("/usr/applyment/write")

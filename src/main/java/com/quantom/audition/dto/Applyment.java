@@ -3,6 +3,7 @@ package com.quantom.audition.dto;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -59,5 +60,30 @@ public class Applyment {
 		sb.append("</div>");
 		sb.append("<div>FROM :" + extra.get("ProductionName") + "</div>");
 		return sb.toString();
+	}
+	
+
+	public String getForPrintGenUrlForApplyment() {
+		if (extra != null) {
+			if (extra.get("fileIdForApplyment") != null) {
+				return "/gen" + "/" + extra.get("fileRelTypeCodeForApplyment") + "/" + extra.get("fileDirForApplyment")
+						+ "/" + extra.get("fileIdForApplyment") + "." + extra.get("fileExtForApplyment") + "?updateDate="
+						+ extra.get("fileUpdateDateForApplyment");
+			}
+
+		}
+
+		return null;
+	}
+
+	public String getForPrintGenUrlForMember() {
+		if (extra != null) {
+			if (extra.get("fileIdForMember") != null) {
+				return "/gen" + "/" + extra.get("fileRelTypeCodeForMember") + "/" + extra.get("fileDirForMember") + "/"
+						+ extra.get("fileIdForMember") + "." + extra.get("fileExtForMember") + "?updateDate="
+						+ extra.get("fileUpdateDateForMember");
+			}
+		}
+		return null;
 	}
 }

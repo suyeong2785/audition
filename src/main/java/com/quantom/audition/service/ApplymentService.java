@@ -296,5 +296,9 @@ public class ApplymentService {
 		return sharedApplyments;
 	}
 
+	public List<Applyment> getForPrintApplymentsByRelIdAndRelTypeCode(Map<String, Object> param) {
+		return applymentDao.getForPrintApplymentsByRelIdAndRelTypeCode(param);
+	}
+
 
 }

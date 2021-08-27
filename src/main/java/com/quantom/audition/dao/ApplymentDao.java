@@ -35,4 +35,6 @@ public interface ApplymentDao {
 	void changeApplymentResult(@Param("id") int id, @Param("result") int result);
 
 	List<Applyment> getApplymenResultInfoByMemberId(int memberId);
+
+	List<Applyment> getForPrintApplymentsByRelIdAndRelTypeCode(Map<String, Object> param);
 }
