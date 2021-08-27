@@ -5,7 +5,8 @@
 
 <div class="grid justify-center grid-column-auto-800 mx-4 ">
 	<div class="flex justify-between">
-		<div class="text-center py-8 font-bold">목록으로가기</div>
+		<a href="../home/showMyPage"><div class="text-center py-8 font-bold">목록으로가기</div></a>
+		
 		<div class="flex items-center justify-center font-bold">
 			<a href="./writeArtwork">
 				<span>평가자 추가/삭제</span>
@@ -19,9 +20,9 @@
 				class="z-20 w-full bg-gray-500 text-white font-bold py-2 rounded-full px-4 text-center">
 				<span>${artworkName} / ${actingRoleName}</span>
 			</div>
-			<div id="artwork-left-background"
+			<div id="applyment-left-background"
 				class="absolute bottom-0 left-0 bg-gray-300 h-1/2 w-1/2 z-10"></div>
-			<div id="artwork-right-background"
+			<div id="applyment-right-background"
 				class="absolute bottom-0 right-0 bg-gray-300 h-1/2 w-1/2 z-10"></div>
 		</div>
 		<div class="bg-gray-300 p-8 text-center font-bold rounded-b-3xl ">홍길동/김남길/홍순인/조철희/김영상
@@ -69,7 +70,8 @@
 				</div>
 				<div>
 					<div
-						class="flex justify-center items-center w-14 h-full text-5xl text-gray-600 pr-8">
+						class="flex justify-center items-center w-14 h-full text-5xl text-gray-600 pr-8"
+						onclick="showApplicantInfoModal('${applyment.forPrintGenUrlForApplyment}','${applyment.extra.memberName}')">
 						<i class="fas fa-play-circle"></i>
 					</div>
 				</div>
@@ -86,8 +88,69 @@
 	</c:forEach>
 
 </div>
+<div class="modal-background">
+	<div class="modal-content">
+		<div id="video-box" class="flex justify-center"></div>
+		<div id="applicantInfo-box"></div>
+		<div id="recommenderName-box" class="flex text-sm text-black">
+			<div class="bg-gray-200 p-8 text-2xl">
+				<i class="fas fa-heart"></i>
+				5
+			</div>
+		</div>
+		<div id="button-box" class="button-box flex justify-around p-8">
+			<button id="recommendation-button"
+				class="bg-gray-500 text-white rounded-full w-12 h-12 text-2xl"
+				onclick="doRecommendMember()">
+				<i class="fas fa-heart"></i>
+			</button>
+			<button
+				class="bg-gray-500 text-white rounded-full w-12 h-12 text-2xl"
+				onclick="hideApplicantDecisonModal()">
+				<i class="far fa-circle"></i>
+			</button>
+			<button
+				class="bg-gray-500 text-white rounded-full w-12 h-12 text-2xl"
+				onclick="hideApplicantDecisonModal()">
+				<i class="fas fa-times"></i>
+			</button>
+		</div>
+	</div>
+
+</div>
 <script>
-	
+	//회원모달창 켜졌을경우 외부영역 클릭 시 팝업 닫기
+	$('.modal-background').mouseup(
+			function(e) {
+				if ($('.modal-content').has(e.target).length === 0
+						&& $('.modal-content').has(e.target).length === 0) {
+					$('.modal-background').css("display", "none");
+				}
+			});
+
+	function showApplicantInfoModal(videoUrl, applicantName) {
+		$('#video-box').empty();
+		$('#applicantInfo-box').empty();
+		$('#recommender').remove();
+
+		$('.modal-background').css("display", "flex");
+
+		if (videoUrl == '' || videoUrl == null) {
+			$('#video-box').html('<div class="p-8">오디션 영상이 등록되어 있지않습니다.</div>');
+		} else {
+			$('#video-box')
+					.html(
+							'<video id="video" controls="controls" src="'+ videoUrl +'"></video>');
+		}
+
+		$('#applicantInfo-box').html(
+				'<div class="w-full bg-gray-500 text-white text-center py-2">'
+						+ applicantName + '</div>');
+		var recommenderHtml = '';
+		$('#recommenderName-box')
+				.append(
+						'<div id="recommender" class="bg-gray-100 p-8 flex-grow flex justify-center">홍길동/김남길/홍순인/조철희/김영상</div>');
+	}
 </script>
 
 

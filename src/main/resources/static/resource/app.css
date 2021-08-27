@@ -160,6 +160,31 @@ h3 {
     }
 }
 
+.modal-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+}
+
+.modal-content {
+   border: 1px solid #787878;
+    overflow-y: auto;
+    max-height: 100vh;
+    padding: 10px;
+    box-sizing: border-box;
+    max-width: 600px;
+    width: 100%;
+    background-color: white;
+}
+
+
 .popup-1 {
     position: fixed;
     top: 0;
@@ -183,6 +208,8 @@ h3 {
     width: 100%;
     background-color: white;
 }
+
+
 
 .loading-box {
     position: fixed;
