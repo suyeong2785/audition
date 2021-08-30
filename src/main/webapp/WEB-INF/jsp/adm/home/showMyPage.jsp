@@ -9,7 +9,7 @@
 		<div class="flex items-center justify-center">
 			<a
 				class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
-				href="./writeArtwork">
+				href="../actingRole/writeArtwork">
 				<i class="fas fa-plus"></i>
 				<span>Add</span>
 			</a>
@@ -74,7 +74,11 @@
 				</c:choose>
 
 				<div class="grid items-center">
-					<div class="font-black text-sm">${artwork.name}</div>
+					<div class="font-black text-sm">
+						<span>${artwork.name}</span>
+						<input type="checkbox" id="share-artwork${artwork.id}"
+							value="${artwork.id}" />
+					</div>
 					<div class="title text-overflow-el text-xs">${artwork.extra.writer}</div>
 					<div class="writer text-xs">
 						<div>지원자 : 000명</div>
@@ -116,9 +120,18 @@
 	<div class="modal-content">
 		<div>전체 공유</div>
 		<div>역활별 공유</div>
+		<div>
+			<span>artworkId : </span>
+			<span id="checked-artwork-id"></span>
+		</div>
+		<div>
+			<span>actingRoleId : </span>
+			<span id="checked-actingRole-id"></span>
+		</div>
 	</div>
 </div>
 <script>
+	let sharedActingRoles = [];
 	//회원모달창 켜졌을경우 외부영역 클릭 시 팝업 닫기
 	$('.modal-background').mouseup(
 		function(e) {
@@ -194,11 +207,12 @@
 		
 		$.each(actingRoles, function(index, actingRole){
 			html += '<a href="../applyment/showMyApplyments?artworkName='+ artworkName +'&actingRoleName='+ actingRole.name +'&relTypeCode=actingRole&relId='+ actingRole.id +'">';
-			html += '<div class="flex justify-between justify-items-stretch bg-gray-200 mb-2 rounded-full px-8 font-black">';
+			html += '<div class="flex justify-between items-center justify-items-stretch bg-gray-200 mb-2 rounded-full px-8 font-black">';
 			html += '<div class="flex-1-0-0 ">'+ actingRole.id +'</div>';
 			html += '<div class="flex-3-0-0 text-center">'+ actingRole.name +'역</div>';
 			html += '<div class="flex-2-0-0 text-center">'+ actingRole.gender +'</div>';
 			html += '<div class="flex-3-0-0 text-right">'+ actingRole.job +'</div>';
+			html += '<input type="checkbox" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
 			html += '</div>';
 			html += '</a>';
 		});
@@ -282,6 +296,47 @@
 			$('#artwork-left-background'+ artworkId).css("display","block");
 			$('#artwork-right-background'+ artworkId).css("display","block");
 		}
+		
+		$('input:checkbox[id^="share-actingRole"]:not(:checked)').each(function(index,item) {
+			for(var i = 0; i < sharedActingRoles.length; i++ ){
+				if(sharedActingRoles[i] == $('[id^="share-actingRole"]:not(:checked)').eq(index).val()){
+					$('[id^="share-actingRole"]:not(:checked)').eq(index).attr("checked", true);
+				}
+			}
+		});	
+		
+		$("[id^='share-actingRole']").change(function(){
+			$('#checked-actingRole-id').empty();
+			
+			$('input:checkbox[id^="share-actingRole"]:checked').each(function(index,item) {
+				var sameValue = -1;
+				for(var i = 0; i < sharedActingRoles.length; i++ ){
+					if(sharedActingRoles[i] == $('[id^="share-actingRole"]:checked').eq(index).val()){
+						sameValue = 1;
+						break;
+					}
+				}
+				if(sameValue != 1){
+					sharedActingRoles[ sharedActingRoles.length + 1] = $('[id^="share-actingRole"]:checked').eq(index).val();	
+				}
+
+			 });
+			
+			$('input:checkbox[id^="share-actingRole"]:not(:checked)').each(function(index,item) {
+
+				for(var i = 0; i < sharedActingRoles.length; i++ ){
+					if(sharedActingRoles[i] == $('[id^="share-actingRole"]:not(:checked)').eq(index).val()){
+						sharedActingRoles.splice(sharedActingRoles.indexOf(sharedActingRoles[i]),1);
+					} 
+				}
+			 });
+			// 오름차순
+			sharedActingRoles.sort(function(a, b) {
+			    return a - b;
+			});
+			
+			$('#checked-actingRole-id').append(sharedActingRoles);	
+		});
 	}
 	
 	function changeActingRoleListPage(artworkId, page){
@@ -330,11 +385,12 @@
 		
 		$.each(actingRoles, function(index, actingRole){
 			html += '<a href="../applyment/showMyApplyments">';
-			html += '<div class="flex justify-between justify-items-stretch bg-gray-200 mb-2 rounded-full px-8 font-black">';
+			html += '<div class="flex justify-between items-center justify-items-stretch bg-gray-200 mb-2 rounded-full px-8 font-black">';
 			html += '<div class="flex-1-0-0 ">'+ actingRole.id +'</div>';
 			html += '<div class="flex-3-0-0 text-center">'+ actingRole.name +'역</div>';
 			html += '<div class="flex-2-0-0 text-center">'+ actingRole.gender +'</div>';
 			html += '<div class="flex-3-0-0 text-right">'+ actingRole.job +'</div>';
+			html += '<input type="checkbox" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
 			html += '</div>';
 			html += '</a>';
 		});
@@ -406,8 +462,72 @@
 		pageMobileHtml += '</span>';
 		
 		$('#pagination-mobile'+ artworkId).prepend(pageMobileHtml);
+		
+		$('input:checkbox[id^="share-actingRole"]:not(:checked)').each(function(index,item) {
+			for(var i = 0; i < sharedActingRoles.length; i++ ){
+				if(sharedActingRoles[i] == $('[id^="share-actingRole"]:not(:checked)').eq(index).val()){
+					$('[id^="share-actingRole"]:not(:checked)').eq(index).attr("checked", true);
+				}
+			}
+		});
+		
+		$("[id^='share-actingRole']").change(function(){
+			$('#checked-actingRole-id').empty();	
+			
+			$('input:checkbox[id^="share-actingRole"]:checked').each(function(index,item) {
+				var sameValue = -1;
+				for(var i = 0; i < sharedActingRoles.length; i++ ){
+					if(sharedActingRoles[i] == $('[id^="share-actingRole"]:checked').eq(index).val()){
+						sameValue = 1;
+						break;
+					}
+				}
+				if(sameValue != 1){
+					sharedActingRoles[sharedActingRoles.length + 1] = $('[id^="share-actingRole"]:checked').eq(index).val();	
+				}
+
+			 });
+			
+			$('input:checkbox[id^="share-actingRole"]:not(:checked)').each(function(index,item) {
+
+				for(var i = 0; i < sharedActingRoles.length; i++ ){
+					if(sharedActingRoles[i] == $('[id^="share-actingRole"]:not(:checked)').eq(index).val()){
+						sharedActingRoles.splice(sharedActingRoles.indexOf(sharedActingRoles[i]),1);
+					} 
+				}
+			 });
+			
+			// 오름차순
+			sharedActingRoles.sort(function(a, b) {
+			    return a - b;
+			});
+			$('#checked-actingRole-id').append(sharedActingRoles);	
+		});
 	
 	}
+	
+	let sharedArtworks = [];
+	
+	$("[id^='share-artwork']").click(function(e){
+		
+		$('input:checkbox[id^="share-artwork"]:checked').each(function(index,item) {
+			
+			sharedArtworks[index] = $('[id^="share-artwork"]:checked').eq(index).val();
+
+		 });
+		
+		$('input:checkbox[id^="share-artwork"]:not(:checked)').each(function(index,item) {
+
+			for(var i = 0; i < sharedArtworks.length; i++ ){
+				if(sharedArtworks[i] == $('[id^="share-artwork"]:not(:checked)').eq(index).val()){
+					sharedArtworks.splice(sharedArtworks.indexOf(haredArtworks[i]),1);
+				} 
+			}
+		 });
+		
+		$('#checked-artwork-id').html(sharedArtworks);	
+	
+	});
 	
 </script>
 

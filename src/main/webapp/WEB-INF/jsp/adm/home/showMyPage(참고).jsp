@@ -30,7 +30,6 @@
 </div>
 
 <script>
-	
 	function showSharedRecruitments(requesterId){
 		
 		//displayStatus를 확인하고 displayStatus을 누를때마다 바꿔주면서
