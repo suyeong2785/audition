@@ -508,11 +508,20 @@
 	
 	let sharedArtworks = [];
 	
-	$("[id^='share-artwork']").click(function(e){
+	$("[id^='share-artwork']").change(function(){
+		$('#checked-artwork-id').empty();	
 		
 		$('input:checkbox[id^="share-artwork"]:checked').each(function(index,item) {
-			
-			sharedArtworks[index] = $('[id^="share-artwork"]:checked').eq(index).val();
+			var sameValue = -1;
+			for(var i = 0; i < sharedArtworks.length; i++ ){
+				if(sharedArtworks[i] == $('[id^="share-artwork"]:checked').eq(index).val()){
+					sameValue = 1;
+					break;
+				}
+			}
+			if(sameValue != 1){
+				sharedArtworks[sharedArtworks.length + 1] = $('[id^="share-artwork"]:checked').eq(index).val();	
+			}
 
 		 });
 		
@@ -520,10 +529,15 @@
 
 			for(var i = 0; i < sharedArtworks.length; i++ ){
 				if(sharedArtworks[i] == $('[id^="share-artwork"]:not(:checked)').eq(index).val()){
-					sharedArtworks.splice(sharedArtworks.indexOf(haredArtworks[i]),1);
+					sharedArtworks.splice(sharedArtworks.indexOf(sharedArtworks[i]),1);
 				} 
 			}
 		 });
+		
+		// 오름차순
+		sharedArtworks.sort(function(a, b) {
+		    return a - b;
+		});
 		
 		$('#checked-artwork-id').html(sharedArtworks);	
 	
