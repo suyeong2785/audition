@@ -83,6 +83,7 @@
 		M.name AS member__name,
 		M.age AS member__age,
 		M.gender AS member__gender,
+		M.recommendation AS member__recommendation,
 		MF.id AS file__member__Id,
 		MF.updateDate AS file__member__updateDate,
 		MF.relTypeCode AS file__member__relTypeCode,
@@ -333,6 +334,7 @@
 			<id property="memberName" column="member__name" />
 			<id property="memberAge" column="member__age" />
 			<id property="memberGender" column="member__gender" />
+			<id property="memberRecommendation" column="member__recommendation" />
 			<id property="fileIdForMember" column="file__member__id" />
 			<id property="fileUpdateDateForMember"
 				column="file__member__updateDate" />

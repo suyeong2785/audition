@@ -14,6 +14,11 @@
 				<span>Add</span>
 			</a>
 		</div>
+		<div class="flex items-center justify-center font-bold">
+			<div onclick="showShareModal()">
+				<span>평가자 추가/삭제</span>
+			</div>
+		</div>
 	</div>
 
 	<c:forEach items="${artworks}" var="artwork">
@@ -107,8 +112,26 @@
 		</div>
 	</c:forEach>
 </div>
-
+<div id="applyment-share-modal" class="modal-background">
+	<div class="modal-content">
+		<div>전체 공유</div>
+		<div>역활별 공유</div>
+	</div>
+</div>
 <script>
+	//회원모달창 켜졌을경우 외부영역 클릭 시 팝업 닫기
+	$('.modal-background').mouseup(
+		function(e) {
+			if ($('.modal-content').has(e.target).length === 0
+					&& $('.modal-content').has(e.target).length === 0) {
+				$('.modal-background').css("display", "none");
+		}
+	});
+	
+	function showShareModal(){
+		$('#applyment-share-modal').css("display", "flex");
+	}
+	
 	//외부영역 클릭 시 팝업 닫기
 	$(document).mouseup(function(e){ 
 		if($('.artworkList-box').has(e.target).length === 0  && $('.actingRoleList').has(e.target).length === 0){ 

@@ -5,13 +5,10 @@
 
 <div class="grid justify-center grid-column-auto-800 mx-4 ">
 	<div class="flex justify-between">
-		<a href="../home/showMyPage"><div class="text-center py-8 font-bold">목록으로가기</div></a>
-		
-		<div class="flex items-center justify-center font-bold">
-			<a href="./writeArtwork">
-				<span>평가자 추가/삭제</span>
-			</a>
-		</div>
+		<a href="../home/showMyPage">
+			<div class="text-center py-8 font-bold">목록으로가기</div>
+		</a>
+
 	</div>
 
 	<div>
@@ -64,14 +61,14 @@
 					<div class="writer text-xs">
 						<div>
 							<i class="fas fa-heart"></i>
-							5
+							${applyment.extra.memberRecommendation}
 						</div>
 					</div>
 				</div>
 				<div>
 					<div
 						class="flex justify-center items-center w-14 h-full text-5xl text-gray-600 pr-8"
-						onclick="showApplicantInfoModal('${applyment.forPrintGenUrlForApplyment}','${applyment.extra.memberName}')">
+						onclick="showApplymentModal('${applyment.forPrintGenUrlForApplyment}','${applyment.extra.memberName}',${applyment.id},${applyment.memberId},${applyment.extra.memberRecommendation})">
 						<i class="fas fa-play-circle"></i>
 					</div>
 				</div>
@@ -88,14 +85,13 @@
 	</c:forEach>
 
 </div>
-<div class="modal-background">
+<div id="applyment-decision-modal" class="modal-background">
 	<div class="modal-content">
 		<div id="video-box" class="flex justify-center"></div>
 		<div id="applicantInfo-box"></div>
-		<div id="recommenderName-box" class="flex text-sm text-black">
-			<div class="bg-gray-200 p-8 text-2xl">
+		<div id="recommendation" class="flex text-sm text-black">
+			<div id="recommendation-count" class="flex items-center justify-center flex-grow bg-gray-200 text-2xl py-8 min-width-100">
 				<i class="fas fa-heart"></i>
-				5
 			</div>
 		</div>
 		<div id="button-box" class="button-box flex justify-around p-8">
@@ -106,7 +102,7 @@
 			</button>
 			<button
 				class="bg-gray-500 text-white rounded-full w-12 h-12 text-2xl"
-				onclick="hideApplicantDecisonModal()">
+				onclick="">
 				<i class="far fa-circle"></i>
 			</button>
 			<button
@@ -116,9 +112,12 @@
 			</button>
 		</div>
 	</div>
-
 </div>
+
+
 <script>
+	const loginedMemberId = '<c:out value="${loginedMemberId}" />';
+	
 	//회원모달창 켜졌을경우 외부영역 클릭 시 팝업 닫기
 	$('.modal-background').mouseup(
 			function(e) {
@@ -128,12 +127,37 @@
 				}
 			});
 
-	function showApplicantInfoModal(videoUrl, applicantName) {
+	function showApplymentModal(videoUrl, applyment_name, applyment_id, applyment_memberId, applyment_recommendation) {
 		$('#video-box').empty();
 		$('#applicantInfo-box').empty();
 		$('#recommender').remove();
-
-		$('.modal-background').css("display", "flex");
+		$('#recommendation-number').remove();
+		
+		$('#applyment-decision-modal').css("display", "flex");
+		
+		var $recommendation_button = $("#recommendation-button");
+	  	 
+	  	  $.get('../../usr/recommendation/getRecommendationByRecommenderIdAjax',{
+	  		  recommenderId : loginedMemberId,
+	  		  recommendeeId : applyment_memberId
+	  	  },function(data){
+	  		  if(data.resultCode.startsWith("S")){
+	  			var recommendationStatus = data.body.recommendation.recommendationStatus;
+	  			  
+	  			if(recommendationStatus == 1 ){
+	  				$recommendation_button.css({"background-color" : "green","color" : "white"});
+	  				$recommendation_button.data("recommendationStatus", recommendationStatus);
+	  			}else{
+	  				$recommendation_button.data("recommendationStatus",recommendationStatus);
+	  				$recommendation_button.css({"background-color" : "white","color" : "black"});
+	  			}
+	  		  
+	  		  }else{
+	  			$recommendation_button.data("recommendationStatus",-1);
+	  			$recommendation_button.css({"background-color" : "white","color" : "black"});
+	  		  }
+	  		  
+	  	  },'json');
 
 		if (videoUrl == '' || videoUrl == null) {
 			$('#video-box').html('<div class="p-8">오디션 영상이 등록되어 있지않습니다.</div>');
@@ -145,11 +169,77 @@
 
 		$('#applicantInfo-box').html(
 				'<div class="w-full bg-gray-500 text-white text-center py-2">'
-						+ applicantName + '</div>');
+						+ applyment_name + '</div>');
 		var recommenderHtml = '';
-		$('#recommenderName-box')
+		$('#recommendation')
 				.append(
-						'<div id="recommender" class="bg-gray-100 p-8 flex-grow flex justify-center">홍길동/김남길/홍순인/조철희/김영상</div>');
+						'<div id="recommender" class="flex flex-3 items-center justify-center bg-gray-100 px-4">홍길동/김남길/홍순인/조철희/김영상</div>');
+		
+
+		$('#recommendation-count').append('<div id="recommendation-number" class="pl-2">' + applyment_recommendation + '</div>');	
+		
+		$('#applyment-decision-modal').data("applyment_id",applyment_id);
+		$('#applyment-decision-modal').data("applyment_memberId",applyment_memberId); 
+		$('#applyment-decision-modal').data("applyment_recommendation",applyment_recommendation); 
+	}
+
+	function doRecommendMember() {
+		
+		var applyment_id = $('#applyment-decision-modal').data("applyment_id");
+		var applyment_memberId = $('#applyment-decision-modal').data("applyment_memberId");
+		
+		//video태그를 보여줄 id=recommendation-button 엘리먼트를 가져온다.
+		var $recommendation_button = $("#recommendation-button");
+
+		if ($recommendation_button.data("recommendationStatus") == 1) {
+
+			$.post('../../usr/recommendation/doModifyRecommendStatusAjax', {
+				relTypeCode : "applyment",
+				relId : applyment_id,
+				recommenderId : loginedMemberId,
+				recommendeeId : applyment_memberId,
+				recommendationStatus : 0
+			}, function(data) {
+				$recommendation_button.css({
+					"background-color" : "white",
+					"color" : "black"
+				});
+				$recommendation_button.data("recommendationStatus", 0);
+			}, 'json');
+
+		} else if ($recommendation_button.data("recommendationStatus") == 0) {
+
+			$.post('../../usr/recommendation/doModifyRecommendStatusAjax', {
+				relTypeCode : "applyment",
+				relId : applyment_id,
+				recommenderId : loginedMemberId,
+				recommendeeId : applyment_memberId,
+				recommendationStatus : 1
+			}, function(data) {
+				$recommendation_button.css({
+					"background-color" : "green",
+					"color" : "white"
+				});
+				$recommendation_button.data("recommendationStatus", 1);
+			}, 'json');
+
+		} else {
+
+			$.post('../../usr/recommendation/doMakeRecommendMemberAjax', {
+				relTypeCode : "applyment",
+				relId : applyment_id,
+				recommenderId : loginedMemberId,
+				recommendeeId : applyment_memberId,
+				recommendationStatus : 1
+			}, function(data) {
+				$recommendation_button.css({
+					"background-color" : "green",
+					"color" : "white"
+				});
+				$recommendation_button.data("recommendationStatus", 1);
+			}, 'json');
+		}
+
 	}
 </script>
 
