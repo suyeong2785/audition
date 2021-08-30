@@ -90,7 +90,8 @@
 		<div id="video-box" class="flex justify-center"></div>
 		<div id="applicantInfo-box"></div>
 		<div id="recommendation" class="flex text-sm text-black">
-			<div id="recommendation-count" class="flex items-center justify-center flex-grow bg-gray-200 text-2xl py-8 min-width-100">
+			<div id="recommendation-count"
+				class="flex items-center justify-center flex-grow bg-gray-200 text-2xl py-8 min-width-100">
 				<i class="fas fa-heart"></i>
 			</div>
 		</div>
@@ -102,12 +103,12 @@
 			</button>
 			<button
 				class="bg-gray-500 text-white rounded-full w-12 h-12 text-2xl"
-				onclick="">
+				onclick="ChangeApplymentResult(1)">
 				<i class="far fa-circle"></i>
 			</button>
 			<button
 				class="bg-gray-500 text-white rounded-full w-12 h-12 text-2xl"
-				onclick="hideApplicantDecisonModal()">
+				onclick="ChangeApplymentResult(2)">
 				<i class="fas fa-times"></i>
 			</button>
 		</div>
@@ -241,6 +242,32 @@
 		}
 
 	}
+	
+	function ChangeApplymentResult(result) {
+		var id = $('#applyment-decision-modal').data("applyment_id");
+		
+		// result : 1 (합격)
+		if(result == 1){
+			if (confirm('합격 시키겠습니까?') == false) {
+	            return;
+	        }
+		} else{
+			// result : 2 (불합격)
+			if (confirm('불합격 시키겠습니까?') == false) {
+	            return;
+	        }
+		}
+		
+		$.post('../../usr/applyment/doChangeApplymentResultAjax',{
+			id : id,
+			result : result
+		},function(data){
+			alert(data.msg);
+		},'json');
+		
+		location.reload();
+		
+	} 
 </script>
 
 
