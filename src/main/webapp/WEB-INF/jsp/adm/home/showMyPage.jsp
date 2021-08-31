@@ -149,8 +149,9 @@
 	</div>
 </div>
 <script>
-	let sharedActingRoles = [];
+	
 	var loginedMemberId = '<c:out value="${loginedMemberId}"/>';
+	
 	//회원모달창 켜졌을경우 외부영역 클릭 시 팝업 닫기
 	$('.modal-background').mouseup(
 		function(e) {
@@ -176,19 +177,23 @@
 		});
 	
 	var totalCount = 0;
+	var actingRoles = new Array();
 	
 	function showActingRoleList(artworkId,artworkName, page) {
 		
+		<!-- 
 		var itemsInAPage = 3;
 		
 		var limitStart = (page-1) * itemsInAPage ;
 		var limitTake = itemsInAPage;
+		-->
 		
 		$('[id^="actingRoleList"]').not('#actingRoleList'+ artworkId).css("display","none");
 		$('[id^="actingRoleList"]').not('#actingRoleList'+ artworkId).data("displayStatus",-1);
 		$('[id^="artwork-left-background"]').not('#artwork-left-background'+ artworkId).css("display","none");
 		$('[id^="artwork-right-background"]').not('#artwork-right-background'+ artworkId).css("display","none");
 		
+		<!-- 
 		function actingRoleList(totalCount){ 
 			$.get('../../adm/actingRole/getActingRoleListByArtworkIdAjax',{
 			artworkId : artworkId,
@@ -202,38 +207,49 @@
 		
 		}
 		
+		-->
+		
 		$.ajax({
 			url:'../../adm/actingRole/getActingRoleListByArtworkIdAjax',
 			data : { artworkId : artworkId},
 			dataType : 'json',
 			}).then(function(data){
 				totalCount = data.body.actingRoles.length;
-				actingRoleList(totalCount,artworkName);
+				actingRoles = data.body.actingRoles;
+				drawActingRoleList(artworkId, artworkName, page, itemsInAPage, totalCount);
 			});
 		
 	}
 	
-	function drawActingRoleList(data, artworkId, artworkName, page, itemsInAPage, totalCount){
+	let sharedActingRoles = [];
+	
+	function drawActingRoleList(artworkId, artworkName, page, itemsInAPage, totalCount){
+		
+		var itemsInAPage = 3;
+		
+		var limitStart = (page-1) * itemsInAPage ;
+		var limitTake = itemsInAPage;
+		
 		$('#actingRoleList'+ artworkId).empty();
 		
-		if(data && data.body && data.body.actingRoles){
-			var actingRoles = data.body.actingRoles;
-		}else{
+		if(actingRoles == null || actingRoles == ''){
 			return;
 		}
 		
 		var html = '';
 		
 		$.each(actingRoles, function(index, actingRole){
-			html += '<a href="../applyment/showMyApplyments?artworkName='+ artworkName +'&actingRoleName='+ actingRole.name +'&relTypeCode=actingRole&relId='+ actingRole.id +'">';
-			html += '<div class="flex justify-between items-center justify-items-stretch bg-gray-200 mb-2 rounded-full px-8 font-black">';
-			html += '<div class="flex-1-0-0 ">'+ actingRole.id +'</div>';
-			html += '<div class="flex-3-0-0 text-center">'+ actingRole.name +'역</div>';
-			html += '<div class="flex-2-0-0 text-center">'+ actingRole.gender +'</div>';
-			html += '<div class="flex-3-0-0 text-right">'+ actingRole.job +'</div>';
-			html += '<input type="checkbox" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
-			html += '</div>';
-			html += '</a>';
+			if(limitStart <= index && limitTake > index ){
+				html += '<a href="../applyment/showMyApplyments?artworkName='+ artworkName +'&actingRoleName='+ actingRole.name +'&relTypeCode=actingRole&relId='+ actingRole.id +'">';
+				html += '<div class="flex justify-between items-center justify-items-stretch bg-gray-200 mb-2 rounded-full px-8 font-black">';
+				html += '<div class="flex-1-0-0 ">'+ actingRole.id +'</div>';
+				html += '<div class="flex-3-0-0 text-center">'+ actingRole.name +'역</div>';
+				html += '<div class="flex-2-0-0 text-center">'+ actingRole.gender +'</div>';
+				html += '<div class="flex-3-0-0 text-right">'+ actingRole.job +'</div>';
+				html += '<input type="checkbox" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
+				html += '</div>';
+				html += '</a>';
+			}
 		});
 		
 		html += '<div class="flex items-center justify-center sm:px-6">';
@@ -366,7 +382,6 @@
 		
 		var limitStart = (page-1) * itemsInAPage ;
 		var limitTake = itemsInAPage;
-		
 		
 		$.get('../../adm/actingRole/getActingRoleListByArtworkIdAjax',{
 		artworkId : artworkId,
