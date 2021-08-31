@@ -11,7 +11,7 @@ import com.quantom.audition.dto.Share;
 @Mapper
 public interface ShareDao {
 
-	int doShareApplyments(Map<String, Object> param);
+	int doShareArtworksAndActingRolesAjax(Map<String, Object> param);
 
 	List<Share> getForPrintRequestedSharesByRequesteeId(@Param("requesteeId") int requesteeId);
 

@@ -16,8 +16,8 @@ public class ShareService {
 	@Autowired
 	private ShareDao shareDao;
 	
-	public ResultData doShareApplyments(@RequestParam Map<String, Object> param) {
-		shareDao.doShareApplyments(param);
+	public ResultData doShareArtworksAndActingRolesAjax(@RequestParam Map<String, Object> param) {
+		shareDao.doShareArtworksAndActingRolesAjax(param);
 		String targetName = (String)param.get("name");
 		
 		return new ResultData("S-1",String.format("%s와 지원자공유 관계를 생성했습니다.", targetName));

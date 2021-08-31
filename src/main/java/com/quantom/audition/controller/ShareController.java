@@ -17,11 +17,11 @@ public class ShareController {
 	@Autowired
 	private ShareService shareService;
 
-	@RequestMapping("/usr/share/doShareApplymentsAjax")
+	@RequestMapping("/usr/share/doShareArtworksAndActingRolesAjax")
 	@ResponseBody
-	public ResultData doShareApplyments(@RequestParam Map<String, Object> param) {
+	public ResultData doShareArtworksAndActingRolesAjax(@RequestParam Map<String, Object> param) {
 
-		ResultData shareRd = shareService.doShareApplyments(param);
+		ResultData shareRd = shareService.doShareArtworksAndActingRolesAjax(param);
 
 		return shareRd;
 	}

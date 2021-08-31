@@ -118,8 +118,26 @@
 </div>
 <div id="applyment-share-modal" class="modal-background">
 	<div class="modal-content">
-		<div>전체 공유</div>
-		<div>역활별 공유</div>
+		<div
+			class="relative flex justify-center items-center text-white text-center h-12 md:h-14 text-2xl md:text-4xl mb-4">
+			<!-- 검색 상자 -->
+			<div class="search-box flex-grow h-full ">
+				<input id="director-search-input"
+					class="bg-gray-200 block w-full h-full text-xl px-4 text-black"
+					type="text" placeholder="지원자를 공유할 캐스팅디렉터님의 아이디를 입력해주세요" />
+			</div>
+			<!-- 검색 버튼 -->
+			<button onclick="getCastingDirectorList()"
+				class="flex justify-center items-center h-full bg-green-400 text-white text-center h-full px-4 text-2xl md:text-3xl hover:bg-green-500">
+				<i class="fas fa-search"></i>
+			</button>
+			<!-- 닫기 버튼 -->
+			<button onclick="closeCastingDirectorList()" id="search-close-button"
+				class=" hidden justify-center items-center h-full bg-green-400 text-white text-center h-full px-4 text-2xl md:text-3xl hover:bg-green-500">
+				<i class="fas fa-times"></i>
+			</button>
+		</div>
+		<div id="search-result"></div>
 		<div>
 			<span>artworkId : </span>
 			<span id="checked-artwork-id"></span>
@@ -132,6 +150,7 @@
 </div>
 <script>
 	let sharedActingRoles = [];
+	var loginedMemberId = '<c:out value="${loginedMemberId}"/>';
 	//회원모달창 켜졌을경우 외부영역 클릭 시 팝업 닫기
 	$('.modal-background').mouseup(
 		function(e) {
@@ -335,7 +354,9 @@
 			    return a - b;
 			});
 			
-			$('#checked-actingRole-id').append(sharedActingRoles);	
+			var actingRoleToShare =  sharedActingRoles.filter((element, index) => element != "" && element != null ).join("_");
+			
+			$('#checked-actingRole-id').append(actingRoleToShare);	
 		});
 	}
 	
@@ -501,7 +522,10 @@
 			sharedActingRoles.sort(function(a, b) {
 			    return a - b;
 			});
-			$('#checked-actingRole-id').append(sharedActingRoles);	
+			
+			var actingRoleToShare =  sharedActingRoles.filter((element, index) => element != "" && element != null ).join("_");
+			
+			$('#checked-actingRole-id').append(actingRoleToShare);	
 		});
 	
 	}
@@ -539,10 +563,120 @@
 		    return a - b;
 		});
 		
-		$('#checked-artwork-id').html(sharedArtworks);	
+		var artworkToShare =  sharedArtworks.filter((element, index) => element != "" && element != null ).join("_");
+		
+		$('#checked-artwork-id').html(artworkToShare);	
 	
 	});
 	
+	function closeCastingDirectorList(){
+		
+		$('#search-close-button').css({"display":"none"});
+		$('#search-result').empty();
+	}
+	
+	function getCastingDirectorList(){
+		
+		//양쪽 공백제거
+		var $director_search_input = $.trim($('#director-search-input').val());
+		
+		if($director_search_input == ""){
+			alert('검색어를 입력해주세요.');
+			return;
+		}	
+		
+		$.get('../../usr/member/getCastingDirectorListAjax',{
+			loginId : $director_search_input,
+			authority : 1,
+			id : loginedMemberId
+		},CastingDirectorList
+		,'json'
+		);
+		
+	}
+	
+	function CastingDirectorList(data){
+		var $search_result = $('#search-result');
+		
+		//값 초기화
+		$('#search-result').empty();
+		
+		var members = null;
+		
+		if(data.resultCode.startsWith('F')){
+			$('#search-close-button').css({"display":"none"});
+		}
+		
+		if(data && data.body && data.body.members){
+			members = data.body.members;
+			
+			$('#search-close-button').css({"display":"flex"});
+		}
+
+		var $search_result = $('#search-result');
+		
+		var html = '';
+		
+		$.each(members, function(index, item){
+			
+			html+= "<div class='flex justify-center items-center mb-4'>";
+			html+= "<div>" + item.loginId+ "/" + item.name + "</div>";
+			html+= "<div class='flex-grow'></div>";
+			html+= "<button onclick='doShareApplymentsWith({item.id}" + "," +"{item.name})' class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>";
+			html+= "공유초대</button>";
+			html+= "</div>";
+			
+			//item.name을 변수로 인식해서 uncaught reference error에러 발생 아래처럼 정규식으로 찾아서 값을 넣어줘야함
+			html = html.replace(/{item.name}/gi, '"' + item.name + '"').replace(/{item.id}/gi, '"' + item.id + '"');
+	
+		});
+		
+		$('#search-result').prepend(html);
+		
+	}
+	
+	function doShareApplymentsWith(id, name){
+		
+		var result = confirm(name +'님과 지원자들을 공유하시겠습니까?');
+		
+		if(result == false){
+			return;
+		}
+		
+		if(sharedArtworks.length != 0){
+		
+			var artworksStrToShare =  sharedArtworks.filter((element, index) => element != "" && element != null ).join("_");
+			
+			$.post('../../usr/share/doShareArtworksAndActingRolesAjax',{
+				requesterId: loginedMemberId,
+				requesteeId: id,
+				name: name,
+				relTypeCode : "artwork",
+				relId : artworksStrToShare
+			},function (data){
+				alert(data.msg);
+			},'json');
+			
+			//location.reload();
+		}
+		
+		if(sharedActingRoles.length != 0){
+			
+			var actingRolesStrToShare =  sharedActingRoles.filter((element, index) => element != "" && element != null ).join("_");
+			
+			$.post('../../usr/share/doShareArtworksAndActingRolesAjax',{
+				requesterId: loginedMemberId,
+				requesteeId: id,
+				name: name,
+				relTypeCode : "actingRole",
+				relId : actingRolesStrToShare
+			},function (data){
+				alert(data.msg);
+			},'json');
+			
+			//location.reload();
+		}
+	}
 </script>
 
 

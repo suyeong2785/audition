@@ -178,7 +178,6 @@
 		,'json'
 		);
 		
-		
 	}
 	
 	function CastingDirectorList(data){
