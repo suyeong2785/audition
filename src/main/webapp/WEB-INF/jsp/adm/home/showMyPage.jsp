@@ -149,6 +149,7 @@
 	</div>
 </div>
 <script>
+	var actingRoles = new Array();
 	
 	var loginedMemberId = '<c:out value="${loginedMemberId}"/>';
 	
@@ -177,37 +178,13 @@
 		});
 	
 	var totalCount = 0;
-	var actingRoles = new Array();
 	
 	function showActingRoleList(artworkId,artworkName, page) {
-		
-		<!-- 
-		var itemsInAPage = 3;
-		
-		var limitStart = (page-1) * itemsInAPage ;
-		var limitTake = itemsInAPage;
-		-->
-		
+
 		$('[id^="actingRoleList"]').not('#actingRoleList'+ artworkId).css("display","none");
 		$('[id^="actingRoleList"]').not('#actingRoleList'+ artworkId).data("displayStatus",-1);
 		$('[id^="artwork-left-background"]').not('#artwork-left-background'+ artworkId).css("display","none");
 		$('[id^="artwork-right-background"]').not('#artwork-right-background'+ artworkId).css("display","none");
-		
-		<!-- 
-		function actingRoleList(totalCount){ 
-			$.get('../../adm/actingRole/getActingRoleListByArtworkIdAjax',{
-			artworkId : artworkId,
-			limitStart : limitStart,
-			limitTake : limitTake
-			
-		},function(data){
-			drawActingRoleList(data, artworkId, artworkName, page, itemsInAPage, totalCount);
-			
-		},'json');
-		
-		}
-		
-		-->
 		
 		$.ajax({
 			url:'../../adm/actingRole/getActingRoleListByArtworkIdAjax',
@@ -216,14 +193,14 @@
 			}).then(function(data){
 				totalCount = data.body.actingRoles.length;
 				actingRoles = data.body.actingRoles;
-				drawActingRoleList(artworkId, artworkName, page, itemsInAPage, totalCount);
+				drawActingRoleList(artworkId, artworkName, page);
 			});
 		
 	}
 	
 	let sharedActingRoles = [];
 	
-	function drawActingRoleList(artworkId, artworkName, page, itemsInAPage, totalCount){
+	function drawActingRoleList(artworkId, artworkName, page){
 		
 		var itemsInAPage = 3;
 		
@@ -381,41 +358,24 @@
 		var itemsInAPage = 3;
 		
 		var limitStart = (page-1) * itemsInAPage ;
-		var limitTake = itemsInAPage;
+		var limitTake = limitStart + itemsInAPage;
 		
-		$.get('../../adm/actingRole/getActingRoleListByArtworkIdAjax',{
-		artworkId : artworkId,
-		limitStart : limitStart,
-		limitTake : limitTake
-			
-		},function(data){
-			RedrawActingRoleList(data, artworkId, page, itemsInAPage, totalCount);
-			
-		},'json');
-		
-	}
-	
-	function RedrawActingRoleList(data, artworkId, page, itemsInAPage, totalCount){
 		$('#actingRoleList'+ artworkId).empty();
-		
-		if(data && data.body && data.body.actingRoles){
-			var actingRoles = data.body.actingRoles;
-		}else{
-			return;
-		}
 		
 		var html = '';
 		
 		$.each(actingRoles, function(index, actingRole){
-			html += '<a href="../applyment/showMyApplyments">';
-			html += '<div class="flex justify-between items-center justify-items-stretch bg-gray-200 mb-2 rounded-full px-8 font-black">';
-			html += '<div class="flex-1-0-0 ">'+ actingRole.id +'</div>';
-			html += '<div class="flex-3-0-0 text-center">'+ actingRole.name +'역</div>';
-			html += '<div class="flex-2-0-0 text-center">'+ actingRole.gender +'</div>';
-			html += '<div class="flex-3-0-0 text-right">'+ actingRole.job +'</div>';
-			html += '<input type="checkbox" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
-			html += '</div>';
-			html += '</a>';
+			if(limitStart <= index && limitTake > index ){
+				html += '<a href="../applyment/showMyApplyments">';
+				html += '<div class="flex justify-between items-center justify-items-stretch bg-gray-200 mb-2 rounded-full px-8 font-black">';
+				html += '<div class="flex-1-0-0 ">'+ actingRole.id +'</div>';
+				html += '<div class="flex-3-0-0 text-center">'+ actingRole.name +'역</div>';
+				html += '<div class="flex-2-0-0 text-center">'+ actingRole.gender +'</div>';
+				html += '<div class="flex-3-0-0 text-right">'+ actingRole.job +'</div>';
+				html += '<input type="checkbox" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
+				html += '</div>';
+				html += '</a>';
+			}
 		});
 		
 		html += '<div class="flex items-center justify-center sm:px-6">';
