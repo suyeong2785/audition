@@ -15,8 +15,11 @@
 			</a>
 		</div>
 		<div class="flex items-center justify-center font-bold">
-			<div onclick="showShareModal()">
-				<span>평가자 추가/삭제</span>
+			<div id="shareButton" onclick="showArtworksAndActingRolesCheckBox()">
+				<span>작품공유</span>
+			</div>
+			<div class="hidden" onclick="showShareModal()">
+				<span>공유대상 검색</span>
 			</div>
 		</div>
 	</div>
@@ -223,7 +226,7 @@
 				html += '<div class="flex-3-0-0 text-center">'+ actingRole.name +'역</div>';
 				html += '<div class="flex-2-0-0 text-center">'+ actingRole.gender +'</div>';
 				html += '<div class="flex-3-0-0 text-right">'+ actingRole.job +'</div>';
-				html += '<input type="checkbox" class="hidden" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
+				html += '<input type="checkbox" class="'+ ($('#shareButton').data("shareStatus") == 1 ? "inline" : "none") + '" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
 				html += '</div>';
 				html += '</a>';
 			}
@@ -372,7 +375,7 @@
 				html += '<div class="flex-3-0-0 text-center">'+ actingRole.name +'역</div>';
 				html += '<div class="flex-2-0-0 text-center">'+ actingRole.gender +'</div>';
 				html += '<div class="flex-3-0-0 text-right">'+ actingRole.job +'</div>';
-				html += '<input type="checkbox" class="hidden" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
+				html += '<input type="checkbox" class="'+ ($('#shareButton').data("shareStatus") == 1 ? "inline" : "none") +'" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
 				html += '</div>';
 				html += '</a>';
 			}
@@ -531,6 +534,14 @@
 	
 	});
 	
+	//감춰두었던 체크박스 보여주는 함수
+	function showArtworksAndActingRolesCheckBox(){
+		$('#shareButton').data("shareStatus", 1);
+		
+		$('input:checkbox[id^="share-artwork"]').css("display","inline");
+	}
+	
+	//작품리스트,배역리스트 공유대상 검색 및 공유기능
 	function closeCastingDirectorList(){
 		
 		$('#search-close-button').css({"display":"none"});
