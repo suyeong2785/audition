@@ -19,6 +19,6 @@ public interface ShareDao {
 	
 	void doModifyShareAnswer(Map<String, Object> param);
 
-	Share getShareByRequesterIdAndRequesteeId(Map<String, Object> param);
+	List<Share> getShareByRequesterIdAndRequesteeId(Map<String, Object> param);
 	
 }

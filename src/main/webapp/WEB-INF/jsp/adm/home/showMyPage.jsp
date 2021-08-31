@@ -5,8 +5,8 @@
 
 <div class="grid justify-center grid-column-auto-800 mx-4">
 	<div class="flex justify-between">
-		<div class="text-center py-8 text-xl font-bold">CastingCall</div>
-		<div class="flex items-center justify-center">
+		<div class="text-center py-8 text-xl font-bold">
+			<span>CastingCall</span>
 			<a
 				class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
 				href="../actingRole/writeArtwork">
@@ -14,12 +14,22 @@
 				<span>Add</span>
 			</a>
 		</div>
-		<div class="flex items-center justify-center font-bold">
-			<div id="shareButton" onclick="showArtworksAndActingRolesCheckBox()">
+
+		<div id="share-box" class="flex items-center justify-center font-bold">
+			<div id="share-button"
+				class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+				onclick="showArtworksAndActingRolesCheckBox()">
 				<span>작품공유</span>
 			</div>
-			<div class="hidden" onclick="showShareModal()">
+			<div id="share-search-button"
+				class="hidden bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-l-full px-4"
+				onclick="showShareModal()">
 				<span>공유대상 검색</span>
+			</div>
+			<div id="share-close-button"
+				class="hidden bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-r-full px-4"
+				onclick="closeArtworksAndActingRolesCheckBox()">
+				<span>공유취소</span>
 			</div>
 		</div>
 	</div>
@@ -80,7 +90,7 @@
 					<div class="font-black text-sm">
 						<span>${artwork.name}</span>
 						<input type="checkbox" id="share-artwork${artwork.id}"
-							value="${artwork.id}" class="hidden"/>
+							value="${artwork.id}" class="hidden" />
 					</div>
 					<div class="title text-overflow-el text-xs">${artwork.extra.writer}</div>
 					<div class="writer text-xs">
@@ -226,7 +236,7 @@
 				html += '<div class="flex-3-0-0 text-center">'+ actingRole.name +'역</div>';
 				html += '<div class="flex-2-0-0 text-center">'+ actingRole.gender +'</div>';
 				html += '<div class="flex-3-0-0 text-right">'+ actingRole.job +'</div>';
-				html += '<input type="checkbox" class="'+ ($('#shareButton').data("shareStatus") == 1 ? "inline" : "none") + '" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
+				html += '<input type="checkbox" class="'+ ($('#share-box').data("shareStatus") == 1 ? "inline" : "none") + '" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
 				html += '</div>';
 				html += '</a>';
 			}
@@ -375,7 +385,7 @@
 				html += '<div class="flex-3-0-0 text-center">'+ actingRole.name +'역</div>';
 				html += '<div class="flex-2-0-0 text-center">'+ actingRole.gender +'</div>';
 				html += '<div class="flex-3-0-0 text-right">'+ actingRole.job +'</div>';
-				html += '<input type="checkbox" class="'+ ($('#shareButton').data("shareStatus") == 1 ? "inline" : "none") +'" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
+				html += '<input type="checkbox" class="'+ ($('#share-box').data("shareStatus") == 1 ? "inline" : "none") +'" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
 				html += '</div>';
 				html += '</a>';
 			}
@@ -536,9 +546,21 @@
 	
 	//감춰두었던 체크박스 보여주는 함수
 	function showArtworksAndActingRolesCheckBox(){
-		$('#shareButton').data("shareStatus", 1);
+		$('#share-box').data("shareStatus", 1);
+		$('#share-button').css("display","none");
+		$('#share-search-button').css("display","block");
+		$('#share-close-button').css("display","block");
 		
 		$('input:checkbox[id^="share-artwork"]').css("display","inline");
+	}
+	
+	function closeArtworksAndActingRolesCheckBox(){
+		$('#share-box').data("shareStatus", -1);
+		$('#share-button').css("display","inline");
+		$('#share-search-button').css("display","none");
+		$('#share-close-button').css("display","none");
+		
+		$('input:checkbox[id^="share-artwork"]').css("display","none");
 	}
 	
 	//작품리스트,배역리스트 공유대상 검색 및 공유기능

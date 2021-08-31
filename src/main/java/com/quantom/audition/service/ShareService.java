@@ -35,7 +35,7 @@ public class ShareService {
 		shareDao.doModifyShareAnswer(param);
 	}
 
-	public Share getShareByRequesterIdAndRequesteeId(Map<String, Object> param) {
+	public List<Share> getShareByRequesterIdAndRequesteeId(Map<String, Object> param) {
 		return shareDao.getShareByRequesterIdAndRequesteeId(param);
 	}
 

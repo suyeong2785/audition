@@ -1,5 +1,6 @@
 package com.quantom.audition.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -40,16 +41,16 @@ public class MemberService {
 	public Member getMemberById(int id) {
 		return memberDao.getMemberById(id);
 	}
-	
+
 	public int join(Map<String, Object> param) {
 		memberDao.join(param);
 
 		sendJoinCompleteMail((String) param.get("email"));
 
 		int id = Util.getAsInt(param.get("id"));
-		
+
 		String fileIdsStr = (String) param.get("fileIdsStr");
-		
+
 		if (fileIdsStr != null && fileIdsStr.length() > 0) {
 			List<Integer> fileIds = Arrays.asList(fileIdsStr.split(",")).stream().map(s -> Integer.parseInt(s.trim()))
 					.collect(Collectors.toList());
@@ -60,7 +61,7 @@ public class MemberService {
 				fileService.changeRelId(fileId, id);
 			}
 		}
-		
+
 		return id;
 	}
 
@@ -111,9 +112,9 @@ public class MemberService {
 		if (param.get("loginPw") != null) {
 			setNotUsingTempPassword(Util.getAsInt(param.get("id")));
 		}
-		
+
 		int relId = Util.getAsInt(param.get("relId"));
-		
+
 		String fileIdsStr = (String) param.get("fileIdsStr");
 
 		if (fileIdsStr != null && fileIdsStr.length() > 0) {
@@ -126,7 +127,7 @@ public class MemberService {
 				fileService.changeRelId(fileId, relId);
 			}
 		}
-		
+
 	}
 
 	public Member getMemberByNameAndEmail(String name, String email) {
@@ -196,29 +197,36 @@ public class MemberService {
 			return new ResultData("F-1", "일치하는 캐스팅디렉터가 존재하지 않습니다.");
 		}
 
-		Share share = shareService.getShareByRequesterIdAndRequesteeId(param);
+		List<Share> shares = shareService.getShareByRequesterIdAndRequesteeId(param);
 
-		final int requesteeId = share == null ? 0 : share.getRequesteeId();
-		System.out.println("requesteeId :" + requesteeId);
+		List<Integer> requesteeIds = new ArrayList<>();
+
+		if (shares.isEmpty() == false) {
+			for (Share share : shares) {
+				requesteeIds.add(share.getRequesteeId());
+			}
+		}
 
 		// 이미 요청신청을 보낸 캐스팅디렉터의 경우 members에서 해당 정보를 없애준다.
 		// ConcurrentModificationException 에러가 일어나서 구아바의 stream사용
 		List<Member> selectedMembers = members.stream().filter(member -> {
-			if (requesteeId != 0) {
+			for (int requesteeId : requesteeIds) {
 				if (requesteeId == member.getId()) {
 					return false;
 				}
 				return true;
 			}
+			
 			return true;
 		}).collect(Collectors.toList());
-		
-		return new ResultData("S-1", String.format("%d개의 캐스팅디렉터 정보를 가져왔습니다.", selectedMembers.size()), "members", selectedMembers);
+
+		return new ResultData("S-1", String.format("%d개의 캐스팅디렉터 정보를 가져왔습니다.", selectedMembers.size()), "members",
+				selectedMembers);
 	}
 
 	public void doModifyMemberRecommendation(int id, int recommendationStatus) {
-		memberDao.doModifyMemberRecommendation(id,recommendationStatus);
-		
+		memberDao.doModifyMemberRecommendation(id, recommendationStatus);
+
 	}
 
 	public Member getMemberByISNINumber(String ISNI_number) {
