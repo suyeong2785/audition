@@ -77,7 +77,7 @@
 					<div class="font-black text-sm">
 						<span>${artwork.name}</span>
 						<input type="checkbox" id="share-artwork${artwork.id}"
-							value="${artwork.id}" />
+							value="${artwork.id}" class="hidden"/>
 					</div>
 					<div class="title text-overflow-el text-xs">${artwork.extra.writer}</div>
 					<div class="writer text-xs">
@@ -223,7 +223,7 @@
 				html += '<div class="flex-3-0-0 text-center">'+ actingRole.name +'역</div>';
 				html += '<div class="flex-2-0-0 text-center">'+ actingRole.gender +'</div>';
 				html += '<div class="flex-3-0-0 text-right">'+ actingRole.job +'</div>';
-				html += '<input type="checkbox" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
+				html += '<input type="checkbox" class="hidden" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
 				html += '</div>';
 				html += '</a>';
 			}
@@ -372,7 +372,7 @@
 				html += '<div class="flex-3-0-0 text-center">'+ actingRole.name +'역</div>';
 				html += '<div class="flex-2-0-0 text-center">'+ actingRole.gender +'</div>';
 				html += '<div class="flex-3-0-0 text-right">'+ actingRole.job +'</div>';
-				html += '<input type="checkbox" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
+				html += '<input type="checkbox" class="hidden" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
 				html += '</div>';
 				html += '</a>';
 			}
