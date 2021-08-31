@@ -175,14 +175,14 @@
 			}
 		});
 	
+	var totalCount = 0;
+	
 	function showActingRoleList(artworkId,artworkName, page) {
 		
 		var itemsInAPage = 3;
 		
 		var limitStart = (page-1) * itemsInAPage ;
 		var limitTake = itemsInAPage;
-		
-		var totalCount = 0;
 		
 		$('[id^="actingRoleList"]').not('#actingRoleList'+ artworkId).css("display","none");
 		$('[id^="actingRoleList"]').not('#actingRoleList'+ artworkId).data("displayStatus",-1);
@@ -367,29 +367,16 @@
 		var limitStart = (page-1) * itemsInAPage ;
 		var limitTake = itemsInAPage;
 		
-		var totalCount = 0;
 		
-		function actingRoleList(totalCount){ 
-			$.get('../../adm/actingRole/getActingRoleListByArtworkIdAjax',{
-			artworkId : artworkId,
-			limitStart : limitStart,
-			limitTake : limitTake
+		$.get('../../adm/actingRole/getActingRoleListByArtworkIdAjax',{
+		artworkId : artworkId,
+		limitStart : limitStart,
+		limitTake : limitTake
 			
 		},function(data){
 			RedrawActingRoleList(data, artworkId, page, itemsInAPage, totalCount);
 			
 		},'json');
-		
-		}
-		
-		$.ajax({
-			url:'../../adm/actingRole/getActingRoleListByArtworkIdAjax',
-			data : { artworkId : artworkId},
-			dataType : 'json',
-			}).then(function(data){
-				totalCount = data.body.actingRoles.length;
-				actingRoleList(totalCount);
-		});
 		
 	}
 	
