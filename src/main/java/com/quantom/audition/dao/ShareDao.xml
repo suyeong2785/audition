@@ -41,6 +41,10 @@
 		SELECT *
 		FROM `share`
 		WHERE requesterId = #{requesterId}
+		AND requesterId NOT IN
+		<foreach collection="requesterIds" item="requesterId" open="(" close=")" separator=",">
+			#{requesterId}
+		</foreach>
 	</select>
 	
 	<resultMap type="Share" id="AcceptedShare">

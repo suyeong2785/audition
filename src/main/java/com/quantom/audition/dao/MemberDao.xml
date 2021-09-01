@@ -40,6 +40,8 @@
 		AND authority
 		= #{authority}
 		AND id != #{id}
+		AND id NOT IN 
+		(SELECT requesteeId FROM `share`)
 	</select>
 
 	<select id="getMemberByISNINumber" resultType="Member">

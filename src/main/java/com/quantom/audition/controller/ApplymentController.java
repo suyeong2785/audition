@@ -22,6 +22,7 @@ import com.quantom.audition.service.ActingRoleService;
 import com.quantom.audition.service.ApplymentService;
 import com.quantom.audition.service.FileService;
 import com.quantom.audition.service.RecruitmentService;
+import com.quantom.audition.service.ShareService;
 import com.quantom.audition.util.Util;
 
 @Controller
@@ -32,6 +33,8 @@ public class ApplymentController {
 	private RecruitmentService recruitmentService;
 	@Autowired
 	private ActingRoleService actingRoleService;
+	@Autowired
+	private ShareService shareService;
 	@Autowired
 	private AppConfig appConfig;
 	@Autowired
@@ -107,7 +110,8 @@ public class ApplymentController {
 	public String showMyApplyments(Model model,@RequestParam Map<String, Object> param) {
 		
 		List<Applyment> applyments = applymentService.getForPrintApplymentsByRelIdAndRelTypeCode(param);
-
+		ShareService
+		
 		model.addAttribute("applyments", applyments);
 		model.addAttribute("artworkName", param.get("artworkName"));
 		model.addAttribute("actingRoleName", param.get("actingRoleName"));

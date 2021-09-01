@@ -192,36 +192,13 @@ public class MemberService {
 	public ResultData getCastingDirectorsByLoginId(Map<String, Object> param) {
 
 		List<Member> members = memberDao.getCastingDirectorsByLoginId(param);
-
+		
 		if (members.isEmpty()) {
 			return new ResultData("F-1", "일치하는 캐스팅디렉터가 존재하지 않습니다.");
 		}
-
-		List<Share> shares = shareService.getShareByRequesterIdAndRequesteeId(param);
-
-		List<Integer> requesteeIds = new ArrayList<>();
-
-		if (shares.isEmpty() == false) {
-			for (Share share : shares) {
-				requesteeIds.add(share.getRequesteeId());
-			}
-		}
-
-		// 이미 요청신청을 보낸 캐스팅디렉터의 경우 members에서 해당 정보를 없애준다.
-		// ConcurrentModificationException 에러가 일어나서 구아바의 stream사용
-		List<Member> selectedMembers = members.stream().filter(member -> {
-			for (int requesteeId : requesteeIds) {
-				if (requesteeId == member.getId()) {
-					return false;
-				}
-				return true;
-			}
-			
-			return true;
-		}).collect(Collectors.toList());
-
-		return new ResultData("S-1", String.format("%d개의 캐스팅디렉터 정보를 가져왔습니다.", selectedMembers.size()), "members",
-				selectedMembers);
+		
+		return new ResultData("S-1", String.format("%d개의 캐스팅디렉터 정보를 가져왔습니다.", members.size()), "members",
+				members);
 	}
 
 	public void doModifyMemberRecommendation(int id, int recommendationStatus) {
