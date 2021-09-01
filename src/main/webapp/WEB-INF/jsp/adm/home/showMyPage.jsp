@@ -197,6 +197,15 @@
 		$('[id^="actingRoleList"]').not('#actingRoleList'+ artworkId).data("displayStatus",-1);
 		$('[id^="artwork-left-background"]').not('#artwork-left-background'+ artworkId).css("display","none");
 		$('[id^="artwork-right-background"]').not('#artwork-right-background'+ artworkId).css("display","none");
+
+		if($('#actingRoleList'+ artworkId).data("displayStatus") == 1){
+			$('#actingRoleList'+ artworkId).data("displayStatus", -1);
+			$('#actingRoleList'+ artworkId ).css("display","none");
+			$('#artwork-left-background'+ artworkId).css("display","none");
+			$('#artwork-right-background'+ artworkId).css("display","none");
+			
+			return;
+		}
 		
 		$.ajax({
 			url:'../../adm/actingRole/getActingRoleListByArtworkIdAjax',
@@ -226,8 +235,11 @@
 		}
 		
 		var html = '';
+		var actingRoleIds = new Array();
 		
 		$.each(actingRoles, function(index, actingRole){
+			actingRoleIds.push(actingRole.id);
+			
 			if(limitStart <= index && limitTake > index ){
 				html += '<a href="../applyment/showMyApplyments?artworkName='+ artworkName +'&actingRoleName='+ actingRole.name +'&relTypeCode=actingRole&relId='+ actingRole.id +'">';
 				html += '<div class="flex justify-between items-center justify-items-stretch bg-gray-200 mb-2 rounded-full px-8 font-black">';
@@ -253,6 +265,8 @@
 		html += '</div>';
 		
 		$('#actingRoleList'+ artworkId).append(html);
+		
+		$('#actingRoleList'+ artworkId).data("actingRoleIds", actingRoleIds);
 		
 		var pageHtml = '';
 		
@@ -324,12 +338,16 @@
 		if($("[id='share-artwork"+ artworkId +"']").is(":checked") == true){
 			$('input:checkbox[id^="share-actingRole"]').css("display","none");
 			
-			for(var i = 0; i < actingRoles.length; i++ ){
+			var actingRoleIds = $('#actingRoleList'+ artworkId).data("actingRoleIds");
+			
+			for(var i = 0; i < actingRoleIds.length; i++ ){
+				var sameValue = -1;
 				for(var j = 0; j < sharedActingRoles.length; j++){
-					if(sharedActingRoles[j] == actingRoles[i].id){
+					if(sharedActingRoles[j] == actingRoleIds[i]){
 						sharedActingRoles.splice(sharedActingRoles.indexOf(sharedActingRoles[j]),1);
 					}
 				}
+				sharedActingRoles[ sharedActingRoles.length + 1] = actingRoles[i].id;	
 			}
 			
 			// 오름차순
@@ -480,27 +498,6 @@
 		
 		$('#pagination-mobile'+ artworkId).prepend(pageMobileHtml);
 		
-		if($("[id='share-artwork"+ artworkId +"']").is(":checked") == true){
-			$('input:checkbox[id^="share-actingRole"]').css("display","none");
-			
-			for(var i = 0; i < actingRoles.length; i++ ){
-				for(var j = 0; j < sharedActingRoles.length; j++){
-					if(sharedActingRoles[j] == actingRoles[i].id){
-						sharedActingRoles.splice(sharedActingRoles.indexOf(sharedActingRoles[j]),1);
-					}
-				}
-			}
-			
-			// 오름차순
-			sharedActingRoles.sort(function(a, b) {
-			    return a - b;
-			});
-			
-			var actingRoleToShare =  sharedActingRoles.filter((element, index) => element != "" && element != null ).join(",");
-			
-			$('#checked-actingRole-id').html(actingRoleToShare);
-		}
-		
 		$('input:checkbox[id^="share-actingRole"]:not(:checked)').each(function(index,item) {
 			for(var i = 0; i < sharedActingRoles.length; i++ ){
 				if(sharedActingRoles[i] == $('[id^="share-actingRole"]:not(:checked)').eq(index).val()){
@@ -547,42 +544,28 @@
 	
 	}
 	
-	let sharedArtworks = [];
-	
 	$("[id^='share-artwork']").change(function(e){
-		$('#checked-artwork-id').empty();	
 		
-		$('input:checkbox[id^="share-artwork"]:checked').each(function(index,item) {
-			var sameValue = -1;
-			for(var i = 0; i < sharedArtworks.length; i++ ){
-				if(sharedArtworks[i] == $('[id^="share-artwork"]:checked').eq(index).val()){
-					sameValue = 1;
-					break;
-				}
-			}
-			if(sameValue != 1){
-				sharedArtworks[sharedArtworks.length + 1] = $('[id^="share-artwork"]:checked').eq(index).val();	
-			}
-		 });
+		var actingRoleIds = $('#actingRoleList'+ e.target.value).data("actingRoleIds");
 		
-		$('input:checkbox[id^="share-artwork"]:not(:checked)').each(function(index,item) {
-
-			for(var i = 0; i < sharedArtworks.length; i++ ){
-				if(sharedArtworks[i] == $('[id^="share-artwork"]:not(:checked)').eq(index).val()){
-					sharedArtworks.splice(sharedArtworks.indexOf(sharedArtworks[i]),1);
+		if($("[id='"+ e.target.id +"']").is(":checked") == false){		
+			for(var i = 0; i < actingRoleIds.length; i++ ){
+				for(var j = 0; j < sharedActingRoles.length; j++){
+					if(sharedActingRoles[j] == actingRoleIds[i]){
+						sharedActingRoles.splice(sharedActingRoles.indexOf(sharedActingRoles[j]),1);
+					}
 				} 
 			}
-		 });
+		}
 		
 		// 오름차순
-		sharedArtworks.sort(function(a, b) {
+		sharedActingRoles.sort(function(a, b) {
 		    return a - b;
 		});
 		
-		var artworkToShare =  sharedArtworks.filter((element, index) => element != "" && element != null ).join(",");
+		var actingRoleToShare =  sharedActingRoles.filter((element, index) => element != "" && element != null ).join(",");
 		
-		$('#checked-artwork-id').html(artworkToShare);	
-	
+		$('#checked-actingRole-id').html(actingRoleToShare);	
 	});
 	
 	//감춰두었던 체크박스 보여주는 함수
@@ -687,23 +670,6 @@
 			return;
 		}
 		
-		if(sharedArtworks.length != 0){
-		
-			var artworksStrToShare =  sharedArtworks.filter((element, index) => element != "" && element != null ).join(",");
-			
-			$.post('../../usr/share/doShareArtworksAndActingRolesAjax',{
-				requesterId: loginedMemberId,
-				requesteeId: id,
-				name: name,
-				relTypeCode : "artwork",
-				relId : artworksStrToShare
-			},function (data){
-				alert(data.msg);
-			},'json');
-			
-			location.reload();
-		}
-		
 		if(sharedActingRoles.length != 0){
 			
 			var actingRolesStrToShare =  sharedActingRoles.filter((element, index) => element != "" && element != null ).join(",");
@@ -719,6 +685,8 @@
 			},'json');
 			
 			location.reload();
+		}else{
+			alert("공유할 대상이 선택되지 않았습니다.");
 		}
 	}
 </script>
