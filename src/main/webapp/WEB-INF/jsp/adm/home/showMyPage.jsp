@@ -321,6 +321,27 @@
 			$('#artwork-right-background'+ artworkId).css("display","block");
 		}
 		
+		if($("[id='share-artwork"+ artworkId +"']").is(":checked") == true){
+			$('input:checkbox[id^="share-actingRole"]').css("display","none");
+			
+			for(var i = 0; i < actingRoles.length; i++ ){
+				for(var j = 0; j < sharedActingRoles.length; j++){
+					if(sharedActingRoles[j] == actingRoles[i].id){
+						sharedActingRoles.splice(sharedActingRoles.indexOf(sharedActingRoles[j]),1);
+					}
+				}
+			}
+			
+			// 오름차순
+			sharedActingRoles.sort(function(a, b) {
+			    return a - b;
+			});
+			
+			var actingRoleToShare =  sharedActingRoles.filter((element, index) => element != "" && element != null ).join(",");
+			
+			$('#checked-actingRole-id').html(actingRoleToShare);
+		}
+		
 		$('input:checkbox[id^="share-actingRole"]:not(:checked)').each(function(index,item) {
 			for(var i = 0; i < sharedActingRoles.length; i++ ){
 				if(sharedActingRoles[i] == $('[id^="share-actingRole"]:not(:checked)').eq(index).val()){
@@ -359,10 +380,11 @@
 			    return a - b;
 			});
 			
-			var actingRoleToShare =  sharedActingRoles.filter((element, index) => element != "" && element != null ).join("_");
+			var actingRoleToShare =  sharedActingRoles.filter((element, index) => element != "" && element != null ).join(",");
 			
 			$('#checked-actingRole-id').append(actingRoleToShare);	
 		});
+		
 	}
 	
 	function changeActingRoleListPage(artworkId, page){
@@ -458,6 +480,27 @@
 		
 		$('#pagination-mobile'+ artworkId).prepend(pageMobileHtml);
 		
+		if($("[id='share-artwork"+ artworkId +"']").is(":checked") == true){
+			$('input:checkbox[id^="share-actingRole"]').css("display","none");
+			
+			for(var i = 0; i < actingRoles.length; i++ ){
+				for(var j = 0; j < sharedActingRoles.length; j++){
+					if(sharedActingRoles[j] == actingRoles[i].id){
+						sharedActingRoles.splice(sharedActingRoles.indexOf(sharedActingRoles[j]),1);
+					}
+				}
+			}
+			
+			// 오름차순
+			sharedActingRoles.sort(function(a, b) {
+			    return a - b;
+			});
+			
+			var actingRoleToShare =  sharedActingRoles.filter((element, index) => element != "" && element != null ).join(",");
+			
+			$('#checked-actingRole-id').html(actingRoleToShare);
+		}
+		
 		$('input:checkbox[id^="share-actingRole"]:not(:checked)').each(function(index,item) {
 			for(var i = 0; i < sharedActingRoles.length; i++ ){
 				if(sharedActingRoles[i] == $('[id^="share-actingRole"]:not(:checked)').eq(index).val()){
@@ -467,7 +510,7 @@
 		});
 		
 		$("[id^='share-actingRole']").change(function(){
-			$('#checked-actingRole-id').empty();	
+			$('#checked-actingRole-id').empty();
 			
 			$('input:checkbox[id^="share-actingRole"]:checked').each(function(index,item) {
 				var sameValue = -1;
@@ -497,7 +540,7 @@
 			    return a - b;
 			});
 			
-			var actingRoleToShare =  sharedActingRoles.filter((element, index) => element != "" && element != null ).join("_");
+			var actingRoleToShare =  sharedActingRoles.filter((element, index) => element != "" && element != null ).join(",");
 			
 			$('#checked-actingRole-id').append(actingRoleToShare);	
 		});
@@ -506,7 +549,7 @@
 	
 	let sharedArtworks = [];
 	
-	$("[id^='share-artwork']").change(function(){
+	$("[id^='share-artwork']").change(function(e){
 		$('#checked-artwork-id').empty();	
 		
 		$('input:checkbox[id^="share-artwork"]:checked').each(function(index,item) {
@@ -520,7 +563,6 @@
 			if(sameValue != 1){
 				sharedArtworks[sharedArtworks.length + 1] = $('[id^="share-artwork"]:checked').eq(index).val();	
 			}
-
 		 });
 		
 		$('input:checkbox[id^="share-artwork"]:not(:checked)').each(function(index,item) {
@@ -537,7 +579,7 @@
 		    return a - b;
 		});
 		
-		var artworkToShare =  sharedArtworks.filter((element, index) => element != "" && element != null ).join("_");
+		var artworkToShare =  sharedArtworks.filter((element, index) => element != "" && element != null ).join(",");
 		
 		$('#checked-artwork-id').html(artworkToShare);	
 	
@@ -647,7 +689,7 @@
 		
 		if(sharedArtworks.length != 0){
 		
-			var artworksStrToShare =  sharedArtworks.filter((element, index) => element != "" && element != null ).join("_");
+			var artworksStrToShare =  sharedArtworks.filter((element, index) => element != "" && element != null ).join(",");
 			
 			$.post('../../usr/share/doShareArtworksAndActingRolesAjax',{
 				requesterId: loginedMemberId,
@@ -664,7 +706,7 @@
 		
 		if(sharedActingRoles.length != 0){
 			
-			var actingRolesStrToShare =  sharedActingRoles.filter((element, index) => element != "" && element != null ).join("_");
+			var actingRolesStrToShare =  sharedActingRoles.filter((element, index) => element != "" && element != null ).join(",");
 			
 			$.post('../../usr/share/doShareArtworksAndActingRolesAjax',{
 				requesterId: loginedMemberId,

@@ -35,8 +35,12 @@ public class ShareService {
 		shareDao.doModifyShareAnswer(param);
 	}
 
-	public List<Share> getShareByRequesterIdAndRequesteeId(Map<String, Object> param) {
-		return shareDao.getShareByRequesterIdAndRequesteeId(param);
+	public List<Share> getShareByRequesterId(Map<String, Object> param) {
+		return shareDao.getShareByRequesterId(param);
+	}
+
+	public List<Share> getAccesibleRequesteesByActingRoleId(Map<String, Object> param) {
+		return shareDao.getAccesibleRequesteesByActingRoleId(param);
 	}
 
 }

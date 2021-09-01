@@ -8,7 +8,6 @@
 		<a href="../home/showMyPage">
 			<div class="text-center py-8 font-bold">목록으로가기</div>
 		</a>
-
 	</div>
 
 	<div>
@@ -22,7 +21,10 @@
 			<div id="applyment-right-background"
 				class="absolute bottom-0 right-0 bg-gray-300 h-1/2 w-1/2 z-10"></div>
 		</div>
-		<div class="bg-gray-300 p-8 text-center font-bold rounded-b-3xl ">홍길동/김남길/홍순인/조철희/김영상
+		<div class="bg-gray-300 p-8 text-center font-bold rounded-b-3xl ">
+			<c:forEach items="${shares}" var="share">
+				<span>${share.extra.memberName}</span>
+			</c:forEach>
 			평가 참여중</div>
 	</div>
 

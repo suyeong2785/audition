@@ -18,6 +18,7 @@ import com.quantom.audition.dto.ActingRole;
 import com.quantom.audition.dto.Applyment;
 import com.quantom.audition.dto.Member;
 import com.quantom.audition.dto.ResultData;
+import com.quantom.audition.dto.Share;
 import com.quantom.audition.service.ActingRoleService;
 import com.quantom.audition.service.ApplymentService;
 import com.quantom.audition.service.FileService;
@@ -110,9 +111,10 @@ public class ApplymentController {
 	public String showMyApplyments(Model model,@RequestParam Map<String, Object> param) {
 		
 		List<Applyment> applyments = applymentService.getForPrintApplymentsByRelIdAndRelTypeCode(param);
-		ShareService
+		List<Share> shares = shareService.getAccesibleRequesteesByActingRoleId(param);
 		
 		model.addAttribute("applyments", applyments);
+		model.addAttribute("shares", shares);
 		model.addAttribute("artworkName", param.get("artworkName"));
 		model.addAttribute("actingRoleName", param.get("actingRoleName"));
 		

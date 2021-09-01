@@ -37,35 +37,22 @@
 		AND S.answer = 1
 	</select>
 	
-	<select id="getShareByRequesterIdAndRequesteeId" resultType="Share">
+	<select id="getShareByRequesterId" resultType="Share">
 		SELECT *
 		FROM `share`
 		WHERE requesterId = #{requesterId}
-		AND requesterId NOT IN
-		<foreach collection="requesterIds" item="requesterId" open="(" close=")" separator=",">
-			#{requesterId}
-		</foreach>
 	</select>
 	
-	<resultMap type="Share" id="AcceptedShare">
-		<id property="id" column="id" />
-		<id property="regDate" column="regDate" />
-		<id property="updateDate" column="updateDate" />
-		<id property="delDate" column="delDate" />
-		<id property="delStatus" column="delStatus" />
-		<id property="answer" column="answer" />
-		<id property="relTypeCode" column="relTypeCode" />
-		<id property="requesterId" column="requesterId" />
-		<id property="requesteeId" column="requesteeId" />
-		<association property="extra" javaType="map">
-			<id property="memberId" column="extra__member_id" />
-			<id property="memberName" column="extra__member_name" />
-			<id property="memberNickname" column="extra__member_nickname" />
-			<id property="memberEmail" column="extra__member_email" />
-			<id property="memberCellphoneNo" column="extra__member_cellphoneNo" />
-			
-		</association>
-	</resultMap>
+	<select id="getAccesibleRequesteesByActingRoleId" resultMap="AcceptedMember">
+		SELECT S.*
+		,M.name
+		FROM `share` AS S
+		LEFT OUTER
+		JOIN member AS M
+		on S.requesteeId = M.id
+		WHERE relTypeCode = #{relTypeCode}
+		AND relId = #{relId}
+	</select>
 	
 	<select id="getForPrintRequestedSharesByRequesteeId" resultMap="RequestedShare">
 		SELECT S.*
@@ -79,7 +66,32 @@
 		AND answer = 0
 	</select>
 	
-	<resultMap type="Share" id="RequestedShare">
+		
+	<resultMap type="Share" id="AcceptedShare" extends="share">
+		<association property="extra" javaType="map">
+			<id property="memberId" column="extra__member_id" />
+			<id property="memberName" column="extra__member_name" />
+			<id property="memberNickname" column="extra__member_nickname" />
+			<id property="memberEmail" column="extra__member_email" />
+			<id property="memberCellphoneNo" column="extra__member_cellphoneNo" />
+		</association>
+	</resultMap>
+	
+	<resultMap type="Share" id="AcceptedMember" extends="share">
+		<association property="extra" javaType="map">
+			<id property="memberName" column="extra__member_name" />
+		</association>
+	</resultMap>
+	
+	<resultMap type="Share" id="RequestedShare" extends="share">
+		<association property="extra" javaType="map">
+			<id property="requesterLoginId" column="extra__requesterLoginId" />
+			<id property="requesterName" column="extra__requesterName" />
+			<id property="requesterNickname" column="extra__requesterNickname" />
+		</association>
+	</resultMap>
+	
+	<resultMap type="Share" id="share">
 		<id property="id" column="id" />
 		<id property="regDate" column="regDate" />
 		<id property="updateDate" column="updateDate" />
@@ -89,10 +101,5 @@
 		<id property="relTypeCode" column="relTypeCode" />
 		<id property="requesterId" column="requesterId" />
 		<id property="requesteeId" column="requesteeId" />
-		<association property="extra" javaType="map">
-			<id property="requesterLoginId" column="extra__requesterLoginId" />
-			<id property="requesterName" column="extra__requesterName" />
-			<id property="requesterNickname" column="extra__requesterNickname" />
-		</association>
 	</resultMap>
 </mapper>
