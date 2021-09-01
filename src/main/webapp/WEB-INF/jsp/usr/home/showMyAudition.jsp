@@ -5,7 +5,6 @@
 
 <%@ include file="../part/head.jspf"%>
 
-<script src="http://www.youtube.com/player_api"></script>
 <div class="grid justify-center grid-column-auto-800 p-4 gap-y-4">
 	<div class="flex justify-between">
 		<div class="text-center ">내가지원한 오디션</div>

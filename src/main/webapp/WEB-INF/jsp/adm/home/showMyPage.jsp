@@ -11,7 +11,6 @@
 				class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
 				href="../actingRole/writeArtwork">
 				<i class="fas fa-plus"></i>
-				<span>Add</span>
 			</a>
 		</div>
 
@@ -19,17 +18,17 @@
 			<div id="share-button"
 				class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
 				onclick="showArtworksAndActingRolesCheckBox()">
-				<span>작품공유</span>
+				<span>공유</span>
 			</div>
 			<div id="share-search-button"
 				class="hidden bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-l-full px-4"
 				onclick="showShareModal()">
-				<span>공유대상 검색</span>
+				<span>공유대상</span>
 			</div>
 			<div id="share-close-button"
 				class="hidden bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-r-full px-4"
 				onclick="closeArtworksAndActingRolesCheckBox()">
-				<span>공유취소</span>
+				<span>취소</span>
 			</div>
 		</div>
 	</div>
@@ -560,7 +559,15 @@
 		$('#share-search-button').css("display","none");
 		$('#share-close-button').css("display","none");
 		
+		$('input:checkbox[id^="share-artwork"]:checked').each(function(index,item) {
+			$(item).prop("checked", false);
+		});
+		
 		$('input:checkbox[id^="share-artwork"]').css("display","none");
+		
+		sharedArtworks = [];
+		sharedActingRoles = [];
+		
 	}
 	
 	//작품리스트,배역리스트 공유대상 검색 및 공유기능
@@ -652,7 +659,7 @@
 				alert(data.msg);
 			},'json');
 			
-			//location.reload();
+			location.reload();
 		}
 		
 		if(sharedActingRoles.length != 0){
@@ -669,7 +676,7 @@
 				alert(data.msg);
 			},'json');
 			
-			//location.reload();
+			location.reload();
 		}
 	}
 </script>

@@ -5,8 +5,6 @@
 <%@ include file="../part/head.jspf"%>
 <%@ include file="../../part/toastuiEditor.jspf"%>
 
-<script src="http://www.youtube.com/player_api"></script>
-
 <div class="con">
 	<div class=" flex flex-col">
 		<div class="max-height-360 relative overflow-hidden">

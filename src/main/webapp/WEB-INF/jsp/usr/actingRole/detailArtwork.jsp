@@ -119,7 +119,7 @@
 	</div>
 </div>
 
-
+<!-- 
 <div class="btn-box con margin-top-20">
 	<c:if test="${isAdmin == true || loginedMemberId == artwork.extra.writerId}">
 		<a class="btn btn-info"
@@ -130,5 +130,5 @@
 	</c:if>
 	<a href="${listUrl}" class="btn btn-info">목록</a>
 </div>
-
+ -->
 <%@ include file="../part/foot.jspf"%>

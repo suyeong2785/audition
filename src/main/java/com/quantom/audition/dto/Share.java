@@ -19,6 +19,7 @@ public class Share {
 	private int delStatus;
 	private int answer;
 	private String relTypeCode;
+	private String relId;
 	private int requesterId;
 	private int requesteeId;
 	

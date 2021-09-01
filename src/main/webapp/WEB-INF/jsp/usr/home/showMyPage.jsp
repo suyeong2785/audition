@@ -5,7 +5,6 @@
 
 <%@ include file="../part/head.jspf"%>
 
-<script src="http://www.youtube.com/player_api"></script>
 <div class="grid grid-rows-layout-myPage con mx-auto">
 	<div class="flex items-center px-4">
 		<div class="font-black">마이 프로필</div>
