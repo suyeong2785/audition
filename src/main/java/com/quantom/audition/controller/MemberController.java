@@ -181,7 +181,12 @@ public class MemberController {
 		} else {
 			model.addAttribute("msg", String.format("%s님 반갑습니다.", member.getNickname()));
 		}
-
+		
+		if(redirectUri.contains("doShareArtworksAndActingRoles")) {
+			redirectUri += ("&requesteeId=" + member.getId());
+			model.addAttribute("msg", String.format("%s님 반갑습니다.지원자 공유제안이 있습니다.", member.getNickname()));
+		}
+		
 		model.addAttribute("redirectUri", redirectUri);
 
 		return "common/redirect";
@@ -258,7 +263,6 @@ public class MemberController {
 		
 		param.put("id", loginedMemberId);
 		memberService.modify(param);
-		
 		
 		String redirectUri = (String) param.get("redirectUri");
 		model.addAttribute("redirectUri", redirectUri);

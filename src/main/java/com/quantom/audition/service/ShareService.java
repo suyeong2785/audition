@@ -22,7 +22,7 @@ public class ShareService {
 		
 		return new ResultData("S-1",String.format("%s와 지원자공유 관계를 생성했습니다.", targetName));
 	}
-
+	
 	public List<Share> getForPrintRequestedSharesByRequesteeId(int requesteeId) {
 		return shareDao.getForPrintRequestedSharesByRequesteeId(requesteeId);
 	}
@@ -42,5 +42,4 @@ public class ShareService {
 	public List<Share> getAccesibleRequesteesByActingRoleId(Map<String, Object> param) {
 		return shareDao.getAccesibleRequesteesByActingRoleId(param);
 	}
-
 }

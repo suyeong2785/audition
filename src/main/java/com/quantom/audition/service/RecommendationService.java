@@ -1,5 +1,6 @@
 package com.quantom.audition.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,5 +59,15 @@ public class RecommendationService {
 		}
 		
 		return new ResultData("S-2", "해당하는 지원자의 추천을 취소했습니다.");
+	}
+
+	public ResultData getForPrintRecommendationsByRecommendeeId(int recommendeeId) {
+		List<Recommendation> recommendations = recommendationDao.getForPrintRecommendationsByRecommendeeId(recommendeeId);
+		
+		if(recommendations.isEmpty()) {
+			return new ResultData("F-1", "추천자에 해당하는 추천이 없습니다.");
+		}
+		
+		return new ResultData("S-1", "추천자에 해당하는 추천을 가져왔습니다.","recommendations",recommendations);
 	}
 }

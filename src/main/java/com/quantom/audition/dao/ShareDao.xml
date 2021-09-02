@@ -45,13 +45,13 @@
 	
 	<select id="getAccesibleRequesteesByActingRoleId" resultMap="AcceptedMember">
 		SELECT S.*
-		,M.name
+		,M.name AS extra__member_name
 		FROM `share` AS S
 		LEFT OUTER
 		JOIN member AS M
 		on S.requesteeId = M.id
 		WHERE relTypeCode = #{relTypeCode}
-		AND relId = #{relId}
+		AND FIND_IN_SET(#{relId},S.relId);
 	</select>
 	
 	<select id="getForPrintRequestedSharesByRequesteeId" resultMap="RequestedShare">

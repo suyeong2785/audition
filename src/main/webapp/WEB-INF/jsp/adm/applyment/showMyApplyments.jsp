@@ -96,6 +96,7 @@
 				class="flex items-center justify-center flex-grow bg-gray-200 text-2xl py-8 min-width-100">
 				<i class="fas fa-heart"></i>
 			</div>
+			<div id="recommender" class="flex flex-3 items-center justify-center bg-gray-100 px-4"></div>
 		</div>
 		<div id="button-box" class="button-box flex justify-around p-8">
 			<button id="recommendation-button"
@@ -133,31 +134,33 @@
 	function showApplymentModal(videoUrl, applyment_name, applyment_id, applyment_memberId, applyment_recommendation) {
 		$('#video-box').empty();
 		$('#applicantInfo-box').empty();
-		$('#recommender').remove();
+		$('#recommender').empty();
 		$('#recommendation-number').remove();
 		
 		$('#applyment-decision-modal').css("display", "flex");
 		
 		var $recommendation_button = $("#recommendation-button");
-	  	 
-	  	  $.get('../../usr/recommendation/getRecommendationByRecommenderIdAjax',{
-	  		  recommenderId : loginedMemberId,
+	  	
+	  	  $.get('../../usr/recommendation/getForPrintRecommendationsByRecommendeeIdAjax',{
 	  		  recommendeeId : applyment_memberId
 	  	  },function(data){
+	  		  var recommendations = data.body.recommendations;
 	  		  if(data.resultCode.startsWith("S")){
-	  			var recommendationStatus = data.body.recommendation.recommendationStatus;
-	  			  
-	  			if(recommendationStatus == 1 ){
-	  				$recommendation_button.css({"background-color" : "green","color" : "white"});
-	  				$recommendation_button.data("recommendationStatus", recommendationStatus);
-	  			}else{
-	  				$recommendation_button.data("recommendationStatus",recommendationStatus);
-	  				$recommendation_button.css({"background-color" : "white","color" : "black"});
-	  			}
-	  		  
-	  		  }else{
-	  			$recommendation_button.data("recommendationStatus",-1);
-	  			$recommendation_button.css({"background-color" : "white","color" : "black"});
+		  		  for(var i = 0; i < recommendations.length; i++ ){
+		  			$('#recommender').append(recommendations[i].extra.requesterName+"");
+		  			  
+		  				if(recommendations[i].recommenderId == loginedMemberId){
+				  			var recommendationStatus = data.body.recommendations[i].recommendationStatus;
+				  			  
+				  			if(recommendationStatus == 1 ){
+				  				$recommendation_button.css({"background-color" : "green","color" : "white"});
+				  				$recommendation_button.data("recommendationStatus", recommendationStatus);
+				  			}else{
+				  				$recommendation_button.data("recommendationStatus",recommendationStatus);
+				  				$recommendation_button.css({"background-color" : "white","color" : "black"});
+				  			}
+		  			  	}
+		  		  }
 	  		  }
 	  		  
 	  	  },'json');
@@ -174,10 +177,6 @@
 				'<div class="w-full bg-gray-500 text-white text-center py-2">'
 						+ applyment_name + '</div>');
 		var recommenderHtml = '';
-		$('#recommendation')
-				.append(
-						'<div id="recommender" class="flex flex-3 items-center justify-center bg-gray-100 px-4">홍길동/김남길/홍순인/조철희/김영상</div>');
-		
 
 		$('#recommendation-count').append('<div id="recommendation-number" class="pl-2">' + applyment_recommendation + '</div>');	
 		

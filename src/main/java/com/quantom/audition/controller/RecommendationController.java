@@ -46,5 +46,16 @@ public class RecommendationController {
 		
 		return recommendationRd;
 	}
+	
+	@RequestMapping("usr/recommendation/getForPrintRecommendationsByRecommendeeIdAjax")
+	@ResponseBody
+	public ResultData getForPrintRecommendationsByRecommendeeId(int recommendeeId) {
+		
+		ResultData recommendationRd = recommendationService.getForPrintRecommendationsByRecommendeeId(recommendeeId);
+		
+		return recommendationRd;
+	}
+	
+	
 
 }

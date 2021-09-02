@@ -85,7 +85,7 @@
 <form method="POST" class="table-box-vertical con form1 pt-20"
 	action="doLogin"
 	onsubmit="javascript:MemberLoginForm__submit(this); return false;">
-	<input type="hidden" name="redirectUri" value="${param.redirectUri}">
+	<input type="text" name="redirectUri" value="${param.redirectUri}">
 	<input type="hidden" name="loginPwReal">
 	<div class="flex justify-center pb-12">
 		<img src="/resource/img/logoForLogin.svg" alt="" />

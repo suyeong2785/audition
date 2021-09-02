@@ -150,6 +150,7 @@
 			</button>
 		</div>
 		<div id="search-result"></div>
+		<div id="share-link"></div>
 		<div>
 			<span>artworkId : </span>
 			<span id="checked-artwork-id"></span>
@@ -355,9 +356,8 @@
 			    return a - b;
 			});
 			
-			var actingRoleToShare =  sharedActingRoles.filter((element, index) => element != "" && element != null ).join(",");
-			
-			$('#checked-actingRole-id').html(actingRoleToShare);
+			sharedActingRoles = sharedActingRoles.filter((element, index) => element != "" && element != null );
+			var actingRoleToShare =  sharedActingRoles.join(",");
 		}
 		
 		$('input:checkbox[id^="share-actingRole"]:not(:checked)').each(function(index,item) {
@@ -398,9 +398,8 @@
 			    return a - b;
 			});
 			
-			var actingRoleToShare =  sharedActingRoles.filter((element, index) => element != "" && element != null ).join(",");
-			
-			$('#checked-actingRole-id').append(actingRoleToShare);	
+			sharedActingRoles = sharedActingRoles.filter((element, index) => element != "" && element != null );
+			var actingRoleToShare =  sharedActingRoles.join(",");	
 		});
 		
 	}
@@ -537,9 +536,8 @@
 			    return a - b;
 			});
 			
-			var actingRoleToShare =  sharedActingRoles.filter((element, index) => element != "" && element != null ).join(",");
-			
-			$('#checked-actingRole-id').append(actingRoleToShare);	
+			sharedActingRoles = sharedActingRoles.filter((element, index) => element != "" && element != null );
+			var actingRoleToShare =  sharedActingRoles.join(",");
 		});
 	
 	}
@@ -563,7 +561,8 @@
 		    return a - b;
 		});
 		
-		var actingRoleToShare =  sharedActingRoles.filter((element, index) => element != "" && element != null ).join(",");
+		sharedActingRoles = sharedActingRoles.filter((element, index) => element != "" && element != null );
+		var actingRoleToShare =  sharedActingRoles.join(",");
 		
 		$('#checked-actingRole-id').html(actingRoleToShare);	
 	});
@@ -618,8 +617,7 @@
 			id : loginedMemberId
 		},CastingDirectorList
 		,'json'
-		);
-		
+		);	
 	}
 	
 	function CastingDirectorList(data){
@@ -632,6 +630,8 @@
 		
 		if(data.resultCode.startsWith('F')){
 			$('#search-close-button').css({"display":"none"});
+			
+			$('#share-link').html('http://localhost:8080/usr/share/doShareArtworksAndActingRoles?relTypeCode=actingRole&relId='+ sharedActingRoles +'&requesterId=1');
 		}
 		
 		if(data && data.body && data.body.members){
