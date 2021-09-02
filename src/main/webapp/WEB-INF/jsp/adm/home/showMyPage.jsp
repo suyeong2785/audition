@@ -150,7 +150,10 @@
 			</button>
 		</div>
 		<div id="search-result"></div>
-		<div id="share-link"></div>
+		<div id="share-link-box" class="hidden">
+			<input class="flex flex-grow" type="text" id="share-link"/>
+			<button type="button" id="copy_btn" class="btn btn-info">클립보드 복사</button>
+		</div>
 		<div>
 			<span>artworkId : </span>
 			<span id="checked-artwork-id"></span>
@@ -469,7 +472,6 @@
 			}else{
 				pageHtml += '<span class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" data-page="'+ i +'" onclick="changeActingRoleListPage('+ artworkId +','+ i +')">'+ i +'</span>';	
 			}
-			
 		}
 		
 		$('#pagination'+ artworkId).append(pageHtml);
@@ -527,7 +529,6 @@
 			 });
 			
 			$('input:checkbox[id^="share-actingRole"]:not(:checked)').each(function(index,item) {
-
 				for(var i = 0; i < sharedActingRoles.length; i++ ){
 					if(sharedActingRoles[i] == $('[id^="share-actingRole"]:not(:checked)').eq(index).val()){
 						sharedActingRoles.splice(sharedActingRoles.indexOf(sharedActingRoles[i]),1);
@@ -609,6 +610,10 @@
 	
 	function getCastingDirectorList(){
 		
+		if(sharedActingRoles.length == 0){
+			alert("공유할 대상이 선택되지 않았습니다.");
+			return;
+		}
 		//양쪽 공백제거
 		var $director_search_input = $.trim($('#director-search-input').val());
 		
@@ -638,13 +643,16 @@
 			$('#search-close-button').css({"display":"none"});
 			
 			var redirectUri = encodeURIComponent('/usr/share/doShareArtworksAndActingRoles?relTypeCode=actingRole&relId='+ sharedActingRoles +'&requesterId=1');
-			$('#share-link').html('http://localhost:8080/usr/member/join?redirectUri='+ redirectUri);
+			$('#share-link').val('http://localhost:8080/usr/member/join?redirectUri='+ redirectUri);
+			
+			$('#share-link-box').css("display","flex");
 		}
 		
 		if(data && data.body && data.body.members){
 			members = data.body.members;
 			
 			$('#search-close-button').css({"display":"flex"});
+			$('#share-link-box').css("display","none");
 		}
 
 		var $search_result = $('#search-result');
@@ -696,6 +704,13 @@
 			alert("공유할 대상이 선택되지 않았습니다.");
 		}
 	}
+	
+	$('#copy_btn').click(function(){
+		$('#share-link').select(); //복사할 텍스트를 선택
+		document.execCommand("copy"); //클립보드 복사 실행
+		alert('복사완료');
+	})
+
 </script>
 
 
