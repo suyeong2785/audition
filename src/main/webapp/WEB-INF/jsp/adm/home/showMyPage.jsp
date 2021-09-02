@@ -358,6 +358,8 @@
 			
 			sharedActingRoles = sharedActingRoles.filter((element, index) => element != "" && element != null );
 			var actingRoleToShare =  sharedActingRoles.join(",");
+			
+			$('#checked-actingRole-id').html(actingRoleToShare);
 		}
 		
 		$('input:checkbox[id^="share-actingRole"]:not(:checked)').each(function(index,item) {
@@ -399,7 +401,9 @@
 			});
 			
 			sharedActingRoles = sharedActingRoles.filter((element, index) => element != "" && element != null );
-			var actingRoleToShare =  sharedActingRoles.join(",");	
+			var actingRoleToShare =  sharedActingRoles.join(",");
+			
+			$('#checked-actingRole-id').html(actingRoleToShare);
 		});
 		
 	}
@@ -538,6 +542,8 @@
 			
 			sharedActingRoles = sharedActingRoles.filter((element, index) => element != "" && element != null );
 			var actingRoleToShare =  sharedActingRoles.join(",");
+			
+			$('#checked-actingRole-id').html(actingRoleToShare);
 		});
 	
 	}
@@ -631,7 +637,8 @@
 		if(data.resultCode.startsWith('F')){
 			$('#search-close-button').css({"display":"none"});
 			
-			$('#share-link').html('http://localhost:8080/usr/share/doShareArtworksAndActingRoles?relTypeCode=actingRole&relId='+ sharedActingRoles +'&requesterId=1');
+			var redirectUri = encodeURIComponent('/usr/share/doShareArtworksAndActingRoles?relTypeCode=actingRole&relId='+ sharedActingRoles +'&requesterId=1');
+			$('#share-link').html('http://localhost:8080/usr/member/join?redirectUri='+ redirectUri);
 		}
 		
 		if(data && data.body && data.body.members){

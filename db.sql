@@ -451,7 +451,7 @@ CHANGE COLUMN targetId requesteeId INT UNSIGNED NOT NULL;
 
 # 자기소개 영상 youtube URL을 member정보에 추가
 ALTER TABLE `member`
-ADD COLUMN `youTubeUrl` VARCHAR(100) NOT NULL AFTER cellphoneNo;
+ADD COLUMN `youTubeUrl` VARCHAR(100) NULL AFTER cellphoneNo;
 
 #경력db 생성
 CREATE TABLE career(
@@ -496,7 +496,7 @@ recommendationStatus TINYINT NOT NULL
 );
 
 #member 테이블에 ISNI Number 컬럼추가(이후의 ISNI와의 연동을 위한 사전작업)
-ALTER TABLE `member` ADD COLUMN `ISNI_number` CHAR(16) NOT NULL; 
+ALTER TABLE `member` ADD COLUMN `ISNI_number` CHAR(16) NULL; 
 
 
 #admin으로 배우정보 추가 검색할수있도록 관리할 actor 테이블을 추가
@@ -516,7 +516,7 @@ phone CHAR(11) NOT NULL
 );
 
 #member테이블에 경력 db연결 
-ALTER TABLE `member` ADD COLUMN careerId INT UNSIGNED NOT NULL AFTER loginId;
+ALTER TABLE `member` ADD COLUMN careerId INT UNSIGNED NOT NULL DEFAULT 0 AFTER loginId;
 
 #career테이블에 member db연결 
 ALTER TABLE `career` DROP COLUMN memberId;
@@ -628,3 +628,18 @@ select * from  actor;
 DESC `actingRole`;
 DESC `artwork`;
 DESC `share`;
+DESC `recommendation`;
+DESC `member`;
+
+SELECT SUM((CHAR_LENGTH(relId)-CHAR_LENGTH(REPLACE(relId,'_',''))+1))
+FROM `share`
+WHERE id = 6;
+
+SELECT S.*
+		,M.name
+		FROM `share` AS S
+		LEFT OUTER
+		JOIN MEMBER AS M
+		ON S.requesteeId = M.id
+		WHERE relTypeCode = "actingRole"
+		AND  FIND_IN_SET('19',relId);
