@@ -51,6 +51,7 @@ custom:
   emailFrom: tpwls2785@locahost
   emailFromName: 방수
   genFileDirPath: C:/work/sts-4.8.0.RELEASE-workspace/at-file
+  environment: https://localhost:8080
   logging:
     dir: log
     level: info
@@ -87,6 +88,7 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/audition?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull
 custom:
   genFileDirPath: /opt/tomcat/apache-tomcat-9.0.37/bangsuyeong.shop-file
+  environment: https://bangsuyeong.shop
   logging:
     dir: /tmp/bangsuyeong-resource-log 
     level: info

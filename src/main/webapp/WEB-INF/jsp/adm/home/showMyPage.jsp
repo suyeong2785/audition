@@ -4,6 +4,10 @@
 <%@ include file="../part/head.jspf"%>
 
 <div class="grid justify-center grid-column-auto-800 mx-4">
+	<div>
+		<span>actingRoleId : </span>
+		<span id="checked-actingRole-id"></span>
+	</div>
 	<div class="flex justify-between">
 		<div class="text-center py-8 text-xl font-bold">
 			<span>CastingCall</span>
@@ -151,23 +155,21 @@
 		</div>
 		<div id="search-result"></div>
 		<div id="share-link-box" class="hidden">
-			<input class="flex flex-grow" type="text" id="share-link"/>
-			<button type="button" id="copy_btn" class="btn btn-info">클립보드 복사</button>
-		</div>
-		<div>
-			<span>artworkId : </span>
-			<span id="checked-artwork-id"></span>
-		</div>
-		<div>
-			<span>actingRoleId : </span>
-			<span id="checked-actingRole-id"></span>
+			<input class="absolute -inset-full z-0" type="text" id="share-link" />
+			<button type="button" id="copy_btn" class="btn btn-info">Link
+				Copy</button>
+			<button class="share-button" type="button" title="Share this article">
+				<i class="fas fa-share-alt"></i>
+				Share
+			</button>
 		</div>
 	</div>
 </div>
-<script>
+<script>	
 	var actingRoles = new Array();
 	
 	var loginedMemberId = '<c:out value="${loginedMemberId}"/>';
+	var environment = '<c:out value="${environment}"/>';
 	
 	//회원모달창 켜졌을경우 외부영역 클릭 시 팝업 닫기
 	$('.modal-background').mouseup(
@@ -180,6 +182,15 @@
 	
 	function showShareModal(){
 		$('#applyment-share-modal').css("display", "flex");
+		
+		if(sharedActingRoles.length != 0){
+			$('#share-link-box').css("display","flex");
+			
+			var redirectUri = encodeURIComponent('/usr/share/doShareArtworksAndActingRoles?relTypeCode=actingRole&relId='+ sharedActingRoles +'&requesterId=1');
+			$('#share-link').val( environment + '/usr/member/join?redirectUri='+ redirectUri);
+		}else{
+			$('#share-link-box').css("display","none");
+		}
 	}
 	
 	//외부영역 클릭 시 팝업 닫기
@@ -190,6 +201,8 @@
 			$('[id^="actingRoleList"]').empty();
 			$('[id^="artwork-left-background"]').css("display","none");
 			$('[id^="artwork-right-background"]').css("display","none");
+
+			$('#search-result').empty();
 			}
 		});
 	
@@ -582,6 +595,7 @@
 		$('#share-close-button').css("display","block");
 		
 		$('input:checkbox[id^="share-artwork"]').css("display","inline");
+		
 	}
 	
 	function closeArtworksAndActingRolesCheckBox(){
@@ -598,14 +612,13 @@
 		
 		sharedArtworks = [];
 		sharedActingRoles = [];
+		$('#share-link').val("");
 		
 	}
 	
 	//작품리스트,배역리스트 공유대상 검색 및 공유기능
 	function closeCastingDirectorList(){
-		
 		$('#search-close-button').css({"display":"none"});
-		$('#search-result').empty();
 	}
 	
 	function getCastingDirectorList(){
@@ -635,27 +648,21 @@
 		var $search_result = $('#search-result');
 		
 		//값 초기화
-		$('#search-result').empty();
+		$search_result.empty();
 		
 		var members = null;
 		
 		if(data.resultCode.startsWith('F')){
 			$('#search-close-button').css({"display":"none"});
 			
-			var redirectUri = encodeURIComponent('/usr/share/doShareArtworksAndActingRoles?relTypeCode=actingRole&relId='+ sharedActingRoles +'&requesterId=1');
-			$('#share-link').val('http://localhost:8080/usr/member/join?redirectUri='+ redirectUri);
-			
-			$('#share-link-box').css("display","flex");
+			$search_result.html("<span>존재하지않는 계정입니다.</br>아래의 링크를 상대방에게 공유하여 지원자공유를 진행하실수 있습니다.</span>");
 		}
 		
 		if(data && data.body && data.body.members){
 			members = data.body.members;
 			
 			$('#search-close-button').css({"display":"flex"});
-			$('#share-link-box').css("display","none");
 		}
-
-		var $search_result = $('#search-result');
 		
 		var html = '';
 		
@@ -673,7 +680,7 @@
 	
 		});
 		
-		$('#search-result').prepend(html);
+		$search_result.prepend(html);
 		
 	}
 	
@@ -709,7 +716,31 @@
 		$('#share-link').select(); //복사할 텍스트를 선택
 		document.execCommand("copy"); //클립보드 복사 실행
 		alert('복사완료');
-	})
+	});
+	
+	
+	const shareButton = document.querySelector('.share-button');
+	const shareDialog = document.querySelector('.share-dialog');
+	const closeButton = document.querySelector('.close-button');
+	
+	shareButton.addEventListener('click', event => {
+	  var loginedMemberName = '<c:out value="${loginedMember.name}"/>';
+	  var title = loginedMemberName + '님의 지원자 공유신청 링크';
+	  var url = $('#share-link').val();
+	  
+	  if (navigator.share) { 
+	   navigator.share({
+	      title: title,
+	      url: url
+	    }).then(() => {
+	      console.log('Thanks for sharing!');
+	    })
+	    .catch(console.error);
+	    } else {
+	        shareDialog.classList.add('is-open');
+	    }
+	});
+	
 
 </script>
 

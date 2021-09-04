@@ -293,7 +293,7 @@
 			<tr>
 				<th>가입</th>
 				<td>
-					<button class="btn btn-primary" type="submit">가입</button>
+					<input class="btn btn-primary" type="submit" value="가입">
 					<button class="btn btn-info" type="button"
 						onclick="history.back();">취소</button>
 				</td>
