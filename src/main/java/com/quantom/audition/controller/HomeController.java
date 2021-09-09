@@ -84,6 +84,12 @@ public class HomeController {
 
 		return "usr/home/main";
 	}
+	
+	@RequestMapping("/usr/home/showCommonMyPage")
+	public String showCommonMyPage(Model model, HttpServletRequest req) {
+
+		return "usr/home/showCommonMyPage";
+	}
 
 	@RequestMapping("/adm/home/showMyPage")
 	public String showMyPageAdmin(Model model, HttpServletRequest req) {

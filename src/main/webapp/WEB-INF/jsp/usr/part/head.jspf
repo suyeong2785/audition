@@ -140,11 +140,27 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 		<div class="mobile-side-bar p-14">
 			<nav class="menu-box-1 text-xl">
 				<ul class="grid gap-4">
-					<li>
-						<a href="/usr/actingRole/artworkList">Casting Call</a>
+					<li class="casting-call-category-button">
+						<span onclick="showCastingCallCategory()">Casting Call</span>
+						<div class="casting-call-category hidden text-base">
+							<a href="/usr/actingRole/artworkList">
+								<div class="py-4">List</div>
+							</a>
+							<a href="../../adm/actingRole/writeArtwork">
+								<div>Write</div>
+							</a>
+						</div>
 					</li>
-					<li>
-						<a href="/usr/actingRole/list">Auditions</a>
+					<li class="audition-category-button">
+						<span onclick="showAudtionCategory()">Auditions</span>
+						<div class="audition-category hidden text-base">
+							<a href="/usr/actingRole/list">
+								<div class="py-4">List</div>
+							</a>
+							<a href="../../adm/actingRole/write">
+								<div>Write</div>
+							</a>
+						</div>
 					</li>
 					<li>
 						<a href="/usr/home/news">News</a>
@@ -158,7 +174,7 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 							<a class="ml-8" href="/usr/member/doLogout">로그아웃</a>
 						</li>
 						<li>
-							<a href="/usr/home/showMyPage">마이페이지</a>
+							<a href="/usr/home/showCommonMyPage">마이페이지</a>
 						</li>
 					</c:if>
 					<!--  
@@ -204,12 +220,30 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 		<c:if test="${pageTitle != null && pageTitle.length() != 0}">
 			<h1 class="page-title-box con">${pageTitle}</h1>
 		</c:if>
-		
-<script>
-//외부영역 클릭 시 팝업 닫기
-$(document).mouseup(function(e){ 
-	if($('.mobile-side-bar').has(e.target).length === 0 && $('.btn-toggle-mobile-side-bar').has(e.target).length === 0){ 
-			$html.removeClass('mobile-side-bar-actived');
-		}
-	});
-</script>
+
+		<script>
+			//외부영역 클릭 시 팝업 닫기
+			$(document).mouseup(
+					function(e) {
+						if ($('.mobile-side-bar').has(e.target).length === 0 && $('.btn-toggle-mobile-side-bar').has(
+										e.target).length === 0) {
+							$html.removeClass('mobile-side-bar-actived');
+						}
+						if($('.casting-call-category-button').has(e.target).length === 0){
+							$('.casting-call-category').css("display", "none");
+						}
+						if($('.audition-category-button').has(e.target).length === 0){
+							$('.audition-category').css("display", "none");
+						}
+						
+					}
+			);
+
+			function showCastingCallCategory() {
+				$('.casting-call-category').fadeToggle();
+			}
+			
+			function showAudtionCategory() {
+				$('.audition-category').fadeToggle();
+			}
+		</script>

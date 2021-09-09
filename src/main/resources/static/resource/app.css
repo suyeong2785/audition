@@ -365,6 +365,10 @@ h3 {
 .grid-row-artworkList{
 	grid-template-rows: minmax(97.6px,auto);
 }
+/* artworklist 커스텀*/
+.grid-columns-showCommonMyPage{
+	grid-template-columns: minmax(83px,1fr) minmax(227px,3fr);
+}
 
 /* loader 커스텀*/
 .loader-img {
