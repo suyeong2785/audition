@@ -116,8 +116,9 @@ h3 {
 .mobile-side-bar {
     background-color: white;
     position: fixed;
-    width: 100%;
-    left: 100%;
+    min-width: 276px;
+    max-width: 500px;
+    left: -100%;
     top: 55px;
     bottom: 0;
     transition: left .3s;
@@ -126,20 +127,6 @@ h3 {
 
 .mobile-side-bar-actived .mobile-side-bar {
     left: 0;
-}
-
-.mobile-side-bar .menu-box-1>ul>li>a {
-    padding: 20px 0;
-    font-weight: bold;
-}
-
-@media (max-width :768px) {
-
-    .mobile-side-bar-actived,
-    .mobile-side-bar-actived>body {
-        overflow: hidden;
-    }
-
 }
 
 .table-first-col {

@@ -36,9 +36,15 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 <!-- toastr css 라이브러리 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
+	integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- toastr js 라이브러리 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+	integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- 공통(라이브러리) CSS -->
 <link rel="stylesheet" href="/resource/common.css" />
 <!-- 공통(라이브러리) JS -->
@@ -131,25 +137,31 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 				</a>
 			</c:if>
 		</div>
-		<div class="mobile-side-bar flex flex-ai-c">
-			<nav class="menu-box-1 flex-1-0-0">
-				<ul>
-					<c:if test="${isAdmin}">
-						<li>
-							<a href="/adm/actingRole/list" class="flex flex-jc-c">관리자</a>
-						</li>
-					</c:if>
-					<c:if test="${isCastingDirector}">
-						<li>
-							<a href="/adm/actingRole/list" class="flex flex-jc-c">캐스팅</a>
-						</li>
-					</c:if>
+		<div class="mobile-side-bar p-14">
+			<nav class="menu-box-1 text-xl">
+				<ul class="grid gap-4">
 					<li>
-						<a href="/usr/actingRole/list" class="flex flex-jc-c">배우모집</a>
+						<a href="/usr/actingRole/artworkList">Casting Call</a>
 					</li>
 					<li>
-						<a class="flex flex-jc-c" href="/usr/article/free-list">자유 게시판</a>
+						<a href="/usr/actingRole/list">Auditions</a>
 					</li>
+					<li>
+						<a href="/usr/home/news">News</a>
+					</li>
+					<li>
+						<a href="/usr/home/news">Actors DB</a>
+					</li>
+					<c:if test="${isLogined}">
+						<li>
+							<span>${loginedMember.name}</span>
+							<a class="ml-8" href="/usr/member/doLogout">로그아웃</a>
+						</li>
+						<li>
+							<a href="/usr/home/showMyPage">마이페이지</a>
+						</li>
+					</c:if>
+					<!--  
 					<c:if test="${isLogined}">
 						<li>
 							<a href="/usr/home/showMyAudition" class="flex flex-jc-c">내가지원한 오디션</a>
@@ -179,6 +191,12 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 								찾기</a>
 						</li>
 					</c:if>
+					<c:if test="${isCastingDirector || isAdmin}">
+						<li>
+							<a href="/adm/actingRole/list">캐스팅</a>
+						</li>
+					</c:if>
+					-->
 				</ul>
 			</nav>
 		</div>
@@ -186,3 +204,12 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 		<c:if test="${pageTitle != null && pageTitle.length() != 0}">
 			<h1 class="page-title-box con">${pageTitle}</h1>
 		</c:if>
+		
+<script>
+//외부영역 클릭 시 팝업 닫기
+$(document).mouseup(function(e){ 
+	if($('.mobile-side-bar').has(e.target).length === 0 && $('.btn-toggle-mobile-side-bar').has(e.target).length === 0){ 
+			$html.removeClass('mobile-side-bar-actived');
+		}
+	});
+</script>
