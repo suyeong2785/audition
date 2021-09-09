@@ -53,82 +53,97 @@
 				</c:choose>
 			</div>
 		</div>
-		<div class="p-6">
+		<div class="p-6 text-sm">
 			<div class="flex">
-				<div class="min-width-96">번호</div>
-				<div>${artwork.id}</div>
+				<div class="font-bold pb-4 text-xl">${artwork.name}</div>
 			</div>
 			<div class="flex">
-				<div class="min-width-96">등록날짜</div>
-				<div>${artwork.regDate}</div>
+				<div class="font-bold text-green-600 pb-4 capitalize text-xl">${artwork.genre}</div>
 			</div>
-			<div class="flex">
-				<div class="min-width-96">작품이름</div>
-				<div>${artwork.name}</div>
+			<div class="grid grid-rows-detailArtwork">
+				<div class="flex items-stretch">
+					<div class="flex items-center min-width-93 border-t border-black">제공(배급)</div>
+					<div
+						class="flex items-center flex-grow border-t border-gray-300 ml-2.5">${artwork.investor}</div>
+				</div>
+				<div class="flex items-stretch">
+					<div class="flex items-center min-width-93 border-t border-black">제작사(제작자)</div>
+					<div
+						class="flex items-center flex-grow border-t border-gray-300 ml-2.5">${artwork.productionName}</div>
+				</div>
+				<div class="flex items-stretch">
+					<div class="flex items-center min-width-93 border-t border-black">감독</div>
+					<div
+						class="flex items-center flex-grow border-t border-gray-300 ml-2.5">${artwork.directorName}</div>
+				</div>
+				<div class="flex items-stretch">
+					<div class="flex items-center min-width-93 border-t border-black">주연(출연)</div>
+					<div
+						class="flex items-center flex-grow border-t border-gray-300 ml-2.5">${artwork.leadActor}</div>
+				</div>
+				<div class="flex items-stretch">
+					<div class="flex items-center min-width-93 border-t border-black">오디션일정</div>${fn:split(actingRole.startDate,' ')[0]}
+					<div
+						class="flex items-center flex-grow border-t border-gray-300 ml-2.5">${fn:split(artwork.startDate,' ')[0]}
+						- ${fn:split(artwork.endDate,' ')[0]} (예정)</div>
+				</div>
 			</div>
-			<div class="flex">
-				<div class="min-width-96">장르</div>
-				<div>${artwork.genre}</div>
+			<div class="flex border-t border-b border-black">
+				<div class="text-sm pt-2.5 pb-2.5">${artwork.etc}</div>
 			</div>
-			<div class="flex">
-				<div class="min-width-96">투자사</div>
-				<div>${artwork.investor}</div>
-			</div>
-			<div class="flex">
-				<div class="min-width-96">제작사</div>
-				<div>${artwork.productionName}</div>
-			</div>
-			<div class="flex">
-				<div class="min-width-96">주연</div>
-				<div>${artwork.leadActor}</div>
-			</div>
-
-			<div class="flex">
-				<div class="min-width-96">감독</div>
-				<div>${artwork.directorName}</div>
-			</div>
-
-			<div class="flex">
-				<div class="min-width-96">모집배역</div>
+			<div class="flex font-black border-b border-black pt-2.5 pb-2.5">
+				<div class="min-width-93">출연배역</div>
 				<div>
 					<c:forEach var="i" begin="0"
 						end="${fn:length(actingRoles)-1 > 0 ? fn:length(actingRoles)-1 : 0}">
-						<div>
-							<span>${actingRoles[i]}</span>
-							<span>${actingGenders[i]}</span>
-							<span>${actingAges[i]}</span>
+						<div class="flex items-center">
+							<span id="share-search-button" class="text-2xl" 
+								onclick="showShareModal('${actingGenders[i]}','${actingRoles[i]}','${actingAges[i]}')">
+								<i class="fas fa-info-circle"></i>
+							</span>
+							<span class="pl-2.5">${actingGenders[i]} -
+								${actingRoles[i]} ${actingAges[i]}</span>
 						</div>
 					</c:forEach>
 				</div>
 			</div>
-
-			<div class="flex">
-				<div class="min-width-96">모집기간</div>
-				<div>${artwork.startDate}~${artwork.endDate}</div>
-			</div>
-
-		</div>
-	</div>
-</div>
-<div class="bg-gray-100 ">
-	<div class="con p-6">
-		<div class="flex">
-			<div class="min-width-96">줄거리</div>
-			<div class="text-sm">${artwork.etc}</div>
 		</div>
 	</div>
 </div>
 
-<!-- 
-<div class="btn-box con margin-top-20">
-	<c:if test="${isAdmin == true || loginedMemberId == artwork.extra.writerId}">
-		<a class="btn btn-info"
-			href="modifyArtwork?id=${artwork.id}&listUrl=${Util.getUriEncoded(listUrl)}">수정</a>
-		<a class="btn btn-danger"
-			href="doDeleteArtwork?id=${artwork.id}&listUrl=${Util.getUriEncoded(listUrl)}"
-			onclick="if ( confirm('삭제하시겠습니까?') == false ) return false;">삭제</a>
-	</c:if>
-	<a href="${listUrl}" class="btn btn-info">목록</a>
+<div id="detailArtwork-share-modal" class="modal-background">
+	<div class="modal-content rounded-2xl">
+		<div class="border-t-2 border-b-2 border-gray-300">
+			<div>하하하하하</div>
+		</div>
+	</div>
 </div>
- -->
+
+<script>
+	var artworkId = '<c:out value="${artwork.id}"/>';
+
+	//회원모달창 켜졌을경우 외부영역 클릭 시 팝업 닫기
+	$('.modal-background').mouseup(
+			function(e) {
+				if ($('.modal-content').has(e.target).length === 0
+						&& $('.modal-content').has(e.target).length === 0) {
+					$('.modal-background').css("display", "none");
+				}
+			});
+
+	function showShareModal(gender, role, age) {
+		$('#detailArtwork-share-modal').css("display", "flex");
+
+		$.get('getActingRoleByArtworkIdAndNameAndAgeAndGenderAjax',{
+			artworkId : artworkId,
+			gender : gender,
+			name : role,
+			age : age
+			},function(data){
+			
+			},'json'	
+		);
+		
+	}
+</script>
 <%@ include file="../part/foot.jspf"%>

@@ -258,13 +258,6 @@ CREATE TABLE artwork (
     etc TEXT
 );
 
-INSERT INTO artwork
-SET regDate = NOW(),
-updateDate = NOW(),
-`name` = '균',
-`directorName` = '조용선',
-productionName = '마스터원엔터테인먼트';
-
 # 배역 테이블 만들기
 CREATE TABLE actingRole (
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -558,20 +551,20 @@ updateDAte = NOW(),
 `name` = '배우';
 
 #actingRole을 조PD님이 주신 ppt자료에 맞춰서 변경
-ALTER TABLE `artwork` ADD COLUMN `genre` VARCHAR(10) NOT NULL AFTER NAME;
+alter table `artwork` add column `genre` varchar(10) not null after name;
 ALTER TABLE `artwork` ADD COLUMN `investor` VARCHAR(15) NOT NULL AFTER NAME;
-ALTER TABLE `artwork` MODIFY COLUMN `investor` TEXT NOT NULL AFTER genre;
-ALTER TABLE `artwork` ADD COLUMN `leadActor` TEXT NOT NULL AFTER directorName;
-ALTER TABLE `artwork` ADD COLUMN `startDate` DATETIME NULL AFTER updateDate;
+ALTER TABLE `artwork` modify COLUMN `investor` text NOT NULL AFTER genre;
+alter table `artwork` add column `leadActor` TEXT NOT NULL AFTER directorName;
+alter table `artwork` add column `startDate` datetime null after updateDate;
 ALTER TABLE `artwork` ADD COLUMN `endDate` DATETIME NULL AFTER startDate;
-ALTER TABLE `artwork` ADD COLUMN `actingRole` TEXT NULL AFTER `leadActor`;
+alter table `artwork` add column `actingRole` text null after `leadActor`;
 ALTER TABLE `artwork` ADD COLUMN `actingRoleGender` TEXT NULL AFTER `actingRole`;
 ALTER TABLE `artwork` ADD COLUMN `actingRoleAge` TEXT NULL AFTER `actingRoleGender`;
-ALTER TABLE `artwork` ADD COLUMN `memberId` INT NOT NULL AFTER `endDate`;
+alter table `artwork` add column `memberId` int not null after `endDate`;
 
-UPDATE `artwork`
-SET memberId = 1
-WHERE memberId = 0;
+update `artwork`
+set memberId = 1
+where memberId = 0;
 
 /*
 text는 디폴트 값 설정이안됨..
@@ -581,25 +574,25 @@ ALTER TABLE `artwork` MODIFY COLUMN `directorName` TEXT NOT NULL DEFAULT '개별
 */
 
 #actingRole을 조PD님이 주신 ppt자료에 맞춰서 변경
-ALTER TABLE `actingRole` ADD COLUMN feature TEXT NOT NULL AFTER job;
-ALTER TABLE `actingRole` ADD COLUMN region VARCHAR(9) NOT NULL AFTER feature;
-ALTER TABLE `actingRole` ADD COLUMN `schedule` VARCHAR(20) NOT NULL AFTER region;
-ALTER TABLE `actingRole` ADD COLUMN `shotAngle` CHAR(2) NOT NULL AFTER `schedule`;
-ALTER TABLE `actingRole` DROP COLUMN scenesCount;
+alter table `actingRole` add column feature text not null after job;
+alter table `actingRole` add column region varchar(9) not null after feature;
+alter table `actingRole` add column `schedule` varchar(20) not null after region;
+alter table `actingRole` add column `shotAngle` char(2) not null after `schedule`;
+alter table `actingRole` drop column scenesCount;
 ALTER TABLE `actingRole` DROP COLUMN realName;
 ALTER TABLE `actingRole` DROP COLUMN auditionStatus;
-ALTER TABLE `actingRole` DROP COLUMN `character`;
+alter table `actingRole` drop column `character`;
 ALTER TABLE `actingRole` DROP COLUMN `etc`;
-ALTER TABLE `actingRole` ADD COLUMN thumbnailStatus TINYINT DEFAULT 0 NOT NULL AFTER artworkId;
-ALTER TABLE `actingRole` ADD COLUMN startDate DATETIME AFTER updateDate;
-ALTER TABLE `actingRole` ADD COLUMN endDate DATETIME AFTER startDate;
-ALTER TABLE `actingRole` MODIFY COLUMN gender CHAR(2) NOT NULL AFTER age;
+alter table `actingRole` add column thumbnailStatus tinyint default 0 not null after artworkId;
+alter table `actingRole` add column startDate datetime after updateDate;
+alter table `actingRole` add column endDate datetime after startDate;
+alter table `actingRole` modify column gender char(2) not null after age;
 
 # actingRole에 videoStatus 추가
-ALTER TABLE `actingRole` ADD COLUMN videoStatus TINYINT NOT NULL DEFAULT 0 AFTER scriptStatus ;
+ALTER TABLE `actingRole` add COLUMN videoStatus TINYINT NOT NULL default 0 AFTER scriptStatus ;
 
 # actingRole에 videoStatus 삭제(동영상업로드대신 유튜브 url대체위함)
-ALTER TABLE `actingRole` DROP COLUMN videoStatus;
+ALTER TABLE `actingRole` drop COLUMN videoStatus;
 
 # actingRole에 guideVideoUrl 추가(동영상업로드대신 유튜브 url대체위함)
 ALTER TABLE `actingRole` ADD COLUMN guideVideoUrl VARCHAR(100) NOT NULL AFTER shotAngle ;
@@ -608,7 +601,10 @@ ALTER TABLE `actingRole` ADD COLUMN guideVideoUrl VARCHAR(100) NOT NULL AFTER sh
 ALTER TABLE `applyment` DROP COLUMN `body`;
 
 # share에 relId 추가
-ALTER TABLE `share` ADD COLUMN `relId` VARCHAR(100) NOT NULL AFTER relTypeCode;
+alter table `share` add column `relId` varchar(100) not null after relTypeCode;
+
+# share에 relId 추가
+ALTER TABLE `actingRole` ADD COLUMN `relId` VARCHAR(100) NOT NULL AFTER relTypeCode;
 
 /*
 select * from `file`;
@@ -625,21 +621,8 @@ select * from  recommendation;
 select * from  actor;
 */
 
-DESC `actingRole`;
+desc `actingRole`;
 DESC `artwork`;
 DESC `share`;
 DESC `recommendation`;
 DESC `member`;
-
-SELECT SUM((CHAR_LENGTH(relId)-CHAR_LENGTH(REPLACE(relId,'_',''))+1))
-FROM `share`
-WHERE id = 6;
-
-SELECT S.*
-		,M.name
-		FROM `share` AS S
-		LEFT OUTER
-		JOIN MEMBER AS M
-		ON S.requesteeId = M.id
-		WHERE relTypeCode = "actingRole"
-		AND  FIND_IN_SET('19',relId);

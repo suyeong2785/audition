@@ -123,13 +123,19 @@
 			<artifactId>jaxb-api</artifactId>
 		</dependency>
 
-		<!-- 유용한 http통신  -->
+		<!-- 유용한 http통신 -->
 		<dependency>
 			<groupId>com.mashape.unirest</groupId>
 			<artifactId>unirest-java</artifactId>
 			<version>1.4.9</version>
 		</dependency>
 
+		<!--웹크롤링을 하기위한 셀레니움 -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>3.141.59</version>
+		</dependency>
 
 	</dependencies>
 

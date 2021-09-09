@@ -4,10 +4,12 @@
 <%@ include file="../part/head.jspf"%>
 
 <div class="grid justify-center grid-column-auto-800 mx-4">
+	<!-- 체크박스값 확인테스트용 
 	<div>
 		<span>actingRoleId : </span>
 		<span id="checked-actingRole-id"></span>
 	</div>
+	 -->
 	<div class="flex justify-between">
 		<div class="text-center py-8 text-xl font-bold">
 			<span>CastingCall</span>
@@ -375,7 +377,7 @@
 			sharedActingRoles = sharedActingRoles.filter((element, index) => element != "" && element != null );
 			var actingRoleToShare =  sharedActingRoles.join(",");
 			
-			$('#checked-actingRole-id').html(actingRoleToShare);
+			//$('#checked-actingRole-id').html(actingRoleToShare);
 		}
 		
 		$('input:checkbox[id^="share-actingRole"]:not(:checked)').each(function(index,item) {
@@ -419,7 +421,7 @@
 			sharedActingRoles = sharedActingRoles.filter((element, index) => element != "" && element != null );
 			var actingRoleToShare =  sharedActingRoles.join(",");
 			
-			$('#checked-actingRole-id').html(actingRoleToShare);
+			//$('#checked-actingRole-id').html(actingRoleToShare);
 		});
 		
 	}
@@ -525,7 +527,7 @@
 		});
 		
 		$("[id^='share-actingRole']").change(function(){
-			$('#checked-actingRole-id').empty();
+			//$('#checked-actingRole-id').empty();
 			
 			$('input:checkbox[id^="share-actingRole"]:checked').each(function(index,item) {
 				var sameValue = -1;
@@ -557,7 +559,7 @@
 			sharedActingRoles = sharedActingRoles.filter((element, index) => element != "" && element != null );
 			var actingRoleToShare =  sharedActingRoles.join(",");
 			
-			$('#checked-actingRole-id').html(actingRoleToShare);
+			//$('#checked-actingRole-id').html(actingRoleToShare);
 		});
 	
 	}
@@ -584,7 +586,7 @@
 		sharedActingRoles = sharedActingRoles.filter((element, index) => element != "" && element != null );
 		var actingRoleToShare =  sharedActingRoles.join(",");
 		
-		$('#checked-actingRole-id').html(actingRoleToShare);	
+		//$('#checked-actingRole-id').html(actingRoleToShare);	
 	});
 	
 	//감춰두었던 체크박스 보여주는 함수

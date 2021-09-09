@@ -31,8 +31,7 @@
 		</div>
 		<div class="p-6">
 			<div class="flex">
-				<div class="min-width-96">작품이름</div>
-				<div>${actingRole.extra.artworkName}</div>
+				<div class="font-black">${actingRole.extra.artworkName}</div>
 			</div>
 			<div class="flex">
 				<div class="min-width-96">배역명</div>

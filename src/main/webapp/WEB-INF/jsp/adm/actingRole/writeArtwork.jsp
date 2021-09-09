@@ -56,7 +56,16 @@
 			return -1;
 		}
 
-		var actingRole = $("input[name='role']").map(
+		var actingRole = $("input[name='role']").map(function(index, element) {
+			if ($.trim($(this).val()) != "" && $.trim($(this).val()) != null) {
+				return $.trim($(this).val());
+			}
+
+			return element.innerHTML = "" + index;
+
+		}).get().join("_");
+
+		var actingRoleGender = $("input[name='gender']").map(
 				function(index, element) {
 					if ($.trim($(this).val()) != ""
 							&& $.trim($(this).val()) != null) {
@@ -67,23 +76,16 @@
 
 				}).get().join("_");
 
-		var actingRoleGender = $("input[name='gender']").map(function(index, element) {
-			if ($.trim($(this).val()) != "" && $.trim($(this).val()) != null) {
-				return $.trim($(this).val());
-			}
+		var actingRoleAge = $("input[name='age']").map(
+				function(index, element) {
+					if ($.trim($(this).val()) != ""
+							&& $.trim($(this).val()) != null) {
+						return $.trim($(this).val());
+					}
 
-			return element.innerHTML = "" + index;
+					return element.innerHTML = "" + index;
 
-		}).get().join("_");
-
-		var actingRoleAge = $("input[name='age']").map(function(index, element) {
-			if ($.trim($(this).val()) != "" && $.trim($(this).val()) != null) {
-				return $.trim($(this).val());
-			}
-
-			return element.innerHTML = "" + index;
-
-		}).get().join("_");
+				}).get().join("_");
 
 		form.actingRole.value = actingRole;
 		form.actingRoleGender.value = actingRoleGender;
@@ -121,7 +123,7 @@
 		}
 
 		form.investor.value = form.investor.value.trim();
-		
+
 		if (form.investor.value.length == 0) {
 			form.investor.value = "개별안내";
 			return;
@@ -137,14 +139,14 @@
 		}
 
 		form.directorName.value = form.directorName.value.trim();
-		
+
 		if (form.directorName.value.length == 0) {
 			form.directorName.value = "개별안내";
 			return;
 		}
 
 		form.leadActor.value = form.leadActor.value.trim();
-		
+
 		if (form.leadActor.value.length == 0) {
 			form.leadActor.value = "개별안내";
 			return;
@@ -244,31 +246,27 @@
 	<input type="hidden" name="actingRole" />
 	<input type="hidden" name="actingRoleGender" />
 	<input type="hidden" name="actingRoleAge" />
-	<input type="hidden" name="memberId" value="${loginedMemberId}"/>
+	<input type="hidden" name="memberId" value="${loginedMemberId}" />
 
 	<div class="con">
 		<div class="text-sm font-bold">캐스팅콜 등록에 관한설명</div>
 		<div class="text-xs pb-4">캐스팅 콜 등록에 관한 설명 설명 설명 설명 설명 설명 설명 설명
 			설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명</div>
 
-		<div class="flex justify-center">
-			<label class="flex-grow">
-				<input id="artwork-file" class="text-sm cursor-pointer hidden "
-					accept="${appConfig.getAttachemntFileInputAccept('img')}"
-					name="file__artwork__0__common__attachment__1" type="file">
-				<div
-					class=" mb-4 w-full text-center text bg-gray-500 text-white border border-gray-300 rounded-full font-semibold cursor-pointer p-1 px-3 hover:bg-gray-600">
-					대표 이미지를 선택해주세요</div>
-			</label>
-		</div>
-		<div id="artwork-box" class="flex justify-center">
-			<img id="artwork-profile" class="max-w-xs" src="" alt="" />
-		</div>
-
 		<div class="form-control-box pb-4 flex-grow">
 			<input
 				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 				type="text" placeholder="영화제목" name="name" maxlength="100" />
+		</div>
+		<div class="form-control-box w-full pb-4">
+			<input
+				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+				type="text" placeholder="투자사" name="investor" maxlength="100" />
+		</div>
+		<div class="form-control-box w-full pb-4">
+			<input
+				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+				type="text" placeholder="제작사" name="productionName" maxlength="100" />
 		</div>
 		<div class="form-control-box mb-4 flex-grow relative">
 			<select name="genre"
@@ -289,16 +287,20 @@
 			</div>
 		</div>
 
-		<div class="form-control-box w-full pb-4">
-			<input
-				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-				type="text" placeholder="투자사" name="investor" maxlength="100" />
+		<div class="flex justify-center">
+			<label class="flex-grow">
+				<input id="artwork-file" class="text-sm cursor-pointer hidden "
+					accept="${appConfig.getAttachemntFileInputAccept('img')}"
+					name="file__artwork__0__common__attachment__1" type="file">
+				<div
+					class=" mb-4 w-full text-center text bg-gray-500 text-white border border-gray-300 rounded-full font-semibold cursor-pointer p-1 px-3 hover:bg-gray-600">
+					대표 이미지를 선택해주세요</div>
+			</label>
 		</div>
-		<div class="form-control-box w-full pb-4">
-			<input
-				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-				type="text" placeholder="제작사" name="productionName" maxlength="100" />
+		<div id="artwork-box" class="flex justify-center">
+			<img id="artwork-profile" class="max-w-xs" src="" alt="" />
 		</div>
+
 		<div class="form-control-box w-full pb-4">
 			<input
 				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -341,8 +343,7 @@
 				type="date" name="endDate" />
 		</div>
 
-		<button class="btn btn-primary" type="submit">작성</button>
-		<a class="btn btn-info" href="${listUrl}">리스트</a>
+		<button class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4" type="submit">작성</button>
 	</div>
 </form>
 

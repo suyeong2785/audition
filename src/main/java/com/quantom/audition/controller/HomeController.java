@@ -157,5 +157,14 @@ public class HomeController {
 
 		return "usr/home/showMyAudition";
 	}
+	
+	@RequestMapping("/usr/home/news")
+	public String showMyNews(Model model, HttpServletRequest req) {
+		
+		System.getProperty("");
+		
+		
+		return "usr/home/news";
+	}
 
 }

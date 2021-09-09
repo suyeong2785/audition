@@ -69,7 +69,7 @@
 	<input type="hidden" name="fileIdsStr" />
 	<input type="hidden" name="relTypeCode" value="actingRole" />
 	<input type="hidden" name="relId" value="${actingRole.id}" />
-	<input type="hidden" name="redirectUri" value="/usr/home/showMyPage">
+	<input type="hidden" name="redirectUri" value="/usr/home/showMyAudition">
 
 	<div class="con">
 		<div class=" flex flex-col">

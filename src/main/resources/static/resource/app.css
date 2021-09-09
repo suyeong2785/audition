@@ -174,7 +174,7 @@ h3 {
 }
 
 .modal-content {
-   border: 1px solid #787878;
+    border: 1px solid #787878;
     overflow-y: auto;
     max-height: 100vh;
     padding: 10px;
@@ -365,6 +365,10 @@ h3 {
 
 .grid-row-myAudition{
 	grid-template-rows: minmax(68px,auto);
+}
+/* detailArtwork 커스텀*/
+.grid-rows-detailArtwork{
+	grid-template-rows: repeat(5,36px);
 }
 /* artworklist 커스텀*/
 .grid-columns-artworkList{

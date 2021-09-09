@@ -83,4 +83,12 @@ public class ActingRoleService {
 		return actingRoleDao.getActingRolesCountByArtworkId(param);
 	}
 
+	public ActingRole getActingRoleByArtworkIdAndNameAndAgeAndGenderAjax(Map<String, Object> param) {
+		return actingRoleDao.getActingRoleByArtworkIdAndNameAndAgeAndGenderAjax(param);
+	}
+
+	public List<ActingRole> checkActingRoleAvailableByArtworkIdAndNamesAndAgesAndGendersAjax(List<String> names,String artworkId) {
+		return actingRoleDao.checkActingRoleAvailableByArtworkIdAndNamesAndAgesAndGendersAjax(names,artworkId);
+	}
+
 }

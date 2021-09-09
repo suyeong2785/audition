@@ -33,4 +33,8 @@ public interface ActingRoleDao {
 	
 	void delete(@Param("id") int id);
 
+	ActingRole getActingRoleByArtworkIdAndNameAndAgeAndGenderAjax(Map<String, Object> param);
+
+	List<ActingRole> checkActingRoleAvailableByArtworkIdAndNamesAndAgesAndGendersAjax(@Param("names") List<String> names,@Param("artworkId") String artworkId);
+
 }

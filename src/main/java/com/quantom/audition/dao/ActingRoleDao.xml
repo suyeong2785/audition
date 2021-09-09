@@ -95,7 +95,24 @@
 		WHERE ACR.id = #{id}
 		]]>
 	</select>
-
+	
+	<select id="getActingRoleByArtworkIdAndNameAndAgeAndGenderAjax" resultMap="actingRoleForList">
+		SELECT * FROM actingRole
+		WHERE artworkId = #{artworkId}
+		AND gender = #{gender}
+		AND age = #{age}
+		AND name = #{name}
+	</select>
+	
+	<select id="checkActingRoleAvailableByArtworkIdAndNamesAndAgesAndGendersAjax" resultType="ActingRole">
+		SELECT * FROM actingRole
+		WHERE artworkId = #{artworkId}
+		AND name IN
+		<foreach item="name" index="index" collection="names" open="(" separator="," close=")">
+	        #{name}
+  		</foreach>
+	</select>
+	
 	<select id="getActingRolesForPrintList" resultMap="actingRoleForList">
 		SELECT ACR.*,
 		ACRF.id AS

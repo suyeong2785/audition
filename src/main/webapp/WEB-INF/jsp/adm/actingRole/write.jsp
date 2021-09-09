@@ -553,26 +553,62 @@
 			var actingRoleAge = option.attr("value3"); //지정 value3값
 			var artworkId = option.attr("value4"); //지정 value4값
 
-			actingRoles = actingRole.split('_');
-			actingRoleGenders = actingRoleGender.split('_');
-			actingRoleAges = actingRoleAge.split('_');
+			var actingRoles = actingRole.split('_');
+			var actingRoleGenders = actingRoleGender.split('_');
+			var actingRoleAges = actingRoleAge.split('_');
+			
+			var allData = { "artworkId": artworkId, "names": actingRoles };
+			
+			$.ajax({
+				url : '/adm/actingRole/checkActingRoleAvailableByArtworkIdAndNamesAndAgesAndGendersAjax',
+				type : 'GET',
+				data : allData,
+				success:function(data){
+					if(data != null && data.body != null){
+						var actingRolesAjax = data.body.actingRoles;
+						
+						var count = 0;
+						actingRoles = actingRoles.filter((actingRole, index) => { 
+			        		for(var i = 0; i < actingRolesAjax.length; i++){
+			        			if(actingRole != actingRolesAjax[i].name){
+			        				count = index;
+			        				return true;	
+			        			} 
+			        		}
+						});
+						actingRoleGenders = actingRoleGenders.filter((actingRoleGender, index) => {
+			        		if(count == index){
+			        			return actingRoleGender != actingRolesAjax[i].gender;
+			        		}
+						});
+						actingRoleAges = actingRoleAges.filter((actingRoleAge, index) => { 
+							if(count == index){
+			        			return actingRoleAge != actingRolesAjax[i].age;
+			        		}
+						});
+						
+					}
+					var html = '';
 
-			var html = '';
+					html += '<option value="">선택하세요</option>';
+					for (var i = 0; i < actingRoles.length; i++) {
+						html += '<option value="'+ actingRoles[i] + '" value2="'+ (actingRoleGenders[i]) + '" value3="'+ actingRoleAges[i] + '">'
+								+ actingRoles[i]
+								+ '/'
+								+ actingRoleGenders[i]
+								+ '/'
+								+ actingRoleAges[i] + '</option>';
+					}
 
-			html += '<option value="">선택하세요</option>';
-			for (var i = 0; i < actingRoles.length; i++) {
-				html += '<option value="'+ actingRoles[i] + '" value2="'+ (actingRoleGenders[i]) + '" value3="'+ actingRoleAges[i] + '">'
-						+ actingRoles[i]
-						+ '/'
-						+ actingRoleGenders[i]
-						+ '/'
-						+ actingRoleAges[i] + '</option>';
-			}
-
-			$('select[name="actingRole"]').removeAttr(
-					"disabled");
-			$('select[name="actingRole"]').append(html);
-			$('input[name="artworkId"]').val(artworkId);
+					$('select[name="actingRole"]').removeAttr(
+							"disabled");
+					$('select[name="actingRole"]').append(html);
+					$('input[name="artworkId"]').val(artworkId);	
+		        },
+				error:function(data){
+		           
+		        }
+			});
 
 		} else {
 			$('input[name="artworkId"]').val("");

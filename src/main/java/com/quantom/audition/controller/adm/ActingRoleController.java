@@ -74,6 +74,33 @@ public class ActingRoleController {
 		rsDataBody.put("actingRoles", actingRoles);
 		return new ResultData("S-1", "해당하는 작품의 배역리스트를 찾았습니다.",rsDataBody);
 	}
+	
+	@RequestMapping("/usr/actingRole/getActingRoleByArtworkIdAndNameAndAgeAndGenderAjax")
+	@ResponseBody
+	public ResultData getActingRoleByArtworkIdAndNameAndAgeAndGenderAjax(HttpServletRequest req,@RequestParam Map<String,Object> param) {
+		
+		ActingRole actingRole = actingRoleService.getActingRoleByArtworkIdAndNameAndAgeAndGenderAjax(param);
+		
+		if(actingRole == null) {
+			return new ResultData("F-1", "해당하는 작품의 배역리스트가 없습니다.");
+		}
+
+		return new ResultData("S-1", "해당하는 작품의 배역리스트를 찾았습니다.","actingRole",actingRole);
+	}
+	
+	@RequestMapping("/adm/actingRole/checkActingRoleAvailableByArtworkIdAndNamesAndAgesAndGendersAjax")
+	@ResponseBody
+	public ResultData checkActingRoleAvailableByArtworkIdAndNamesAndAgesAndGendersAjax(HttpServletRequest req,
+			@RequestParam(value="names[]") List<String> names, @RequestParam(value="artworkId") String artworkId) {
+		
+		List<ActingRole> actingRoles = actingRoleService.checkActingRoleAvailableByArtworkIdAndNamesAndAgesAndGendersAjax(names,artworkId);
+		
+		if(actingRoles.isEmpty()) {
+			return new ResultData("F-1", "해당하는 작품의 배역리스트가 없습니다.");
+		}
+
+		return new ResultData("S-1", "해당하는 작품의 배역리스트를 찾았습니다.","actingRoles",actingRoles);
+	}
 
 	@RequestMapping("/adm/actingRole/write")
 	public String showWrite(Model model) {
