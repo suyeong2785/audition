@@ -63,7 +63,7 @@
 			</div>
 			<div class="flex">
 				<div class="min-width-96">작품이름</div>
-				<div>${artwork.name}</div>
+				<div>${artwork.title}</div>
 			</div>
 			<div class="flex">
 				<div class="min-width-96">장르</div>

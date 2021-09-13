@@ -91,4 +91,12 @@ public class ActingRoleService {
 		return actingRoleDao.checkActingRoleAvailableByArtworkIdAndNamesAndAgesAndGendersAjax(names,artworkId);
 	}
 
+	public List<ActingRole> getActingRolesForPrintAuditionsByArtworkId(int artworkId) {
+		return actingRoleDao.getActingRolesForPrintAuditionsByArtworkId(artworkId);
+	}
+
+	public void changeRelId(int id, int artworkId) {
+		actingRoleDao.changeRelId(id, artworkId);
+	}
+
 }

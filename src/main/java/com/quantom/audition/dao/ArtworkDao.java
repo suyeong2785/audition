@@ -27,4 +27,6 @@ public interface ArtworkDao {
 
 	List<Artwork> getForPrintArtworksByLoginId(int memberId);
 
+	Artwork getArtworkById(@Param("id") int id);
+
 }

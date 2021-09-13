@@ -22,8 +22,7 @@ public class ActingRole {
 	private boolean completeStatus;
 	private int memberId;
 	private int artworkId;
-	private boolean thumbnailStatus;
-	private String name;
+	private String role;
 	private String pay;
 	private String age;
 	private String gender;
@@ -45,13 +44,13 @@ public class ActingRole {
 		String artworkName = extra != null ? (String) extra.get("artworkName") : "";
 		String directorName = extra != null ? (String) extra.get("directorName") : "";
 
-		String title = id + "번," + artworkName + "(" + directorName + "감독), " + name + "역";
+		String title = id + "번," + artworkName + "(" + directorName + "감독), " + role + "역";
 
 		return title;
 	}
 
 	public String getDetailLink() {
-		return "./detail?id=" + id;
+		return "./detail?artworkId=" + artworkId;
 	}
 
 	public String getForPrintTitle() {

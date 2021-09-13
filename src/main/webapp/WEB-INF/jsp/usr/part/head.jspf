@@ -151,16 +151,8 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 							</a>
 						</div>
 					</li>
-					<li class="audition-category-button">
-						<span onclick="showAudtionCategory()">Auditions</span>
-						<div class="audition-category hidden text-base">
-							<a href="/usr/actingRole/list">
-								<div class="py-4">List</div>
-							</a>
-							<a href="../../adm/actingRole/write">
-								<div>Write</div>
-							</a>
-						</div>
+					<li>
+						<a href="/usr/actingRole/list">Auditions</a>
 					</li>
 					<li>
 						<a href="/usr/home/news">News</a>
@@ -168,6 +160,11 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 					<li>
 						<a href="/usr/home/news">Actors DB</a>
 					</li>
+					<c:if test="${isLogined == false}">
+						<li>
+							<a href="/usr/member/login?redirectUri=${encodedAfterLoginUri}">로그인</a>
+						</li>
+					</c:if>
 					<c:if test="${isLogined}">
 						<li>
 							<span>${loginedMember.name}</span>
@@ -223,27 +220,23 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 
 		<script>
 			//외부영역 클릭 시 팝업 닫기
-			$(document).mouseup(
-					function(e) {
-						if ($('.mobile-side-bar').has(e.target).length === 0 && $('.btn-toggle-mobile-side-bar').has(
+			$(document)
+					.mouseup(
+							function(e) {
+								if ($('.mobile-side-bar').has(e.target).length === 0
+										&& $('.btn-toggle-mobile-side-bar')
+												.has(e.target).length === 0) {
+									$html
+											.removeClass('mobile-side-bar-actived');
+								}
+								if ($('.casting-call-category-button').has(
 										e.target).length === 0) {
-							$html.removeClass('mobile-side-bar-actived');
-						}
-						if($('.casting-call-category-button').has(e.target).length === 0){
-							$('.casting-call-category').css("display", "none");
-						}
-						if($('.audition-category-button').has(e.target).length === 0){
-							$('.audition-category').css("display", "none");
-						}
-						
-					}
-			);
+									$('.casting-call-category').css("display",
+											"none");
+								}
+							});
 
 			function showCastingCallCategory() {
 				$('.casting-call-category').fadeToggle();
-			}
-			
-			function showAudtionCategory() {
-				$('.audition-category').fadeToggle();
 			}
 		</script>

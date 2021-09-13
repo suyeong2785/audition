@@ -19,6 +19,9 @@ public class ArtworkService {
 	private ArtworkDao artworkDao;
 
 	@Autowired
+	private ActingRoleService actingRoleService;
+	
+	@Autowired
 	private FileService fileService;
 
 	public int writeArtwork(Map<String, Object> param) {
@@ -35,6 +38,19 @@ public class ArtworkService {
 			// 그것을 뒤늦게라도 이렇게 고처야 한다.
 			for (int fileId : fileIds) {
 				fileService.changeRelId(fileId, id);
+			}
+		}
+		
+		String actingRoleIdsStr = (String) param.get("actingRoleIdsStr");
+		
+		if (actingRoleIdsStr != null && actingRoleIdsStr.length() > 0) {
+			List<Integer> actingRoleIds = Arrays.asList(actingRoleIdsStr.split(",")).stream().map(s -> Integer.parseInt(s.trim()))
+					.collect(Collectors.toList());
+
+			// 파일이 먼저 생성된 후에, 관련 데이터가 생성되는 경우에는, file의 relId가 일단 0으로 저장된다.
+			// 그것을 뒤늦게라도 이렇게 고처야 한다.
+			for (int actingRoleId : actingRoleIds) {
+				actingRoleService.changeRelId(actingRoleId, id);
 			}
 		}
 
@@ -63,6 +79,10 @@ public class ArtworkService {
 
 	public List<Artwork> getForPrintArtworksByLoginId(int memberId) {
 		return artworkDao.getForPrintArtworksByLoginId(memberId);
+	}
+
+	public Artwork getArtworkById(int id) {
+		return artworkDao.getArtworkById(id);
 	}
 
 }

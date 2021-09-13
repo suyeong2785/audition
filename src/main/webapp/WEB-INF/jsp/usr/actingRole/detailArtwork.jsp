@@ -55,7 +55,7 @@
 		</div>
 		<div class="p-6 text-sm">
 			<div class="flex">
-				<div class="font-bold pb-4 text-xl">${artwork.name}</div>
+				<div class="font-bold pb-4 text-xl">${artwork.title}</div>
 			</div>
 			<div class="flex">
 				<div class="font-bold text-green-600 pb-4 capitalize text-xl">${artwork.genre}</div>
@@ -94,15 +94,27 @@
 			<div class="flex font-black border-b border-black pt-2.5 pb-2.5">
 				<div class="min-width-93">출연배역</div>
 				<div>
-					<c:forEach var="i" begin="0"
-						end="${fn:length(actingRoles)-1 > 0 ? fn:length(actingRoles)-1 : 0}">
+					<c:forEach items="${actingRoles}" var="actingRole">
 						<div class="flex items-center">
-							<span id="share-search-button" class="text-2xl" 
-								onclick="showShareModal('${actingGenders[i]}','${actingRoles[i]}','${actingAges[i]}')">
+							<span id="share-search-button" class="text-2xl"
+								onclick="showShareModal(${actingRole.id})">
 								<i class="fas fa-info-circle"></i>
 							</span>
-							<span class="pl-2.5">${actingGenders[i]} -
-								${actingRoles[i]} ${actingAges[i]}</span>
+							<span id="actingRole${actingRole.id}" class="pl-2.5"
+								data-id="${actingRole.id}"
+								data-start-date="${actingRole.startDate}"
+								data-end-date="${actingRole.endDate}"
+								data-role="${actingRole.role}" data-pay="${actingRole.pay}"
+								data-age="${actingRole.age}" data-gender="${actingRole.gender}"
+								data-job="${actingRole.job}"
+								data-feature="${actingRole.feature}"
+								data-region="${actingRole.region}"
+								data-schedule="${actingRole.schedule}"
+								data-shot-angle="${actingRole.shotAngle}"
+								data-guide-video-url="${actingRole.guideVideoUrl}"
+								data-script-status="${actingRole.scriptStatus}"
+								data-shootings-count="${actingRole.shootingsCount}">${actingRole.gender}
+								- ${actingRole.role} ${actingRole.age}</span>
 						</div>
 					</c:forEach>
 				</div>
@@ -111,13 +123,49 @@
 	</div>
 </div>
 
-<div id="detailArtwork-share-modal" class="modal-background">
-	<div class="modal-content rounded-2xl">
-		<div class="border-t-2 border-b-2 border-gray-300">
-			<div>하하하하하</div>
+<div id="detailArtwork-share-modal"
+	class="modal-background px-4 pt-4 z-50 items-start ">
+	<div class="modal-content rounded-2xl px-8 pb-4 z-50 ">
+		<div class="actingRole-content"></div>
+		<div class="video-box pb-4 hidden">
+			<div class=" relative h-0 padding-bottom-video ">
+				<div id="player" class="absolute top-0 left-0 w-full h-full "></div>
+			</div>
+		</div>
+		<div class="flex justify-center">
+			<button
+				class="w-28 bg-green-500 hover:bg-green-700 text-white py-2 rounded-full px-4"
+				onclick="closeActingRoleModal()">확인</button>
 		</div>
 	</div>
 </div>
+<script>
+	//유튜브 url에서 videoid추출하는 함수 stackoverflow에서 찾음 제일간단...
+	function YouTubeGetID(url) {
+		url = (url || '').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+		return (url[2] !== undefined) ? url[2].split(/[^0-9a-z_\-]/i)[0]
+				: url[0];
+	}
+	
+	// 2. This code loads the IFrame Player API code asynchronously.
+	var tag = document.createElement('script');
+	
+	tag.src = "https://www.youtube.com/iframe_api";
+	var firstScriptTag = document.getElementsByTagName('script')[0];
+	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+	
+	// 3. This function creates an <iframe> (and YouTube player)
+	//    after the API code downloads.
+	var player;
+	
+	function onYouTubeIframeAPIReady() {
+		player = new YT.Player('player', {});
+	}
+	
+	function showGuideVideo() {
+		$('.video-box').toggle();
+	}
+</script>
 
 <script>
 	var artworkId = '<c:out value="${artwork.id}"/>';
@@ -128,22 +176,42 @@
 				if ($('.modal-content').has(e.target).length === 0
 						&& $('.modal-content').has(e.target).length === 0) {
 					$('.modal-background').css("display", "none");
+					$('.video-box').css("display", "none");
 				}
 			});
 
-	function showShareModal(gender, role, age) {
-		$('#detailArtwork-share-modal').css("display", "flex");
-
-		$.get('getActingRoleByArtworkIdAndNameAndAgeAndGenderAjax',{
-			artworkId : artworkId,
-			gender : gender,
-			name : role,
-			age : age
-			},function(data){
-			
-			},'json'	
-		);
+	function showShareModal(actingRoleId) {
 		
+		$('#detailArtwork-share-modal').css("display", "flex");
+		
+		var content = $('.actingRole-content');
+		
+		var actingRole = $('#actingRole'+ actingRoleId);
+		
+		var html = '';
+		
+		html += '<div class="flex justify-center items-center py-4 font-black">'+ actingRole.data("role") + ' 정보</div>';
+		html += '<div class="grid grid-rows-detailArtwork-detailActingRole mb-4 border-t-2 border-b-2 border-gray-300 text-sm">';
+		html += '<div class="flex items-center">'+ actingRole.data("gender") + '-' + actingRole.data("age") +'</div>';
+		html += '<div class="flex items-center border-dashed border-t border-gray-300">'+ actingRole.data("job") + '</div>';
+		html += '<div class="flex items-center border-dashed border-t border-gray-300">'+ actingRole.data("feature") + '</div>';
+		html += '<div class="flex items-center border-dashed border-t border-gray-300">'+ actingRole.data("schedule") + ' / ' + actingRole.data("region") + '</div>';
+		html += '<div class="flex items-center border-dashed border-t border-gray-300">'+ actingRole.data("pay") + '</div>';
+		html += '<div class="flex items-center justify-between border-dashed border-t border-gray-300">';
+		html += '<span>오디션 영상 ('+ actingRole.data("shotAngle") +')' + '</span>';
+		html += '<button type="button" class=" bg-gray-500 hover:bg-gray-700 text-white py-2 rounded-full px-4" onclick="showGuideVideo()">참고영상</button>';
+		html += '</div>';
+		html += '<div class="flex items-center border-dashed border-t border-gray-300">오디션 내용 ('+ (actingRole.data("scriptStatus") == 1 ? '지정연기' : '자유연기') +')' + '</div>';
+		html += '</div>';
+		
+		player.cueVideoById(YouTubeGetID(actingRole.data("guideVideoUrl")));
+		
+		content.html(html);
+		
+	}
+	
+	function closeActingRoleModal(){
+		$('.modal-background').css("display", "none");
 	}
 </script>
 <%@ include file="../part/foot.jspf"%>

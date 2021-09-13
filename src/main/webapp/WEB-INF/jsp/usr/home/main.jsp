@@ -87,7 +87,7 @@
 						</c:choose>
 						<a href="../../usr/actingRole/${artwork.getDetailLink()}">
 							<div>
-								<div class="text-sm text-left font-bold py-2">${artwork.name}</div>
+								<div class="text-sm text-left font-bold py-2">${artwork.title}</div>
 								<div class="text-xs text-left h-8 overflow-hidden line-clamp-2">${artwork.etc}</div>
 								<div class="text-xs text-left">${fn:split(artwork.startDate,' ')[0]}
 									~ ${fn:split(artwork.endDate,' ')[0]}</div>
@@ -131,14 +131,14 @@
 									<div
 										class="bg-gray-400 text-white rounded-xl padding-bottom-50 top-0 left-0 relative">
 										<span
-											class="absolute font-auditions top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2 capitalize">${actingRole.name}</span>
+											class="absolute font-auditions top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2 capitalize">${actingRole.role}</span>
 									</div>
 								</a>
 							</c:when>
 						</c:choose>
 						<a href="../../usr/actingRole/${actingRole.getDetailLink()}">
 							<div>
-								<div class="text-sm text-left font-bold py-2">${actingRole.name}</div>
+								<div class="text-sm text-left font-bold py-2">${actingRole.role}</div>
 								<div class="text-xs text-left h-8 overflow-hidden line-clamp-2">${actingRole.feature}</div>
 								<div class="text-xs text-left">${fn:split(actingRole.startDate,' ')[0]}
 									~ ${fn:split(actingRole.endDate,' ')[0]}</div>

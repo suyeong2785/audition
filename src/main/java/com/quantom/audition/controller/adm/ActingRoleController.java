@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -121,6 +122,15 @@ public class ActingRoleController {
 
 		return "redirect:" + redirectUri;
 	}
+	
+	@RequestMapping("/adm/actingRole/doWriteAjax")
+	@ResponseBody
+	public ResultData doWriteAjax(@RequestBody Map<String, Object> param, HttpServletRequest req, Model model) {
+		System.out.println("param : " + param);
+		int newActingRoleId = actingRoleService.write(param);
+		
+		return new ResultData("S-1", String.format("%d번 역을 생성하였습니다.", newActingRoleId),"newActingRoleId",newActingRoleId);
+	}
 
 	@RequestMapping("/adm/actingRole/doModify")
 	public String doModify(@RequestParam Map<String, Object> param, HttpServletRequest req, Model model) {
@@ -148,13 +158,15 @@ public class ActingRoleController {
 		}
 		model.addAttribute("listUrl", listUrl);
 
-		int id = Integer.parseInt((String) param.get("id"));
+		int artworkId = Integer.parseInt((String) param.get("artworkId"));
 
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
 
-		ActingRole actingRole = actingRoleService.getActingRoleForPrintDetailById(id);
+		Artwork artwork = artworkService.getArtworkById(artworkId);
+		List<ActingRole> actingRoles = actingRoleService.getActingRolesForPrintAuditionsByArtworkId(artworkId);
 
-		model.addAttribute("actingRole", actingRole);
+		model.addAttribute("actingRoles", actingRoles);
+		model.addAttribute("artwork", artwork);
 
 		String url = "usr/actingRole/detail";
 

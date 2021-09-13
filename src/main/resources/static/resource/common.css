@@ -101,6 +101,14 @@ label[for] {
 	min-height: 50px !important;
 }
 
+.max-height-80vh {
+	max-height: 80vh !important;
+}
+
+.height-80vh {
+	height: 80vh !important;
+}
+
 .height-300 {
 	min-height: 300px;
 }

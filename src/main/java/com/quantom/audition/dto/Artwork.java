@@ -17,7 +17,7 @@ public class Artwork {
 	private String updateDate;
 	private String startDate;
 	private String endDate;
-	private String name;
+	private String title;
 	private String genre;
 	private String investor;
 	private String productionName;

@@ -78,7 +78,7 @@ h3 {
     left: 0;
     right: 0;
     background-color: white;
-    z-index: 100;
+    z-index: 40;
 }
 
 .mobile-top-bar a {
@@ -155,20 +155,26 @@ h3 {
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.4);
     display: none;
-    align-items: center;
     justify-content: center;
-    z-index: 20;
+    z-index: 100;
 }
 
 .modal-content {
     border: 1px solid #787878;
     overflow-y: auto;
-    max-height: 100vh;
-    padding: 10px;
+    max-height: 80vh;
     box-sizing: border-box;
     max-width: 600px;
     width: 100%;
     background-color: white;
+}
+.modal-content-no-bg {
+    border: 1px solid #787878;
+    overflow-y: auto;
+    max-height: 100vh;
+    box-sizing: border-box;
+    max-width: 600px;
+    width: 100%;
 }
 
 
@@ -356,6 +362,9 @@ h3 {
 /* detailArtwork 커스텀*/
 .grid-rows-detailArtwork{
 	grid-template-rows: repeat(5,36px);
+}
+.grid-rows-detailArtwork-detailActingRole{
+	grid-template-rows: repeat(7,44px);
 }
 /* artworklist 커스텀*/
 .grid-columns-artworkList{

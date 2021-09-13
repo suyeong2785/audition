@@ -35,16 +35,16 @@
 						<c:if test="${actingRole.files == '[]'}">
 							<div class="relative bg-gray-400 padding-bottom-50">
 								<div
-									class="absolute top-0 left-0 text-white w-full h-full rounded-xl flex justify-center items-center">${actingRole.name}</div>
+									class="absolute top-0 left-0 text-white w-full h-full rounded-xl flex justify-center items-center">${actingRole.role}</div>
 							</div>
 						</c:if>
 					</a>
 					<div class="grid content-between">
 						<a class="font-bold overflow-hidden line-clamp-1"
-							href="${actingRole.getDetailLink()}" class="block">${actingRole.extra.artworkName}</a>
+							href="${actingRole.getDetailLink()}" class="block">${actingRole.extra.artworkTitle}</a>
 						<a href="${actingRole.getDetailLink()}"
 							class=" text-xs text-left overflow-ellipsis overflow-hidden line-clamp-6">배역명
-							: ${actingRole.name}</a>
+							: ${actingRole.role}</a>
 						<a href="${actingRole.getDetailLink()}"
 							class=" text-xs text-left overflow-ellipsis overflow-hidden line-clamp-6">성별
 							: ${actingRole.gender}</a>

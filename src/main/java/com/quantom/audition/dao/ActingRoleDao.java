@@ -37,4 +37,8 @@ public interface ActingRoleDao {
 
 	List<ActingRole> checkActingRoleAvailableByArtworkIdAndNamesAndAgesAndGendersAjax(@Param("names") List<String> names,@Param("artworkId") String artworkId);
 
+	List<ActingRole> getActingRolesForPrintAuditionsByArtworkId(@Param("artworkId") int artworkId);
+
+	void changeRelId(@Param("id") int id, @Param("artworkId") int artworkId);
+
 }

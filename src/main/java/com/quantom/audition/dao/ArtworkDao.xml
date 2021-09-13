@@ -64,6 +64,12 @@
 		MF.relTypeCode = "member"
 	</select>
 
+	<select id="getArtworkById" resultMap="artworkForPrint">
+		SELECT *
+		FROM artwork
+		WHERE id = #{id}
+	</select>
+	
 	<select id="getForPrintArtworkById" resultMap="artworkForPrint">
 		SELECT
 		A.*, AF.id
@@ -95,8 +101,8 @@
 		#{startDate},
 		endDate = #{endDate},
 		memberId = #{memberId},
-		name =
-		#{name},
+		title =
+		#{title},
 		genre = #{genre},
 		investor = #{investor},
 		productionName =
@@ -120,8 +126,8 @@
 		UPDATE artwork
 		<set>
 			updateDate = NOW(),
-			<if test="name != null">
-				name = #{name},
+			<if test="title != null">
+				title = #{title},
 			</if>
 
 			<if test="productionName != null">
@@ -158,7 +164,7 @@
 		<id property="updateDate" column="updateDate" />
 		<id property="startDate" column="startDate" />
 		<id property="endDate" column="endDate" />
-		<id property="name" column="name" />
+		<id property="title" column="title" />
 		<id property="genre" column="genre" />
 		<id property="investor" column="investor" />
 		<id property="productionName" column="productionName" />

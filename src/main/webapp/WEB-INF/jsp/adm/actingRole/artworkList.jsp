@@ -69,7 +69,7 @@
 				</a>
 				<a href="${artwork.getDetailLink()}">
 					<div class="px-4">
-						<div class="title flex-1-0-0 text-overflow-el">${artwork.name}</div>
+						<div class="title flex-1-0-0 text-overflow-el">${artwork.title}</div>
 						<div class="writer">${artwork.extra.writer}</div>
 						<div class="flex items-center">
 							<div>지원자 : 000명</div>

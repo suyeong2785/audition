@@ -61,7 +61,7 @@ function setPositionOfToastr(targetType, targetName, msg) {
 	};
 	var loginIdCoordinate = null;
 
-	if (targetType == "input" || targetType == "select") {
+	if (targetType == "input" || targetType == "select" || targetType == "textarea") {
 		loginIdCoordinate = $(targetType + '[name=' + targetName + ']').offset();
 	} else if(targetType == "class"){
 		loginIdCoordinate = $( '.' + targetName).offset();

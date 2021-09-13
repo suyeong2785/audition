@@ -31,6 +31,9 @@ public class ArtworkController {
 
 	@Autowired
 	private ArtworkService artworkService;
+	
+	@Autowired
+	private ActingRoleService actingRoleService;
 
 	@RequestMapping("/{authority}/actingRole/artworkList")
 	public String showAdmArtworkList(Model model, @PathVariable("authority") String authority) {
@@ -70,28 +73,10 @@ public class ArtworkController {
 
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
 		Artwork artwork = artworkService.getForPrintArtworkById(loginedMember, id);
-
-		if (artwork.getActingRole() != null) {
-			String actingRole = artwork.getActingRole();
-			List<String> actingRoles = Arrays.asList(actingRole.split("_")).stream().map(s -> s.trim())
-					.collect(Collectors.toList());
-			model.addAttribute("actingRoles", actingRoles);
-		}
-		if (artwork.getActingRoleGender() != null) {
-			String actingGender = artwork.getActingRoleGender();
-			List<String> actingGenders = Arrays.asList(actingGender.split("_")).stream().map(s -> s.trim())
-					.collect(Collectors.toList());
-			model.addAttribute("actingGenders", actingGenders);
-
-		}
-		if (artwork.getActingRoleAge() != null) {
-			String actingAge = artwork.getActingRoleAge();
-			List<String> actingAges = Arrays.asList(actingAge.split("_")).stream().map(s -> s.trim())
-					.collect(Collectors.toList());
-			model.addAttribute("actingAges", actingAges);
-		}
+		List<ActingRole> actingRoles = actingRoleService.getActingRolesForPrintAuditionsByArtworkId(id);
 
 		model.addAttribute("artwork", artwork);
+		model.addAttribute("actingRoles", actingRoles);
 
 		String url = "usr/actingRole/detailArtwork";
 
@@ -100,10 +85,8 @@ public class ArtworkController {
 		}
 
 		if (authority.equals("adm")) {
-			
 			url = "adm/actingRole/detailArtwork";
 			listUrl = "adm/actingRole/artworkList";
-
 		}
 		
 		model.addAttribute("listUrl", listUrl);

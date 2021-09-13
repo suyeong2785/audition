@@ -76,7 +76,7 @@
 					</a>
 					<div class="grid content-between">
 						<a class="font-bold overflow-hidden line-clamp-1"
-							href="${artwork.getDetailLink()}" class="block">${artwork.name}</a>
+							href="${artwork.getDetailLink()}" class="block">${artwork.title}</a>
 						<a href="${artwork.getDetailLink()}"
 							class=" text-xs text-left overflow-ellipsis overflow-hidden line-clamp-6">장르
 							: ${artwork.genre}</a>
