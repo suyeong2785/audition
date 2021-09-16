@@ -33,6 +33,10 @@ public class Artwork {
 	public String getDetailLink() {
 		return "./detailArtwork?id=" + id;
 	}
+	
+	public String getDetailLinkForAuditions() {
+		return "./detailArtworkForAuditions?id=" + id;
+	}
 
 	@JsonIgnore
 	public String getForPrintGenUrlForArtwork() {

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ include file="../part/head.jspf"%>
+<%@ include file="../../usr/part/head.jspf"%>
 
 <div class="grid justify-center grid-column-auto-800 mx-4">
 	<!-- 체크박스값 확인테스트용 
@@ -12,7 +12,7 @@
 	 -->
 	<div class="flex justify-between">
 		<div class="text-center py-8 text-xl font-bold">
-			<span>CastingCall</span>
+			<span>진행중인 오디션</span>
 			<a
 				class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
 				href="../actingRole/writeArtwork">
@@ -43,7 +43,7 @@
 		<div class="relative flex flex-col mt-4">
 			<div
 				class="artworkList-box z-20 grid grid-columns-adm-myPage grid-row-adm-myPage gap-x-2.5 bg-gray-100 place-content-stretch bg-gray-200 rounded-full place-content-stretch"
-				onclick="showActingRoleList(${artwork.id},'${artwork.name}', 1)">
+				onclick="showActingRoleList(${artwork.id},'${artwork.title}', 1)">
 				<c:choose>
 					<c:when test="${artwork.genre == 'action'}">
 						<c:set var="bgColor" value="bg-red-200"></c:set>
@@ -93,7 +93,7 @@
 
 				<div class="grid items-center">
 					<div class="font-black text-sm">
-						<span>${artwork.name}</span>
+						<span>${artwork.title}</span>
 						<input type="checkbox" id="share-artwork${artwork.id}"
 							value="${artwork.id}" class="hidden" />
 					</div>
@@ -210,7 +210,7 @@
 	
 	var totalCount = 0;
 	
-	function showActingRoleList(artworkId,artworkName, page) {
+	function showActingRoleList(artworkId,artworkTitle, page) {
 
 		$('[id^="actingRoleList"]').not('#actingRoleList'+ artworkId).css("display","none");
 		$('[id^="actingRoleList"]').not('#actingRoleList'+ artworkId).data("displayStatus",-1);
@@ -233,14 +233,14 @@
 			}).then(function(data){
 				totalCount = data.body.actingRoles.length;
 				actingRoles = data.body.actingRoles;
-				drawActingRoleList(artworkId, artworkName, page);
+				drawActingRoleList(artworkId, artworkTitle, page);
 			});
 		
 	}
 	
 	let sharedActingRoles = [];
 	
-	function drawActingRoleList(artworkId, artworkName, page){
+	function drawActingRoleList(artworkId, artworkTitle, page){
 		
 		var itemsInAPage = 3;
 		
@@ -260,10 +260,10 @@
 			actingRoleIds.push(actingRole.id);
 			
 			if(limitStart <= index && limitTake > index ){
-				html += '<a href="../applyment/showMyApplyments?artworkName='+ artworkName +'&actingRoleName='+ actingRole.name +'&relTypeCode=actingRole&relId='+ actingRole.id +'">';
+				html += '<a href="../applyment/showMyApplyments?artworkTitle='+ artworkTitle +'&actingRoleRole='+ actingRole.Role +'&relTypeCode=actingRole&relId='+ actingRole.id +'">';
 				html += '<div class="flex justify-between items-center justify-items-stretch bg-gray-200 mb-2 rounded-full px-8 font-black">';
 				html += '<div class="flex-1-0-0 ">'+ actingRole.id +'</div>';
-				html += '<div class="flex-3-0-0 text-center">'+ actingRole.name +'역</div>';
+				html += '<div class="flex-3-0-0 text-center">'+ actingRole.role +'역</div>';
 				html += '<div class="flex-2-0-0 text-center">'+ actingRole.gender +'</div>';
 				html += '<div class="flex-3-0-0 text-right">'+ actingRole.job +'</div>';
 				html += '<input type="checkbox" class="'+ ($('#share-box').data("shareStatus") == 1 ? "inline" : "none") + '" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
@@ -442,7 +442,7 @@
 				html += '<a href="../applyment/showMyApplyments">';
 				html += '<div class="flex justify-between items-center justify-items-stretch bg-gray-200 mb-2 rounded-full px-8 font-black">';
 				html += '<div class="flex-1-0-0 ">'+ actingRole.id +'</div>';
-				html += '<div class="flex-3-0-0 text-center">'+ actingRole.name +'역</div>';
+				html += '<div class="flex-3-0-0 text-center">'+ actingRole.Role +'역</div>';
 				html += '<div class="flex-2-0-0 text-center">'+ actingRole.gender +'</div>';
 				html += '<div class="flex-3-0-0 text-right">'+ actingRole.job +'</div>';
 				html += '<input type="checkbox" class="'+ ($('#share-box').data("shareStatus") == 1 ? "inline" : "none") +'" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';

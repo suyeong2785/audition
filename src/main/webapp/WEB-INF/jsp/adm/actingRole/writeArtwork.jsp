@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<%@ include file="../part/head.jspf"%>
+<%@ include file="../../usr/part/head.jspf"%>
 <%@ include file="../../part/toastuiEditor.jspf"%>
 
 <script>
@@ -228,7 +228,7 @@
 <form id="artwork-form" method="POST" class="bg-gray-200 p-4 w-full h-full"
 	onsubmit="ArtworkWriteForm__submit(this); return false;"
 	action="doWriteArtwork">
-	<input type="hidden" name="redirectUri" value="detailArtwork?id=#id">
+	<input type="hidden" name="redirectUri" value="../../usr/actingRole/detailArtwork?id=#id">
 	<input type="hidden" name="fileIdsStr">
 	<input type="hidden" name="actingRoleIdsStr">
 	<input type="hidden" name="actingRole" />
@@ -524,6 +524,11 @@
 						$('#actingRole-form div[id="'+ index +'"]').html(value);
 					}
 					
+					if(index == "feature"){
+						value = value.replaceAll("\*","\"");
+						$('#actingRole-form [name="'+ index +'"]').val(value);
+					}
+					
 					$('#actingRole-form [name="'+ index +'"]').val(value);
 					
 				});	
@@ -567,7 +572,7 @@
 			actingRole["age"] = $('input[name="age"]').val();
 			actingRole["gender"] = $('input[name="gender"]').val();
 			actingRole["job"] = $('input[name="job"]').val();
-			actingRole["feature"] = $('input[name="feature"]').val();
+			actingRole["feature"] = ($('input[name="feature"]').val()).replaceAll("\"","*");
 			actingRole["region"] = $('input[name="region"]').val();
 			actingRole["schedule"] = $('input[name="schedule"]').val();
 			actingRole["shotAngle"] = $('select[name="shotAngle"]').val();
@@ -612,7 +617,7 @@
 			savedActingRole["age"] = $('input[name="age"]').val();
 			savedActingRole["gender"] = $('input[name="gender"]').val();
 			savedActingRole["job"] = $('input[name="job"]').val();
-			savedActingRole["feature"] = $('input[name="feature"]').val();
+			savedActingRole["feature"] = ($('input[name="feature"]').val()).replaceAll("\"","*");
 			savedActingRole["region"] = $('input[name="region"]').val();
 			savedActingRole["schedule"] = $('input[name="schedule"]').val();
 			savedActingRole["shotAngle"] = $('select[name="shotAngle"]').val();
@@ -853,7 +858,7 @@
 		actingRole["age"] = $('input[name="age"]').val();
 		actingRole["gender"] = $('input[name="gender"]').val();
 		actingRole["job"] = $('input[name="job"]').val();
-		actingRole["feature"] = $('input[name="feature"]').val();
+		actingRole["feature"] = ($('input[name="feature"]').val()).replaceAll("\"","*");
 		actingRole["region"] = $('input[name="region"]').val();
 		actingRole["schedule"] = $('input[name="schedule"]').val();
 		actingRole["shotAngle"] = $('select[name="shotAngle"]').val();

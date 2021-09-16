@@ -41,4 +41,6 @@ public interface ActingRoleDao {
 
 	void changeRelId(@Param("id") int id, @Param("artworkId") int artworkId);
 
+	List<ActingRole> getActingRolesForPrintCastingCallModifyByArtworkId(@Param("artworkId") int artworkId);
+
 }

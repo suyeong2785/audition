@@ -113,10 +113,6 @@ public class HomeController {
 		// requesterid에 일치하는 recruitment에 일치하는 applyments들을 가져와서 마이페이지에 보낸다.
 		model.addAttribute("acceptedShares", acceptedShares);
 
-		// 내가 올린 recruitments를 가져옴
-		//List<Recruitment> recruitments = recruitmentService.getForPrintRecruitmentsByLoginId(loginedMember.getId());
-
-		// recruitment의 역할을 artwork가 대체
 		List<Artwork> artworks = artworkService.getForPrintArtworksByLoginId(loginedMember.getId());
 		
 		model.addAttribute("artworks", artworks);

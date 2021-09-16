@@ -31,10 +31,10 @@
 				<a href="">내정보(캐스팅 담당자)</a>
 			</div>
 			<div class="my-8">
-				<a href="../../adm/home/showMyPage">진행중인 캐스팅</a>
+				<a href="../../adm/actingRole/artworkList">진행중인 캐스팅</a>
 			</div>
 			<div>
-				<a href="">진행중인 오디션</a>
+				<a href="../../adm/home/showMyPage">진행중인 오디션</a>
 			</div>
 		</div>
 	</div>

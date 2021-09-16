@@ -26,6 +26,7 @@
 		JOIN file
 		AS AF
 		ON A.id = AF.relId
+		AND AF.relTypeCode = "artwork"
 		WHERE memberId = #{memberId}
 	</select>
 	
@@ -87,6 +88,31 @@
 		JOIN file
 		AS AF
 		ON A.id = AF.relId
+		AND AF.relTypeCode = "artwork"
+		WHERE A.id =
+		#{id}
+	</select>
+	
+	<select id="getForPrintArtworkForCastingCallModifyById" resultMap="artworkForCastingCallModify">
+		SELECT
+		A.*, AF.id
+		AS
+		artwork__file__id,
+		AF.updateDate AS artwork__file__updateDate,
+		AF.relTypeCode
+		AS artwork__file__relTypeCode,
+		AF.originFileName
+		AS artwork__file__originFileName,
+		AF.fileExt AS
+		artwork__file__fileExt,
+		AF.fileDir AS artwork__file__fileDir
+		FROM
+		artwork AS A
+		LEFT OUTER
+		JOIN file
+		AS AF
+		ON A.id = AF.relId
+		AND AF.relTypeCode = "artwork"
 		WHERE A.id =
 		#{id}
 	</select>
@@ -110,15 +136,6 @@
 		directorName = #{directorName},
 		leadActor =
 		#{leadActor},
-		<if test="actingRole != null">
-			actingRole = #{actingRole},
-		</if>
-		<if test="actingRoleGender != null">
-			actingRoleGender = #{actingRoleGender},
-		</if>
-		<if test="actingRoleAge != null">
-			actingRoleAge = #{actingRoleAge},
-		</if>
 		etc = #{etc}
 	</insert>
 
@@ -126,8 +143,21 @@
 		UPDATE artwork
 		<set>
 			updateDate = NOW(),
+			<if test="startDate != null">
+				startDate = #{startDate},
+			</if>
+			<if test="endDate != null">
+				endDate = #{endDate},
+			</if>
 			<if test="title != null">
 				title = #{title},
+			</if>
+			<if test="genre != null">
+				genre = #{genre},
+			</if>
+			
+			<if test="investor != null">
+				investor = #{investor},
 			</if>
 
 			<if test="productionName != null">
@@ -136,6 +166,9 @@
 
 			<if test="directorName != null">
 				directorName = #{directorName},
+			</if>
+			<if test="leadActor != null">
+				leadActor = #{leadActor},
 			</if>
 
 			<if test="etc != null">
@@ -174,6 +207,20 @@
 		<id property="actingRoleGender" column="actingRoleGender" />
 		<id property="actingRoleAge" column="actingRoleAge" />
 		<id property="etc" column="etc" />
+	</resultMap>
+	
+	<resultMap type="Artwork" id="artworkForCastingCallModify" extends="artwork">
+		<association property="extra" javaType="map">
+			<id property="fileIdForArtwork" column="artwork__file__id" />
+			<id property="fileUpdateDateForArtwork"
+				column="artwork__file__updateDate" />
+			<id property="fileRelTypeCodeForArtwork"
+				column="artwork__file__relTypeCode" />
+			<id property="fileOriginFileNameForArtwork"
+				column="artwork__file__originFileName" />
+			<id property="fileExtForArtwork" column="artwork__file__fileExt" />
+			<id property="fileDirForArtwork" column="artwork__file__fileDir" />
+		</association>
 	</resultMap>
 
 	<resultMap type="Artwork" id="artworkForPrint" extends="artwork">

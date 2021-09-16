@@ -32,7 +32,7 @@ public class ActingRole {
 	private String schedule;
 	private String shotAngle;
 	private String guideVideoUrl;
-	private boolean scriptStatus;
+	private int scriptStatus;
 	private String scenesCount;
 	private String shootingsCount;
 
@@ -50,7 +50,7 @@ public class ActingRole {
 	}
 
 	public String getDetailLink() {
-		return "./detail?artworkId=" + artworkId;
+		return "./detailArtworkForAuditions?id=" + artworkId;
 	}
 
 	public String getForPrintTitle() {

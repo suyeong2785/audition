@@ -293,6 +293,10 @@ label[for] {
 	grid-template-columns: 2fr 1fr;
 }
 
+.grid-column-applyment{
+	grid-template-columns: 1.5fr 1fr;
+}
+
 .grid-columns-1fr-2fr{
 	grid-template-columns: minmax(97.6px,160px) minmax(182px,auto);
 }
@@ -358,9 +362,13 @@ label[for] {
 	font-size: 12vmin;
 }
 
-.padding-banner-uppper-font{
+.padding-banner-uppper-font-left{
 	padding-bottom: 13vmin;
 	padding-right: 40vmin;
+}
+.padding-banner-uppper-font-right{
+	padding-bottom: 13vmin;
+	padding-right: 32vmin;
 }
 .padding-banner-font{
 	padding-bottom: 3vmin;

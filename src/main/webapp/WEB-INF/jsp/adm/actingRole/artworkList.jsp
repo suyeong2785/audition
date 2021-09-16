@@ -1,29 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ include file="../part/head.jspf"%>
-<div class="con flex-col ">
-	<div class="flex items-center justify-center">
-		<div class="flex-grow"></div>
-		<div class="flex justify-center items-center max-w-screen-sm flex-4">
-			<div class="text-center py-8 text-xl font-bold">CastingCall</div>
+<%@ include file="../../usr/part/head.jspf"%>
+
+<div class="grid justify-center grid-column-auto-800 mx-4 ">
+	<div class="flex justify-between">
+		<div class="flex justify-center items-center flex-4">
+			<div class="text-center py-8 text-xl font-bold">진행중인 캐스팅</div>
 			<div class="flex-grow"></div>
 			<div class="flex items-center justify-center">
-				<a class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+				<a
+					class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
 					href="./writeArtwork">
 					<i class="fas fa-plus"></i>
 					<span>Add</span>
 				</a>
 			</div>
 		</div>
-		<div class="flex-grow"></div>
 	</div>
 	<c:forEach items="${artworks}" var="artwork">
-		<div class="flex justify-center mb-4 ">
-			<div class="flex-grow"></div>
+		<div class="relative flex flex-col mt-4 ">
 			<div
-				class="bg-gray-200 h-20 py-4 max-w-screen-sm rounded-full flex items-center justify-center flex-4">
-				<a href="${artwork.getDetailLink()}">
+				class="z-20 grid grid-columns-adm-artworkList grid-row-adm-artworkList gap-x-2.5 bg-gray-100 place-content-stretch bg-gray-200 rounded-full place-content-stretch">
+				<a href="../../usr/actingRole/${artwork.getDetailLink()}">
 					<c:choose>
 						<c:when test="${artwork.genre == 'action'}">
 							<c:set var="bgColor" value="bg-red-200"></c:set>
@@ -56,45 +55,53 @@
 					<c:choose>
 						<c:when
 							test="${artwork.forPrintGenUrlForArtwork != null && artwork.forPrintGenUrlForArtwork != ''}">
-							<img class="object-cover w-20 h-20 rounded-full"
-								src="${artwork.forPrintGenUrlForArtwork}" alt="" />
+							<div class="relative padding-bottom-50 overlow-hidden">
+								<img
+									class="absolute top-0 left-0 text-white w-full h-full flex justify-center items-center rounded-full"
+									src="${artwork.forPrintGenUrlForArtwork}" alt="" />
+							</div>
 						</c:when>
 						<c:when
 							test="${artwork.forPrintGenUrlForArtwork == null || artwork.forPrintGenUrlForArtwork == ''}">
-							<div
-								class="${bgColor} text-white object-cover w-20 h-20 rounded-full flex justify-center items-center">${artwork.genre}</div>
+							<div class="relative padding-bottom-50 overlow-hidden">
+								<div
+									class="${bgColor} absolute top-0 left-0 text-white w-full h-full rounded-full flex justify-center items-center">${artwork.genre}</div>
+							</div>
 						</c:when>
 					</c:choose>
+				</a>
 
-				</a>
-				<a href="${artwork.getDetailLink()}">
-					<div class="px-4">
-						<div class="title flex-1-0-0 text-overflow-el">${artwork.title}</div>
-						<div class="writer">${artwork.extra.writer}</div>
-						<div class="flex items-center">
-							<div>지원자 : 000명</div>
-							<div class="flex-grow"></div>
-						</div>
+				<div class="grid items-center">
+					<div class="overflow-ellipsis overflow-hidden whitespace-nowrap ">
+						<a href="../../usr/actingRole/${artwork.getDetailLink()}">${artwork.title}</a>
 					</div>
-				</a>
-				<div class="flex-grow"></div>
-				<div>
+					<div class="flex items-start">
+						<a href="modifyArtwork?id=${artwork.id}">
+							<div
+								class="py-1 bg-gray-500 hover:bg-gray-700 text-white text-sm rounded-full px-4">내용수정</div>
+						</a>
+					</div>
+				</div>
+				<div class="flex items-center p-3">
 					<c:choose>
 						<c:when
 							test="${artwork.forPrintGenUrlForMember != null && artwork.forPrintGenUrlForMember != ''}">
-							<img class="inline object-cover w-14 h-14 mr-2 rounded-full"
-								src="${artwork.forPrintGenUrlForMember}" alt="" />
+							<div class="relative padding-bottom-50 overlow-hidden">
+								<img
+									class="absolute top-0 left-0 text-white w-full h-full flex justify-center items-center rounded-full"
+									src="${artwork.forPrintGenUrlForMember}" alt="" />
+							</div>
 						</c:when>
 						<c:when
 							test="${artwork.forPrintGenUrlForMember == null || artwork.forPrintGenUrlForMember == ''}">
-							<div class="flex justify-center items-center w-14 h-14 mr-2 text-5xl text-gray-600">
+							<div
+								class="flex justify-center items-center w-14 h-14 mr-2 text-5xl text-gray-600">
 								<i class="fas fa-user-circle"></i>
 							</div>
 						</c:when>
 					</c:choose>
 				</div>
 			</div>
-			<div class="flex-grow"></div>
 		</div>
 	</c:forEach>
 </div>

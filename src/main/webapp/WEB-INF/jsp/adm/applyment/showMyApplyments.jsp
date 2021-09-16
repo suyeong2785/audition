@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ include file="../part/head.jspf"%>
+<%@ include file="../../usr/part/head.jspf"%>
 
 <div class="grid justify-center grid-column-auto-800 mx-4 ">
 	<div class="flex justify-between">
@@ -87,30 +87,28 @@
 	</c:forEach>
 
 </div>
-<div id="applyment-decision-modal" class="modal-background">
-	<div class="modal-content">
-		<div id="video-box" class="flex justify-center"></div>
-		<div id="applicantInfo-box"></div>
-		<div id="recommendation" class="flex text-sm text-black">
+<div id="applyment-decision-modal" class="modal-background pt-4 px-4">
+	<div class="modal-content-applyments flex flex-col self-start" >
+		<div id="recommendation" class="flex text-sm text-white">
 			<div id="recommendation-count"
-				class="flex items-center justify-center flex-grow bg-gray-200 text-2xl py-8 min-width-100">
+				class="flex items-center flex-grow bg-black py-2 px-2 min-width-100">
 				<i class="fas fa-heart"></i>
 			</div>
-			<div id="recommender" class="flex flex-3 items-center justify-center bg-gray-100 px-4"></div>
 		</div>
-		<div id="button-box" class="button-box flex justify-around p-8">
+		<div id="video-box" class="flex justify-center"></div>
+		<div id="button-box" class="button-box flex justify-around p-8 bg-black">
 			<button id="recommendation-button"
-				class="bg-gray-500 text-white rounded-full w-12 h-12 text-2xl"
+				class="bg-white text-black rounded-full w-12 h-12 text-2xl"
 				onclick="doRecommendMember()">
 				<i class="fas fa-heart"></i>
 			</button>
 			<button
-				class="bg-gray-500 text-white rounded-full w-12 h-12 text-2xl"
+				class="bg-white text-black rounded-full w-12 h-12 text-2xl"
 				onclick="ChangeApplymentResult(1)">
 				<i class="far fa-circle"></i>
 			</button>
 			<button
-				class="bg-gray-500 text-white rounded-full w-12 h-12 text-2xl"
+				class="bg-white text-black rounded-full w-12 h-12 text-2xl"
 				onclick="ChangeApplymentResult(2)">
 				<i class="fas fa-times"></i>
 			</button>
@@ -120,7 +118,7 @@
 
 
 <script>
-	const loginedMemberId = '<c:out value="${loginedMemberId}" />';
+	var loginedMemberId = '<c:out value="${loginedMemberId}" />';
 	
 	//회원모달창 켜졌을경우 외부영역 클릭 시 팝업 닫기
 	$('.modal-background').mouseup(
@@ -133,8 +131,6 @@
 
 	function showApplymentModal(videoUrl, applyment_name, applyment_id, applyment_memberId, applyment_recommendation) {
 		$('#video-box').empty();
-		$('#applicantInfo-box').empty();
-		$('#recommender').empty();
 		$('#recommendation-number').remove();
 		
 		$('#applyment-decision-modal').css("display", "flex");
@@ -147,7 +143,6 @@
 	  		  var recommendations = data.body.recommendations;
 	  		  if(data.resultCode.startsWith("S")){
 		  		  for(var i = 0; i < recommendations.length; i++ ){
-		  			$('#recommender').append(recommendations[i].extra.requesterName+"");
 		  			  
 		  				if(recommendations[i].recommenderId == loginedMemberId){
 				  			var recommendationStatus = data.body.recommendations[i].recommendationStatus;
@@ -173,9 +168,6 @@
 							'<video id="video" controls="controls" src="'+ videoUrl +'"></video>');
 		}
 
-		$('#applicantInfo-box').html(
-				'<div class="w-full bg-gray-500 text-white text-center py-2">'
-						+ applyment_name + '</div>');
 		var recommenderHtml = '';
 
 		$('#recommendation-count').append('<div id="recommendation-number" class="pl-2">' + applyment_recommendation + '</div>');	

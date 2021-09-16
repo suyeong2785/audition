@@ -56,7 +56,7 @@
 		</div>
 		<div class="p-6 text-sm">
 			<div class="flex">
-				<div class="font-bold pb-4 text-xl">${artwork.name}</div>
+				<div class="font-bold pb-4 text-xl">${artwork.title}</div>
 			</div>
 			<div class="flex">
 				<div class="font-bold text-green-600 pb-4 capitalize text-xl">${artwork.genre}</div>
@@ -100,7 +100,7 @@
 							<span id="share-search-button" class="text-2xl">
 								<i class="fas fa-info-circle"></i>
 							</span>
-							<span class="pl-2.5">${actingRole.gender} ${actingRole.name} -
+							<span class="pl-2.5">${actingRole.gender} ${actingRole.role} -
 								${actingRole.age}</span>
 						</div>
 					</c:forEach>

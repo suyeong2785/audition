@@ -19,7 +19,7 @@
 		if (form.videoStatus.value != 1) {
 			form.videoStatus.focus();
 			
-			var msg = "가이드영상을 업로드해주세요";
+			var msg = "지원자 영상을 업로드해주세요";
 			var targetName = "videoStatus"
 			var targetType = "input";
 			var toastr = setPositionOfToastr(targetType,targetName,msg);
@@ -69,7 +69,8 @@
 	<input type="hidden" name="fileIdsStr" />
 	<input type="hidden" name="relTypeCode" value="actingRole" />
 	<input type="hidden" name="relId" value="${actingRole.id}" />
-	<input type="hidden" name="redirectUri" value="/usr/home/showMyAudition">
+	<input type="hidden" name="redirectUri"
+		value="/usr/home/showMyAudition">
 
 	<div class="con">
 		<div class=" flex flex-col">
@@ -110,7 +111,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="grid gap-x-7 p-6 grid-column-2fr-1fr">
+			<div class="grid p-6 grid-column-applyment">
 				<div class="grid content-between text-sm font-black">
 					<div>지원자 : ${loginedMember.nickname}</div>
 					<div>${loginedMember.age}살</div>
@@ -120,7 +121,12 @@
 				<div class="grid gap-y-7">
 					<div class="text-red-400 text-xs font-black">지원하실 프로필을 확인하시고
 						이상이 있으면 프로필을 수정해 주세요</div>
-					<div>프로필 수정</div>
+					<div
+						class="justify-self-center bg-gray-500 hover:bg-gray-700 text-white rounded-full px-4 ">
+						<a
+							href="/usr/member/checkPassword?redirectUri=%2Fusr%2Fmember%2Fmodify">프로필
+							수정</a>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -137,23 +143,25 @@
 	<div class="bg-gray-100 ">
 		<div class="con p-6">
 			<div class="flex flex-col justify-center">
-				<input type="text" class="w-0 h-0" name="videoStatus" value="0"/>
+				<input type="text" class="w-0 h-0" name="videoStatus" value="0" />
 				<label class="flex-grow">
 					<input id="actingRole-video-input" type="file"
 						class="text-sm cursor-pointer hidden "
 						name="file__applyment__0__common__attachment__1"
 						accept="${appConfig.getAttachemntFileInputAccept('video')}" />
 					<div id="guide-video"
-						class=" w-full text-center text bg-gray-500 text-white border border-gray-300 rounded-full font-semibold cursor-pointer p-1 px-3 hover:bg-gray-600">
-						동영상을 업로드해주세요.</div>
+						class=" text-center text bg-gray-500 text-white border border-gray-300 rounded-full font-semibold cursor-pointer p-1 px-3 hover:bg-gray-600">
+						지원하실 동영상을 업로드해주세요.</div>
 				</label>
 				<video id="actingRole-video"
 					class="hidden pt-4 mx-auto max-height-360" controls src=""></video>
 			</div>
 		</div>
 	</div>
-	<div class="text-xl flex justify-center items-center py-8">
-		<button type="submit">오디션 참가하기</button>
+	<div class="flex justify-center items-center py-8">
+		<button
+			class=" bg-green-500 hover:bg-green-700 text-white py-2 rounded-full px-4"
+			type="submit">오디션 지원하기</button>
 	</div>
 </form>
 

@@ -72,7 +72,7 @@ public class ArtworkController {
 		int id = Integer.parseInt((String) param.get("id"));
 
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
-		Artwork artwork = artworkService.getForPrintArtworkById(loginedMember, id);
+		Artwork artwork = artworkService.getForPrintArtworkById(id);
 		List<ActingRole> actingRoles = actingRoleService.getActingRolesForPrintAuditionsByArtworkId(id);
 
 		model.addAttribute("artwork", artwork);
@@ -105,17 +105,19 @@ public class ArtworkController {
 		int id = Integer.parseInt((String) param.get("id"));
 
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
-		Artwork artwork = artworkService.getForPrintArtworkById(loginedMember, id);
+		Artwork artwork = artworkService.getForPrintArtworkForCastingCallModifyById(id);
+		List<ActingRole> actingRoles = actingRoleService.getActingRolesForPrintCastingCallModifyByArtworkId(id);
 
 		model.addAttribute("artwork", artwork);
+		model.addAttribute("actingRoles", actingRoles);
 
 		return "adm/actingRole/modifyArtwork";
 	}
 
 	@RequestMapping("/adm/actingRole/doModifyArtwork")
 	public String doModifyArtwork(@RequestParam Map<String, Object> param, HttpServletRequest req, Model model) {
-		Map<String, Object> newParam = Util.getNewMapOf(param, "id", "name", "productionName", "directorName", "etc");
-		artworkService.modifyArtwork(newParam);
+
+		artworkService.modifyArtwork(param);
 
 		String redirectUri = (String) param.get("redirectUri");
 

@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="오디션 신청관리페이지" />
-<%@ include file="../part/head.jspf"%>
+<%@ include file="../../usr/part/head.jspf"%>
 
 <script>
 	let DoSearchActors__submited = false;

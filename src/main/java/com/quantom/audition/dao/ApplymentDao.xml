@@ -204,8 +204,8 @@
 	<select id="getApplymenResultInfoByMemberId"
 		resultMap="applymentResult">
 		SELECT Apply.*,
-		Act.name AS
-		extra__actingName,
+		Act.role AS
+		extra__actingRole,
 		Act.job AS
 		extra__actingJob,
 		Act.gender AS
@@ -214,8 +214,8 @@
 		extra__actingStartDate,
 		Act.EndDate AS
 		extra__actingEndDate,
-		Art.name AS
-		extra__artworkName,
+		Art.title AS
+		extra__artworkTitle,
 		Art.productionName
 		AS extra__ProductionName,
 		Art.directorName AS extra__directorName,
@@ -314,12 +314,12 @@
 	<resultMap type="Applyment" id="applymentResult"
 		extends="applyment">
 		<association property="extra" javaType="map">
-			<id property="actingName" column="extra__actingName" />
+			<id property="actingRole" column="extra__actingRole" />
 			<id property="actingJob" column="extra__actingJob" />
 			<id property="actingGender" column="extra__actingGender" />
 			<id property="actingStartDate" column="extra__actingStartDate" />
 			<id property="actingEndDate" column="extra__actingEndDate" />
-			<id property="artworkName" column="extra__artworkName" />
+			<id property="artworkTitle" column="extra__artworkTitle" />
 			<id property="ProductionName" column="extra__ProductionName" />
 			<id property="directorName" column="extra__directorName" />
 		</association>

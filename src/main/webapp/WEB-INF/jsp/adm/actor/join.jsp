@@ -4,7 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <c:set var="pageTitle" value="배우추가" />
-<%@ include file="../part/head.jspf"%>
+<%@ include file="../../usr/part/head.jspf"%>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 <script>

@@ -29,4 +29,6 @@ public interface ArtworkDao {
 
 	Artwork getArtworkById(@Param("id") int id);
 
+	Artwork getForPrintArtworkForCastingCallModifyById(@Param("id") int id);
+
 }

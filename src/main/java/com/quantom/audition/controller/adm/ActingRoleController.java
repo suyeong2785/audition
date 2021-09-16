@@ -136,11 +136,19 @@ public class ActingRoleController {
 	public String doModify(@RequestParam Map<String, Object> param, HttpServletRequest req, Model model) {
 		Map<String, Object> newParam = Util.getNewMapOf(param, "id", "artworkId", "name", "age", "gender", "character",
 				"scenesCount", "scriptStatus", "auditionStatus", "shootingsCount", "etc");
-		actingRoleService.modify(newParam);
+		int id = actingRoleService.modify(newParam);
 
 		String redirectUri = (String) param.get("redirectUri");
 
 		return "redirect:" + redirectUri;
+	}
+	
+	@RequestMapping("/adm/actingRole/doModifyAjax")
+	@ResponseBody
+	public ResultData doModifyAjax(@RequestBody Map<String, Object> param, HttpServletRequest req, Model model) {
+		int id = actingRoleService.modify(param);
+
+		return new ResultData("S-1", String.format("%d번의 게시물을 수정했습니다.", id));
 	}
 
 	@RequestMapping("/adm/actingRole/doDelete")
@@ -150,7 +158,7 @@ public class ActingRoleController {
 		return "redirect:" + listUrl;
 	}
 
-	@RequestMapping("/{authority}/actingRole/detail")
+	@RequestMapping("/{authority}/actingRole/detailArtworkForAuditions")
 	public String showDetail(Model model, @PathVariable("authority") String authority,
 			@RequestParam Map<String, Object> param, HttpServletRequest req, String listUrl) {
 		if (listUrl == null) {
@@ -158,20 +166,20 @@ public class ActingRoleController {
 		}
 		model.addAttribute("listUrl", listUrl);
 
-		int artworkId = Integer.parseInt((String) param.get("artworkId"));
+		int id = Integer.parseInt((String) param.get("id"));
 
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
 
-		Artwork artwork = artworkService.getArtworkById(artworkId);
-		List<ActingRole> actingRoles = actingRoleService.getActingRolesForPrintAuditionsByArtworkId(artworkId);
+		Artwork artwork = artworkService.getForPrintArtworkById(id);
+		List<ActingRole> actingRoles = actingRoleService.getActingRolesForPrintAuditionsByArtworkId(id);
 
 		model.addAttribute("actingRoles", actingRoles);
 		model.addAttribute("artwork", artwork);
 
-		String url = "usr/actingRole/detail";
+		String url = "usr/actingRole/detailArtworkForAuditions";
 
 		if (authority.equals("adm")) {
-			url = "adm/actingRole/detail";
+			url = "adm/actingRole/detailArtworkForAuditions";
 		}
 
 		return url;

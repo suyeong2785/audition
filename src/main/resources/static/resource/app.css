@@ -176,6 +176,11 @@ h3 {
     max-width: 600px;
     width: 100%;
 }
+.modal-content-applyments {
+    border: 1px solid #787878;
+    box-sizing: border-box;
+    max-width: 600px;
+}
 
 
 .popup-1 {
@@ -365,6 +370,13 @@ h3 {
 }
 .grid-rows-detailArtwork-detailActingRole{
 	grid-template-rows: repeat(7,44px);
+}
+/* 관리자 artworklist*/
+.grid-columns-adm-artworkList{
+	grid-template-columns: minmax(68px,100px) minmax(100px,auto) minmax(68px,100px);
+}
+.grid-row-adm-artworkList{
+	grid-template-rows: minmax(68px,auto);
 }
 /* artworklist 커스텀*/
 .grid-columns-artworkList{

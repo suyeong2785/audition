@@ -65,12 +65,41 @@ public class ArtworkService {
 		return artworkDao.getArtworks();
 	}
 
-	public Artwork getForPrintArtworkById(Member loginedMember, int id) {
+	public Artwork getForPrintArtworkById(int id) {
 		return artworkDao.getForPrintArtworkById(id);
 	}
 
 	public void modifyArtwork(Map<String, Object> param) {
 		artworkDao.modifyArtwork(param);
+		
+		int id = Util.getAsInt(param.get("id"));
+		
+		String fileIdsStr = (String) param.get("fileIdsStr");
+
+		if (fileIdsStr != null && fileIdsStr.length() > 0) {
+			List<Integer> fileIds = Arrays.asList(fileIdsStr.split(",")).stream().map(s -> Integer.parseInt(s.trim()))
+					.collect(Collectors.toList());
+
+			// 파일이 먼저 생성된 후에, 관련 데이터가 생성되는 경우에는, file의 relId가 일단 0으로 저장된다.
+			// 그것을 뒤늦게라도 이렇게 고처야 한다.
+			for (int fileId : fileIds) {
+				fileService.changeRelId(fileId, id);
+			}
+		}
+		
+		String actingRoleIdsStr = (String) param.get("actingRoleIdsStr");
+		
+		if (actingRoleIdsStr != null && actingRoleIdsStr.length() > 0) {
+			List<Integer> actingRoleIds = Arrays.asList(actingRoleIdsStr.split(",")).stream().map(s -> Integer.parseInt(s.trim()))
+					.collect(Collectors.toList());
+
+			// 파일이 먼저 생성된 후에, 관련 데이터가 생성되는 경우에는, file의 relId가 일단 0으로 저장된다.
+			// 그것을 뒤늦게라도 이렇게 고처야 한다.
+			for (int actingRoleId : actingRoleIds) {
+				actingRoleService.changeRelId(actingRoleId, id);
+			}
+		}
+
 	}
 
 	public void deleteArtwork(int id) {
@@ -83,6 +112,10 @@ public class ArtworkService {
 
 	public Artwork getArtworkById(int id) {
 		return artworkDao.getArtworkById(id);
+	}
+
+	public Artwork getForPrintArtworkForCastingCallModifyById(int id) {
+		return artworkDao.getForPrintArtworkForCastingCallModifyById(id);
 	}
 
 }
