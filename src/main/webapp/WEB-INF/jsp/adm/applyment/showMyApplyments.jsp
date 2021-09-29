@@ -3,64 +3,74 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="../../usr/part/head.jspf"%>
 
-<div class="grid justify-center grid-column-auto-800 mx-4 ">
-	<div class="flex justify-between">
-		<a href="../home/showMyPage">
-			<div class="text-center py-8 font-bold">목록으로가기</div>
-		</a>
-	</div>
-
+<div class="grid justify-center grid-column-auto-800 ">
 	<div>
-		<div class="relative flex flex-col">
+		<div style="height: 93px;">
 			<div
-				class="z-20 w-full bg-gray-500 text-white font-bold py-2 rounded-full px-4 text-center">
-				<span>${artworkName} / ${actingRoleName}</span>
+				class="relative w-full h-full font-bold text-center flex items-center pl-4"
+				style="background-image: url('${artworkFileUrl}');
+				background-repeat : no-repeat;
+				background-size : 100%;
+				background-position: center center;">
+				<div
+					class="absolute bottom-0 right-0 bg-black bg-opacity-50 w-full h-full z-10"></div>
+				<div
+					class="absolute top-0 right-0 pt-3 pr-4 z-20 text-lg text-white">
+					<a href="javascript:window.history.back();">
+						<i class="fas fa-times"></i>
+					</a>
+				</div>
+				<div
+					class="absolute flex flex-col items-start font-thin text-white z-20 text-lg">
+					<div>${artworkTitle}</div>
+					<div>${actingRoleGender} ${actingRoleRole} ${actingRoleAge}</div>
+				</div>
 			</div>
-			<div id="applyment-left-background"
-				class="absolute bottom-0 left-0 bg-gray-300 h-1/2 w-1/2 z-10"></div>
-			<div id="applyment-right-background"
-				class="absolute bottom-0 right-0 bg-gray-300 h-1/2 w-1/2 z-10"></div>
 		</div>
-		<div class="bg-gray-300 p-8 text-center font-bold rounded-b-3xl ">
-			<c:forEach items="${shares}" var="share">
-				<span>${share.extra.memberName}</span>
-			</c:forEach>
-			평가 참여중</div>
+		<div
+			class="grid justify-items-start bg-gray-300 p-4 text-center font-bold  "
+			style="grid-template-rows: repeat(2, minmax(0, 1fr)); background-color: #EFEFEF;">
+			<div class="text-sm">평가 참여자</div>
+			<div>
+				<c:forEach items="${shares}" var="share">
+					<span class="text-sm">${share.extra.memberName}</span>
+				</c:forEach>
+			</div>
+		</div>
+		<div class="p-8 text-center text-sm">지원자의 영상을 확인하시고 X버튼을 누르시면
+			탈락처리되고 목록에서 삭제 됩니다.</div>
 	</div>
 
-	<div class="flex justify-between p-4 font-bold">
-		<div>추천순</div>
-		<div>최신순</div>
-		<div>탈락자</div>
-	</div>
-
-
-	<c:forEach items="${applyments}" var="applyment">
-		<div class="relative flex flex-col mb-4">
+	<div
+		class="applymentList-box flex flex-col mb-4 border-gray-300 border-t-2 border-b-2 boder-opacity-25 first:border-t-0 mx-2">
+		<c:forEach items="${applyments}" var="applyment" varStatus="status">
 			<div
-				class="artworkList-box z-20 grid grid-columns-adm-myPage grid-row-adm-myPage gap-x-2.5 place-content-stretch bg-gray-200 rounded-full ">
+				class="artworkList-box z-20 grid gap-x-2.5 py-4 place-content-stretch border-gray-300 ${status.first == false ? 'border-t-2' : '' } boder-opacity-25 "
+				style="grid-template-columns: minmax(100px, 140px) minmax(80px, auto) 50px;">
 				<c:choose>
 					<c:when
 						test="${applyment.forPrintGenUrlForMember != null && applyment.forPrintGenUrlForMember != ''}">
-						<div class="relative padding-bottom-50 overlow-hidden">
+						<div id="img-box${applyment.id}" class=" relative overlow-hidden"
+							style="padding-bottom: 56.25%">
 							<img
-								class="absolute top-0 left-0 text-white w-full h-full flex justify-center items-center rounded-full"
+								class="absolute top-0 left-0 w-full h-full flex justify-center items-center object-cover"
 								src="${applyment.forPrintGenUrlForMember}" alt="" />
 						</div>
 					</c:when>
 					<c:when
 						test="${applyment.forPrintGenUrlForMember == null || applyment.forPrintGenUrlForMember == ''}">
-						<div class="relative padding-bottom-50 overlow-hidden">
+						<c:set var="bgColor" value="bg-gray-200"></c:set>
+						<div class="relative overlow-hidden"
+							style="padding-bottom: 56.25%">
 							<div
-								class="${bgColor} absolute top-0 left-0 text-white w-full h-full rounded-full flex justify-center items-center">장르</div>
+								class="${bgColor} absolute top-0 left-0 w-full h-full  flex justify-center items-center">사진x</div>
 						</div>
 					</c:when>
 				</c:choose>
 
 				<div class="flex flex-col justify-center">
-					<div class="font-black text-sm">${applyment.extra.memberName}</div>
-					<div class="title text-overflow-el font-bold">${applyment.extra.memberAge}살</div>
-					<div class="writer text-xs">
+					<div class="font-black text-sm pb-2">${applyment.extra.memberName}</div>
+					<div class="writer text-sm">
 						<div>
 							<i class="fas fa-heart"></i>
 							${applyment.extra.memberRecommendation}
@@ -69,47 +79,50 @@
 				</div>
 				<div>
 					<div
-						class="flex justify-center items-center w-14 h-full text-5xl text-gray-600 pr-8"
+						class="flex justify-center items-center h-full text-4xl text-gray-600 pr-4"
 						onclick="showApplymentModal('${applyment.forPrintGenUrlForApplyment}','${applyment.extra.memberName}',${applyment.id},${applyment.memberId},${applyment.extra.memberRecommendation})">
 						<i class="fas fa-play-circle"></i>
 					</div>
 				</div>
 				<c:set var="actingRoleBg" value="bg-gray-300"></c:set>
 			</div>
-		</div>
-		<div
-			class="actingRoleList flex justify-center items-center text-gray-600 ">
-			<!-- 각각의 작품에 해당하는 배역목록을 보여줌  -->
-			<div id="actingRoleList${applyment.id}" data-display-status="-1"
-				class="flex-col flex-grow hidden ${actingRoleBg} p-4 rounded-b-3xl leading-10">
+
+			<div
+				class="actingRoleList flex justify-center items-center text-gray-600 ">
+				<!-- 각각의 작품에 해당하는 배역목록을 보여줌  -->
+				<div id="actingRoleList${applyment.id}" data-display-status="-1"
+					class="flex-col flex-grow hidden ${actingRoleBg} p-4 rounded-b-3xl leading-10">
+				</div>
 			</div>
-		</div>
-	</c:forEach>
+		</c:forEach>
+	</div>
 
 </div>
-<div id="applyment-decision-modal" class="modal-background pt-4 px-4">
-	<div class="modal-content-applyments flex flex-col self-start" >
-		<div id="recommendation" class="flex text-sm text-white">
+<div id="applyment-decision-modal" class="modal-background">
+	<div class="modal-content-applyments flex flex-col self-start">
+		<div id="recommendation" class="flex justify-between items-center text-sm text-white bg-black py-2 px-2">
 			<div id="recommendation-count"
-				class="flex items-center flex-grow bg-black py-2 px-2 min-width-100">
+				class="flex items-center ">
 				<i class="fas fa-heart"></i>
+			</div>
+			<div class="text-white" onclick="closeModal()">
+				<i class="fas fa-times"></i>
 			</div>
 		</div>
 		<div id="video-box" class="flex justify-center"></div>
-		<div id="button-box" class="button-box flex justify-around p-8 bg-black">
+		<div id="button-box" class="button-box flex justify-around px-8 py-4 "
+			style="background-color: #333333">
 			<button id="recommendation-button"
 				class="bg-white text-black rounded-full w-12 h-12 text-2xl"
-				onclick="doRecommendMember()">
+				style="color: #333333" onclick="doRecommendMember()">
 				<i class="fas fa-heart"></i>
 			</button>
-			<button
-				class="bg-white text-black rounded-full w-12 h-12 text-2xl"
-				onclick="ChangeApplymentResult(1)">
+			<button class="bg-white text-black rounded-full w-12 h-12 text-2xl"
+				style="color: #333333" onclick="ChangeApplymentResult(1)">
 				<i class="far fa-circle"></i>
 			</button>
-			<button
-				class="bg-white text-black rounded-full w-12 h-12 text-2xl"
-				onclick="ChangeApplymentResult(2)">
+			<button class="bg-white text-black rounded-full w-12 h-12 text-2xl"
+				style="color: #333333" onclick="ChangeApplymentResult(2)">
 				<i class="fas fa-times"></i>
 			</button>
 		</div>
@@ -123,8 +136,7 @@
 	//회원모달창 켜졌을경우 외부영역 클릭 시 팝업 닫기
 	$('.modal-background').mouseup(
 			function(e) {
-				if ($('.modal-content').has(e.target).length === 0
-						&& $('.modal-content').has(e.target).length === 0) {
+				if ($('.modal-content-applyments').has(e.target).length === 0) {
 					$('.modal-background').css("display", "none");
 				}
 			});
@@ -261,6 +273,11 @@
 		location.reload();
 		
 	} 
+	
+	function closeModal(){
+		$('.modal-background').css("display", "none");
+	}
+
 </script>
 
 

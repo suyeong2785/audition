@@ -25,7 +25,7 @@ public interface ArtworkDao {
 
 	void deleteArtwork(@Param("id") int id);
 
-	List<Artwork> getForPrintArtworksByLoginId(int memberId);
+	List<Artwork> getForPrintArtworksByLoginId(@Param("memberId") int memberId);
 
 	Artwork getArtworkById(@Param("id") int id);
 

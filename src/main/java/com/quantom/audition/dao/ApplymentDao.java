@@ -37,4 +37,6 @@ public interface ApplymentDao {
 	List<Applyment> getApplymenResultInfoByMemberId(int memberId);
 
 	List<Applyment> getForPrintApplymentsByRelIdAndRelTypeCode(Map<String, Object> param);
+
+	void deleteApplymentByRelIdAndRelTypeCode(@Param("relTypeCode") String relTypeCode,@Param("relId") int relId);
 }

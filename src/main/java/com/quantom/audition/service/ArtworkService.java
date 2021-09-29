@@ -23,6 +23,9 @@ public class ArtworkService {
 	
 	@Autowired
 	private FileService fileService;
+	
+	@Autowired
+	private ShareService shareService;
 
 	public int writeArtwork(Map<String, Object> param) {
 		artworkDao.writeArtwork(param);
@@ -102,8 +105,11 @@ public class ArtworkService {
 
 	}
 
-	public void deleteArtwork(int id) {
+	public void deleteArtwork(int id, int requesterId) {
 		artworkDao.deleteArtwork(id);
+		fileService.deleteFilesByRelId("artwork", id);
+		
+		actingRoleService.deleteActingRolesByArtworkId(id,requesterId);
 	}
 
 	public List<Artwork> getForPrintArtworksByLoginId(int memberId) {

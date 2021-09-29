@@ -34,22 +34,17 @@ public class ActingRoleController {
 	@Autowired
 	private ArtworkService artworkService;
 
-	@RequestMapping("/{authority}/actingRole/list")
+	@RequestMapping("/{authority}/actingRole/artworkListForAuditions")
 	public String showList(Model model, HttpServletRequest req, @PathVariable("authority") String authority) {
 		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("typeCode", "thumbnail");
-		param.put("memberId", (int) req.getAttribute("loginedMemberId"));
+		List<Artwork> artworks = artworkService.getForPrintArtworks();
 
-		List<ActingRole> actingRoles = actingRoleService.getActingRolesForPrintList(param);
+		model.addAttribute("artworks", artworks);
 
-		model.addAttribute("actingRoles", actingRoles);
-
-		Member loginedMember = (Member) req.getAttribute("loginedMember");
-
-		String url = "usr/actingRole/list";
+		String url = "usr/actingRole/artworkListForAuditions";
 
 		if (authority.equals("adm")) {
-			url = "adm/actingRole/list";
+			url = "adm/actingRole/artworkListForAuditions";
 		}
 
 		return url;
@@ -156,6 +151,14 @@ public class ActingRoleController {
 		actingRoleService.delete(id);
 
 		return "redirect:" + listUrl;
+	}
+	
+	@RequestMapping("/adm/actingRole/doDeleteAjax")
+	@ResponseBody
+	public ResultData doDeleteAjax(@RequestParam Map<String, Object> param, HttpServletRequest req) {
+		actingRoleService.delete(Util.getAsInt(param.get("id")));
+
+		return new ResultData("S-1", String.format("%d번 게시물을 삭제했습니다.", Util.getAsInt(param.get("id"))), "id" , Util.getAsInt(param.get("id")));
 	}
 
 	@RequestMapping("/{authority}/actingRole/detailArtworkForAuditions")

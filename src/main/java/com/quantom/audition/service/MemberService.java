@@ -191,7 +191,7 @@ public class MemberService {
 
 	public ResultData getCastingDirectorsByLoginId(Map<String, Object> param) {
 
-		List<Member> members = memberDao.getCastingDirectorsByLoginId(param);
+		List<Member> members = memberDao.getCastingDirectorsNameAndNickAndLoginIdNameByLoginId(param);
 		
 		if (members.isEmpty()) {
 			return new ResultData("F-1", "일치하는 캐스팅디렉터가 존재하지 않습니다.");

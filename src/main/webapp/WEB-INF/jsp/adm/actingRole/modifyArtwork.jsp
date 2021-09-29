@@ -9,100 +9,160 @@
 <script>
 	var actingRoles = new Map();
 	
-	function actingRoleWriteFormAjax (actingRoles) {
+	var checkAllActingRolesRd = function() {
+		
+		var needToStop = false;
+		
+		$('#artwork-form input[name^=role]').each(function(index,item){
+			var id = $(item).data("id");
+			if(actingRoles.get(id) == null){
+				console.log("id : " + id);
+				var targetOffset = $('input[name="role'+ id + '"]' ).offset();
+				window.scrollTo({top : targetOffset.top - 300, behavior:'auto'});
+				
+				item.focus();
 
-		var actingRoleIdsStr = new Array();
-		
-		var idsStr = '';
-		
-		actingRoles.forEach((actingRole, key, mapObject) => {
-			
-			if (actingRole.formData != null && actingRole.formData != '') {
+				var msg = "";
 				
-				var fileUploadFormData = actingRole.formData;
-				
-				$.ajax({
-					url : '../../usr/file/doUploadAjax',
-					data : fileUploadFormData,
-					processData : false,
-					contentType : false,
-					dataType : "json",
-					async: false,
-					type : 'POST',
-					success : function(data){
-						
-						if(actingRole["id"] != null && actingRole["id"] != '' ){
-							$.ajax({
-								url : '../../adm/actingRole/doModifyAjax',
-								data : JSON.stringify(actingRole),
-								processData : false,
-								async: false,
-								contentType: "application/json; charset=UTF-8",
-								type : 'POST',
-								error:function(request,status,error){
-							        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-								}
-							     
-							});
-						}else{
-							if (data && data.body && data.body.fileIdsStr) {
-								actingRole["fileIdsStr"] = data.body.fileIdsStr;
-								
-								$.ajax({
-									url : '../../adm/actingRole/doWriteAjax',
-									data : JSON.stringify(actingRole),
-									processData : false,
-									async: false,
-									contentType: "application/json; charset=UTF-8",
-									type : 'POST',
-									success : function(data){
-										if (data && data.body && data.body.newActingRoleId) {
-											actingRoleIdsStr.push(data.body.newActingRoleId);
-										}
-									}
-								});
-							}
-						}
-					}
-				});
-				
-			} else {
-				console.log(actingRole);
-				
-				if(actingRole["id"] != null && actingRole["id"] != '' ){
-					$.ajax({
-						url : '../../adm/actingRole/doModifyAjax',
-						data : JSON.stringify(actingRole),
-						processData : false,
-						async: false,
-						contentType: "application/json; charset=UTF-8",
-						type : 'POST'
-					});
+				if($.trim($(item).val()) != null && $.trim($(item).val()) != '' ){
+					msg = $(item).val() + "의 배역정보를 입력해주세요.";
 				}else{
-					$.ajax({
-						url : '../../adm/actingRole/doWriteAjax',
-						data : JSON.stringify(actingRole),
-						processData : false,
-						async: false,
-						contentType: "application/json; charset=UTF-8",
-						type : 'POST',
-						success : function(data){
-							if (data && data.body && data.body.newActingRoleId) {
-								actingRoleIdsStr.push(data.body.newActingRoleId);
-							}
-						}
-					});
+					msg = $(item).data("id") + "번째 배역정보를 입력해주세요.";
 				}
 				
+				var targetName = "role"+ $(item).data("id");
+				var targetType = "input";
+				var toastr = setPositionOfToastr(targetType,targetName,msg);
+				needToStop = true;
+				return false;
+			}else{
+				actingRoles.get(id).role = $.trim($(item).val());
 			}
-		
 		});
-	
-		return actingRoleIdsStr.join(",");
+		
+		if(needToStop == true){
+			return needToStop;
+		}
+		
+		for( let [key,actingRole] of actingRoles){
+			//alert("반복문key : " + key);
+			if(actingRole.gender == null || actingRole.gender == ''){
+				alert("actingRole.gender실행 : " + actingRole.gender);
+				showActingRoleModal(key);
+				checkAndSaveCurrentActingRoleInfo();
+				needToStop = true;
+				break;
+			}
+			
+			if(actingRole.age == null || actingRole.age == ''){
+				//alert("actingRole.age실행 : " + actingRole.age);
+				showActingRoleModal(key);
+				checkAndSaveCurrentActingRoleInfo();
+				needToStop = true;
+				break;
+			}
+			
+			if(actingRole.job == null || actingRole.job == ''){
+				//alert("actingRole.job실행 : " + actingRole.job);
+				showActingRoleModal(key);
+				checkAndSaveCurrentActingRoleInfo();
+				needToStop = true;
+				break;
+			}
+			
+			if(actingRole.feature == null || actingRole.feature == ''){
+				//alert("actingRole.feature실행 : " + actingRole.feature);
+				showActingRoleModal(key);
+				checkAndSaveCurrentActingRoleInfo();
+				needToStop = true;
+				break;
+			}
+			
+			if(actingRole.schedule == null || actingRole.schedule == ''){
+				//alert("actingRole.schedule실행 : " + actingRole.schedule);
+				showActingRoleModal(key);
+				checkAndSaveCurrentActingRoleInfo();
+				needToStop = true;
+				break;
+			}
+			
+			if(actingRole.shootingsCount == null || actingRole.shootingsCount == ''){
+				//alert("actingRole.shootingsCount실행 : " + actingRole.shootingsCount);
+				showActingRoleModal(key);
+				checkAndSaveCurrentActingRoleInfo();
+				needToStop = true;
+				break;
+			}
+			
+			if(actingRole.region == null || actingRole.region == ''){
+				//alert("actingRole.region실행 : " + actingRole.region);
+				showActingRoleModal(key);
+				checkAndSaveCurrentActingRoleInfo();
+				needToStop = true;
+				break;
+			}
+			
+			if(actingRole.startDate == null || actingRole.startDate == ''){
+				//alert("actingRole.startDate실행 : " + actingRole.startDate);
+				showActingRoleModal(key);
+				checkAndSaveCurrentActingRoleInfo();
+				needToStop = true;
+				break;
+			}
+			
+			if(actingRole.endDate == null || actingRole.endDate == ''){
+				//alert("actingRole.endDate실행 : " + actingRole.endDate);
+				showActingRoleModal(key);
+				checkAndSaveCurrentActingRoleInfo();
+				needToStop = true;
+				break;
+			}
+			
+			if(actingRole.pay == null || actingRole.pay == ''){
+				//alert("actingRole.pay실행 : " + actingRole.pay);
+				showActingRoleModal(key);
+				checkAndSaveCurrentActingRoleInfo();
+				needToStop = true;
+				break;
+			}
+			
+			if(actingRole.shotAngle == null || actingRole.shotAngle == ''){
+				//alert("actingRole.shotAngle실행 : " + actingRole.shotAngle);
+				showActingRoleModal(key);
+				checkAndSaveCurrentActingRoleInfo();
+				needToStop = true;
+				break;
+			}
+			
+			if(actingRole.requestedActing === null || actingRole.requestedActing === ''){
+				//alert("actingRole.requestedActing실행 : " + actingRole.requestedActing);
+				showActingRoleModal(key);
+				checkAndSaveCurrentActingRoleInfo();
+				needToStop = true;
+				break;
+			}else if(actingRole.requestedActing == 1 ){
+				if(actingRole.scriptStatus == 0 ){
+					//alert("actingRole.scriptStatus실행 : " + actingRole.scriptStatus);
+					showActingRoleModal(key);
+					checkAndSaveCurrentActingRoleInfo();
+					needToStop = true;
+					break;
+				}
+			}
+		}
+		
+		if(needToStop == true){
+			return needToStop;
+		}
+		
 	}
 	
-	function ArtworkModifyForm__submit(form) {
+	async function ArtworkModifyForm__submit(form) {
 
+		if ($('.toast')) {
+			window.toastr.remove();
+		}
+		
 		if (isNowLoading()) {
 			alert('처리중입니다.');
 			return;
@@ -120,20 +180,7 @@
 			var toastr = setPositionOfToastr(targetType,targetName,msg);
 			return;
 		}
-
-
-		form.genre.value = form.genre.value.trim();
-
-		if (form.genre.value.length == 0) {
-			form.genre.focus();
-			
-			var msg = "장르를 입력해주세요";
-			var targetName = "genre";
-			var targetType = "input";
-			var toastr = setPositionOfToastr(targetType,targetName,msg);
-			return;
-		}
-
+		
 		form.investor.value = form.investor.value.trim();
 
 		if (form.investor.value.length == 0) {
@@ -152,6 +199,19 @@
 			return;
 		}
 
+		if (form.genre.value.length == 0) {
+			var targetOffset = $('select[name="genre"]').offset();
+			window.scrollTo({top : targetOffset.top - 500, behavior:'auto'});
+			
+			form.genre.focus();
+			
+			var msg = "장르를 입력해주세요";
+			var targetName = "genre";
+			var targetType = "select";
+			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			return;
+		}
+
 		form.directorName.value = form.directorName.value.trim();
 
 		if (form.directorName.value.length == 0) {
@@ -162,6 +222,10 @@
 
 		if (form.leadActor.value.length == 0) {
 			form.leadActor.value = "개별안내";
+		}
+		
+		if(checkAllActingRolesRd() == true){
+			return;
 		}
 
 		form.etc.value = form.etc.value.trim();
@@ -200,55 +264,171 @@
 			return;
 		}
 		
-		var startUploadFiles = function(onSuccess) {
-			var needToUpload = false;
+		var needToUpload = false;
 
-			if (needToUpload == false
-					&& form.file__artwork__0__common__attachment__1) {
-				needToUpload = form.file__artwork__0__common__attachment__1
-						&& form.file__artwork__0__common__attachment__1.value.length > 0;
-			}
-
-			if (needToUpload == false) {
-				onSuccess();
-				return;
-			}
-
-			var fileUploadFormData = new FormData(form);
-
-			$.ajax({
-				url : '../../usr/file/doUploadAjax',
-				data : fileUploadFormData,
-				processData : false,
-				contentType : false,
-				dataType : "json",
-				type : 'POST',
-				success : onSuccess
-			});
+		if (needToUpload == false
+				&& form.file__artwork__0__common__attachment__1) {
+			needToUpload = form.file__artwork__0__common__attachment__1
+					&& form.file__artwork__0__common__attachment__1.value.length > 0;
 		}
 
-		var startWriteApplyment = function(fileIdsStr) {
-	
-			form.fileIdsStr.value = fileIdsStr;
-			
-			var actingRoleIdsStr  = actingRoleWriteFormAjax(actingRoles);
+		if (needToUpload == false) {
+			var actingRoleIdsStr = await startWriteApplyment(-1);
 			
 			form.actingRoleIdsStr.value = actingRoleIdsStr;
 			
 			form.submit();
-		};
-
-		startUploadFiles(function(data) {
-
-			var idsStr = '';
-			if (data && data.body && data.body.fileIdsStr) {
-				idsStr = data.body.fileIdsStr;
-			}
-
-			startWriteApplyment(idsStr);
-		});
+			
+		} else {
+			var fileIdsStr = await startUploadFiles(form);
+			var actingRoleIdsStr = await startWriteApplyment(fileIdsStr);
+			
+			form.actingRoleIdsStr.value = actingRoleIdsStr;
+			
+			form.submit();
+		}
 	
 	}
+	
+	async function startUploadFiles(form) {
+		
+		var fileUploadFormData = new FormData(form);
+		
+		var fileIdsStr = -1;
+
+		$.ajax({
+			url : '../../usr/file/doUploadAjax',
+			data : fileUploadFormData,
+			processData : false,
+			contentType : false,
+			async: false,
+			dataType : "json",
+			type : 'POST',
+			success : function(data){
+				if (data && data.body && data.body.fileIdsStr) {
+					fileIdsStr = data.body.fileIdsStr;
+				}
+			}
+		});
+	
+		return fileIdsStr;
+	}
+	
+	async function startWriteApplyment(fileIdsStr) {
+		
+		if(fileIdsStr != -1){
+			$('input[name="fileIdsStr"]').val(fileIdsStr);
+		}
+		
+		var actingRole = null;
+		
+		var actingRoleIdsStr = -1;
+		
+		var actingRoleIdsStr = new Array();
+		
+		for (let [key, value] of actingRoles){
+			var actingRole = value;
+			
+			if(actingRole.deleteStatus == true){
+				
+				await startDeleteActingRole(actingRole.id);
+				
+			}else if (actingRole.scriptStatus == 1 ) {
+				
+				var actingRoleWithFileIds = await startActingRoleUploadFile(actingRole);
+				if(actingRole.id != null && actingRole.id != '' ){
+					await startModifyActingRole(actingRoleWithFileIds);
+				}else{
+					actingRoleIds = await startWriteActingRole(actingRoleWithFileIds);
+					actingRoleIdsStr.push(actingRoleIds);
+				}
+			
+			}else{
+				if(actingRole.id != null && actingRole.id != '' ){
+					await startModifyActingRole(actingRole);
+					
+				}else{
+					actingRoleIds = await startWriteActingRole(actingRole);
+					actingRoleIdsStr.push(actingRoleIds);
+				}
+			}
+		}
+		return actingRoleIdsStr.join(",");
+	}
+	
+	async function startActingRoleUploadFile(actingRole) {
+		
+		var fileUploadFormData = actingRole.formData;
+		
+		$.ajax({
+			url : '../../usr/file/doUploadAjax',
+			data : fileUploadFormData,
+			processData : false,
+			contentType : false,
+			dataType : "json",
+			async: false,
+			type : 'POST',
+			success : function(data){
+				if (data && data.body && data.body.fileIdsStr) {
+					actingRole["fileIdsStr"] = data.body.fileIdsStr;
+					
+				}
+			}
+		});
+		
+		return actingRole;
+	}
+	
+	async function startWriteActingRole (actingRole){
+		var actingRoleObj = actingRole;
+		
+		var actingRoleIds = ''; 
+		
+		$.ajax({
+			url : '../../adm/actingRole/doWriteAjax',
+			data : JSON.stringify(actingRoleObj),
+			processData : false,
+			async: false,
+			contentType: "application/json; charset=UTF-8",
+			type : 'POST',
+			success : function(data){
+				if (data && data.body && data.body.newActingRoleId) {
+					actingRoleIds = data.body.newActingRoleId;
+				}
+			}
+		});
+		
+		return actingRoleIds;
+	}
+	
+	async function startModifyActingRole (actingRole){
+		var actingRoleObj = actingRole;
+		
+		$.ajax({
+			url : '../../adm/actingRole/doModifyAjax',
+			data : JSON.stringify(actingRoleObj),
+			processData : false,
+			async: false,
+			contentType: "application/json; charset=UTF-8",
+			type : 'POST'
+		});
+		
+		return actingRoleObj.id;
+	}
+	
+	async function startDeleteActingRole (actingRoleId){
+		
+		$.ajax({
+			url : '../../adm/actingRole/doDeleteAjax',
+			data : {id : actingRoleId},
+			dataType : 'json',
+			async: false,
+			type : 'POST'
+		});
+		
+		return actingRoleId;
+	}
+	
 </script>
 <div class="con p-4">
 	<span class="font-bold text-xl">Casting Call 수정</span>
@@ -258,7 +438,8 @@
 	class="bg-gray-200 p-4 w-full h-full"
 	onsubmit="ArtworkModifyForm__submit(this); return false;"
 	action="doModifyArtwork?id=${artwork.id}">
-	<input type="hidden" name="redirectUri" value="../../usr/actingRole/detailArtwork?id=${artwork.id}">
+	<input type="hidden" name="redirectUri"
+		value="../../usr/actingRole/detailArtwork?id=${artwork.id}">
 	<input type="hidden" name="fileIdsStr">
 	<input type="hidden" name="actingRoleIdsStr">
 	<input type="hidden" name="actingRole" />
@@ -292,6 +473,7 @@
 		<div class="form-control-box mb-4 flex-grow relative">
 			<select name="genre"
 				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+				<option selected="selected" value="">장르 선택</option>
 				<option value="action">액션</option>
 				<option value="SF">SF</option>
 				<option value="comedy">코미디</option>
@@ -315,7 +497,7 @@
 					name="file__artwork__${artwork.id}__common__attachment__1"
 					type="file" />
 				<div
-					class=" mb-4 w-full text-center text bg-gray-500 text-white border border-gray-300 rounded-full font-semibold cursor-pointer p-1 px-3 hover:bg-gray-600">
+					class="artwork-file-status mb-4 w-full text-center text bg-gray-500 text-white border border-gray-300 rounded-full font-semibold cursor-pointer p-1 px-3 hover:bg-gray-600">
 					${artwork.extra.fileOriginFileNameForArtwork != null && artwork.extra.fileOriginFileNameForArtwork != '' ? artwork.extra.fileOriginFileNameForArtwork : "대표이미지를 업로드 해주세요."}</div>
 			</label>
 		</div>
@@ -365,7 +547,8 @@
 						<i class="far fa-plus-square"></i>
 					</button>
 					<div id="actingRole-input-box" class="flex-grow pl-2">
-						<c:forEach items="${actingRoles}" var="actingRole">
+						<c:forEach items="${actingRoles}" var="actingRole"
+							varStatus="status">
 							<div class="actingRole-input flex flex-grow">
 								<input name="role${actingRole.id}" data-id="${actingRole.id}"
 									class="
@@ -375,10 +558,10 @@
 									type="text" placeholder="역할" value="${actingRole.role}" />
 								<button type="button"
 									class="bg-gray-500 appearance-none border rounded-r-full mb-2 py-2 pl-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-									onclick="javascript:showActingRoleModal('${actingRole.id}')">배역정보입력</button>
+									onclick="javascript:showActingRoleModal(${actingRole.id})">배역정보입력</button>
 								<button type="button" class="self-start text-2xl"
-									onclick="javascript:removeActingRoleBoxAndShowSwitch(this)">
-									<i class="far fa-trash-alt"></i>
+									onclick="javascript:removeActingRoleBox(this,${actingRole.id},'delete')">
+									<i class="far fa-minus-square"></i>
 								</button>
 							</div>
 						</c:forEach>
@@ -417,22 +600,25 @@
 			class="modal-content-no-bg rounded-2xl bg-gray-200 p-4 max-height-80vh">
 			<div class="grid gap-y-4">
 				<div class="actingRole-name flex justify-center font-black text-xl"></div>
-				<div class="flex">
+				<div class="flex items-center justify-center">
 					<input name="role"
 						class="clear-all shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 						type="hidden" placeholder="역할" />
-					<input name="gender"
-						class="clear-all shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-						type="text" placeholder="성별" />
-					<input name="age"
-						class="clear-all shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-						type="text" placeholder="연령" />
+					<div>
+						<label for="man">남자</label>
+						<input id="man" name="gender" type="radio" value="남자" checked />
+					</div>
+					<div class="px-2">
+						<label for="woman">여자 </label>
+						<input id="woman" name="gender" type="radio" value="여자" />
+					</div>
 				</div>
-				<div>
-					<input name="job"
-						class="clear-all shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-						type="text" placeholder="직업" />
-				</div>
+				<input name="age"
+					class="clear-all  shadow appearance-none border rounded-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+					type="text" placeholder="연령" />
+				<input name="job"
+					class="clear-all  shadow appearance-none border rounded-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+					type="text" placeholder="직업" />
 				<div>
 					<input name="feature"
 						class="clear-all shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -543,6 +729,7 @@
 	var artworkGenre = '<c:out value="${artwork.genre}"/>';
 	var fileOriginFileNameForArtwork = '<c:out value="${artwork.extra.fileOriginFileNameForArtwork}"/>';
 	var actingRoleCount = 0;
+	var actingRolesIds = new Array();
 	
 	$(document).ready(function () {
 		$('select[name="genre"]').val(artworkGenre);
@@ -553,6 +740,8 @@
 			actingRoleCount = parseInt("${actingRole.id}", 10);
 			
 			actingRolesDB["id"]= "${actingRole.id}";
+			actingRolesIds.push(parseInt("${actingRole.id}", 10));
+			
 			actingRolesDB["startDate"] = "${fn:split(actingRole.startDate," ")[0]}";
 			actingRolesDB["endDate"] = "${fn:split(actingRole.endDate," ")[0]}";
 			actingRolesDB["role"]= "${actingRole.role}";
@@ -581,12 +770,14 @@
 			actingRolesDB["scriptStatus"] = "${actingRole.scriptStatus}";
 			if(actingRolesDB["scriptStatus"] == 1 ){
 				actingRolesDB["requestedActing"] = 1;
+			}else{
+				actingRolesDB["requestedActing"] = 0;
 			}
 			actingRolesDB["shootingsCount"] = "${actingRole.shootingsCount}";
 			
 			actingRolesDB["script"] = "${actingRole.extra.originFileNameForActingRole}";
 			
-			actingRoles.set("${actingRole.id}" , actingRolesDB);
+			actingRoles.set(parseInt("${actingRole.id}", 10) , actingRolesDB);
 	
 		</c:forEach>
 		
@@ -613,6 +804,7 @@
 
 			$('#actingRole-modal').data("id", actingRoleId);
 			$('#actingRole-form input[name="role"]').val(input.val());
+			
 			if($('#actingRole-form [name^="file__actingRole"]').attr("name") != "file__actingRole__0__script__attachment__1"){
 				$('#actingRole-form [name^="file__actingRole"]').attr("name","file__actingRole__0__script__attachment__1");	
 			}
@@ -634,45 +826,43 @@
 				
 				$.each(actingRole, function(index, value){
 					if(index == "region"){
-						var sido = value.split(" ")[0];
-						var gugun = value.split(" ")[1];
-						
-						$('#actingRole-form [name="sido"]').val(sido).prop('selected',true).trigger('change');
-						$('#actingRole-form [name="gugun"]').val(gugun).attr('selected','selected');
-					}
-					if(index == "startDate"){
+						if(value != null && value != '' ){ 
+							var sido = value.split(" ")[0];
+							var gugun = value.split(" ")[1];
+							
+							$('#actingRole-form [name="sido"]').val(sido).prop('selected',true).trigger('change');
+							$('#actingRole-form [name="gugun"]').val(gugun).attr('selected','selected');
+						}else{
+							$('#actingRole-form [name="sido"]').val("시/도 선택");
+						}
+					}else if(index == "startDate"){
 						$('#actingRole-form [name="actingRole-'+ index +'"]').val(value);
-					}
-					if(index == "endDate"){
+					}else if(index == "endDate"){
 						$('#actingRole-form [name="actingRole-'+ index +'"]').val(value);
-					}
-					if(index == "scriptStatus"){
+					}else if(index == "scriptStatus"){
 						if(value == 0){
 							$('#actingRole-form [name="requestedActing"]').val(value);
 						}else if(value == 1){
 							$('#actingRole-form [id="script-box"]').val();
 						}						
-					}
-					if(index == "endDate"){
+					}else if(index == "endDate"){
 						$('#actingRole-form [name="actingRole-'+ index +'"]').val(value);
-					}
-					
-					if(index == "requestedActing" && value == 1){
+					}else if(index == "requestedActing" && value == 1){
 						$('#actingRole-form [name="'+ index +'"]').val(value);
 						$('#script-box').css("display", "flex");
 					}else if(index == "requestedActing" && value == 0){
 						$('div[id=script]').text("대본을 업로드 해주세요.");
 						$('#script-box').css("display", "none");
-					}
-					if(index == "script"){
+					}else if(index == "script"){
 						$('#actingRole-form div[id="'+ index +'"]').html(value);
-					}
-					if(index == "feature"){
+					}else if(index == "feature"){
 						value = value.replaceAll("\*","\"");
 						$('#actingRole-form [name="'+ index +'"]').val(value);
+					}else if(index == "gender"){
+						$('#actingRole-form input:radio[name="gender"]:input[value='+ value +']').prop("checked", true);
+					}else{
+						$('#actingRole-form [name="'+ index +'"]').val(value);	
 					}
-					
-					$('#actingRole-form [name="'+ index +'"]').val(value);
 					
 				});	
 			}else{
@@ -683,6 +873,8 @@
 					allContent[i].value = "";
 				}
 				
+				$('input:radio[name="scheduleOption"]:input[value="month"]').prop("checked", true).trigger('change');
+				$('input:radio[name="gender"]:input[value="남자"]').prop("checked", true);
 				$('#actingRole-form [name="sido"]').val("시/도 선택");
 				$('div[id=script]').html("대본을 업로드 해주세요.");
 				$('#script-box').css("display", "none");
@@ -713,7 +905,7 @@
 			actingRole["role"]= $('input[name="role' + id + '"]').val();
 			actingRole["pay"] = $('input[name="pay"]').val();
 			actingRole["age"] = $('input[name="age"]').val();
-			actingRole["gender"] = $('input[name="gender"]').val();
+			actingRole["gender"] = $('input[name="gender"]:checked').val();
 			actingRole["job"] = $('input[name="job"]').val();
 			actingRole["feature"] = ($('input[name="feature"]').val()).replaceAll("\"","*");
 			actingRole["region"] = $('input[name="region"]').val();
@@ -758,9 +950,9 @@
 			savedActingRole["role"]= $('input[name="role' + id + '"]').val();
 			savedActingRole["pay"] = $('input[name="pay"]').val();
 			savedActingRole["age"] = $('input[name="age"]').val();
-			savedActingRole["gender"] = $('input[name="gender"]').val();
+			savedActingRole["gender"] = $('input[name="gender"]:checked').val();
 			savedActingRole["job"] = $('input[name="job"]').val();
-			actingRole["feature"] = ($('input[name="feature"]').val()).replaceAll("\"","*");
+			savedActingRole["feature"] = ($('input[name="feature"]').val()).replaceAll("\"","*");
 			savedActingRole["region"] = $('input[name="region"]').val();
 			savedActingRole["schedule"] = $('input[name="schedule"]').val();
 			savedActingRole["shotAngle"] = $('select[name="shotAngle"]').val();
@@ -812,12 +1004,15 @@
 	}
 
 	function checkAndSaveCurrentActingRoleInfo() {
+		if ($('.toast')) {
+			window.toastr.remove();
+		}
 		
 		var id = $('#actingRole-modal').data("id");
 		
 		var actingRole = new Object();
 		
-		var gender = $('input[name="gender"]');
+		var gender = $('input:radio[name="gender"]:checked');
 		
 		if($.trim(gender.val()) == '' || $.trim(gender.val()) == null){
 			gender.focus();
@@ -1013,9 +1208,9 @@
 		actingRole["role"]= $('input[name="role' + id + '"]').val();
 		actingRole["pay"] = $('input[name="pay"]').val();
 		actingRole["age"] = $('input[name="age"]').val();
-		actingRole["gender"] = $('input[name="gender"]').val();
+		actingRole["gender"] = $('input:radio[name="gender"]:checked').val();
 		actingRole["job"] = $('input[name="job"]').val();
-		actingRole["feature"] = $('input[name="feature"]').val();
+		actingRole["feature"] = ($('input[name="feature"]').val()).replaceAll("\"","*");
 		actingRole["region"] = $('input[name="region"]').val();
 		actingRole["schedule"] = $('input[name="schedule"]').val();
 		actingRole["shotAngle"] = $('select[name="shotAngle"]').val();
@@ -1023,8 +1218,11 @@
 		actingRole["guideVideoUrl"] = $('input[name="guideVideoUrl"]').val();
 		actingRole["scriptStatus"] = $('input[name="scriptStatus"]').val();
 		actingRole["shootingsCount"] = $('input[name="shootingsCount"]').val();
+		actingRole["requestedActing"] = $('select[name="requestedActing"]').val();
 		
 		actingRoles.set(id , actingRole);
+		
+		$('.modal-background').css("display", "none");
 		
 		console.log(actingRole);
 		console.log(actingRoles);
@@ -1032,6 +1230,8 @@
 	}
 
 	$('#artwork-file').on('change', function() {
+		
+		var artworkFileStatus = $('.artwork-file-status');
 
 		const files = $("#artwork-file")[0].files;
 		const file = $("#artwork-file")[0].files[0];
@@ -1040,6 +1240,10 @@
 			const imgurl = URL.createObjectURL(file);
 			$('#artwork-profile').attr("src", imgurl);
 			$('#artwork-box').css("padding", "0 0 10px");
+			
+			var fileName = file.name;
+			
+			artworkFileStatus.html("파일이름 : " + fileName);
 
 			URL.revokeObjectURL(file);
 
@@ -1047,6 +1251,8 @@
 			//파일이 없는 경우 내용을 지워준다.
 			$('#artwork-profile').attr("src", "");
 			$('#artwork-box').css("padding", "0");
+			
+			artworkFileStatus.html("대본을 업로드 해주세요.");
 		}
 	});
 
@@ -1058,8 +1264,7 @@
 
 		html += '<div class="actingRole-input flex flex-grow">';
 		html += '<input name="role'+ actingRoleCount +'" data-id="' + actingRoleCount + '" class="w-10 shadow appearance-none border rounded-l-full flex-grow mb-2 py-2 pl-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="역할" />';
-		html += '<button type="button" class="bg-gray-500 appearance-none border rounded-r-full mb-2 py-2 pl-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" onclick="javascript:showActingRoleModal('
-				+ actingRoleCount + ')">배역정보입력</button>';
+		html += '<button type="button" class="bg-gray-500 appearance-none border rounded-r-full mb-2 py-2 pl-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" onclick="javascript:showActingRoleModal(' + actingRoleCount + ')">배역정보입력</button>';
 		html += '<button class="text-2xl self-start" onclick="removeActingRoleBox(this,'+ actingRoleCount +')">';
 		html += '<i class="far fa-minus-square"></i>';
 		html += '</button>';
@@ -1069,20 +1274,39 @@
 
 	}
 
-	function removeActingRoleBox(val,actingRoleCount) {
-		if(actingRoles && actingRoles.has(actingRoleCount)){
-			actingRoles.delete(actingRoleCount);
+	function removeActingRoleBox(val, actingRoleId, query) {
+		if(query == "delete"){
+			var actingRole = actingRoles.get(actingRoleId);
+			actingRole["deleteStatus"] = true;
+		}else{
+			if(actingRoles && actingRoles.has(actingRoleId)){
+				actingRoles.delete(actingRoleId);
+			}	
 		}
 		
 		console.log(actingRoles);
 		
-		$(val).closest("div.actingRole-input").remove();
+		if($('div.actingRole-input').length == 1){
+			$('#actingRole-box-switch').attr("data-displayStatus", 1);
+			$('#actingRole-box-switch').css("display", "flex");
+
+			$('.actingRole-box').css("display", "none");
+			$('.actingRole-box').empty();
+		}else{
+			$(val).closest("div.actingRole-input").remove();
+		}
 	}
 
 	function removeActingRoleBoxAndShowSwitch(val) {
-		if(actingRoles && actingRoles.has(actingRoleCount)){
-			actingRoles.clear();
-		}
+		
+		for (let [key, value] of actingRoles){
+			var actingRole = value;
+			if(actingRole.id != null && actingRole.id != '' && actingRole.id != "undefined"){
+				actingRole.deleteStatus = true;	
+			}else{
+				actingRoles.delete(key);
+			}
+		};
 		
 		$('#actingRole-box-switch').attr("data-displayStatus", 1);
 		$('#actingRole-box-switch').css("display", "flex");
@@ -1108,8 +1332,8 @@
 		html += '<input name="role'+ actingRoleCount +'" data-id="' + actingRoleCount + '" class="w-10 shadow appearance-none border rounded-l-full flex-grow mb-2 py-2 pl-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="역할" />';
 		html += '<button type="button" class="bg-gray-500 appearance-none border rounded-r-full mb-2 py-2 pl-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" onclick="javascript:showActingRoleModal('
 				+ actingRoleCount + ')">배역정보입력</button>';
-		html += '<button type="button" class="self-start text-2xl" onclick="javascript:removeActingRoleBoxAndShowSwitch(this)">';
-		html += '<i class="far fa-trash-alt"></i>';
+		html += '<button class="text-2xl self-start" onclick="removeActingRoleBox(this,'+ actingRoleCount +')">';
+		html += '<i class="far fa-minus-square"></i>';
 		html += '</button>';
 		html += '</div>';
 		html += '</div>';

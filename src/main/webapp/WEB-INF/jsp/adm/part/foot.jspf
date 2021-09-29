@@ -2,10 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class=" py-4">
 	<div class="foo_div1 text-center ">
-		<p class="text-base font-bold">Copyright 2021 C</p>
-		<p class="text-base ">Blah Blah address other Infomation</p>
-		<p class="text-base ">privacy policy etc</p>
-		<p class="text-base ">000@naver.com 000-000-000 000-000-000</p>
+		<p class="text-base font-bold">Copyright(c) 2021 DLS co.,ltd</p>
+		<p class="text-base ">All rights reserved.</p>
 	</div>
 </div>
 </div>

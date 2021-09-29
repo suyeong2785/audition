@@ -67,6 +67,10 @@
 <form method="POST" action="doWrite"
 	onsubmit="ApplymentWriteForm__submit(this); return false;">
 	<input type="hidden" name="fileIdsStr" />
+	<input type="hidden" name="artworkTitle" value="${artworkTitle}"/>
+	<input type="hidden" name="actingRole" value="${actingRole.role}"/>
+	<input type="hidden" name="actingRoleGender" value="${actingRole.gender}"/>
+	<input type="hidden" name="actingRoleAge" value="${actingRole.age}"/>
 	<input type="hidden" name="relTypeCode" value="actingRole" />
 	<input type="hidden" name="relId" value="${actingRole.id}" />
 	<input type="hidden" name="redirectUri"
@@ -75,40 +79,29 @@
 	<div class="con">
 		<div class=" flex flex-col">
 			<div class="max-height-360 relative overflow-hidden">
-				<div class="padding-bottom-50">
+				<div class="relative padding-bottom-50">
 					<c:choose>
-						<c:when test="${actingRole.files != '[]'}">
-							<c:forEach items="${actingRole.files}" var="file">
-								<c:choose>
-									<c:when test="${file.typeCode == 'thumbnail'}">
-										<img
-											class="absolute top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2 h-full"
-											src="${file.forPrintGenUrl}" alt="" />
-									</c:when>
-								</c:choose>
-							</c:forEach>
+						<c:when test="${artworkFileUrl != '' && artworkFileUrl != null }">
+							<img
+								class="absolute top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2 h-full"
+								src="${artworkFileUrl}" alt="" />
 						</c:when>
 						<c:otherwise>
 							<div
 								class="flex justify-center items-center absolute text-7xl h-full w-full bg-gray-600 text-white top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2 capitalize">
-								${actingRole.name}</div>
-
+								${actingRole.role}</div>
 						</c:otherwise>
 					</c:choose>
-					<div
-						class="absolute bottom-0 left-2/4 transform -translate-x-1/2  bg-black text-white opacity-40 text text-opacity-0 z-10 w-full p-8">
-						<div>${actingRole.extra.artworkName}</div>
-						<div>${actingRole.feature}</div>
-						<div>${fn:split(actingRole.startDate,' ')[0]}~
-							${fn:split(actingRole.endDate,' ')[0]}</div>
-					</div>
-					<div
-						class="absolute bottom-0 left-2/4 transform -translate-x-1/2 text-white w-full p-8 z-20">
-						<div>${actingRole.extra.artworkName}</div>
-						<div class="text-sm font-thin">${actingRole.feature}</div>
-						<div class="text-sm font-thin">${fn:split(actingRole.startDate,' ')[0]}~
-							${fn:split(actingRole.endDate,' ')[0]}</div>
-					</div>
+				</div>
+				<div
+					class="absolute bottom-0 left-2/4 transform -translate-x-1/2  bg-black text-white opacity-40 text-opacity-0 z-10 w-full"
+					style="height: 253px;"></div>
+				<div
+					class="absolute bottom-0 transform text-white w-full z-20"
+					style="height: 253px;">
+					<div class="absolute top-0 mt-14 left-2/4 transform -translate-x-1/2 text-2xl font-bold">${artworkTitle}</div>
+					<div class="absolute bottom-0 mb-14 left-2/4 transform -translate-x-1/2 text-2xl font-bold">${actingRole.gender}
+						${actingRole.role} ${actingRole.age}</div>
 				</div>
 			</div>
 			<div class="grid p-6 grid-column-applyment">

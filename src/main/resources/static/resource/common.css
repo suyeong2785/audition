@@ -54,12 +54,6 @@ label[for] {
 	padding-top: 100%;
 }
 
-.img-box.img-box-auto>img {
-	display: block;
-	max-width: 100%;
-	width: auto;
-}
-
 .none {
 	display: none !important;
 }
@@ -70,11 +64,6 @@ label[for] {
 
 .inline-block {
 	display: inline-block;
-}
-
-.img-box>img, .img-box>svg {
-	width: 100%;
-	display: block;
 }
 
 .text-align-center {
@@ -374,7 +363,9 @@ label[for] {
 	padding-bottom: 3vmin;
 	padding-right: 8vmin;
 }
-
+.banner-height{
+	height: 60vmin;
+}
 /* 테이블 관련 */
 .table-box>table {
 	width: 100%;
@@ -548,6 +539,10 @@ label[for] {
 	justify-content: center;
 }
 */
+
+.bg-gray-showMyPage{
+	background-color:#EFEFEF;
+}
 
 .btn-success {
 	background-color: #28a745;

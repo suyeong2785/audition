@@ -57,7 +57,8 @@
 		type2Code = #{type2Code}
 		AND fileNo = #{fileNo}
 		AND delStatus = 0
-		ORDER BY relId
+		ORDER
+		BY relId
 	</select>
 
 	<select id="getFilesRelTypeCodeAndRelIdsAndTypeCodeAndType2Code"
@@ -107,8 +108,8 @@
 		AND delStatus = 0
 		ORDER BY fileNo
 	</select>
-	
-	
+
+
 	<select id="getFileById" resultType="File">
 		SELECT *
 		FROM file
@@ -118,9 +119,15 @@
 		AND delStatus = 0
 	</select>
 
+	<select id="getFileByRelId" resultType="File">
+		SELECT * FROM file
+		WHERE relId
+		= #{relId}
+	</select>
+
 	<update id="changeRelId">
 		UPDATE `file`
-		SET	updateDate = NOW(),
+		SET updateDate = NOW(),
 		relId = #{relId}
 		WHERE id = #{id}
 		AND delStatus = 0
@@ -130,7 +137,8 @@
 		UPDATE file
 		SET delDate = NOW(),
 		delStatus = 1
-		WHERE relId = #{relId}
+		WHERE
+		relId = #{relId}
 		AND relTypeCode
 		= #{relTypeCode}
 	</update>
@@ -139,8 +147,25 @@
 		UPDATE file
 		SET delDate = NOW(),
 		delStatus = 1
-		WHERE id = #{id}
+		WHERE id
+		= #{id}
 	</update>
+
+	<delete id="deleteFilesByRelIds">
+		DELETE FROM file
+		WHERE relId IN
+		<foreach item="relId" index="index" collection="relIds"
+			open="(" separator="," close=")">
+			#{relId}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteFilesByRelId">
+		DELETE FROM file
+		WHERE relId = #{relId}
+	</delete>
+	
+	
 
 	<select id="getFileId" resultType="int">
 		SELECT id
@@ -152,9 +177,10 @@
 		#{typeCode}
 		AND type2Code = #{type2Code}
 		AND fileNo = #{fileNo}
-		AND delStatus = 0
+		AND
+		delStatus = 0
 	</select>
-	
+
 	<resultMap type="File" id="file">
 		<id property="id" column="id" />
 		<id property="regDate" column="regDate" />

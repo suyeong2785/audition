@@ -83,6 +83,50 @@ public class FileService {
 		fileDao.deleteFiles(relTypeCode, relId);
 	}
 
+	public void deleteFilesByRelIds(String relTypeCode, List<Integer> relIds) {
+
+		for(int relId : relIds) {
+			// 기존 파일 정보 불러오기
+			List<File> oldFiles = getFileByRelId(relId);
+			if(oldFiles.isEmpty() == false) {
+				for( File oldFile : oldFiles) {
+					// 기존 파일이 디스크에 저장되어 있다면 삭제
+					String filePath = oldFile.getFilePath(genFileDirPath);
+			
+					java.io.File ioFile = new java.io.File(filePath);
+					if (ioFile.exists()) {
+						boolean ioFileDeleteRs = ioFile.delete();
+					}
+				}
+			}
+		}
+
+		fileDao.deleteFilesByRelIds(relTypeCode, relIds);
+	}
+	
+	public void deleteFilesByRelId(String relTypeCode, int relId) {
+
+		// 기존 파일 정보 불러오기
+		List<File> oldFiles = getFileByRelId(relId);
+		if(oldFiles.isEmpty() == false) {
+			for( File oldFile : oldFiles) {
+				// 기존 파일이 디스크에 저장되어 있다면 삭제
+				String filePath = oldFile.getFilePath(genFileDirPath);
+		
+				java.io.File ioFile = new java.io.File(filePath);
+				if (ioFile.exists()) {
+					boolean ioFileDeleteRs = ioFile.delete();
+				}
+			}
+		}
+
+		fileDao.deleteFilesByRelId(relTypeCode, relId);
+	}
+
+	private List<File> getFileByRelId(int relId) {
+		return fileDao.getFileByRelId(relId);
+	}
+
 	public File getFileById(int id) {
 		return fileDao.getFileById(id);
 	}
@@ -92,11 +136,11 @@ public class FileService {
 
 		List<File> files = fileDao.getFilesRelTypeCodeAndRelIdAndTypeCodeAndType2Code(relTypeCode, relId, typeCode,
 				type2Code);
-		
+
 		Map<Integer, File> map = new HashMap<>();
-		
+
 		Map<Integer, Map<Integer, File>> rs = new LinkedHashMap<>();
-		
+
 		for (File file : files) {
 			if (rs.containsKey(file.getRelId()) == false) {
 				rs.put(file.getRelId(), new LinkedHashMap<>());
@@ -126,7 +170,7 @@ public class FileService {
 
 		return rs;
 	}
-	
+
 	public File getFileRelTypeCodeAndRelIdAndTypeCodeAndType2Code(String relTypeCode, int relId, String typeCode,
 			String type2Code) {
 		return fileDao.getFileRelTypeCodeAndRelIdAndTypeCodeAndType2Code(relTypeCode, relId, typeCode, type2Code);

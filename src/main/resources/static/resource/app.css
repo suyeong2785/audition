@@ -38,6 +38,10 @@ h3 {
     max-width: 1200px;
 }
 
+.bg-gray-showMyPage{
+	background-color:#EFEFEF;
+}
+
 @media (max-width :1210px) and (min-width :801px) {
     .con {
         margin-left: 10px;
@@ -163,6 +167,14 @@ h3 {
     border: 1px solid #787878;
     overflow-y: auto;
     max-height: 80vh;
+    box-sizing: border-box;
+    max-width: 600px;
+    width: 100%;
+    background-color: white;
+}
+.modal-content-share {
+    border: 1px solid #787878;
+    overflow-y: auto;
     box-sizing: border-box;
     max-width: 600px;
     width: 100%;
@@ -344,7 +356,7 @@ h3 {
 }
 /* 관리자 showMyPage*/
 .grid-columns-adm-myPage{
-	grid-template-columns: minmax(68px,100px) minmax(150px,auto) 50px;
+	grid-template-columns: minmax(68px,100px) minmax(100px,auto);
 }
 .grid-row-adm-myPage{
 	grid-template-rows: minmax(68px,auto);
@@ -358,7 +370,7 @@ h3 {
 	font-size: 5vmin;
 }
 .grid-columns-myAudition{
-	grid-template-columns: minmax(68px,100px) minmax(150px,auto) 50px;
+	grid-template-columns: minmax(68px,100px) minmax(130px,auto) 50px;
 }
 
 .grid-row-myAudition{
@@ -380,7 +392,7 @@ h3 {
 }
 /* artworklist 커스텀*/
 .grid-columns-artworkList{
-	grid-template-columns: minmax(97.6px,160px) minmax(182px,auto);
+	grid-template-columns: minmax(97.6px,160px) minmax(150px,auto);
 }
 
 .grid-row-artworkList{
@@ -388,7 +400,11 @@ h3 {
 }
 /* artworklist 커스텀*/
 .grid-columns-showCommonMyPage{
-	grid-template-columns: minmax(83px,1fr) minmax(227px,3fr);
+	grid-template-columns: minmax(70px,1fr) minmax(200px,3fr);
+}
+/* main 커스텀 */
+.grid-columns-main{
+	grid-template-columns: minmax(300px,500px);
 }
 
 /* loader 커스텀*/

@@ -11,7 +11,7 @@ import com.quantom.audition.dto.Share;
 @Mapper
 public interface ShareDao {
 
-	int doShareArtworksAndActingRolesAjax(Map<String, Object> param);
+	void doShareArtworksAndActingRolesAjax(Map<String, Object> param);
 
 	List<Share> getForPrintRequestedSharesByRequesteeId(@Param("requesteeId") int requesteeId);
 
@@ -19,8 +19,16 @@ public interface ShareDao {
 	
 	void doModifyShareAnswer(Map<String, Object> param);
 
-	List<Share> getShareByRequesterId(Map<String, Object> param);
+	List<Share> getShareByRequesterId(@Param("requesterId") int requesterId);
 
 	List<Share> getAccesibleRequesteesByActingRoleId(Map<String, Object> param);
+
+	void modifySharesByRequesterId(@Param("requesterId") int requesterId);
+
+	List<Share> getSharesByRelIdsAndRequesterId(@Param("relIds") List<Integer> relIds,@Param("requesterId") int requesterId);
+
+	List<Integer> getSharesIdsByRequesterId(int requesterId);
+
+	void deleteSharesByrequesterIdAndrelIds(@Param("requesterId") int requesterId,@Param("relIds") List<Integer> relIds);
 	
 }

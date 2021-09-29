@@ -7,8 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.quantom.audition.dto.ActingRole;
-import com.quantom.audition.dto.Artwork;
-import com.quantom.audition.dto.Recruitment;
 
 @Mapper
 public interface ActingRoleDao {
@@ -42,5 +40,9 @@ public interface ActingRoleDao {
 	void changeRelId(@Param("id") int id, @Param("artworkId") int artworkId);
 
 	List<ActingRole> getActingRolesForPrintCastingCallModifyByArtworkId(@Param("artworkId") int artworkId);
+
+	void deleteActingRolesByArtworkId(@Param("artworkId") int artworkId);
+
+	List<Integer> getActingRoleIdsByArtworkId(@Param("artworkId") int artworkId);
 
 }

@@ -148,7 +148,7 @@
 				<configuration>
 					<url>http://bangsuyeong.shop:8080/manager/text</url>
 					<server>devly__manager_text</server>
-					<path>/ROOT##2</path>
+					<path>/ROOT##3</path>
 				</configuration>
 			</plugin>
 			<plugin>

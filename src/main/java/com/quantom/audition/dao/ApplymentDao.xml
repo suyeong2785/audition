@@ -154,6 +154,14 @@
 		#{relTypeCode},
 		relId =
 		#{relId},
+		artworkTitle =
+		#{artworkTitle},
+		actingRole =
+		#{actingRole},
+		actingRoleGender =
+		#{actingRoleGender},
+		actingRoleAge =
+		#{actingRoleAge},
 		displayStatus
 		= 1
 	</insert>
@@ -282,6 +290,12 @@
 		</set>
 		WHERE id = #{id}
 	</update>
+	
+	<delete id="deleteApplymentByRelIdAndRelTypeCode">
+		DELETE FROM applyment
+		WHERE relId = #{relId}
+		AND relTypeCode = #{relTypeCode}
+	</delete>
 
 	<resultMap type="Applyment" id="applyment">
 		<id property="id" column="id" />

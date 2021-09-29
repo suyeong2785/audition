@@ -1,10 +1,12 @@
 package com.quantom.audition.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,8 +22,10 @@ public class ShareController {
 
 	@RequestMapping("/usr/share/doShareArtworksAndActingRolesAjax")
 	@ResponseBody
-	public ResultData doShareArtworksAndActingRolesAjax(@RequestParam Map<String, Object> param) {
+	public ResultData doShareArtworksAndActingRolesAjax(@RequestParam Map<String, Object> param,@RequestParam(value="relIds[]") List<String> relIds) {
 
+		param.put("relIds", relIds);
+		System.out.println("relIds : " + relIds);
 		ResultData shareRd = shareService.doShareArtworksAndActingRolesAjax(param);
 
 		return shareRd;

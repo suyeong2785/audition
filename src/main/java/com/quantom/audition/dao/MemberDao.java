@@ -28,7 +28,11 @@ public interface MemberDao {
 	List<Member> getCastingDirectorsByLoginId(Map<String, Object> param);
 
 	void doModifyMemberRecommendation(@Param("id") int id, @Param("recommendationStatus") int recommendationStatus);
+	
+	List<Member> getCastingDirectorsNameAndNickAndLoginIdNameByLoginId(Map<String, Object> param);
 
 	Member getMemberByISNINumber(@Param("ISNI_number") String ISNI_number);
+
+	
 
 }

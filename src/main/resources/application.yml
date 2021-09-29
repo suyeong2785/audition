@@ -5,11 +5,7 @@ spring:
     host: localhost
     port: 6379
   session:
-    timeout: 14400
-    store-type: redis
-    redis:
-      flush-mode: on-save
-      namespace: spring:session
+    store-type: none
   mail:
     host: smtp.gmail.com
     port: 587
@@ -32,10 +28,21 @@ spring:
       prefix: /WEB-INF/jsp/
       suffix: .jsp
   datasource:
+    type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:log4jdbc:mysql://localhost:3306/audition?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
     password: 
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    hikari:
+      poolName: Hikari
+      maximum-pool-size: 10
+      max-lifetime: 1800000
+      auto-commit: false
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
 mybatis:
   type-aliases-package: com.quantom.audition
 server:
@@ -82,10 +89,31 @@ spring:
     multipart:
       location: /tmp
   datasource:
+    type: com.zaxxer.hikari.HikariDataSource
     username: auditionLocal
     password: dheltus123414
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/audition?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull
+    hikari:
+      poolName: Hikari
+      maximum-pool-size: 10
+      max-lifetime: 1800000
+      auto-commit: false
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true  
+  redis:
+    host: 127.0.0.1
+    port: 6379
+  session:
+    timeout: 14400
+    store-type: redis
+    redis:
+      flush-mode: on-save
+      namespace: spring:session
+      
 custom:
   genFileDirPath: /opt/tomcat/apache-tomcat-9.0.37/bangsuyeong.shop-file
   environment: https://bangsuyeong.shop

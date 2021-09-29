@@ -4,37 +4,38 @@
 <%@ include file="../../usr/part/head.jspf"%>
 
 <div class="grid justify-center grid-column-auto-800 mx-4">
-	<!-- 체크박스값 확인테스트용 
+	<!--  
 	<div>
 		<span>actingRoleId : </span>
 		<span id="checked-actingRole-id"></span>
 	</div>
-	 -->
+	-->
 	<div class="flex justify-between">
 		<div class="text-center py-8 text-xl font-bold">
 			<span>진행중인 오디션</span>
-			<a
-				class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
-				href="../actingRole/writeArtwork">
-				<i class="fas fa-plus"></i>
-			</a>
 		</div>
 
 		<div id="share-box" class="flex items-center justify-center font-bold">
 			<div id="share-button"
 				class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
 				onclick="showArtworksAndActingRolesCheckBox()">
-				<span>공유</span>
+				<span>
+					<i class="far fa-share-square"></i>
+				</span>
 			</div>
 			<div id="share-search-button"
 				class="hidden bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-l-full px-4"
 				onclick="showShareModal()">
-				<span>공유대상</span>
+				<span>
+					<i class="fas fa-user-plus"></i>
+				</span>
 			</div>
 			<div id="share-close-button"
 				class="hidden bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-r-full px-4"
 				onclick="closeArtworksAndActingRolesCheckBox()">
-				<span>취소</span>
+				<span>
+					<i class="fas fa-times"></i>
+				</span>
 			</div>
 		</div>
 	</div>
@@ -42,8 +43,8 @@
 	<c:forEach items="${artworks}" var="artwork">
 		<div class="relative flex flex-col mt-4">
 			<div
-				class="artworkList-box z-20 grid grid-columns-adm-myPage grid-row-adm-myPage gap-x-2.5 bg-gray-100 place-content-stretch bg-gray-200 rounded-full place-content-stretch"
-				onclick="showActingRoleList(${artwork.id},'${artwork.title}', 1)">
+				class="artworkList-box z-20 grid grid-columns-adm-myPage grid-row-adm-myPage place-content-stretch place-content-stretch"
+				onclick="showActingRoleList(${artwork.id},'${artwork.title}', '1','${artwork.forPrintGenUrlForArtwork}')">
 				<c:choose>
 					<c:when test="${artwork.genre == 'action'}">
 						<c:set var="bgColor" value="bg-red-200"></c:set>
@@ -78,7 +79,7 @@
 						test="${artwork.forPrintGenUrlForArtwork != null && artwork.forPrintGenUrlForArtwork != ''}">
 						<div class="relative padding-bottom-50 overlow-hidden">
 							<img
-								class="absolute top-0 left-0 text-white w-full h-full flex justify-center items-center rounded-full"
+								class="absolute top-0 left-0 text-white w-full h-full flex justify-center items-center rounded-l-lg"
 								src="${artwork.forPrintGenUrlForArtwork}" alt="" />
 						</div>
 					</c:when>
@@ -86,39 +87,22 @@
 						test="${artwork.forPrintGenUrlForArtwork == null || artwork.forPrintGenUrlForArtwork == ''}">
 						<div class="relative padding-bottom-50 overlow-hidden">
 							<div
-								class="${bgColor} absolute top-0 left-0 text-white w-full h-full rounded-full flex justify-center items-center">${artwork.genre}</div>
+								class="${bgColor} absolute top-0 left-0 text-white w-full h-full rounded-l-lg flex justify-center items-center">${artwork.genre}</div>
 						</div>
 					</c:when>
 				</c:choose>
 
-				<div class="grid items-center">
-					<div class="font-black text-sm">
-						<span>${artwork.title}</span>
+				<div
+					class="grid items-center border-t-2 border-b-2 border-r-2 border-opacity-25 rounded-r-lg bg-white"
+					style="border-color: #C4C4C4;">
+					<div
+						class="overflow-ellipsis overflow-hidden whitespace-nowrap pl-4 font-black ">
+						${artwork.title}
 						<input type="checkbox" id="share-artwork${artwork.id}"
 							value="${artwork.id}" class="hidden" />
 					</div>
-					<div class="title text-overflow-el text-xs">${artwork.extra.writer}</div>
-					<div class="writer text-xs">
-						<div>지원자 : 000명</div>
-					</div>
 				</div>
-				<div>
-					<c:choose>
-						<c:when
-							test="${artwork.forPrintGenUrlForMember != null && artwork.forPrintGenUrlForMember != ''}">
-							<img class="inline object-cover w-14 h-14 mr-2 rounded-full"
-								src="${artwork.forPrintGenUrlForMember}" alt="" />
-						</c:when>
-						<c:when
-							test="${artwork.forPrintGenUrlForMember == null || artwork.forPrintGenUrlForMember == ''}">
-							<div
-								class="flex justify-center items-center w-14 h-full text-5xl text-gray-600 pr-4">
-								<i class="fas fa-user-circle"></i>
-							</div>
-						</c:when>
-					</c:choose>
-				</div>
-				<c:set var="actingRoleBg" value="bg-gray-300"></c:set>
+				<c:set var="actingRoleBg" value="bg-gray-showMyPage"></c:set>
 			</div>
 			<div id="artwork-left-background${artwork.id}"
 				class="absolute bottom-0 left-0 ${actingRoleBg} h-1/2 w-1/2 z-10 hidden"></div>
@@ -129,13 +113,13 @@
 			class="actingRoleList flex justify-center items-center text-gray-600 ">
 			<!-- 각각의 작품에 해당하는 배역목록을 보여줌  -->
 			<div id="actingRoleList${artwork.id}" data-display-status="-1"
-				class="flex-col flex-grow hidden ${actingRoleBg} p-4 rounded-b-3xl leading-10">
+				class="flex-col flex-grow hidden ${actingRoleBg} p-4 rounded-b-lg leading-10 text-sm">
 			</div>
 		</div>
 	</c:forEach>
 </div>
-<div id="applyment-share-modal" class="modal-background">
-	<div class="modal-content">
+<div id="applyment-share-modal" class="modal-background items-center">
+	<div class="modal-content-share">
 		<div
 			class="relative flex justify-center items-center text-white text-center h-12 md:h-14 text-2xl md:text-4xl mb-4">
 			<!-- 검색 상자 -->
@@ -173,13 +157,23 @@
 	var loginedMemberId = '<c:out value="${loginedMemberId}"/>';
 	var environment = '<c:out value="${environment}"/>';
 	
-	//회원모달창 켜졌을경우 외부영역 클릭 시 팝업 닫기
-	$('.modal-background').mouseup(
-		function(e) {
-			if ($('.modal-content').has(e.target).length === 0
-					&& $('.modal-content').has(e.target).length === 0) {
-				$('.modal-background').css("display", "none");
+	//외부영역 클릭 시 팝업 닫기
+	$(document).mouseup(function(e){ 
+		
+		if($('.artworkList-box').has(e.target).length === 0  && $('.actingRoleList').has(e.target).length === 0){ 
+			$('[id^="actingRoleList"]').css("display","none");
+			$('[id^="actingRoleList"]').data("displayStatus","-1");
+			$('[id^="actingRoleList"]').empty();
+			$('[id^="artwork-left-background"]').css("display","none");
+			$('[id^="artwork-right-background"]').css("display","none");
+
 		}
+		//회원모달창 켜졌을경우 외부영역 클릭 시 팝업 닫기
+		if($('.modal-background').has(e.target).length === 0 && $('.modal-content').has(e.target).length === 0){
+			$('.modal-background').css("display", "none");
+			$('#search-result').empty();
+		}
+		
 	});
 	
 	function showShareModal(){
@@ -195,22 +189,9 @@
 		}
 	}
 	
-	//외부영역 클릭 시 팝업 닫기
-	$(document).mouseup(function(e){ 
-		if($('.artworkList-box').has(e.target).length === 0  && $('.actingRoleList').has(e.target).length === 0){ 
-			$('[id^="actingRoleList"]').css("display","none");
-			$('[id^="actingRoleList"]').data("displayStatus","-1");
-			$('[id^="actingRoleList"]').empty();
-			$('[id^="artwork-left-background"]').css("display","none");
-			$('[id^="artwork-right-background"]').css("display","none");
-
-			$('#search-result').empty();
-			}
-		});
-	
 	var totalCount = 0;
 	
-	function showActingRoleList(artworkId,artworkTitle, page) {
+	function showActingRoleList(artworkId,artworkTitle, page, artworkFileUrl) {
 
 		$('[id^="actingRoleList"]').not('#actingRoleList'+ artworkId).css("display","none");
 		$('[id^="actingRoleList"]').not('#actingRoleList'+ artworkId).data("displayStatus",-1);
@@ -233,14 +214,14 @@
 			}).then(function(data){
 				totalCount = data.body.actingRoles.length;
 				actingRoles = data.body.actingRoles;
-				drawActingRoleList(artworkId, artworkTitle, page);
+				drawActingRoleList(artworkId, artworkTitle, page, artworkFileUrl);
 			});
 		
 	}
 	
 	let sharedActingRoles = [];
 	
-	function drawActingRoleList(artworkId, artworkTitle, page){
+	function drawActingRoleList(artworkId, artworkTitle, page, artworkFileUrl){
 		
 		var itemsInAPage = 3;
 		
@@ -260,15 +241,21 @@
 			actingRoleIds.push(actingRole.id);
 			
 			if(limitStart <= index && limitTake > index ){
-				html += '<a href="../applyment/showMyApplyments?artworkTitle='+ artworkTitle +'&actingRoleRole='+ actingRole.Role +'&relTypeCode=actingRole&relId='+ actingRole.id +'">';
-				html += '<div class="flex justify-between items-center justify-items-stretch bg-gray-200 mb-2 rounded-full px-8 font-black">';
-				html += '<div class="flex-1-0-0 ">'+ actingRole.id +'</div>';
-				html += '<div class="flex-3-0-0 text-center">'+ actingRole.role +'역</div>';
-				html += '<div class="flex-2-0-0 text-center">'+ actingRole.gender +'</div>';
-				html += '<div class="flex-3-0-0 text-right">'+ actingRole.job +'</div>';
+				
+				html += '<div class="flex justify-between items-center mb-2 font-black border-dashed border-b border-black" style="border-color : #58595B">';
+				html += '<div class="grid justify-items-start" style="grid-template-columns: minmax(30px,40px) minmax(30px,50px) minmax(30px,50px);">';
+				html += '<div class=" text-center overflow-ellipsis overflow-hidden whitespace-nowrap ">'+ actingRole.gender +'</div>';
+				html += '<div class=" text-center overflow-ellipsis overflow-hidden whitespace-nowrap ">'+ actingRole.role +'</div>';
+				html += '<div class=" text-right whitespace-nowrap ">';
+				html += '<span class="pr-4">' + actingRole.age + '</span>';
 				html += '<input type="checkbox" class="'+ ($('#share-box').data("shareStatus") == 1 ? "inline" : "none") + '" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
 				html += '</div>';
+				html += '</div>';
+				html += '<a href="../applyment/showMyApplyments?artworkTitle='+ artworkTitle +'&actingRoleGender='+ actingRole.gender +'&actingRoleRole='+ actingRole.role +'&actingRoleAge='+ actingRole.age +'&relTypeCode=actingRole&relId='+ actingRole.id +'&artworkFileUrl='+ artworkFileUrl +'">';
+				html += '<div class="bg-gray-500 hover:bg-gray-700 text-white text-xs font-thin rounded-full py-1 px-2" style="background-color : #58595B"><i class="fas fa-search"></i></div>';
 				html += '</a>';
+				html += '</div>';
+				
 			}
 		});
 		
@@ -306,9 +293,9 @@
 		
 		for(var i = pageMenuStart; i <= pageMenuEnd; i++){
 			if(page == i){
-				pageHtml += '<span class="bg-white border-gray-300 text-red-500 hover:bg-red-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" data-page="'+ i +'" onclick="changeActingRoleListPage('+ artworkId +','+ i +')">'+ i +'</span>';	
+				pageHtml += '<span class="bg-white border-gray-300 text-red-500 hover:bg-red-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" data-page="'+ i +'" onclick="changeActingRoleListPage('+ artworkId +','+ i + ',' + artworkTitle + ',' + artworkFileUrl +')">'+ i +'</span>';	
 			}else{
-				pageHtml += '<span class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" data-page="'+ i +'" onclick="changeActingRoleListPage('+ artworkId +','+ i +')">'+ i +'</span>';	
+				pageHtml += '<span class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" data-page="'+ i +'" onclick="changeActingRoleListPage('+ artworkId +','+ i + ',' + artworkTitle + ',' + artworkFileUrl +')">'+ i +'</span>';	
 			}
 		}
 
@@ -318,7 +305,7 @@
 		
 		var previousPage = parseInt(currentPage) - 1;
 		
-		var previousPageHtml = '<span id="previousPage" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (previousPage < pageMenuStart ? pageMenuStart : previousPage) +')">';
+		var previousPageHtml = '<span id="previousPage" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (previousPage < pageMenuStart ? pageMenuStart : previousPage) +',' + artworkTitle + ',' + artworkFileUrl +')">';
 		previousPageHtml += '<i class="fas fa-caret-left"></i>';
 		previousPageHtml += '</span>';
 		
@@ -326,16 +313,16 @@
 		
 		var nextPage = parseInt(currentPage) + 1;
 		
-		var nextPageHtml = '<span id="nextPage" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (nextPage > totalPage ? totalPage : nextPage) +')">';
+		var nextPageHtml = '<span id="nextPage" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (nextPage > totalPage ? totalPage : nextPage) +',' + artworkTitle + ',' + artworkFileUrl +')">';
 		nextPageHtml += '<i class="fas fa-caret-right"></i>';
 		nextPageHtml += '</span>';
 		
 		$('#pagination'+ artworkId).append(nextPageHtml);
 		
-		var pageMobileHtml = '<span class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (previousPage < pageMenuStart ? pageMenuStart : previousPage) +')">';
+		var pageMobileHtml = '<span class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (previousPage < pageMenuStart ? pageMenuStart : previousPage) +',' + artworkTitle + ',' + artworkFileUrl +')">';
 		pageMobileHtml += 'Previous';
 		pageMobileHtml += '</span>';
-		pageMobileHtml += '<span class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (nextPage > totalPage ? totalPage : nextPage) +')">';
+		pageMobileHtml += '<span class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (nextPage > totalPage ? totalPage : nextPage) +',' + artworkTitle + ',' + artworkFileUrl +')">';
 		pageMobileHtml += 'Next';
 		pageMobileHtml += '</span>';
 		
@@ -377,7 +364,7 @@
 			sharedActingRoles = sharedActingRoles.filter((element, index) => element != "" && element != null );
 			var actingRoleToShare =  sharedActingRoles.join(",");
 			
-			//$('#checked-actingRole-id').html(actingRoleToShare);
+			$('#checked-actingRole-id').html(actingRoleToShare);
 		}
 		
 		$('input:checkbox[id^="share-actingRole"]:not(:checked)').each(function(index,item) {
@@ -421,12 +408,12 @@
 			sharedActingRoles = sharedActingRoles.filter((element, index) => element != "" && element != null );
 			var actingRoleToShare =  sharedActingRoles.join(",");
 			
-			//$('#checked-actingRole-id').html(actingRoleToShare);
+			$('#checked-actingRole-id').html(actingRoleToShare);
 		});
 		
 	}
 	
-	function changeActingRoleListPage(artworkId, page){
+	function changeActingRoleListPage(artworkId, page , artworkTitle, artworkFileUrl ){
 		
 		var itemsInAPage = 3;
 		
@@ -439,15 +426,20 @@
 		
 		$.each(actingRoles, function(index, actingRole){
 			if(limitStart <= index && limitTake > index ){
-				html += '<a href="../applyment/showMyApplyments">';
-				html += '<div class="flex justify-between items-center justify-items-stretch bg-gray-200 mb-2 rounded-full px-8 font-black">';
-				html += '<div class="flex-1-0-0 ">'+ actingRole.id +'</div>';
-				html += '<div class="flex-3-0-0 text-center">'+ actingRole.Role +'역</div>';
-				html += '<div class="flex-2-0-0 text-center">'+ actingRole.gender +'</div>';
-				html += '<div class="flex-3-0-0 text-right">'+ actingRole.job +'</div>';
-				html += '<input type="checkbox" class="'+ ($('#share-box').data("shareStatus") == 1 ? "inline" : "none") +'" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
+				
+				html += '<div class="flex justify-between items-center mb-2 font-black border-dashed border-b border-opacity-25" >';
+				html += '<div class="grid justify-items-start" style="grid-template-columns: minmax(30px,40px) minmax(30px,50px) minmax(30px,50px);">';
+				html += '<div class=" text-center overflow-ellipsis overflow-hidden whitespace-nowrap ">'+ actingRole.gender +'</div>';
+				html += '<div class=" text-center overflow-ellipsis overflow-hidden whitespace-nowrap ">'+ actingRole.role +'역</div>';
+				html += '<div class=" text-right whitespace-nowrap ">';
+				html += '<span class="pr-4">' + actingRole.age + '</span>';
+				html += '<input type="checkbox" class="'+ ($('#share-box').data("shareStatus") == 1 ? "inline" : "none") + '" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
 				html += '</div>';
+				html += '</div>';
+				html += '<a href="../applyment/showMyApplyments?artworkTitle='+ artworkTitle +'&actingRoleGender='+ actingRole.gender +'&actingRoleRole='+ actingRole.role +'&actingRoleAge='+ actingRole.age +'&relTypeCode=actingRole&relId='+ actingRole.id +'&artworkFileUrl='+ artworkFileUrl +'">';
+				html += '<div class="bg-gray-500 hover:bg-gray-700 text-white text-xs font-thin rounded-full py-1 px-2"><i class="fas fa-search"></i></div>';
 				html += '</a>';
+				html += '</div>';
 			}
 		});
 		
@@ -483,9 +475,9 @@
 		
 		for(var i = pageMenuStart; i <= pageMenuEnd; i++){
 			if(page == i){
-				pageHtml += '<span class="bg-white border-gray-300 text-red-500 hover:bg-red-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" data-page="'+ i +'" onclick="changeActingRoleListPage('+ artworkId +','+ i +')">'+ i +'</span>';	
+				pageHtml += '<span class="bg-white border-gray-300 text-red-500 hover:bg-red-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" data-page="'+ i +'" onclick="changeActingRoleListPage('+ artworkId +','+ i +',' + artworkTitle + ',' + artworkFileUrl +')">'+ i +'</span>';	
 			}else{
-				pageHtml += '<span class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" data-page="'+ i +'" onclick="changeActingRoleListPage('+ artworkId +','+ i +')">'+ i +'</span>';	
+				pageHtml += '<span class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" data-page="'+ i +'" onclick="changeActingRoleListPage('+ artworkId +','+ i +',' + artworkTitle + ',' + artworkFileUrl +')">'+ i +'</span>';	
 			}
 		}
 		
@@ -495,7 +487,7 @@
 		
 		var previousPage = parseInt(currentPage) - 1;
 		
-		var previousPageHtml = '<span id="previousPage" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (previousPage < pageMenuStart ? pageMenuStart : previousPage) +')">';
+		var previousPageHtml = '<span id="previousPage" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (previousPage < pageMenuStart ? pageMenuStart : previousPage) +',' + artworkTitle + ',' + artworkFileUrl +')">';
 		previousPageHtml += '<i class="fas fa-caret-left"></i>';
 		previousPageHtml += '</span>';
 		
@@ -503,16 +495,16 @@
 		
 		var nextPage = parseInt(currentPage) + 1;
 		
-		var nextPageHtml = '<span id="nextPage" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (nextPage > totalPage ? totalPage : nextPage) +')">';
+		var nextPageHtml = '<span id="nextPage" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (nextPage > totalPage ? totalPage : nextPage) +',' + artworkTitle + ',' + artworkFileUrl +')">';
 		nextPageHtml += '<i class="fas fa-caret-right"></i>';
 		nextPageHtml += '</span>';
 		
 		$('#pagination'+ artworkId).append(nextPageHtml);
 		
-		var pageMobileHtml = '<span class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (previousPage < pageMenuStart ? pageMenuStart : previousPage) +')">';
+		var pageMobileHtml = '<span class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (previousPage < pageMenuStart ? pageMenuStart : previousPage) +',' + artworkTitle + ',' + artworkFileUrl +')">';
 		pageMobileHtml += 'Previous';
 		pageMobileHtml += '</span>';
-		pageMobileHtml += '<span class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (nextPage > totalPage ? totalPage : nextPage) +')">';
+		pageMobileHtml += '<span class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (nextPage > totalPage ? totalPage : nextPage) +',' + artworkTitle + ',' + artworkFileUrl +')">';
 		pageMobileHtml += 'Next';
 		pageMobileHtml += '</span>';
 		
@@ -527,7 +519,7 @@
 		});
 		
 		$("[id^='share-actingRole']").change(function(){
-			//$('#checked-actingRole-id').empty();
+			$('#checked-actingRole-id').empty();
 			
 			$('input:checkbox[id^="share-actingRole"]:checked').each(function(index,item) {
 				var sameValue = -1;
@@ -559,7 +551,7 @@
 			sharedActingRoles = sharedActingRoles.filter((element, index) => element != "" && element != null );
 			var actingRoleToShare =  sharedActingRoles.join(",");
 			
-			//$('#checked-actingRole-id').html(actingRoleToShare);
+			$('#checked-actingRole-id').html(actingRoleToShare);
 		});
 	
 	}
@@ -586,7 +578,7 @@
 		sharedActingRoles = sharedActingRoles.filter((element, index) => element != "" && element != null );
 		var actingRoleToShare =  sharedActingRoles.join(",");
 		
-		//$('#checked-actingRole-id').html(actingRoleToShare);	
+		$('#checked-actingRole-id').html(actingRoleToShare);	
 	});
 	
 	//감춰두었던 체크박스 보여주는 함수
@@ -621,6 +613,10 @@
 	//작품리스트,배역리스트 공유대상 검색 및 공유기능
 	function closeCastingDirectorList(){
 		$('#search-close-button').css({"display":"none"});
+		
+		//값 초기화
+		$('#search-result').empty();
+		$('#director-search-input').val("");
 	}
 	
 	function getCastingDirectorList(){
@@ -696,19 +692,27 @@
 		
 		if(sharedActingRoles.length != 0){
 			
-			var actingRolesStrToShare =  sharedActingRoles.filter((element, index) => element != "" && element != null ).join(",");
+			sharedActingRoles =  sharedActingRoles.filter((element, index) => element != "" && element != null );
+			var data = { 
+					"requesterId" : loginedMemberId,
+					"requesteeId" : id,
+					"name" : name,
+					"relTypeCode" : "actingRole",
+					"relIds" : sharedActingRoles
+			};
 			
-			$.post('../../usr/share/doShareArtworksAndActingRolesAjax',{
-				requesterId: loginedMemberId,
-				requesteeId: id,
-				name: name,
-				relTypeCode : "actingRole",
-				relId : actingRolesStrToShare
-			},function (data){
-				alert(data.msg);
-			},'json');
+			$.ajax({
+				url : '../../usr/share/doShareArtworksAndActingRolesAjax',
+				type : "post",
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				data : data,
+				success : function(data){
+					alert(data.msg);
+					getCastingDirectorList();
+				}
+			});
 			
-			location.reload();
 		}else{
 			alert("공유할 대상이 선택되지 않았습니다.");
 		}
@@ -719,7 +723,6 @@
 		document.execCommand("copy"); //클립보드 복사 실행
 		alert('복사완료');
 	});
-	
 	
 	const shareButton = document.querySelector('.share-button');
 	const shareDialog = document.querySelector('.share-dialog');

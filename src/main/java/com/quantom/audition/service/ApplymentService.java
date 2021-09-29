@@ -216,14 +216,6 @@ public class ApplymentService {
 		return new ResultData("S-1", String.format("%d번 신청을 수정하였습니다.", Util.getAsInt(param.get("id"))), param);
 	}
 
-	public void deleteApplymentsByRelId(String relTypeCode, int relId) {
-		List<Applyment> applyments = getApplymentsByRelId(relTypeCode, relId);
-
-		for (Applyment applyment : applyments) {
-			deleteApplyment(applyment.getId());
-		}
-	}
-
 	private List<Applyment> getApplymentsByRelId(String relTypeCode, int relId) {
 		return applymentDao.getApplymentsByRelId(relTypeCode, relId);
 	}
@@ -298,6 +290,11 @@ public class ApplymentService {
 
 	public List<Applyment> getForPrintApplymentsByRelIdAndRelTypeCode(Map<String, Object> param) {
 		return applymentDao.getForPrintApplymentsByRelIdAndRelTypeCode(param);
+	}
+
+	public void deleteApplymentByRelIdAndRelTypeCode(String relTypeCode, int relId) {
+		applymentDao.deleteApplymentByRelIdAndRelTypeCode(relTypeCode, relId);
+		
 	}
 
 

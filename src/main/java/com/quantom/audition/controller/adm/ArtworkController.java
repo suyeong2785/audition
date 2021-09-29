@@ -1,10 +1,7 @@
 package com.quantom.audition.controller.adm;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,14 +11,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.quantom.audition.config.AppConfig;
 import com.quantom.audition.dto.ActingRole;
 import com.quantom.audition.dto.Artwork;
 import com.quantom.audition.dto.Member;
+import com.quantom.audition.dto.ResultData;
 import com.quantom.audition.service.ActingRoleService;
 import com.quantom.audition.service.ArtworkService;
-import com.quantom.audition.util.Util;
+import com.quantom.audition.service.ShareService;
 
 @Controller
 public class ArtworkController {
@@ -31,6 +30,9 @@ public class ArtworkController {
 
 	@Autowired
 	private ArtworkService artworkService;
+	
+	@Autowired
+	private ShareService shareService;
 	
 	@Autowired
 	private ActingRoleService actingRoleService;
@@ -125,9 +127,19 @@ public class ArtworkController {
 	}
 
 	@RequestMapping("/adm/actingRole/doDeleteArtwork")
-	public String doModifyArtwork(int id, String listUrl) {
-		artworkService.deleteArtwork(id);
+	public String doModifyArtwork(int id, String listUrl,HttpServletRequest req) {
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+		artworkService.deleteArtwork(id,loginedMemberId);
 
 		return "redirect:" + listUrl;
+	}
+	
+	@RequestMapping("/adm/actingRole/doDeleteArtworkAjax")
+	@ResponseBody
+	public ResultData doDeleteArtworkAjax( int id,HttpServletRequest req) {
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+		artworkService.deleteArtwork(id,loginedMemberId);
+
+		return new ResultData("S-1", String.format("해당게시물을 삭제했습니다.", id));
 	}
 }

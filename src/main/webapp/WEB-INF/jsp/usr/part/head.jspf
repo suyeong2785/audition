@@ -26,9 +26,7 @@
 	href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 <!-- Swiper JS -->
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<!-- DaisyUI CSS Tailwind라이브러리 -->
-<link href="https://cdn.jsdelivr.net/npm/daisyui@1.13.0/dist/full.css"
-	rel="stylesheet" type="text/css" />
+
 <!-- 제이쿼리 불러오기 -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -115,7 +113,7 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 			</c:if>
 
 			<c:if test="${isLogined}">
-				<a href="/usr/home/showMyPage" class="absolute right-2">
+				<a href="/usr/home/showCommonMyPage" class="absolute right-2">
 					<c:choose>
 						<c:when test="${not empty fileForProfile}">
 							<img class="profile w-10 h-10"
@@ -145,10 +143,10 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 						</div>
 					</li>
 					<li>
-						<a href="/usr/actingRole/list">Auditions</a>
+						<a href="/usr/actingRole/artworkListForAuditions">Auditions</a>
 					</li>
 					<li>
-						<a href="/usr/home/news">News</a>
+						<a href="">News</a>
 					</li>
 					<li class="actors-DB-category-button">
 						<span onclick="showActorsDBCategory()">Actors DB</span>

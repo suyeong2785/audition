@@ -10,9 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.quantom.audition.dao.ActingRoleDao;
 import com.quantom.audition.dto.ActingRole;
-import com.quantom.audition.dto.Artwork;
 import com.quantom.audition.dto.Member;
-import com.quantom.audition.dto.Recruitment;
+import com.quantom.audition.dto.Share;
 import com.quantom.audition.util.Util;
 
 @Service
@@ -22,6 +21,12 @@ public class ActingRoleService {
 
 	@Autowired
 	private FileService fileService;
+	
+	@Autowired
+	private ShareService shareService;
+	
+	@Autowired
+	private ApplymentService applymentService;
 
 	public List<ActingRole> getRoles() {
 		return actingRoleDao.getRoles();
@@ -94,6 +99,9 @@ public class ActingRoleService {
 
 	public void delete(int id) {
 		actingRoleDao.delete(id);
+		applymentService.deleteApplymentByRelIdAndRelTypeCode("actingRole",id);
+		
+		fileService.deleteFilesByRelId("actingRole", id);
 	}
 
 	public int getActingRolesCountByArtworkId(Map<String, Object> param) {
@@ -118,6 +126,17 @@ public class ActingRoleService {
 
 	public void changeRelId(int id, int artworkId) {
 		actingRoleDao.changeRelId(id, artworkId);
+	}
+
+	public void deleteActingRolesByArtworkId(int artworkId, int requesterId) {
+		if(actingRoleDao.getActingRoleIdsByArtworkId(artworkId).isEmpty() == false) {
+			List<Integer> actingRolesIds = actingRoleDao.getActingRoleIdsByArtworkId(artworkId);
+			
+			fileService.deleteFilesByRelIds("actingRole", actingRolesIds);
+			shareService.deleteSharesByrequesterIdAndrelIds(requesterId,actingRolesIds);		
+		}
+		
+		actingRoleDao.deleteActingRolesByArtworkId(artworkId);
 	}
 
 

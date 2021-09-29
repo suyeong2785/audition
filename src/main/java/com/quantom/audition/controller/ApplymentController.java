@@ -115,16 +115,22 @@ public class ApplymentController {
 		
 		model.addAttribute("applyments", applyments);
 		model.addAttribute("shares", shares);
-		model.addAttribute("artworkName", param.get("artworkName"));
-		model.addAttribute("actingRoleName", param.get("actingRoleName"));
+		model.addAttribute("artworkTitle", param.get("artworkTitle"));
+		model.addAttribute("actingRoleGender", param.get("actingRoleGender"));
+		model.addAttribute("actingRoleAge", param.get("actingRoleAge"));
+		model.addAttribute("actingRoleRole", param.get("actingRoleRole"));
+		model.addAttribute("artworkFileUrl", param.get("artworkFileUrl"));
 		
 		return "/adm/applyment/showMyApplyments";
 	}
 	
 	@RequestMapping("/usr/applyment/write")
-	public String write(Model model,int id, HttpServletRequest request) {
+	public String write(Model model,int id, HttpServletRequest request,@RequestParam Map<String, Object> param) {
+		
 		ActingRole actingRole = actingRoleService.getActingRoleForPrintDetailById(id);
 		model.addAttribute("actingRole", actingRole);
+		model.addAttribute("artworkFileUrl", param.get("artworkFileUrl"));
+		model.addAttribute("artworkTitle", param.get("artworkTitle"));
 		
 		return "usr/applyment/write";
 	}

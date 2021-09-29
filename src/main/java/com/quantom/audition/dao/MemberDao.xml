@@ -43,6 +43,17 @@
 		AND id NOT IN 
 		(SELECT requesteeId FROM `share`)
 	</select>
+	
+	<select id="getCastingDirectorsNameAndNickAndLoginIdNameByLoginId" resultType="Member">
+		SELECT id,name,loginId,nickname
+		FROM member
+		WHERE loginId LIKE CONCAT('%',#{loginId},'%')
+		AND authority
+		= #{authority}
+		AND id != #{id}
+		AND id NOT IN 
+		(SELECT requesteeId FROM `share`)
+	</select>
 
 	<select id="getMemberByISNINumber" resultType="Member">
 		SELECT *

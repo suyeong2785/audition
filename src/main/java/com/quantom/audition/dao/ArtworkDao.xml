@@ -9,7 +9,7 @@
 		FROM artwork
 	</select>
 
-	<select id="getForPrintArtworksByLoginId" resultType="artwork">
+	<select id="getForPrintArtworksByLoginId" resultMap="artworkForPrint">
 		SELECT
 		A.*, AF.id
 		AS

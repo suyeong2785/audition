@@ -11,6 +11,14 @@
 		WHERE
 		id = #{id}
 	</select>
+	
+	<select id="getActingRoleIdsByArtworkId" resultType="int">
+		SELECT id
+		FROM
+		actingRole
+		WHERE
+		artworkId = #{artworkId}
+	</select>
 
 	<select id="getActingRolesForPrintListByArtworkId"
 		resultType="ActingRole">
@@ -249,6 +257,11 @@
 
 	<delete id="delete">
 		DELETE FROM actingRole WHERE id = #{id}
+	</delete>
+	
+	<delete id="deleteActingRolesByArtworkId">
+		DELETE FROM actingRole
+		WHERE artworkId = #{artworkId}
 	</delete>
 
 	<update id="modify">

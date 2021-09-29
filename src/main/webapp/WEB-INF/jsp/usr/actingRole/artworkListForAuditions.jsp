@@ -5,7 +5,7 @@
 <!-- PC용 -->
 <div class="grid justify-center grid-column-auto-800 p-4 gap-y-4">
 	<div class="flex justify-between">
-		<div class="text-xl font-bold">CastingCall</div>
+		<div class="text-xl font-bold">Auditions</div>
 		<c:if test="${actorCanWrite}">
 			<div>
 				<a
@@ -28,7 +28,7 @@
 			<c:forEach items="${artworks}" var="artwork">
 				<div
 					class="grid grid-columns-artworkList grid-row-artworkList gap-x-2.5 place-content-stretch">
-					<a href="${artwork.getDetailLink()}">
+					<a href="${artwork.getDetailLinkForAuditions()}">
 						<c:choose>
 							<c:when test="${artwork.genre == 'action'}">
 								<c:set var="bgColor" value="bg-red-200"></c:set>
@@ -76,21 +76,21 @@
 					</a>
 					<div class="grid content-between">
 						<a class="font-bold overflow-hidden line-clamp-1"
-							href="${artwork.getDetailLink()}" class="block">${artwork.title}</a>
-						<a href="${artwork.getDetailLink()}"
+							href="${artwork.getDetailLinkForAuditions()}" class="block">${artwork.title}</a>
+						<a href="${artwork.getDetailLinkForAuditions()}"
 							class="text-green-500 text-sm text-left overflow-ellipsis overflow-hidden line-clamp-6">${artwork.genre}</a>
-						<a href="${artwork.getDetailLink()}"
+						<a href="${artwork.getDetailLinkForAuditions()}"
 							class=" text-xs text-left overflow-ellipsis overflow-hidden line-clamp-6">주연
 							: ${artwork.leadActor}</a>
-						<a href="${artwork.getDetailLink()}"
+						<a href="${artwork.getDetailLinkForAuditions()}"
 							class=" text-xs 
 							text-left overflow-ellipsis overflow-hidden
 							line-clamp-6">제작사
 							: ${artwork.productionName}</a>
-						<a href="${artwork.getDetailLink()}"
+						<a href="${artwork.getDetailLinkForAuditions()}"
 							class=" text-xs text-left overflow-ellipsis overflow-hidden line-clamp-1">줄거리
 							: ${artwork.etc}</a>
-						<a href="${artwork.getDetailLink()}" class="text-xs text-left">${fn:split(artwork.startDate,' ')[0]} ~
+						<a href="${artwork.getDetailLinkForAuditions()}" class="text-xs text-left"> ${fn:split(artwork.startDate,' ')[0]} ~
 							${fn:split(artwork.endDate,' ')[0]}</a>
 					</div>
 				</div>

@@ -8,20 +8,15 @@
 		<div class="flex justify-center items-center flex-4">
 			<div class="text-center py-8 text-xl font-bold">진행중인 캐스팅</div>
 			<div class="flex-grow"></div>
-			<div class="flex items-center justify-center">
-				<a
-					class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
-					href="./writeArtwork">
-					<i class="fas fa-plus"></i>
-					<span>Add</span>
-				</a>
-			</div>
+			<div class="flex items-center justify-center"></div>
 		</div>
 	</div>
 	<c:forEach items="${artworks}" var="artwork">
 		<div class="relative flex flex-col mt-4 ">
 			<div
-				class="z-20 grid grid-columns-adm-artworkList grid-row-adm-artworkList gap-x-2.5 bg-gray-100 place-content-stretch bg-gray-200 rounded-full place-content-stretch">
+				class="z-20 grid place-content-stretch rounded-lg place-content-stretch"
+				style="grid-template-columns: minmax(68px,90px) minmax(100px,auto);
+				grid-template-rows: minmax(68px,auto);">
 				<a href="../../usr/actingRole/${artwork.getDetailLink()}">
 					<c:choose>
 						<c:when test="${artwork.genre == 'action'}">
@@ -57,7 +52,7 @@
 							test="${artwork.forPrintGenUrlForArtwork != null && artwork.forPrintGenUrlForArtwork != ''}">
 							<div class="relative padding-bottom-50 overlow-hidden">
 								<img
-									class="absolute top-0 left-0 text-white w-full h-full flex justify-center items-center rounded-full"
+									class="absolute top-0 left-0 text-white w-full h-full flex justify-center items-center rounded-l-lg"
 									src="${artwork.forPrintGenUrlForArtwork}" alt="" />
 							</div>
 						</c:when>
@@ -65,44 +60,57 @@
 							test="${artwork.forPrintGenUrlForArtwork == null || artwork.forPrintGenUrlForArtwork == ''}">
 							<div class="relative padding-bottom-50 overlow-hidden">
 								<div
-									class="${bgColor} absolute top-0 left-0 text-white w-full h-full rounded-full flex justify-center items-center">${artwork.genre}</div>
+									class="${bgColor} absolute top-0 left-0 text-white w-full h-full rounded-l-lg flex justify-center items-center">${artwork.genre}</div>
 							</div>
 						</c:when>
 					</c:choose>
 				</a>
 
-				<div class="grid items-center">
+				<div
+					class="flex flex-col justify-between py-2 border-t-2 border-b-2 border-r-2 border-opacity-25 rounded-r-lg pl-4 "
+					style="border-color: #C4C4C4;">
 					<div class="overflow-ellipsis overflow-hidden whitespace-nowrap ">
 						<a href="../../usr/actingRole/${artwork.getDetailLink()}">${artwork.title}</a>
 					</div>
-					<div class="flex items-start">
+					<div class="flex">
 						<a href="modifyArtwork?id=${artwork.id}">
 							<div
-								class="py-1 bg-gray-500 hover:bg-gray-700 text-white text-sm rounded-full px-4">내용수정</div>
+								class="rounded-full">
+								<i class="far fa-edit"></i>
+							</div>
 						</a>
+						<button
+							class=" rounded-full px-4" onclick="deleteArtworkBy(${artwork.id})">
+							<i class="fas fa-trash"></i>
+						</button>
 					</div>
-				</div>
-				<div class="flex items-center p-3">
-					<c:choose>
-						<c:when
-							test="${artwork.forPrintGenUrlForMember != null && artwork.forPrintGenUrlForMember != ''}">
-							<div class="relative padding-bottom-50 overlow-hidden">
-								<img
-									class="absolute top-0 left-0 text-white w-full h-full flex justify-center items-center rounded-full"
-									src="${artwork.forPrintGenUrlForMember}" alt="" />
-							</div>
-						</c:when>
-						<c:when
-							test="${artwork.forPrintGenUrlForMember == null || artwork.forPrintGenUrlForMember == ''}">
-							<div
-								class="flex justify-center items-center w-14 h-14 mr-2 text-5xl text-gray-600">
-								<i class="fas fa-user-circle"></i>
-							</div>
-						</c:when>
-					</c:choose>
-				</div>
+				</div>		
 			</div>
 		</div>
 	</c:forEach>
 </div>
+
+<script>
+	function deleteArtworkBy(id){
+		
+		if(confirm("해당 캐스팅콜을 삭제하시겠습니까?")){
+			$.ajax({
+				url : '../../adm/actingRole/doDeleteArtworkAjax',
+				data : {id : id},
+				dataType : 'json',
+				async : false,
+				type : 'POST',
+				success : function(data){
+					if (data && data.body) {
+						
+						alert(data.body.msg);
+		
+					}
+				}
+			});
+			
+			location.reload();
+		}
+	}
+</script>
 <%@ include file="../part/foot.jspf"%>

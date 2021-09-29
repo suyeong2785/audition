@@ -128,9 +128,7 @@
 	<div class="modal-content rounded-2xl px-8 pb-4 z-50 ">
 		<div class="actingRole-content"></div>
 		<div class="video-box pb-4 hidden">
-			<div class=" relative h-0 padding-bottom-video ">
-				<div id="player" class="absolute top-0 left-0 w-full h-full "></div>
-			</div>
+			<div>가이드영상을 준비중입니다.</div>
 		</div>
 		<div class="flex justify-center">
 			<button
@@ -139,33 +137,7 @@
 		</div>
 	</div>
 </div>
-<script>
-	//유튜브 url에서 videoid추출하는 함수 stackoverflow에서 찾음 제일간단...
-	function YouTubeGetID(url) {
-		url = (url || '').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
-		return (url[2] !== undefined) ? url[2].split(/[^0-9a-z_\-]/i)[0]
-				: url[0];
-	}
-	
-	// 2. This code loads the IFrame Player API code asynchronously.
-	var tag = document.createElement('script');
-	
-	tag.src = "https://www.youtube.com/iframe_api";
-	var firstScriptTag = document.getElementsByTagName('script')[0];
-	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-	
-	// 3. This function creates an <iframe> (and YouTube player)
-	//    after the API code downloads.
-	var player;
-	
-	function onYouTubeIframeAPIReady() {
-		player = new YT.Player('player', {});
-	}
-	
-	function showGuideVideo() {
-		$('.video-box').toggle();
-	}
-</script>
+
 
 <script>
 	var artworkId = '<c:out value="${artwork.id}"/>';
@@ -204,10 +176,12 @@
 		html += '<div class="flex items-center border-dashed border-t border-gray-300">오디션 내용 ('+ (actingRole.data("scriptStatus") == 1 ? '지정연기' : '자유연기') +')' + '</div>';
 		html += '</div>';
 		
-		player.cueVideoById(YouTubeGetID(actingRole.data("guideVideoUrl")));
-		
 		content.html(html);
 		
+	}
+	
+	function showGuideVideo() {
+		$('.video-box').toggle();
 	}
 	
 	function closeActingRoleModal(){

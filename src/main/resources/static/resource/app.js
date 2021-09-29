@@ -53,7 +53,6 @@ function setPositionOfToastr(targetType, targetName, msg) {
 
 	toastr.options = {
 		closeButton: true,
-		progressBar: true,
 		showMethod: 'slideDown',
 		timeOut: 2000,
 		extendedTimeOut: 1,
