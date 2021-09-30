@@ -166,9 +166,7 @@
 			alert('처리중입니다.');
 			return;
 		}
-
-		form.title.value = form.title.value.trim();
-	
+		
 		if (form.title.value.length == 0) {
 			
 			form.title.focus();

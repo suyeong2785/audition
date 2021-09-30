@@ -124,6 +124,13 @@
 		WHERE relId
 		= #{relId}
 	</select>
+	
+	<select id="getFileByRelIdAndRelTypeCode" resultType="File">
+		SELECT * FROM file
+		WHERE relId
+		= #{relId}
+		AND relTypeCode = #{relTypeCode}
+	</select>
 
 	<update id="changeRelId">
 		UPDATE `file`

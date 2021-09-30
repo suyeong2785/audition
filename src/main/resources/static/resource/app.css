@@ -166,7 +166,6 @@ h3 {
 .modal-content {
     border: 1px solid #787878;
     overflow-y: auto;
-    max-height: 80vh;
     box-sizing: border-box;
     max-width: 600px;
     width: 100%;

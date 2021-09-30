@@ -27,6 +27,7 @@ import com.quantom.audition.service.ArtworkService;
 import com.quantom.audition.service.CareerService;
 import com.quantom.audition.service.RecruitmentService;
 import com.quantom.audition.service.ShareService;
+import com.quantom.audition.util.Util;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @Controller
@@ -145,9 +146,9 @@ public class HomeController {
 	@RequestMapping("/usr/home/showMyAudition")
 	public String showMyAudition(Model model, HttpServletRequest req) {
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
-
-		List<Applyment> applymentResults = applymentService.getApplymenResultInfoByMemberId(loginedMember.getId());
-		model.addAttribute("applymentResults", applymentResults);
+		
+		List<Applyment> applyments = applymentService.getApplyments(loginedMember.getId());
+		model.addAttribute("applyments", applyments);
 
 		Career career = careerService.getCareerByMember(loginedMember.getCareerId());
 		if (career != null) {

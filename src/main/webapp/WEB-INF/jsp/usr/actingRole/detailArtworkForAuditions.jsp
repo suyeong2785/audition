@@ -117,7 +117,7 @@
 								data-shootings-count="${actingRole.shootingsCount}">${actingRole.gender}
 								- ${actingRole.role} ${actingRole.age}</span>
 						</div>
-						<a href="/usr/applyment/write?id=${actingRole.id}&artworkFileUrl=${artwork.forPrintGenUrlForArtwork}&artworkTitle=${fn:replace(fn:replace(artwork.title,'[','('),']',')')}">
+						<a href="/usr/applyment/write?id=${actingRole.id}&artworkId=${artwork.id}&artworkType=movie&artworkFileUrl=${artwork.forPrintGenUrlForArtwork}&artworkTitle=${fn:replace(fn:replace(artwork.title,'[','('),']',')')}">
 							<div
 								class=" bg-gray-500 hover:bg-gray-700 text-white rounded-full px-4">지원하기</div>
 						</a>

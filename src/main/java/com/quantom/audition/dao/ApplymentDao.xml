@@ -4,6 +4,19 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.quantom.audition.dao.ApplymentDao">
 
+	<select id="getApplyments" resultType="applyment">
+		SELECT * FROM
+		applyment 
+		WHERE memberId = #{memberId}
+	</select>
+	
+	<select id="getApplymentsByArtworkId" resultType="applyment">
+		SELECT * FROM
+		applyment 
+		WHERE artworkId = #{artworkId}
+		AND memberId = #{memberId}
+	</select>
+	
 	<select id="getForPrintApplyments" resultMap="applyment">
 
 		SELECT AM.*,
@@ -154,6 +167,12 @@
 		#{relTypeCode},
 		relId =
 		#{relId},
+		artworkId =
+		#{artworkId},
+		artworkType =
+		#{artworkType},
+		artworkFileUrl =
+		#{artworkFileUrl},
 		artworkTitle =
 		#{artworkTitle},
 		actingRole =
@@ -162,6 +181,10 @@
 		#{actingRoleGender},
 		actingRoleAge =
 		#{actingRoleAge},
+		actingRoleStartDate =
+		#{actingRoleStartDate},
+		actingRoleEndDate =
+		#{actingRoleEndDate},
 		displayStatus
 		= 1
 	</insert>

@@ -307,4 +307,8 @@ public class FileService {
 		updateFile(oldFileId, fileDir, originFileName, fileExtTypeCode, fileExtType2Code, fileExt, null, fileSize);
 	}
 
+	public File getFileByRelIdAndRelTypeCode(Map<String, Object> param) {
+		return fileDao.getFileByRelIdAndRelTypeCode(param);
+	}
+
 }

@@ -61,6 +61,15 @@ public class FileController {
 	public String showTestUpload() {
 		return "usr/file/testUpload";
 	}
+	
+	@RequestMapping("/usr/file/getFileByApplymentIdAjax")
+	@ResponseBody
+	public ResultData getFileByApplymentIdAjax(@RequestParam Map<String, Object> param) {
+		
+		File file = fileService.getFileByRelIdAndRelTypeCode(param);
+		
+		return new ResultData("S-1", "해당하는 파일을 가져왔습니다.","file",file);
+	}
 
 	@RequestMapping("/usr/file/doTestUpload")
 	@ResponseBody

@@ -17,14 +17,23 @@ public class Applyment {
 	private int id;
 	private String regDate;
 	private String updateDate;
+	private int memberId;
+	private String relTypeCode;
+	private int relId;
+	private int artworkId;
+	private String artworkType;
+	private String artworkFileUrl;
+	private String artworkTitle;
+	private String actingRole;
+	private String actingRoleGender;
+	private String actingRoleAge;
+	private String actingRoleStartDate;
+	private String actingRoleEndDate;
+	private int result;
 	private boolean delStatus;
 	private String delDate;
 	private boolean displayStatus;
 	private boolean hideStatus;
-	private int relId;
-	private int result;
-	private String relTypeCode;
-	private int memberId;
 	
 	private List<File> files;
 	
@@ -40,6 +49,7 @@ public class Applyment {
 	}
 	*/
 
+	/*
 	@JsonProperty("forPrintApplymentResult")
 	public String getForPrintApplymentResult() {
 
@@ -61,7 +71,20 @@ public class Applyment {
 		sb.append("<div>FROM :" + extra.get("ProductionName") + "</div>");
 		return sb.toString();
 	}
+		
+	*/
 	
+	public String getForPrintGenUrlForMember() {
+		if (extra != null) {
+			if (extra.get("fileIdForMember") != null) {
+				return "/gen" + "/" + extra.get("fileRelTypeCodeForMember") + "/" + extra.get("fileDirForMember") + "/"
+						+ extra.get("fileIdForMember") + "." + extra.get("fileExtForMember") + "?updateDate="
+						+ extra.get("fileUpdateDateForMember");
+			}
+		}
+		return null;
+	}
+
 
 	public String getForPrintGenUrlForApplyment() {
 		if (extra != null) {
@@ -73,17 +96,6 @@ public class Applyment {
 
 		}
 
-		return null;
-	}
-
-	public String getForPrintGenUrlForMember() {
-		if (extra != null) {
-			if (extra.get("fileIdForMember") != null) {
-				return "/gen" + "/" + extra.get("fileRelTypeCodeForMember") + "/" + extra.get("fileDirForMember") + "/"
-						+ extra.get("fileIdForMember") + "." + extra.get("fileExtForMember") + "?updateDate="
-						+ extra.get("fileUpdateDateForMember");
-			}
-		}
 		return null;
 	}
 }

@@ -294,7 +294,14 @@ public class ApplymentService {
 
 	public void deleteApplymentByRelIdAndRelTypeCode(String relTypeCode, int relId) {
 		applymentDao.deleteApplymentByRelIdAndRelTypeCode(relTypeCode, relId);
-		
+	}
+
+	public List<Applyment> getApplyments(int memberId) {
+		 return applymentDao.getApplyments(memberId);
+	}
+
+	public List<Applyment> getApplymentsByArtworkId(int memberId, int artworkId) {
+		 return applymentDao.getApplymentsByArtworkId(memberId, artworkId);
 	}
 
 

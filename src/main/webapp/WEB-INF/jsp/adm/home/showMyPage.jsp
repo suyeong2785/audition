@@ -77,9 +77,9 @@
 				<c:choose>
 					<c:when
 						test="${artwork.forPrintGenUrlForArtwork != null && artwork.forPrintGenUrlForArtwork != ''}">
-						<div class="relative padding-bottom-50 overlow-hidden">
+						<div class="relative padding-bottom-50 overlow-hidden bg-white">
 							<img
-								class="absolute top-0 left-0 text-white w-full h-full flex justify-center items-center rounded-l-lg"
+								class="absolute top-0 left-0 text-white w-full h-full flex justify-center items-center rounded-l-lg "
 								src="${artwork.forPrintGenUrlForArtwork}" alt="" />
 						</div>
 					</c:when>
@@ -102,8 +102,8 @@
 							value="${artwork.id}" class="hidden" />
 					</div>
 				</div>
-				<c:set var="actingRoleBg" value="bg-gray-showMyPage"></c:set>
 			</div>
+			<c:set var="actingRoleBg" value="bg-gray-showMyPage"></c:set>
 			<div id="artwork-left-background${artwork.id}"
 				class="absolute bottom-0 left-0 ${actingRoleBg} h-1/2 w-1/2 z-10 hidden"></div>
 			<div id="artwork-right-background${artwork.id}"

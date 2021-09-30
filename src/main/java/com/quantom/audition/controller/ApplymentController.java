@@ -96,6 +96,19 @@ public class ApplymentController {
 		return new ResultData("S-1", "1개의 신청을 불러왔습니다.", rsDataBody);
 	}
 	
+	@RequestMapping("/usr/applyment/getApplymentsByArtworkIdAjax")
+	@ResponseBody
+	public ResultData getApplymentsByArtworkIdAjax(@RequestParam Map<String, Object> param, HttpServletRequest req) {
+		
+		int memberId = Util.getAsInt(req.getAttribute("loginedMemberId"));
+		Map<String, Object> rsDataBody = new HashMap<>();
+
+		List<Applyment> applyments = applymentService.getApplymentsByArtworkId(memberId,Util.getAsInt(param.get("artworkId")));
+		rsDataBody.put("applyments", applyments);
+
+		return new ResultData("S-1", String.format("%d개의 신청을 불러왔습니다.", applyments.size()), rsDataBody);
+	}
+	
 	@RequestMapping("/usr/applyment/getForPrintApplymentRelatedToResultAjax")
 	@ResponseBody
 	public ResultData getForPrintApplymentRelatedToResultAjax(@RequestParam Map<String, Object> param, HttpServletRequest req) {
@@ -131,6 +144,8 @@ public class ApplymentController {
 		model.addAttribute("actingRole", actingRole);
 		model.addAttribute("artworkFileUrl", param.get("artworkFileUrl"));
 		model.addAttribute("artworkTitle", param.get("artworkTitle"));
+		model.addAttribute("artworkId", param.get("artworkId"));
+		model.addAttribute("artworkType", param.get("artworkType"));
 		
 		return "usr/applyment/write";
 	}

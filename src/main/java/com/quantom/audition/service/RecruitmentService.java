@@ -186,7 +186,7 @@ public class RecruitmentService {
 	}
 
 	public ResultData delete(int id) {
-		applymentService.deleteApplymentsByRelId("recruitment", id);
+		applymentService.deleteApplymentByRelIdAndRelTypeCode("recruitment", id);
 
 		recruitmentDao.delete(id);
 		fileService.deleteFiles("recruitment", id);

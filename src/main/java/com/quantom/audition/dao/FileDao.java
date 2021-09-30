@@ -46,4 +46,6 @@ public interface FileDao {
 	
 	List<File> getFileByRelId(@Param("relId") int relId);
 
+	File getFileByRelIdAndRelTypeCode(Map<String, Object> param);
+
 }

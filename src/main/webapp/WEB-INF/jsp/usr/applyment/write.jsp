@@ -67,10 +67,15 @@
 <form method="POST" action="doWrite"
 	onsubmit="ApplymentWriteForm__submit(this); return false;">
 	<input type="hidden" name="fileIdsStr" />
+	<input type="hidden" name="artworkId" value="${artworkId}"/>
+	<input type="hidden" name="artworkType" value="${artworkType}"/>
 	<input type="hidden" name="artworkTitle" value="${artworkTitle}"/>
+	<input type="hidden" name="artworkFileUrl" value="${artworkFileUrl}"/>
 	<input type="hidden" name="actingRole" value="${actingRole.role}"/>
 	<input type="hidden" name="actingRoleGender" value="${actingRole.gender}"/>
 	<input type="hidden" name="actingRoleAge" value="${actingRole.age}"/>
+	<input type="hidden" name="actingRoleStartDate" value="${actingRole.startDate}"/>
+	<input type="hidden" name="actingRoleEndDate" value="${actingRole.endDate}"/>
 	<input type="hidden" name="relTypeCode" value="actingRole" />
 	<input type="hidden" name="relId" value="${actingRole.id}" />
 	<input type="hidden" name="redirectUri"

@@ -39,4 +39,8 @@ public interface ApplymentDao {
 	List<Applyment> getForPrintApplymentsByRelIdAndRelTypeCode(Map<String, Object> param);
 
 	void deleteApplymentByRelIdAndRelTypeCode(@Param("relTypeCode") String relTypeCode,@Param("relId") int relId);
+
+	List<Applyment> getApplyments(@Param("memberId") int memberId);
+
+	List<Applyment> getApplymentsByArtworkId(@Param("memberId") int memberId,@Param("artworkId") int artworkId);
 }
