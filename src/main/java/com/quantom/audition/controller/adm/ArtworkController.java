@@ -21,6 +21,7 @@ import com.quantom.audition.dto.ResultData;
 import com.quantom.audition.service.ActingRoleService;
 import com.quantom.audition.service.ArtworkService;
 import com.quantom.audition.service.ShareService;
+import com.quantom.audition.util.Util;
 
 @Controller
 public class ArtworkController {
@@ -38,8 +39,9 @@ public class ArtworkController {
 	private ActingRoleService actingRoleService;
 
 	@RequestMapping("/{authority}/actingRole/artworkList")
-	public String showAdmArtworkList(Model model, @PathVariable("authority") String authority) {
-		List<Artwork> artworks = artworkService.getForPrintArtworks();
+	public String showAdmArtworkList(Model model, @PathVariable("authority") String authority,HttpServletRequest req) {
+		int memberId = Util.getAsInt(req.getAttribute("loginedMemberId"));
+		List<Artwork> artworks = artworkService.getArtworksForArtworkListPageByMemberId(memberId);
 
 		model.addAttribute("artworks", artworks);
 

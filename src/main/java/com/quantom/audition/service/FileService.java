@@ -87,7 +87,7 @@ public class FileService {
 
 		for(int relId : relIds) {
 			// 기존 파일 정보 불러오기
-			List<File> oldFiles = getFileByRelId(relId);
+			List<File> oldFiles = getFileByRelId(relId,relTypeCode);
 			if(oldFiles.isEmpty() == false) {
 				for( File oldFile : oldFiles) {
 					// 기존 파일이 디스크에 저장되어 있다면 삭제
@@ -107,7 +107,7 @@ public class FileService {
 	public void deleteFilesByRelId(String relTypeCode, int relId) {
 
 		// 기존 파일 정보 불러오기
-		List<File> oldFiles = getFileByRelId(relId);
+		List<File> oldFiles = getFileByRelId(relId,relTypeCode);
 		if(oldFiles.isEmpty() == false) {
 			for( File oldFile : oldFiles) {
 				// 기존 파일이 디스크에 저장되어 있다면 삭제
@@ -123,8 +123,8 @@ public class FileService {
 		fileDao.deleteFilesByRelId(relTypeCode, relId);
 	}
 
-	private List<File> getFileByRelId(int relId) {
-		return fileDao.getFileByRelId(relId);
+	private List<File> getFileByRelId(int relId,String relTypeCode) {
+		return fileDao.getFileByRelId(relId,relTypeCode);
 	}
 
 	public File getFileById(int id) {

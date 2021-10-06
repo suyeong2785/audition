@@ -96,14 +96,15 @@ public class ApplymentController {
 		return new ResultData("S-1", "1개의 신청을 불러왔습니다.", rsDataBody);
 	}
 	
-	@RequestMapping("/usr/applyment/getApplymentsByArtworkIdAjax")
+	@RequestMapping("/usr/applyment/getActingRolesRelatedToApplymentByArtworkIdAjax")
 	@ResponseBody
-	public ResultData getApplymentsByArtworkIdAjax(@RequestParam Map<String, Object> param, HttpServletRequest req) {
+	public ResultData getActingRolesRelatedToApplymentByArtworkIdAjax(@RequestParam Map<String, Object> param, HttpServletRequest req) {
 		
 		int memberId = Util.getAsInt(req.getAttribute("loginedMemberId"));
+		int artworkId = Util.getAsInt(param.get("artworkId"));
 		Map<String, Object> rsDataBody = new HashMap<>();
 
-		List<Applyment> applyments = applymentService.getApplymentsByArtworkId(memberId,Util.getAsInt(param.get("artworkId")));
+		List<Applyment> applyments = applymentService.getActingRolesRelatedToApplymentByArtworkIdAjax(memberId, artworkId);
 		rsDataBody.put("applyments", applyments);
 
 		return new ResultData("S-1", String.format("%d개의 신청을 불러왔습니다.", applyments.size()), rsDataBody);

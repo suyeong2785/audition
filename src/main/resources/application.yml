@@ -70,17 +70,18 @@ spring:
   profiles: local
 server:
   port: 8080
-  http2:
-    enabled: true
-  ssl:
-    enabled: true
-    key-alias: auditionkeystore
-    key-store: auditionkeystore.pkcs12
-    key-store-password: 'tndud2785!'
-    key-password: 'tndud2785!'
-    trust-store: auditiontrust.pkcs12
-    trust-store-password: 'tndud2785!' 
-
+  
+  #http2:
+  #  enabled: true
+  #ssl:
+  #  enabled: true
+  #  key-alias: auditionkeystore
+  #  key-store: auditionkeystore.pkcs12
+  #  key-store-password: 'tndud2785!'
+  #  key-password: 'tndud2785!'
+  #  trust-store: auditiontrust.pkcs12
+  #  trust-store-password: 'tndud2785!' 
+  
 ---
 
 spring:

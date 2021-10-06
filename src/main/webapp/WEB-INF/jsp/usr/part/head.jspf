@@ -114,6 +114,9 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 
 			<c:if test="${isLogined}">
 				<a href="/usr/home/showCommonMyPage" class="absolute right-2">
+					<span id="alarm">
+						<i class="far fa-bell"></i>
+					</span>
 					<c:choose>
 						<c:when test="${not empty fileForProfile}">
 							<img class="profile w-10 h-10"

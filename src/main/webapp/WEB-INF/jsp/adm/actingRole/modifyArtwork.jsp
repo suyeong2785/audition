@@ -266,10 +266,8 @@
 		
 		var needToUpload = false;
 
-		if (needToUpload == false
-				&& form.file__artwork__0__common__attachment__1) {
-			needToUpload = form.file__artwork__0__common__attachment__1
-					&& form.file__artwork__0__common__attachment__1.value.length > 0;
+		if ($('#artwork-file').val() != '' && $('#artwork-file').val() != null ) {
+			needToUpload = true;
 		}
 
 		if (needToUpload == false) {

@@ -292,9 +292,28 @@ public class ApplymentService {
 		return applymentDao.getForPrintApplymentsByRelIdAndRelTypeCode(param);
 	}
 
-	public void deleteApplymentByRelIdAndRelTypeCode(String relTypeCode, int relId) {
-		applymentDao.deleteApplymentByRelIdAndRelTypeCode(relTypeCode, relId);
+	public void deleteApplymentsByRelIdsAndRelTypeCode(String relTypeCode, List<Integer> relIds) {
+		if(applymentDao.getApplymentsIdsByRelIds(relTypeCode, relIds).isEmpty() == false) {
+			List<Integer> applymentsIds = applymentDao.getApplymentsIdsByRelIds(relTypeCode, relIds);
+			
+			fileService.deleteFilesByRelIds(relTypeCode, applymentsIds);
+		}
+		
+		applymentDao.deleteApplymentsByRelIdsAndRelTypeCode(relTypeCode, relIds);
+
 	}
+	
+	public void deleteApplymentByRelIdAndRelTypeCode(String relTypeCode, int relId) {
+		if(applymentDao.getApplymentsIdsByRelIdAndRelTypeCode(relTypeCode, relId).isEmpty() == false) {
+			List<Integer> applymentsIds = applymentDao.getApplymentsIdsByRelIdAndRelTypeCode(relTypeCode, relId);
+			
+			fileService.deleteFilesByRelIds("applyment", applymentsIds);
+		}
+		
+		applymentDao.deleteApplymentsByRelIdAndRelTypeCode(relTypeCode, relId);
+		
+	}
+
 
 	public List<Applyment> getApplyments(int memberId) {
 		 return applymentDao.getApplyments(memberId);
@@ -304,5 +323,12 @@ public class ApplymentService {
 		 return applymentDao.getApplymentsByArtworkId(memberId, artworkId);
 	}
 
+	public List<Applyment> getArtworkInfoRelatedToApplymentByMemberId(String relTypeCode, int memberId) {
+		return applymentDao.getArtworkInfoRelatedToApplymentByMemberId(relTypeCode, memberId);
+	}
+
+	public List<Applyment> getActingRolesRelatedToApplymentByArtworkIdAjax(int memberId, int artworkId) {
+		return applymentDao.getActingRolesRelatedToApplymentByArtworkIdAjax(memberId,artworkId);
+	}
 
 }

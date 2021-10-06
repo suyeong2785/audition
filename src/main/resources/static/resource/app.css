@@ -353,6 +353,14 @@ h3 {
 	display: none;
 	z-index: 100;
 }
+.toast-top-center {
+	display: none;
+	z-index: 100;
+}
+.toast-bottom-left{
+	display: none;
+	z-index: 100;
+}
 /* 관리자 showMyPage*/
 .grid-columns-adm-myPage{
 	grid-template-columns: minmax(68px,100px) minmax(100px,auto);

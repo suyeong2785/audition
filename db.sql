@@ -623,6 +623,44 @@ ALTER TABLE `artwork` DROP COLUMN actingRole;
 ALTER TABLE `artwork` DROP COLUMN actingRoleGender;
 ALTER TABLE `artwork` DROP COLUMN actingRoleAge;
 
+# applyment에 artworkTitle, actingRole, actingRoleGender, actingRoleAge 추가(디렉터 쪽에서 캐스팅콜삭제하거나 마감했을때 기본적으로 보여줘야하는 정보들을 applyment쪽에서 저장시켜야함)
+ALTER TABLE `applyment` ADD COLUMN artworkTitle VARCHAR(100) NOT NULL AFTER relId;
+ALTER TABLE `applyment` ADD COLUMN actingRole VARCHAR(100) NOT NULL AFTER artworkTitle;
+ALTER TABLE `applyment` ADD COLUMN actingRoleGender CHAR(2) NOT NULL AFTER actingRole;
+ALTER TABLE `applyment` ADD COLUMN actingRoleAge VARCHAR(50) NOT NULL AFTER actingRoleGender;
+ALTER TABLE `applyment` ADD COLUMN artworkId INT NOT NULL AFTER relId;
+ALTER TABLE `applyment` ADD COLUMN artworkType VARCHAR(10) NOT NULL AFTER artworkId;
+ALTER TABLE `applyment` ADD COLUMN artworkFileUrl VARCHAR(100) AFTER artworkType;
+ALTER TABLE `applyment` ADD COLUMN actingRoleStartDate VARCHAR(100) NOT NULL AFTER actingRoleAge;
+ALTER TABLE `applyment` ADD COLUMN actingRoleEndDate VARCHAR(100) NOT NULL AFTER actingRoleStartDate;
+
+# applyment에 artworkTitle, actingRole, actingRoleGender, actingRoleAge 삭제(캐스팅콜을 db에서 삭제하지않고 삭제된것처럼보이도록함)
+ALTER TABLE `applyment` DROP COLUMN artworkTitle;
+ALTER TABLE `applyment` DROP COLUMN actingRole;
+ALTER TABLE `applyment` DROP COLUMN actingRoleGender;
+ALTER TABLE `applyment` DROP COLUMN actingRoleAge;
+ALTER TABLE `applyment` DROP COLUMN artworkId;
+ALTER TABLE `applyment` DROP COLUMN artworkType;
+ALTER TABLE `applyment` DROP COLUMN artworkFileUrl;
+ALTER TABLE `applyment` DROP COLUMN actingRoleStartDate;
+ALTER TABLE `applyment` DROP COLUMN actingRoleEndDate;
+
+#delDate,delStatus 추가
+ALTER TABLE `artwork` ADD COLUMN delDate DATETIME AFTER etc;
+ALTER TABLE `artwork` ADD COLUMN delStatus TINYINT DEFAULT 0 AFTER delDate;
+
+#actingRole에 delDate,delStatus 추가
+ALTER TABLE `actingRole` ADD COLUMN delDate DATETIME AFTER shootingsCount;
+ALTER TABLE `actingRole` ADD COLUMN delStatus TINYINT DEFAULT 0 AFTER delDate;
+
+#applyment에 hideStatus 없애기
+ALTER TABLE `applyment` DROP COLUMN hideStatus;
+
+#함수와 프로시저를 생성할 수 없도록 설정이 되어있는지 확인
+SHOW GLOBAL VARIABLES LIKE 'LOG_BIN_TRUST_FUNCTION_CREATORS';
+
+#
+
 /*
 select * from `file`;
 SELECT * FROM `actingRole`;
@@ -636,21 +674,26 @@ select * from `career`;
 select * from  share;
 select * from  recommendation;
 select * from  actor;
-*/
 
+
+DESC `applyment`;
 DESC `actingRole`;
 DESC `artwork`;
 DESC `share`;
 DESC `recommendation`;
 DESC `member`;
 
-SELECT SUM((CHAR_LENGTH(relId)-CHAR_LENGTH(REPLACE(relId,'_',''))+1))
-FROM `share`
-WHERE id = 6;
+SELECT *
+FROM SHARE
+WHERE relId LIKE '19';
 
-DELETE FROM FILE
-WHERE relTypeCode = 'actingRole';
+(SELECT id,SUBSTRING_INDEX(relId, ',', 1) AS relIds
+FROM SHARE);
 
-SELECT * FROM actingRole WHERE artworkId = '3' AND `name` IN ( '하울역' , '토토로역' );
-
-TRUNCATE actingRole;
+TRUNCATE `file`;
+TRUNCATE `artwork`;
+TRUNCATE `actingRole`;
+TRUNCATE `share`;
+TRUNCATE `recommendation`;
+TRUNCATE `applyment`;
+*/

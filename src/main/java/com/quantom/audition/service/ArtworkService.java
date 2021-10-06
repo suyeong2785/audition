@@ -67,6 +67,10 @@ public class ArtworkService {
 	public List<Artwork> getArtworks() {
 		return artworkDao.getArtworks();
 	}
+	
+	public List<Artwork> getArtworksForArtworkListPageByMemberId(int memberId) {
+		return artworkDao.getArtworksForArtworkListPageByMemberId(memberId);
+	}
 
 	public Artwork getForPrintArtworkById(int id) {
 		return artworkDao.getForPrintArtworkById(id);

@@ -16,19 +16,21 @@ public interface ArtworkDao {
 	List<Artwork> getArtworks();
 	
 	List<Artwork> getForPrintArtworks();
+	
+	List<Artwork> getForPrintArtworksByLoginId(@Param("memberId") int memberId);
+	
+	List<Artwork> getArtworksForArtworkListPageByMemberId(@Param("memberId") int memberId);
+	
+	Artwork getArtworkById(@Param("id") int id);
+
+	Artwork getForPrintArtworkForCastingCallModifyById(@Param("id") int id);
+	
+	Artwork getForPrintArtworkById(@Param("id") int id);
 
 	void writeArtwork(Map<String, Object> param);
-
-	Artwork getForPrintArtworkById(@Param("id") int id);
 
 	void modifyArtwork(Map<String, Object> param);
 
 	void deleteArtwork(@Param("id") int id);
-
-	List<Artwork> getForPrintArtworksByLoginId(@Param("memberId") int memberId);
-
-	Artwork getArtworkById(@Param("id") int id);
-
-	Artwork getForPrintArtworkForCastingCallModifyById(@Param("id") int id);
 
 }

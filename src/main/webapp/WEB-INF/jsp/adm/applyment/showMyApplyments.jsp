@@ -4,6 +4,8 @@
 <%@ include file="../../usr/part/head.jspf"%>
 
 <div class="grid justify-center grid-column-auto-800 ">
+	<c:set var="artworkTitle"
+		value="${fn:replace(fn:replace(artworkTitle,'(*(','['),')*)',']')}"></c:set>
 	<div>
 		<div style="height: 93px;">
 			<div
@@ -23,7 +25,7 @@
 				<div
 					class="absolute flex flex-col items-start font-thin text-white z-20 text-lg">
 					<div>${artworkTitle}</div>
-					<div>${actingRoleGender} ${actingRoleRole} ${actingRoleAge}</div>
+					<div>${actingRoleGender}${actingRoleRole}${actingRoleAge}</div>
 				</div>
 			</div>
 		</div>
@@ -100,9 +102,9 @@
 </div>
 <div id="applyment-decision-modal" class="modal-background">
 	<div class="modal-content-applyments flex flex-col self-start">
-		<div id="recommendation" class="flex justify-between items-center text-sm text-white bg-black py-2 px-2">
-			<div id="recommendation-count"
-				class="flex items-center ">
+		<div id="recommendation"
+			class="flex justify-between items-center text-sm text-white bg-black py-2 px-2">
+			<div id="recommendation-count" class="flex items-center ">
 				<i class="fas fa-heart"></i>
 			</div>
 			<div class="text-white" onclick="closeModal()">
@@ -152,21 +154,25 @@
 	  	  $.get('../../usr/recommendation/getForPrintRecommendationsByRecommendeeIdAjax',{
 	  		  recommendeeId : applyment_memberId
 	  	  },function(data){
-	  		  var recommendations = data.body.recommendations;
-	  		  if(data.resultCode.startsWith("S")){
-		  		  for(var i = 0; i < recommendations.length; i++ ){
-		  			  
-		  				if(recommendations[i].recommenderId == loginedMemberId){
-				  			var recommendationStatus = data.body.recommendations[i].recommendationStatus;
-				  			  
-				  			if(recommendationStatus == 1 ){
-				  				$recommendation_button.css({"background-color" : "green","color" : "white"});
-				  				$recommendation_button.data("recommendationStatus", recommendationStatus);
-				  			}else{
-				  				$recommendation_button.data("recommendationStatus",recommendationStatus);
-				  				$recommendation_button.css({"background-color" : "white","color" : "black"});
-				  			}
-		  			  	}
+	  		  
+	  		  if(data != null && data.body != null){
+	  			  var recommendations = data.body.recommendations;
+		  		  
+		  		  if(data.resultCode.startsWith("S")){
+			  		  for(var i = 0; i < recommendations.length; i++ ){
+			  			  
+			  				if(recommendations[i].recommenderId == loginedMemberId){
+					  			var recommendationStatus = data.body.recommendations[i].recommendationStatus;
+					  			  
+					  			if(recommendationStatus == 1 ){
+					  				$recommendation_button.css({"background-color" : "green","color" : "white"});
+					  				$recommendation_button.data("recommendationStatus", recommendationStatus);
+					  			}else{
+					  				$recommendation_button.data("recommendationStatus",recommendationStatus);
+					  				$recommendation_button.css({"background-color" : "white","color" : "black"});
+					  			}
+			  			  	}
+			  		  }
 		  		  }
 	  		  }
 	  		  
@@ -182,9 +188,10 @@
 
 		var recommenderHtml = '';
 
-		$('#recommendation-count').append('<div id="recommendation-number" class="pl-2">' + applyment_recommendation + '</div>');	
+		$('#recommendation-count').append('<div id="recommendation-number" class="pl-2">' + applyment_recommendation + ' ' + applyment_name + '</div>');	
 		
 		$('#applyment-decision-modal').data("applyment_id",applyment_id);
+		$('#applyment-decision-modal').data("applyment_name",applyment_name);
 		$('#applyment-decision-modal').data("applyment_memberId",applyment_memberId); 
 		$('#applyment-decision-modal').data("applyment_recommendation",applyment_recommendation); 
 	}
@@ -193,6 +200,7 @@
 		
 		var applyment_id = $('#applyment-decision-modal').data("applyment_id");
 		var applyment_memberId = $('#applyment-decision-modal').data("applyment_memberId");
+		var applyment_name = $('#applyment-decision-modal').data("applyment_name");
 		
 		//video태그를 보여줄 id=recommendation-button 엘리먼트를 가져온다.
 		var $recommendation_button = $("#recommendation-button");
@@ -206,11 +214,15 @@
 				recommendeeId : applyment_memberId,
 				recommendationStatus : 0
 			}, function(data) {
-				$recommendation_button.css({
-					"background-color" : "white",
-					"color" : "black"
-				});
-				$recommendation_button.data("recommendationStatus", 0);
+				if(data.resultCode.startsWith("S")){
+					$recommendation_button.css({
+						"background-color" : "white",
+						"color" : "black"
+					});
+					
+					$recommendation_button.data("recommendationStatus", 0);
+					
+				}
 			}, 'json');
 
 		} else if ($recommendation_button.data("recommendationStatus") == 0) {
@@ -222,11 +234,14 @@
 				recommendeeId : applyment_memberId,
 				recommendationStatus : 1
 			}, function(data) {
-				$recommendation_button.css({
-					"background-color" : "green",
-					"color" : "white"
-				});
-				$recommendation_button.data("recommendationStatus", 1);
+				if(data.resultCode.startsWith("S")){
+					$recommendation_button.css({
+						"background-color" : "green",
+						"color" : "white"
+					});
+					
+					$recommendation_button.data("recommendationStatus", 1);
+				}
 			}, 'json');
 
 		} else {
@@ -249,6 +264,9 @@
 	}
 	
 	function ChangeApplymentResult(result) {
+		var artworkTitle = '<c:out value="${artworkTitle}"/>';
+		var actingRoleRole = '<c:out value="${actingRoleRole}"/>';
+		
 		var id = $('#applyment-decision-modal').data("applyment_id");
 		
 		// result : 1 (합격)
@@ -268,6 +286,12 @@
 			result : result
 		},function(data){
 			alert(data.msg);
+			
+			console.debug("showMyapplyment::socket>>", socket);
+			if(socket){
+				//websocket에 전송
+				socket.send('/TTT', {}, JSON.stringify({cmd: 'applyment', artworkTitle: artworkTitle, actingRole: actingRoleRole}));
+			}
 		},'json');
 		
 		location.reload();

@@ -123,6 +123,7 @@
 		SELECT * FROM file
 		WHERE relId
 		= #{relId}
+		AND relTypeCode = #{relTypeCode}
 	</select>
 	
 	<select id="getFileByRelIdAndRelTypeCode" resultType="File">
@@ -142,7 +143,8 @@
 
 	<update id="deleteFiles">
 		UPDATE file
-		SET delDate = NOW(),
+		SET updateDate = NOW(),
+		delDate = NOW(),
 		delStatus = 1
 		WHERE
 		relId = #{relId}
@@ -152,27 +154,34 @@
 
 	<update id="deleteFile">
 		UPDATE file
-		SET delDate = NOW(),
+		SET updateDate = NOW(),
+		delDate = NOW(),
 		delStatus = 1
 		WHERE id
 		= #{id}
 	</update>
 
-	<delete id="deleteFilesByRelIds">
-		DELETE FROM file
+	<update id="deleteFilesByRelIds">
+		UPDATE file
+		SET updateDate = NOW(),
+		delDate = NOW(),
+		delStatus = 1
 		WHERE relId IN
 		<foreach item="relId" index="index" collection="relIds"
 			open="(" separator="," close=")">
 			#{relId}
 		</foreach>
-	</delete>
+		AND relTypeCode = #{relTypeCode}
+	</update>
 	
-	<delete id="deleteFilesByRelId">
-		DELETE FROM file
+	<update id="deleteFilesByRelId">
+		UPDATE file
+		SET updateDate = NOW(),
+		delDate = NOW(),
+		delStatus = 1
 		WHERE relId = #{relId}
-	</delete>
-	
-	
+		AND relTypeCode = #{relTypeCode}
+	</update>
 
 	<select id="getFileId" resultType="int">
 		SELECT id

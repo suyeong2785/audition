@@ -133,7 +133,8 @@ public class ActingRoleService {
 			List<Integer> actingRolesIds = actingRoleDao.getActingRoleIdsByArtworkId(artworkId);
 			
 			fileService.deleteFilesByRelIds("actingRole", actingRolesIds);
-			shareService.deleteSharesByrequesterIdAndrelIds(requesterId,actingRolesIds);		
+			shareService.deleteSharesByrequesterIdAndrelIds(requesterId,actingRolesIds);
+			applymentService.deleteApplymentsByRelIdsAndRelTypeCode("actingRole", actingRolesIds);
 		}
 		
 		actingRoleDao.deleteActingRolesByArtworkId(artworkId);

@@ -23,10 +23,9 @@ public class Artwork {
 	private String productionName;
 	private String directorName;
 	private String leadActor;
-	private String actingRole;
-	private String actingRoleGender;
-	private String actingRoleAge;
 	private String etc;
+	private boolean delStatus;
+	private String delDate;
 
 	private Map<String, Object> extra;
 

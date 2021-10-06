@@ -35,6 +35,8 @@ public class ActingRole {
 	private int scriptStatus;
 	private String scenesCount;
 	private String shootingsCount;
+	private boolean delStatus;
+	private String delDate;
 
 	private List<File> files;
 

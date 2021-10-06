@@ -44,7 +44,7 @@ public interface FileDao {
 
 	void deleteFilesByRelId(@Param("relTypeCode") String relTypeCode,@Param("relId") int relId);
 	
-	List<File> getFileByRelId(@Param("relId") int relId);
+	List<File> getFileByRelId(@Param("relId") int relId,@Param("relTypeCode") String relTypeCode);
 
 	File getFileByRelIdAndRelTypeCode(Map<String, Object> param);
 

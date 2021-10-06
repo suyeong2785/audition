@@ -58,6 +58,7 @@ function setPositionOfToastr(targetType, targetName, msg) {
 		extendedTimeOut: 1,
 		positionClass: "toast-top-center"
 	};
+	
 	var loginIdCoordinate = null;
 
 	if (targetType == "input" || targetType == "select" || targetType == "textarea") {

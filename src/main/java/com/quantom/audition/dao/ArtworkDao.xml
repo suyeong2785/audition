@@ -7,7 +7,8 @@
 	<select id="getArtworks" resultType="Artwork">
 		SELECT *
 		FROM artwork
-	</select>
+		WHERE delStatus = 0
+		</select>
 
 	<select id="getForPrintArtworksByLoginId" resultMap="artworkForPrint">
 		SELECT
@@ -27,7 +28,53 @@
 		AS AF
 		ON A.id = AF.relId
 		AND AF.relTypeCode = "artwork"
+		AND AF.delStatus = 0
+		<if test="memberId != 1">
 		WHERE memberId = #{memberId}
+		</if>
+		AND A.delStatus = 0
+	</select>
+	
+	<select id="getArtworksForArtworkListPageByMemberId" resultMap="artworks">
+		SELECT
+		A.*, AF.id AS
+		artwork__file__id,
+		AF.updateDate AS artwork__file__updateDate,
+		AF.relTypeCode
+		AS artwork__file__relTypeCode,
+		AF.fileExt AS
+		artwork__file__fileExt,
+		AF.fileDir AS artwork__file__fileDir,
+		MF.id AS
+		member__file__id,
+		MF.updateDate AS member__file__updateDate,
+		MF.relTypeCode AS member__file__relTypeCode,
+		MF.fileExt AS
+		member__file__fileExt,
+		MF.fileDir AS member__file__fileDir
+		FROM
+		artwork
+		AS A
+		LEFT OUTER
+		JOIN file
+		AS AF
+		ON A.id = AF.relId
+		AND
+		AF.relTypeCode =
+		"artwork"
+		AND AF.delStatus = 0
+		LEFT OUTER
+		JOIN file MF
+		ON A.memberId =
+		MF.relId
+		AND
+		MF.relTypeCode = "member"
+		AND MF.delStatus = 0
+		WHERE 1
+		<if test="memberId != 1">
+		AND A.memberId = #{memberId}
+		</if>
+		AND A.delStatus = 0
 	</select>
 	
 	<select id="getForPrintArtworks" resultMap="artworks">
@@ -57,18 +104,22 @@
 		AND
 		AF.relTypeCode =
 		"artwork"
+		AND AF.delStatus = 0
 		LEFT OUTER
 		JOIN file MF
 		ON A.memberId =
 		MF.relId
 		AND
 		MF.relTypeCode = "member"
+		AND MF.delStatus = 0
+		WHERE A.delStatus = 0
 	</select>
 
 	<select id="getArtworkById" resultMap="artworkForPrint">
 		SELECT *
 		FROM artwork
 		WHERE id = #{id}
+		AND delStatus = 0
 	</select>
 	
 	<select id="getForPrintArtworkById" resultMap="artworkForPrint">
@@ -89,8 +140,10 @@
 		AS AF
 		ON A.id = AF.relId
 		AND AF.relTypeCode = "artwork"
+		AND AF.delStatus = 0
 		WHERE A.id =
 		#{id}
+		AND A.delStatus = 0
 	</select>
 	
 	<select id="getForPrintArtworkForCastingCallModifyById" resultMap="artworkForCastingCallModify">
@@ -113,8 +166,10 @@
 		AS AF
 		ON A.id = AF.relId
 		AND AF.relTypeCode = "artwork"
+		AND AF.delStatus = 0
 		WHERE A.id =
 		#{id}
+		AND A.delStatus = 0
 	</select>
 
 	<insert id="writeArtwork" useGeneratedKeys="true"
@@ -178,9 +233,13 @@
 		WHERE id = #{id}
 	</update>
 
-	<delete id="deleteArtwork">
-		DELETE FROM artwork WHERE id = #{id}
-	</delete>
+	<update id="deleteArtwork">
+		UPDATE artwork
+		SET updateDate = NOW(),
+		delDate = NOW(),
+		delStatus = 1
+		WHERE id = #{id}
+	</update>
 
 	<resultMap id="files" type="File">
 		<id property="id" column="id" />

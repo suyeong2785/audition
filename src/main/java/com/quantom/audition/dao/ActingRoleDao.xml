@@ -10,6 +10,7 @@
 		actingRole
 		WHERE
 		id = #{id}
+		AND delStatus = 0
 	</select>
 	
 	<select id="getActingRoleIdsByArtworkId" resultType="int">
@@ -18,6 +19,7 @@
 		actingRole
 		WHERE
 		artworkId = #{artworkId}
+		AND delStatus = 0
 	</select>
 
 	<select id="getActingRolesForPrintListByArtworkId"
@@ -30,6 +32,7 @@
 		<if test="limitStart != null and limitTake != null">
 			LIMIT #{limitStart} , #{limitTake}
 		</if>
+		AND delStatus = 0
 	</select>
 
 	<select id="getActingRolesForPrintAuditionsByArtworkId"
@@ -39,6 +42,7 @@
 		actingRole
 		WHERE
 		artworkId = #{artworkId}
+		AND delStatus = 0
 	</select>
 
 	<select id="getActingRolesForPrintCastingCallModifyByArtworkId"
@@ -65,7 +69,8 @@
 		AND F.relTypeCode = "actingRole"
 		AND F.typeCode = "script"
 		WHERE
-		artworkId = #{artworkId}
+		AR.artworkId = #{artworkId}
+		AND AR.delStatus = 0
 	</select>
 
 	<select id="getActingRolesCountByArtworkId" resultType="int">
@@ -75,6 +80,7 @@
 		actingRole
 		WHERE
 		artworkId = #{artworkId}
+		AND delStatus = 0
 	</select>
 
 	<select id="getForPrintActingRoleById" resultMap="actingRole">
@@ -90,6 +96,7 @@
 		ON
 		ACR.artworkId = ARW.id
 		WHERE ACR.id = #{id}
+		AND ACR.delStatus = 0
 	</select>
 
 	<select id="getActingRoleForPrintDetailById"
@@ -135,13 +142,16 @@
 		AS ACRF
 		ON ACR.id = ACRF.relId
 		AND ACRF.relTypeCode = "actingRole"
+		AND ACRF.delStatus = 0
 		LEFT OUTER
 		JOIN file MF
 		ON ARW.memberId =
 		MF.relId
 		AND
 		MF.relTypeCode = "member"
+		AND MF.delStatus = 0
 		WHERE ACR.id = #{id}
+		AND ACR.delStatus = 0
 		]]>
 	</select>
 
@@ -153,6 +163,7 @@
 		gender = #{gender}
 		AND age = #{age}
 		AND role = #{role}
+		AND delStatus = 0
 	</select>
 
 	<select
@@ -165,6 +176,7 @@
 			separator="," close=")">
 			#{role}
 		</foreach>
+		AND delStatus = 0
 	</select>
 
 	<select id="getActingRolesForPrintList"
@@ -218,6 +230,7 @@
 		<if test="typeCode != null and typeCode != '' ">
 			AND ACRF.typeCode = #{typeCode}
 		</if>
+		AND ACRF.delStatus = 0
 		LEFT OUTER
 		JOIN file MF
 		ON ARW.memberId =
@@ -225,7 +238,8 @@
 		AND
 		MF.relTypeCode =
 		"member"
-
+		AND MF.delStatus = 0
+		WHERE ACR.delStatus = 0
 	</select>
 
 	<insert id="write" useGeneratedKeys="true" keyProperty="id">
@@ -255,14 +269,21 @@
 		shootingsCount = #{shootingsCount}
 	</insert>
 
-	<delete id="delete">
-		DELETE FROM actingRole WHERE id = #{id}
-	</delete>
+	<update id="delete">
+		UPDATE actingRole 
+		SET updateDate = NOW(),
+		delDate = NOW(),
+		delStatus = 1
+		WHERE id = #{id}
+	</update>
 	
-	<delete id="deleteActingRolesByArtworkId">
-		DELETE FROM actingRole
+	<update id="deleteActingRolesByArtworkId">
+		UPDATE actingRole
+		SET updateDate = NOW(),
+		delDate = NOW(),
+		delStatus = 1
 		WHERE artworkId = #{artworkId}
-	</delete>
+	</update>
 
 	<update id="modify">
 		UPDATE actingRole

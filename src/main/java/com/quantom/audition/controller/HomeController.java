@@ -147,7 +147,7 @@ public class HomeController {
 	public String showMyAudition(Model model, HttpServletRequest req) {
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
 		
-		List<Applyment> applyments = applymentService.getApplyments(loginedMember.getId());
+		List<Applyment> applyments = applymentService.getArtworkInfoRelatedToApplymentByMemberId("actingRole", loginedMember.getId());
 		model.addAttribute("applyments", applyments);
 
 		Career career = careerService.getCareerByMember(loginedMember.getCareerId());

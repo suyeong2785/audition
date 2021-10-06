@@ -251,7 +251,7 @@
 				html += '<input type="checkbox" class="'+ ($('#share-box').data("shareStatus") == 1 ? "inline" : "none") + '" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
 				html += '</div>';
 				html += '</div>';
-				html += '<a href="../applyment/showMyApplyments?artworkTitle='+ artworkTitle +'&actingRoleGender='+ actingRole.gender +'&actingRoleRole='+ actingRole.role +'&actingRoleAge='+ actingRole.age +'&relTypeCode=actingRole&relId='+ actingRole.id +'&artworkFileUrl='+ artworkFileUrl +'">';
+				html += '<a href="../applyment/showMyApplyments?artworkTitle='+ artworkTitle.replace("[","(*(").replace("]",")*)") +'&actingRoleGender='+ actingRole.gender +'&actingRoleRole='+ actingRole.role +'&actingRoleAge='+ actingRole.age +'&relTypeCode=actingRole&relId='+ actingRole.id +'&artworkFileUrl='+ artworkFileUrl +'">';
 				html += '<div class="bg-gray-500 hover:bg-gray-700 text-white text-xs font-thin rounded-full py-1 px-2" style="background-color : #58595B"><i class="fas fa-search"></i></div>';
 				html += '</a>';
 				html += '</div>';

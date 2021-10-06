@@ -34,13 +34,24 @@ public interface ApplymentDao {
 
 	void changeApplymentResult(@Param("id") int id, @Param("result") int result);
 
-	List<Applyment> getApplymenResultInfoByMemberId(int memberId);
+	List<Applyment> getApplymenResultInfoByMemberId(@Param("memberId") int memberId);
 
 	List<Applyment> getForPrintApplymentsByRelIdAndRelTypeCode(Map<String, Object> param);
 
-	void deleteApplymentByRelIdAndRelTypeCode(@Param("relTypeCode") String relTypeCode,@Param("relId") int relId);
+	void deleteApplymentsByRelIdsAndRelTypeCode(@Param("relTypeCode") String relTypeCode,@Param("relIds") List<Integer> relIds);
+	
+	void deleteApplymentsByRelIdAndRelTypeCode(@Param("relTypeCode") String relTypeCode,@Param("relId") int relId);
 
 	List<Applyment> getApplyments(@Param("memberId") int memberId);
 
 	List<Applyment> getApplymentsByArtworkId(@Param("memberId") int memberId,@Param("artworkId") int artworkId);
+
+	List<Integer> getApplymentsIdsByRelIds(@Param("relTypeCode") String relTypeCode,@Param("relIds") List<Integer> relIds);
+
+	List<Integer> getApplymentsIdsByRelIdAndRelTypeCode(@Param("relTypeCode") String relTypeCode,@Param("relId") int relId);
+
+	List<Applyment> getArtworkInfoRelatedToApplymentByMemberId(@Param("relTypeCode") String relTypeCode, @Param("memberId") int memberId);
+
+	List<Applyment> getActingRolesRelatedToApplymentByArtworkIdAjax(@Param("memberId") int memberId,@Param("artworkId") int artworkId);
+
 }
