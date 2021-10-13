@@ -54,4 +54,14 @@ public interface ApplymentDao {
 
 	List<Applyment> getActingRolesRelatedToApplymentByArtworkIdAjax(@Param("memberId") int memberId,@Param("artworkId") int artworkId);
 
+	List<Applyment> notifyUserOfApplymentResult(Map<String, Object> param);
+
+	void changeApplymentAlarmStatus(Map<String, Object> param);
+
+	List<Map<String, Object>> getRowNumbersOfApplymentsByMemberIdAndArtworkId(Map<String, Object> param);
+
+	void changeApplymentCheckStatus(Map<String, Object> param);
+
+	List<Applyment> getActingRolesRelatedToApplymentByMemberId(@Param("memberId") int memberId);
+
 }

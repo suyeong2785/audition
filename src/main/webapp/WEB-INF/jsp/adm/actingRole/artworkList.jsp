@@ -96,7 +96,10 @@
 		if(confirm("해당 캐스팅콜을 삭제하시겠습니까?")){
 			$.ajax({
 				url : '../../adm/actingRole/doDeleteArtworkAjax',
-				data : {id : id},
+				data : {id : id,
+					message : "작성자의 요청으로인해 해당배역이 삭제되었습니다.",
+					senderId : loginedMemberId,
+					relTypeCode : "artwork"},
 				dataType : 'json',
 				async : false,
 				type : 'POST',

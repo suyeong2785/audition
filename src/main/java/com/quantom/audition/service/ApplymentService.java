@@ -31,9 +31,12 @@ public class ApplymentService {
 	@Autowired
 	private AppConfig appConfig;
 	@Autowired
+	private NotificationService notificationService;
+	@Autowired
 	private RecruitmentService recruitmentService;
 	@Autowired
 	private RecruitmentDao recruitmentDao;
+	
 
 	public Applyment getForPrintApplyment(@RequestParam Map<String, Object> param) {
 		Applyment applyment = applymentDao.getForPrintApplyment(param);
@@ -242,10 +245,16 @@ public class ApplymentService {
 		return new ResultData("S-1", "변경되었습니다.");
 	}
 
-	public void changeApplymentResult(int id, int result) {
-		// id(applyment.id), 2(불합격)
+	public void changeApplymentResult(Map<String,Object> param) {
+		
+		int id = Util.getAsInt(param.get("id"));
+		int result = Util.getAsInt(param.get("result"));
+		
 		applymentDao.changeApplymentResult(id, result);
 		fileService.deleteFiles("applyment", id);
+		
+		notificationService.insertNotificationMessage(param);
+		
 	}
 
 	public Applyment getForPrintApplymentRelatedToResult(Map<String, Object> param) {
@@ -329,6 +338,26 @@ public class ApplymentService {
 
 	public List<Applyment> getActingRolesRelatedToApplymentByArtworkIdAjax(int memberId, int artworkId) {
 		return applymentDao.getActingRolesRelatedToApplymentByArtworkIdAjax(memberId,artworkId);
+	}
+
+	public List<Applyment> notifyUserOfApplymentResult(Map<String, Object> param) {
+		 return applymentDao.notifyUserOfApplymentResult(param);
+	}
+
+	public void changeApplymentAlarmStatus(Map<String, Object> param) {
+		applymentDao.changeApplymentAlarmStatus(param);
+	}
+
+	public List<Map<String, Object>> getRowNumbersOfApplymentsByMemberIdAndArtworkId(Map<String, Object> param) {
+		return applymentDao.getRowNumbersOfApplymentsByMemberIdAndArtworkId(param);
+	}
+
+	public void changeApplymentCheckStatus(Map<String, Object> param) {
+		applymentDao.changeApplymentCheckStatus(param);
+	}
+
+	public List<Applyment> getActingRolesRelatedToApplymentByMemberId(int memberId) {
+		return applymentDao.getActingRolesRelatedToApplymentByMemberId(memberId);
 	}
 
 }

@@ -4,6 +4,24 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.quantom.audition.dao.ApplymentDao">
 
+	<select id="getRowNumbersOfApplymentsByMemberIdAndArtworkId" resultType="HashMap">
+		SET @RNUM := 0;
+
+		SELECT  @RNUM:=@RNUM+1 AS rownum, AC.id AS actingRoleId
+		FROM applyment AS AP
+		LEFT 
+		JOIN actingRole AS AC
+		ON AP.relId = AC.id
+		RIGHT
+		JOIN artwork AS AR
+		ON AC.artworkId = AR.id
+		AND AR.id = #{artworkId}
+		WHERE AP.memberId = #{memberId}
+		AND AP.relTypeCode = "actingRole"
+		AND AP.displayStatus = 1
+	</select>
+	
+	
 	<select id="getApplyments" resultType="applyment">
 		SELECT * FROM
 		applyment 
@@ -37,6 +55,26 @@
 		WHERE relId = #{relId}
 		AND relTypeCode = #{relTypeCode} 
 		AND delStatus = 0
+	</select>
+	
+	<select id="notifyUserOfApplymentResult" resultMap="applymentNotification">
+		SELECT AP.id,
+		AC.id AS actingRole__Id,
+		AC.role AS actingRole__role,
+		AR.Id AS artwork__id,
+		AR.title AS artwork__title
+		FROM applyment AS AP 
+		LEFT JOIN
+		actingRole AS AC
+		ON AP.relId = AC.id
+		LEFT JOIN
+		artwork AS AR
+		ON AR.id = AC.artworkId
+		WHERE AP.memberId = #{memberId}
+		AND AP.alarmStatus = 0
+		AND AP.delStatus = 0
+		AND AP.result != 0
+		AND AP.checkStatus = 0
 	</select>
 	
 	<select id="getForPrintApplyments" resultMap="applyment">
@@ -177,7 +215,7 @@
 		ON AC.artworkId = AR.id
 		AND AR.id = #{artworkId}
 		LEFT 
-		JOIN FILE AS F
+		JOIN file AS F
 		ON AP.id = F.relId
 		AND F.relTypeCode = "applyment"
 		AND F.delStatus = 0
@@ -210,13 +248,23 @@
 		JOIN artwork AS AR
 		ON AC.artworkId = AR.id
 		LEFT 
-		JOIN FILE AS F
+		JOIN file AS F
 		ON AR.id = F.relId
 		AND F.relTypeCode = "artwork"
 		AND F.delStatus = 0
 		WHERE AP.memberId = #{memberId}
 		AND AP.relTypeCode = #{relTypeCode}
 		AND AP.delStatus = 0
+	</select>
+	
+	<select id="getActingRolesRelatedToApplymentByMemberId" resultMap="actingRoleByMemberId">
+		SELECT AP.*, AC.id AS actingRole__id
+		FROM applyment AS AP
+		LEFT 
+		JOIN actingRole AS AC
+		ON AP.relId = AC.id
+		WHERE AP.memberId = #{memberId}
+		AND AP.relTypeCode = "actingRole"
 	</select>
 
 	<select id="getForPrintApplymentsByResult"
@@ -416,19 +464,58 @@
 		</set>
 		WHERE id = #{id}
 	</update>
-
+	
+	<update id="changeApplymentAlarmStatus">
+		UPDATE applyment
+		<set>
+			updateDate = NOW(),
+			alarmDate = NOW(),
+			alarmStatus = #{alarmStatus}
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="changeApplymentCheckStatus">
+		UPDATE applyment
+		<set>
+			updateDate = NOW(),
+			checkDate = NOW(),
+			checkStatus = #{checkStatus}
+		</set>
+		WHERE id = #{id}
+	</update>
+	
 	<resultMap type="Applyment" id="applyment">
 		<id property="id" column="id" />
 		<id property="regDate" column="regDate" />
 		<id property="updateDate" column="updateDate" />
-		<id property="delDate" column="delDate" />
-		<id property="delStatus" column="delStatus" />
-		<id property="displayStatus" column="displayStatus" />
-		<id property="hideStatus" column="hideStatus" />
 		<id property="memberId" column="memberId" />
 		<id property="relId" column="relId" />
 		<id property="result" column="result" />
 		<id property="relTypeCode" column="relTypeCode" />
+		<id property="delDate" column="delDate" />
+		<id property="delStatus" column="delStatus" />
+		<id property="alarmDate" column="alarmDate" />
+		<id property="alarmStatus" column="alarmStatus" />
+		<id property="checkDate" column="checkDate" />
+		<id property="checkStatus" column="checkStatus" />
+		<id property="displayStatus" column="displayStatus" />
+		<id property="hideStatus" column="hideStatus" />
+	</resultMap>
+	
+	<resultMap type="Applyment" id="applymentNotification" extends="applyment">
+		<association property="extra" javaType="map">
+			<id property="actingRoleId" column="actingRole__id" />
+			<id property="actingRole" column="actingRole__role" />
+			<id property="artworkId" column="artwork__id" />
+			<id property="artworkTitle" column="artwork__title" />
+		</association>
+	</resultMap>
+	
+	<resultMap type="Applyment" id="actingRoleByMemberId" extends="applyment">
+		<association property="extra" javaType="map">
+			<id property="actingRoleId" column="actingRole__id" />
+		</association>
 	</resultMap>
 
 	<resultMap type="Applyment" id="applymentAndRecommendatin"

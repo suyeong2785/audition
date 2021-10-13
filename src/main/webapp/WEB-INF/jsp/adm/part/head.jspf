@@ -144,3 +144,143 @@ var param = ${paramJson};
 		<c:if test="${pageTitle != null && pageTitle.length() != 0}">
 			<h1 class="page-title-box con">${pageTitle}</h1>
 		</c:if>
+		
+<script>
+$(function() {
+	notifyUserOfApplymentResult();
+	setInterval(function() { notifyUserOfApplymentResult()}, 10000);
+});
+	
+	function showNotificationModal(){
+		if($('#applyment-notification-modal').data("displayStatus") == "-1"){
+			$('#applyment-notification-modal').css("display", "flex");
+			$('#applyment-notification-modal').data("displayStatus","1");
+		}else{
+			$('#applyment-notification-modal').css("display", "none");
+			$('#applyment-notification-modal').data("displayStatus","-1");
+		}
+		
+	}
+
+	//외부영역 클릭 시 팝업 닫기
+	$(document).mouseup(
+		function(e) {
+			if ($('.mobile-side-bar').has(e.target).length === 0 && $(e.target).hasClass( 'mobile-side-bar') == false
+					&& $('.btn-toggle-mobile-side-bar').has(e.target).length === 0) {
+				$html.removeClass('mobile-side-bar-actived');
+			}
+			if ($('.casting-call-category-button').has(e.target).length === 0) {
+				$('.casting-call-category').css("display","none");
+			}
+			if ($('.actors-DB-category-button').has(e.target).length === 0) {
+				$('.actors-DB-category').css("display", "none");
+			}
+			if($('.modal-background-no-bg').has(e.target).length === 0){
+				$('#applyment-notification-modal').css("display", "none");
+				$('#applyment-notification-modal').data("displayStatus","-1");
+			}
+	});
+
+	
+	
+	function changeAlarmStatus( notificationId, actingRoleId, actingRole, artworkId ){
+		$.ajax({
+			url : "../../usr/notification/changeNotificationAlarmStatusAjax",
+			data : { id : notificationId,
+				alarmStatus : 1},
+			method : "POST",
+			dataType : "json"
+		}).done(function(data){
+			location.href='./showMyAudition?roleId='+ actingRoleId + '&role='+ actingRole + '&artworkId='+ artworkId  ;
+		});		
+	}
+
+	function notifyUserOfApplymentResult(){
+
+		$.ajax({
+			url : "../../usr/notification/getNotificationsRelatedToUserAjax",
+			data : { getterId : loginedMemberId },
+			method : "GET",
+			dataType : "json"
+		}).done(function(data) {
+			
+			let notifications = data.body.notifications;
+			let notificationsSize = 0;
+			
+			if(data.body.notificationsSize != 0){
+				
+				notificationsSize = data.body.notificationsSize;
+				
+				let html = '<div class="p-4">';
+				
+				$.each( notifications, function(index, notification){
+					
+					html += '<div>';
+					html += '<a href="javascript:changeAlarmStatus('+ notification.id ',' + notification.relId + ',\'' + notification.relName + '\',' + notification.extraId + ')" >'+ notification.relName + '에 대한 지원결과알림</a>';
+					html += '</div>';
+				});
+				
+				html += '</div>';
+		
+				$("#alarm-count").html(notificationsSize);
+				$("#alarm-count").css({"display" : "flex"});
+				
+				$("#applyment-notification").html(html);
+			}
+			
+		});
+	}
+	
+	function showCastingCallCategory() {
+		$('.casting-call-category').fadeToggle();
+	}
+	function showActorsDBCategory() {
+		$('.actors-DB-category').fadeToggle();
+	}
+
+	function setPositionOfAlarm(targetType, targetName, msg) {
+
+		toastr.options = {
+			closeButton : true,
+			showMethod : 'slideDown',
+			timeOut : 2000,
+			extendedTimeOut : 1,
+			positionClass : "toast-bottom-left"
+		};
+
+		var loginIdCoordinate = null;
+
+		if (targetType == "input" || targetType == "select"
+				|| targetType == "textarea") {
+			loginIdCoordinate = $(
+					targetType + '[name=' + targetName + ']').offset();
+		} else if (targetType == "class") {
+			loginIdCoordinate = $('.' + targetName).offset();
+
+		} else if (targetType == "id") {
+			loginIdCoordinate = $('#' + targetName).offset();
+		}
+
+		toastr.options.onShown = function() {
+
+			$('.toast').addClass(targetName);
+			$('#toast-container').css("display", "block");
+			$('.toast').css({
+				"display" : "block",
+				"position" : "absolute"
+			});
+			var height = loginIdCoordinate.top
+					- $("." + targetName).outerHeight();
+			var left = loginIdCoordinate.left
+					- $("." + targetName).outerWidth();
+			$("." + targetName).offset({
+				left : left,
+				top : height + 60
+			});
+
+		}
+
+		toastr.warning(msg);
+
+	}
+</script>

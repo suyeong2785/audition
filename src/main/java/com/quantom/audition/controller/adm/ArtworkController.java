@@ -127,20 +127,14 @@ public class ArtworkController {
 
 		return "redirect:" + redirectUri;
 	}
-
-	@RequestMapping("/adm/actingRole/doDeleteArtwork")
-	public String doModifyArtwork(int id, String listUrl,HttpServletRequest req) {
-		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
-		artworkService.deleteArtwork(id,loginedMemberId);
-
-		return "redirect:" + listUrl;
-	}
 	
 	@RequestMapping("/adm/actingRole/doDeleteArtworkAjax")
 	@ResponseBody
-	public ResultData doDeleteArtworkAjax( int id,HttpServletRequest req) {
+	public ResultData doDeleteArtworkAjax(@RequestParam Map<String, Object> param, HttpServletRequest req) {
 		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
-		artworkService.deleteArtwork(id,loginedMemberId);
+		int id = Util.getAsInt(param.get("id"));
+		
+		artworkService.deleteArtwork(param);
 
 		return new ResultData("S-1", String.format("해당게시물을 삭제했습니다.", id));
 	}

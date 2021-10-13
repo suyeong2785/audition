@@ -22,6 +22,7 @@ import com.quantom.audition.dto.Member;
 import com.quantom.audition.dto.ResultData;
 import com.quantom.audition.service.ActingRoleService;
 import com.quantom.audition.service.ArtworkService;
+import com.quantom.audition.service.NotificationService;
 import com.quantom.audition.util.Util;
 
 @Controller
@@ -33,6 +34,8 @@ public class ActingRoleController {
 	private ActingRoleService actingRoleService;
 	@Autowired
 	private ArtworkService artworkService;
+	@Autowired
+	private NotificationService notificationService;
 
 	@RequestMapping("/{authority}/actingRole/artworkListForAuditions")
 	public String showList(Model model, HttpServletRequest req, @PathVariable("authority") String authority) {
@@ -157,6 +160,7 @@ public class ActingRoleController {
 	@ResponseBody
 	public ResultData doDeleteAjax(@RequestParam Map<String, Object> param, HttpServletRequest req) {
 		actingRoleService.delete(Util.getAsInt(param.get("id")));
+		notificationService.insertNotificationMessage(param);
 
 		return new ResultData("S-1", String.format("%d번 게시물을 삭제했습니다.", Util.getAsInt(param.get("id"))), "id" , Util.getAsInt(param.get("id")));
 	}

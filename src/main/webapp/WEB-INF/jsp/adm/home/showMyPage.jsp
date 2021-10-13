@@ -152,7 +152,7 @@
 	</div>
 </div>
 <script>	
-	var actingRoles = new Array();
+	let actingRoles = new Array();
 	
 	var loginedMemberId = '<c:out value="${loginedMemberId}"/>';
 	var environment = '<c:out value="${environment}"/>';
@@ -251,7 +251,7 @@
 				html += '<input type="checkbox" class="'+ ($('#share-box').data("shareStatus") == 1 ? "inline" : "none") + '" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
 				html += '</div>';
 				html += '</div>';
-				html += '<a href="../applyment/showMyApplyments?artworkTitle='+ artworkTitle.replace("[","(*(").replace("]",")*)") +'&actingRoleGender='+ actingRole.gender +'&actingRoleRole='+ actingRole.role +'&actingRoleAge='+ actingRole.age +'&relTypeCode=actingRole&relId='+ actingRole.id +'&artworkFileUrl='+ artworkFileUrl +'">';
+				html += '<a href="../applyment/showMyApplyments?artworkId=' + artworkId + '&artworkTitle='+ artworkTitle.replace("[","(*(").replace("]",")*)") + '&actingRoleId=' + actingRole.id + '&actingRoleGender='+ actingRole.gender +'&actingRole='+ actingRole.role +'&actingRoleAge='+ actingRole.age +'&relTypeCode=actingRole&relId='+ actingRole.id +'&artworkFileUrl='+ artworkFileUrl +'">';
 				html += '<div class="bg-gray-500 hover:bg-gray-700 text-white text-xs font-thin rounded-full py-1 px-2" style="background-color : #58595B"><i class="fas fa-search"></i></div>';
 				html += '</a>';
 				html += '</div>';
@@ -293,9 +293,9 @@
 		
 		for(var i = pageMenuStart; i <= pageMenuEnd; i++){
 			if(page == i){
-				pageHtml += '<span class="bg-white border-gray-300 text-red-500 hover:bg-red-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" data-page="'+ i +'" onclick="changeActingRoleListPage('+ artworkId +','+ i + ',' + artworkTitle + ',' + artworkFileUrl +')">'+ i +'</span>';	
+				pageHtml += '<span class="bg-white border-gray-300 text-red-500 hover:bg-red-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" data-page="'+ i +'" onclick="changeActingRoleListPage('+ artworkId +','+ i + ',\'' + artworkTitle + '\',\'' + artworkFileUrl +'\')">'+ i +'</span>';	
 			}else{
-				pageHtml += '<span class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" data-page="'+ i +'" onclick="changeActingRoleListPage('+ artworkId +','+ i + ',' + artworkTitle + ',' + artworkFileUrl +')">'+ i +'</span>';	
+				pageHtml += '<span class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" data-page="'+ i +'" onclick="changeActingRoleListPage('+ artworkId +','+ i + ',\'' + artworkTitle + '\',\'' + artworkFileUrl +'\')">'+ i +'</span>';	
 			}
 		}
 
@@ -305,7 +305,7 @@
 		
 		var previousPage = parseInt(currentPage) - 1;
 		
-		var previousPageHtml = '<span id="previousPage" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (previousPage < pageMenuStart ? pageMenuStart : previousPage) +',' + artworkTitle + ',' + artworkFileUrl +')">';
+		var previousPageHtml = '<span id="previousPage" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (previousPage < pageMenuStart ? pageMenuStart : previousPage) +',\'' + artworkTitle + '\',\'' + artworkFileUrl +'\')">';
 		previousPageHtml += '<i class="fas fa-caret-left"></i>';
 		previousPageHtml += '</span>';
 		
@@ -313,16 +313,16 @@
 		
 		var nextPage = parseInt(currentPage) + 1;
 		
-		var nextPageHtml = '<span id="nextPage" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (nextPage > totalPage ? totalPage : nextPage) +',' + artworkTitle + ',' + artworkFileUrl +')">';
+		var nextPageHtml = '<span id="nextPage" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (nextPage > totalPage ? totalPage : nextPage) +',\'' + artworkTitle + '\',\'' + artworkFileUrl +'\')">';
 		nextPageHtml += '<i class="fas fa-caret-right"></i>';
 		nextPageHtml += '</span>';
 		
 		$('#pagination'+ artworkId).append(nextPageHtml);
 		
-		var pageMobileHtml = '<span class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (previousPage < pageMenuStart ? pageMenuStart : previousPage) +',' + artworkTitle + ',' + artworkFileUrl +')">';
+		var pageMobileHtml = '<span class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (previousPage < pageMenuStart ? pageMenuStart : previousPage) +',\'' + artworkTitle + '\',\'' + artworkFileUrl +'\')">';
 		pageMobileHtml += 'Previous';
 		pageMobileHtml += '</span>';
-		pageMobileHtml += '<span class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (nextPage > totalPage ? totalPage : nextPage) +',' + artworkTitle + ',' + artworkFileUrl +')">';
+		pageMobileHtml += '<span class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (nextPage > totalPage ? totalPage : nextPage) +',\'' + artworkTitle + '\',\'' + artworkFileUrl +'\')">';
 		pageMobileHtml += 'Next';
 		pageMobileHtml += '</span>';
 		
@@ -427,7 +427,7 @@
 		$.each(actingRoles, function(index, actingRole){
 			if(limitStart <= index && limitTake > index ){
 				
-				html += '<div class="flex justify-between items-center mb-2 font-black border-dashed border-b border-opacity-25" >';
+				html += '<div class="flex justify-between items-center mb-2 font-black border-dashed border-b border-black" style="border-color : #58595B">';
 				html += '<div class="grid justify-items-start" style="grid-template-columns: minmax(30px,40px) minmax(30px,50px) minmax(30px,50px);">';
 				html += '<div class=" text-center overflow-ellipsis overflow-hidden whitespace-nowrap ">'+ actingRole.gender +'</div>';
 				html += '<div class=" text-center overflow-ellipsis overflow-hidden whitespace-nowrap ">'+ actingRole.role +'역</div>';
@@ -436,7 +436,7 @@
 				html += '<input type="checkbox" class="'+ ($('#share-box').data("shareStatus") == 1 ? "inline" : "none") + '" id="share-actingRole'+ actingRole.id + '" value="'+ actingRole.id + '"/>';
 				html += '</div>';
 				html += '</div>';
-				html += '<a href="../applyment/showMyApplyments?artworkTitle='+ artworkTitle +'&actingRoleGender='+ actingRole.gender +'&actingRoleRole='+ actingRole.role +'&actingRoleAge='+ actingRole.age +'&relTypeCode=actingRole&relId='+ actingRole.id +'&artworkFileUrl='+ artworkFileUrl +'">';
+				html += '<a href="../applyment/showMyApplyments?artworkId=' + artworkId + '&artworkTitle='+ artworkTitle + '&actingRoleId=' + actingRole.id + '&actingRoleGender='+ actingRole.gender +'&actingRole='+ actingRole.role +'&actingRoleAge='+ actingRole.age +'&relTypeCode=actingRole&relId='+ actingRole.id +'&artworkFileUrl='+ artworkFileUrl +'">';
 				html += '<div class="bg-gray-500 hover:bg-gray-700 text-white text-xs font-thin rounded-full py-1 px-2"><i class="fas fa-search"></i></div>';
 				html += '</a>';
 				html += '</div>';
@@ -475,9 +475,9 @@
 		
 		for(var i = pageMenuStart; i <= pageMenuEnd; i++){
 			if(page == i){
-				pageHtml += '<span class="bg-white border-gray-300 text-red-500 hover:bg-red-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" data-page="'+ i +'" onclick="changeActingRoleListPage('+ artworkId +','+ i +',' + artworkTitle + ',' + artworkFileUrl +')">'+ i +'</span>';	
+				pageHtml += '<span class="bg-white border-gray-300 text-red-500 hover:bg-red-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" data-page="'+ i +'" onclick="changeActingRoleListPage('+ artworkId +','+ i +',\'' + artworkTitle + '\',\'' + artworkFileUrl +'\')">'+ i +'</span>';	
 			}else{
-				pageHtml += '<span class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" data-page="'+ i +'" onclick="changeActingRoleListPage('+ artworkId +','+ i +',' + artworkTitle + ',' + artworkFileUrl +')">'+ i +'</span>';	
+				pageHtml += '<span class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" data-page="'+ i +'" onclick="changeActingRoleListPage('+ artworkId +','+ i +',\'' + artworkTitle + '\',\'' + artworkFileUrl +'\')">'+ i +'</span>';	
 			}
 		}
 		
@@ -487,7 +487,7 @@
 		
 		var previousPage = parseInt(currentPage) - 1;
 		
-		var previousPageHtml = '<span id="previousPage" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (previousPage < pageMenuStart ? pageMenuStart : previousPage) +',' + artworkTitle + ',' + artworkFileUrl +')">';
+		var previousPageHtml = '<span id="previousPage" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (previousPage < pageMenuStart ? pageMenuStart : previousPage) +',\'' + artworkTitle + '\',\'' + artworkFileUrl +'\')">';
 		previousPageHtml += '<i class="fas fa-caret-left"></i>';
 		previousPageHtml += '</span>';
 		
@@ -495,16 +495,16 @@
 		
 		var nextPage = parseInt(currentPage) + 1;
 		
-		var nextPageHtml = '<span id="nextPage" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (nextPage > totalPage ? totalPage : nextPage) +',' + artworkTitle + ',' + artworkFileUrl +')">';
+		var nextPageHtml = '<span id="nextPage" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (nextPage > totalPage ? totalPage : nextPage) +',\'' + artworkTitle + '\',\'' + artworkFileUrl +'\')">';
 		nextPageHtml += '<i class="fas fa-caret-right"></i>';
 		nextPageHtml += '</span>';
 		
 		$('#pagination'+ artworkId).append(nextPageHtml);
 		
-		var pageMobileHtml = '<span class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (previousPage < pageMenuStart ? pageMenuStart : previousPage) +',' + artworkTitle + ',' + artworkFileUrl +')">';
+		var pageMobileHtml = '<span class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (previousPage < pageMenuStart ? pageMenuStart : previousPage) +',\'' + artworkTitle + '\',\'' + artworkFileUrl +'\')">';
 		pageMobileHtml += 'Previous';
 		pageMobileHtml += '</span>';
-		pageMobileHtml += '<span class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (nextPage > totalPage ? totalPage : nextPage) +',' + artworkTitle + ',' + artworkFileUrl +')">';
+		pageMobileHtml += '<span class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" onclick="changeActingRoleListPage('+ artworkId +','+ (nextPage > totalPage ? totalPage : nextPage) +',\'' + artworkTitle + '\',\'' + artworkFileUrl +'\')">';
 		pageMobileHtml += 'Next';
 		pageMobileHtml += '</span>';
 		

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quantom.audition.dao.NotificationDao">
+
+	<select id="getNotificationsRelatedToUser" resultType="Notification">
+		SELECT * 
+		FROM `notification` WHERE
+		WHERE getterId IN (0,#{getterId})
+		AND checkStatus = 0
+		AND alarmStatus = 0
+	</select>
+	
+	<select id="getApplymentNotificationsRelatedToUser" resultType="Notification">
+		SELECT * 
+		FROM `notification`
+		WHERE getterId IN (0,#{getterId})
+		AND relId IN
+		<foreach item="applymentsId" collection="applymentsIds" open="(" close=")" separator=",">
+		#{applymentsId}
+		</foreach>
+		AND checkStatus = 0
+		AND alarmStatus = 0
+	</select>
+	
+	<select id="getNotificationsRelatedToGetterIdAndRelIdAndRelTypeCode" resultType="Notification">
+		SELECT * 
+		FROM `notification`
+		WHERE getterId IN (0,#{getterId})
+		AND relId IN 
+		<foreach item="applymentsId" collection="applymentsIds" open="(" close=")" separator=",">
+		#{applymentsId}
+		</foreach>
+		AND relTypeCode = #{relTypeCode}
+		AND checkStatus = 0
+	</select>
+	
+	<insert id="insertNotificationMessage" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO `notification`
+		SET regDate = NOW(),
+			updateDate = NOW(),
+			relId = #{relId},
+			relName = #{relName},
+			relTypeCode = #{relTypeCode},
+			<if test="extraId != null">
+				extraId = #{extraId},
+			</if>
+			<if test="extraName != null">
+				extraName = #{extraName},
+			</if>
+			<if test="extraTypeCode != null">
+				extraTypeCode = #{extraTypeCode},
+			</if>
+			<if test="result != null">
+				result = #{result},
+			</if>
+			message = #{message},
+			<if test="getterId != null">
+				getterId = #{getterId},
+			</if>
+			<if test="senderId != null">
+				senderId = #{senderId};
+			</if>
+	</insert>
+	
+	<update id="changeNotificationAlarmStatus">
+		UPDATE `notification`
+		SET updateDate = NOW(),
+		alarmDate = NOW(),
+		alarmStatus = #{alarmStatus}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="changeNotificationCheckStatus">
+		UPDATE `notification`
+		SET updateDate = NOW(),
+		checkDate = NOW(),
+		checkStatus = #{checkStatus}
+		WHERE id = #{id}
+	</update>
+
+</mapper>
+

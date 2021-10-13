@@ -9,29 +9,6 @@
 		<p class="text-base ">All rights reserved.</p>
 	</div>
 </div>
-<body>
-	<div id="main-content">
-		<div>
-			<div>
-				<label>What is your username?</label>
-				<input type="text" id="username" placeholder="Your username here...">
-			</div>
-			<button id="connect" type="submit">Connect</button>
-			<form>
-				<div>
-					<label>User will received message</label>
-					<input type="text" id="name"
-						placeholder="User will receive the message...">
-				</div>
-				<button id="send" type="submit">Send</button>
-			</form>
-		</div>
-	</div>
-	<div>
-		<label>Message from someone: </label>
-		<span id="message"></span>
-	</div>
-</body>
 </div>
 
 <c:if test="${activeProfile == 'production'}">
@@ -82,56 +59,7 @@
 			});
 		});
 	}
-
-	$(function() {
-		connect(loginedMemberName);
-		
-		$("form").on('submit', function(e) {
-			e.preventDefault();
-		});
-		$("#connect").click(function() {
-			connect(loginedMemberName);
-		});
-		$("#send").click(function() {
-			stompClient.send("/app/hello", {}, $("#name").val());
-		});
-	});
 	
-	function setPositionOfAlarm(targetType, targetName, msg) {
-
-		toastr.options = {
-			closeButton: true,
-			showMethod: 'slideDown',
-			timeOut: 2000,
-			extendedTimeOut: 1,
-			positionClass: "toast-bottom-left"
-		};
-		
-		var loginIdCoordinate = null;
-
-		if (targetType == "input" || targetType == "select" || targetType == "textarea") {
-			loginIdCoordinate = $(targetType + '[name=' + targetName + ']').offset();
-		} else if(targetType == "class"){
-			loginIdCoordinate = $( '.' + targetName).offset();
-		
-		} else if(targetType == "id"){
-			loginIdCoordinate = $( '#' + targetName).offset();
-		}
-
-		toastr.options.onShown = function() {
-
-			$('.toast').addClass(targetName);
-			$('#toast-container').css("display", "block");
-			$('.toast').css({ "display": "block", "position": "absolute" });
-			var height = loginIdCoordinate.top - $("." + targetName).outerHeight();
-			var left = loginIdCoordinate.left - $("." + targetName).outerWidth();
-			$("." + targetName).offset({ left: left , top: height + 60 });
-
-		}
-
-		toastr.warning(msg);
-
-	}
 </script>
 
 </body>

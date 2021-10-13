@@ -165,7 +165,7 @@ public class MemberController {
 			model.addAttribute("msg", "비밀번호가 일치하지 않습니다.");
 			return "common/redirect";
 		}
-		System.out.println("loginedMember : "+  member.getId());
+		
 		session.setAttribute("loginedMember", member);
 		session.setAttribute("loginedMemberId", member.getId());
 		session.setAttribute("loginedDate", (String)Util.getNowDateStr());

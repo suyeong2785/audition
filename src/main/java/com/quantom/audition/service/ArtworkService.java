@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.quantom.audition.dao.ArtworkDao;
 import com.quantom.audition.dto.Artwork;
-import com.quantom.audition.dto.Member;
 import com.quantom.audition.util.Util;
 
 @Service
@@ -26,6 +25,9 @@ public class ArtworkService {
 	
 	@Autowired
 	private ShareService shareService;
+	
+	@Autowired
+	private NotificationService notificationService;
 
 	public int writeArtwork(Map<String, Object> param) {
 		artworkDao.writeArtwork(param);
@@ -109,11 +111,16 @@ public class ArtworkService {
 
 	}
 
-	public void deleteArtwork(int id, int requesterId) {
+	public void deleteArtwork(Map<String,Object> param) {
+		int id = Util.getAsInt(param.get("id"));
+		int requesterId = Util.getAsInt(param.get("senderId"));
+		
 		artworkDao.deleteArtwork(id);
 		fileService.deleteFilesByRelId("artwork", id);
-		
 		actingRoleService.deleteActingRolesByArtworkId(id,requesterId);
+		
+		Util.changeMapKey(param, "id","relId");
+		notificationService.insertNotificationMessage(param);
 	}
 
 	public List<Artwork> getForPrintArtworksByLoginId(int memberId) {

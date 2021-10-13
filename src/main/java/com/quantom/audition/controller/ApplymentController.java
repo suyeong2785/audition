@@ -1,5 +1,6 @@
 package com.quantom.audition.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +18,13 @@ import com.quantom.audition.config.AppConfig;
 import com.quantom.audition.dto.ActingRole;
 import com.quantom.audition.dto.Applyment;
 import com.quantom.audition.dto.Member;
+import com.quantom.audition.dto.Notification;
 import com.quantom.audition.dto.ResultData;
 import com.quantom.audition.dto.Share;
 import com.quantom.audition.service.ActingRoleService;
 import com.quantom.audition.service.ApplymentService;
 import com.quantom.audition.service.FileService;
+import com.quantom.audition.service.NotificationService;
 import com.quantom.audition.service.RecruitmentService;
 import com.quantom.audition.service.ShareService;
 import com.quantom.audition.util.Util;
@@ -40,6 +43,8 @@ public class ApplymentController {
 	private AppConfig appConfig;
 	@Autowired
 	private FileService fileService;
+	@Autowired
+	private NotificationService notificationService;
 
 	@RequestMapping("/usr/applyment/getForPrintApplyments")
 	@ResponseBody
@@ -105,7 +110,17 @@ public class ApplymentController {
 		Map<String, Object> rsDataBody = new HashMap<>();
 
 		List<Applyment> applyments = applymentService.getActingRolesRelatedToApplymentByArtworkIdAjax(memberId, artworkId);
+		List<Integer> applymentsIds = new ArrayList<>();
+		for(Applyment applyment : applyments) {
+			System.out.println("applyment.getExtra().get(\"id\") : " + applyment.getExtra().get("id"));
+			applymentsIds.add( Util.getAsInt(String.valueOf(applyment.getExtra().get("id"))));
+		}
+		
+		param.put("applymentsIds", applymentsIds);
+		List<Notification> notifications = notificationService.getNotificationsRelatedToGetterIdAndRelIdAndRelTypeCode(param);
+		
 		rsDataBody.put("applyments", applyments);
+		rsDataBody.put("notifications", notifications);
 
 		return new ResultData("S-1", String.format("%d개의 신청을 불러왔습니다.", applyments.size()), rsDataBody);
 	}
@@ -129,10 +144,12 @@ public class ApplymentController {
 		
 		model.addAttribute("applyments", applyments);
 		model.addAttribute("shares", shares);
+		model.addAttribute("artworkId", param.get("artworkId"));
 		model.addAttribute("artworkTitle", param.get("artworkTitle"));
+		model.addAttribute("actingRoleId", param.get("actingRoleId"));
 		model.addAttribute("actingRoleGender", param.get("actingRoleGender"));
 		model.addAttribute("actingRoleAge", param.get("actingRoleAge"));
-		model.addAttribute("actingRoleRole", param.get("actingRoleRole"));
+		model.addAttribute("actingRole", param.get("actingRole"));
 		model.addAttribute("artworkFileUrl", param.get("artworkFileUrl"));
 		
 		return "/adm/applyment/showMyApplyments";
@@ -211,8 +228,9 @@ public class ApplymentController {
 	
 	@RequestMapping("/usr/applyment/doChangeApplymentResultAjax")
 	@ResponseBody
-	public ResultData doTurnDownApplymentAjax(int id,int result, HttpServletRequest req) {
+	public ResultData doChangeApplymentResult(@RequestParam Map<String, Object> param, HttpServletRequest req) {
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
+		int id = Util.getAsInt(param.get("id"));
 		Applyment applyment = applymentService.getForPrintApplymentById(id);
 
 		if ((boolean)req.getAttribute("isAdmin") == false) {
@@ -221,9 +239,9 @@ public class ApplymentController {
 			}
 		}
 
-		applymentService.changeApplymentResult(id,result);
+		applymentService.changeApplymentResult(param);
 
-		if(result == 1) {
+		if(Util.getAsInt(param.get("result")) == 1) {
 			return new ResultData("S-1", String.format("%d번 지원자를 합격시키셨습니다.", id));
 		}
 		
@@ -260,4 +278,46 @@ public class ApplymentController {
 
 		return rd;
 	}
+	
+	@RequestMapping("/usr/applyment/notifyUserOfApplymentResultAjax")
+	@ResponseBody
+	public ResultData notifyUserOfApplymentResult(@RequestParam Map<String, Object> param) {
+		
+		List<Applyment> applyments = applymentService.notifyUserOfApplymentResult(param);
+
+		if(applymentService.notifyUserOfApplymentResult(param).size() != 0 ) {
+			return new ResultData("S-1", String.format("%d개 검색결과가 있습니다.", applyments.size()),"applyments",applyments,"applymentsSize",applyments.size());
+		}else {
+			return new ResultData("S-2","검색결과가 없습니다.","applymentsSize", 0);
+		}
+		
+	}
+	
+	@RequestMapping("/usr/applyment/changeApplymentAlarmStatusAjax")
+	@ResponseBody
+	public ResultData changeApplymentAlarmStatus(@RequestParam Map<String, Object> param) {
+		
+		applymentService.changeApplymentAlarmStatus(param);
+
+		return new ResultData("S-1", String.format("%d번 지원정보 알람확인하셨습니다.", Util.getAsInt(param.get("id"))));
+	}
+	
+	@RequestMapping("/usr/applyment/getRowNumbersOfApplymentsByMemberIdAndArtworkIdAjax")
+	@ResponseBody
+	public ResultData getRowNumbersOfApplymentsByMemberIdAndArtworkId(@RequestParam Map<String, Object> param) {
+		
+		List<Map<String, Object>> actingRoleListRowNumHashMapList = applymentService.getRowNumbersOfApplymentsByMemberIdAndArtworkId(param);
+
+		return new ResultData("S-1", String.format("요청하신 작품에 지원하신 배역의 결과는 총 %d개입니다.", actingRoleListRowNumHashMapList.size()),"actingRoleListRowNumHashMapList",actingRoleListRowNumHashMapList);
+	}
+
+	@RequestMapping("/usr/applyment/changeApplymentCheckStatusAjax")
+	@ResponseBody
+	public ResultData changeApplymentCheckStatusAjax(@RequestParam Map<String, Object> param) {
+		
+		applymentService.changeApplymentCheckStatus(param);
+
+		return new ResultData("S-1", String.format("%d번 역할을 확인하셨습니다.",Util.getAsInt(param.get("id"))));
+	}
+	
 }

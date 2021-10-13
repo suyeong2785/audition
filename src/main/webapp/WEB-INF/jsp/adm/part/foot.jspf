@@ -7,29 +7,6 @@
 		<p class="text-base ">All rights reserved.</p>
 	</div>
 </div>
-<body>
-	<div id="main-content">
-		<div>
-			<div>
-				<label>What is your username?</label>
-				<input type="text" id="username" placeholder="Your username here...">
-			</div>
-			<button id="connect" type="submit">Connect</button>
-			<form>
-				<div>
-					<label>User will received message</label>
-					<input type="text" id="name"
-						placeholder="User will receive the message...">
-				</div>
-				<button id="send" type="submit">Send</button>
-			</form>
-		</div>
-	</div>
-	<div>
-		<label>Message from someone: </label>
-		<span id="message"></span>
-	</div>
-</body>
 
 </div>
 <script src="/webjars/sockjs-client/sockjs.min.js"></script>
@@ -52,19 +29,6 @@
 		});
 	}
 
-	$(function() {
-		connect(loginedMemberName);
-		
-		$("form").on('submit', function(e) {
-			e.preventDefault();
-		});
-		$("#connect").click(function() {
-			connect($("#username").val());
-		});
-		$("#send").click(function() {
-			stompClient.send("/app/hello", {}, $("#name").val());
-		});
-	});
 </script>
 
 </body>

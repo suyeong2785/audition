@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="com.quantom.audition.util.Util"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%@ include file="../../usr/part/head.jspf"%>
@@ -16,7 +15,6 @@
 		$('#artwork-form input[name^=role]').each(function(index,item){
 			var id = $(item).data("id");
 			if(actingRoles.get(id) == null){
-				console.log("id : " + id);
 				var targetOffset = $('input[name="role'+ id + '"]' ).offset();
 				window.scrollTo({top : targetOffset.top - 300, behavior:'auto'});
 				
@@ -27,7 +25,7 @@
 				if($.trim($(item).val()) != null && $.trim($(item).val()) != '' ){
 					msg = $(item).val() + "의 배역정보를 입력해주세요.";
 				}else{
-					msg = $(item).data("id") + "번째 배역정보를 입력해주세요.";
+					msg = id + "번째 배역정보를 입력해주세요.";
 				}
 				
 				var targetName = "role"+ $(item).data("id");
@@ -47,7 +45,7 @@
 		for( let [key,actingRole] of actingRoles){
 			//alert("반복문key : " + key);
 			if(actingRole.gender == null || actingRole.gender == ''){
-				alert("actingRole.gender실행 : " + actingRole.gender);
+				//alert("actingRole.gender실행 : " + actingRole.gender);
 				showActingRoleModal(key);
 				checkAndSaveCurrentActingRoleInfo();
 				needToStop = true;
@@ -134,13 +132,14 @@
 				break;
 			}
 			
-			if(actingRole.requestedActing === null || actingRole.requestedActing === ''){
+			if(actingRole.requestedActing == null || actingRole.requestedActing == ''){
 				//alert("actingRole.requestedActing실행 : " + actingRole.requestedActing);
 				showActingRoleModal(key);
 				checkAndSaveCurrentActingRoleInfo();
 				needToStop = true;
 				break;
 			}else if(actingRole.requestedActing == 1 ){
+				
 				if(actingRole.scriptStatus == 0 ){
 					//alert("actingRole.scriptStatus실행 : " + actingRole.scriptStatus);
 					showActingRoleModal(key);
@@ -157,19 +156,17 @@
 		
 	}
 	
-	async function ArtworkModifyForm__submit(form) {
-
+	async function ArtworkWriteForm__submit(form) {
 		if ($('.toast')) {
 			window.toastr.remove();
 		}
+		
 		
 		if (isNowLoading()) {
 			alert('처리중입니다.');
 			return;
 		}
-
-		form.title.value = form.title.value.trim();
-	
+		
 		if (form.title.value.length == 0) {
 			
 			form.title.focus();
@@ -266,8 +263,10 @@
 		
 		var needToUpload = false;
 
-		if ($('#artwork-file').val() != '' && $('#artwork-file').val() != null ) {
-			needToUpload = true;
+		if (needToUpload == false
+				&& form.file__artwork__0__common__attachment__1) {
+			needToUpload = form.file__artwork__0__common__attachment__1
+					&& form.file__artwork__0__common__attachment__1.value.length > 0;
 		}
 
 		if (needToUpload == false) {
@@ -276,6 +275,7 @@
 			form.actingRoleIdsStr.value = actingRoleIdsStr;
 			
 			form.submit();
+			
 			
 		} else {
 			var fileIdsStr = await startUploadFiles(form);
@@ -327,28 +327,16 @@
 		for (let [key, value] of actingRoles){
 			var actingRole = value;
 			
-			if(actingRole.deleteStatus == true){
-				
-				await startDeleteActingRole(actingRole.id);
-				
-			}else if (actingRole.scriptStatus == 1 ) {
+			if (actingRole.scriptStatus == 1 ) {
 				
 				var actingRoleWithFileIds = await startActingRoleUploadFile(actingRole);
-				if(actingRole.id != null && actingRole.id != '' ){
-					await startModifyActingRole(actingRoleWithFileIds);
-				}else{
-					actingRoleIds = await startWriteActingRole(actingRoleWithFileIds);
-					actingRoleIdsStr.push(actingRoleIds);
-				}
+				actingRoleIds = await startWriteActingRole(actingRoleWithFileIds);
+				actingRoleIdsStr.push(actingRoleIds);
 			
 			}else{
-				if(actingRole.id != null && actingRole.id != '' ){
-					await startModifyActingRole(actingRole);
-					
-				}else{
-					actingRoleIds = await startWriteActingRole(actingRole);
-					actingRoleIdsStr.push(actingRoleIds);
-				}
+				
+				actingRoleIds = await startWriteActingRole(actingRole);
+				actingRoleIdsStr.push(actingRoleIds);
 			}
 		}
 		return actingRoleIdsStr.join(",");
@@ -398,62 +386,17 @@
 		
 		return actingRoleIds;
 	}
-	
-	async function startModifyActingRole (actingRole){
-		var actingRoleObj = actingRole;
-		
-		$.ajax({
-			url : '../../adm/actingRole/doModifyAjax',
-			data : JSON.stringify(actingRoleObj),
-			processData : false,
-			async: false,
-			contentType: "application/json; charset=UTF-8",
-			type : 'POST'
-		});
-		
-		return actingRoleObj.id;
-	}
-	
-	async function startDeleteActingRole (actingRoleId){
-		let artwork_title = '<c:out value="${artwork.title}" />'; 
-		let artwork_id = '<c:out value="${artwork.id}" />'; 
-		let actingRole = actingRoles.get(actingRoleId);
-		
-		
-		$.ajax({
-			url : '../../adm/actingRole/doDeleteAjax',
-			data : {
-				id : actingRoleId,
-				relId : actingRoleId,
-				relName : actingRole.role,
-				relTypeCode : "actingRole",
-				extraId : artwork_id,
-				extraName : artwork_title,
-				extraTypeCode : "artwork",
-				senderId : loginedMemberId,
-				message : "작성자의 요청으로 해당배역이 삭제되었습니다."
-				},
-			dataType : 'json',
-			async: false,
-			type : 'POST'
-		}).fail(function(data){
-			throw new Error("에러발생");
-		});
-		
-		return actingRoleId;
-	}
-	
 </script>
 <div class="con p-4">
-	<span class="font-bold text-xl">Casting Call 수정</span>
+	<span class="font-bold text-xl">Casting Call 등록</span>
 </div>
 
 <form id="artwork-form" method="POST"
 	class="bg-gray-200 p-4 w-full h-full"
-	onsubmit="ArtworkModifyForm__submit(this); return false;"
-	action="doModifyArtwork?id=${artwork.id}">
+	onsubmit="ArtworkWriteForm__submit(this); return false;"
+	action="doWriteArtwork">
 	<input type="hidden" name="redirectUri"
-		value="../../usr/actingRole/detailArtwork?id=${artwork.id}">
+		value="../../usr/actingRole/detailArtwork?id=#id">
 	<input type="hidden" name="fileIdsStr">
 	<input type="hidden" name="actingRoleIdsStr">
 	<input type="hidden" name="actingRole" />
@@ -466,23 +409,35 @@
 		<div class="text-xs pb-4">캐스팅 콜 등록에 관한 설명 설명 설명 설명 설명 설명 설명 설명
 			설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명</div>
 
+		<div class="form-control-box mb-4 flex-grow relative">
+			<select name="genre"
+				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+				<option selected="selected" value="">매체 선택</option>
+				<option value="movie">영화</option>
+				<option value="drama">드라마</option>
+				<option value="theater">연극</option>
+				<option value="CF">광고</option>
+				<option value="dance">댄스</option>
+			</select>
+			<div
+				class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+				<i class="fas fa-chevron-down"></i>
+			</div>
+		</div>
 		<div class="form-control-box pb-4 flex-grow">
 			<input
 				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-				type="text" placeholder="영화제목" name="title" maxlength="100"
-				value="${artwork.title}" />
+				type="text" placeholder="영화제목" name="title" maxlength="100" />
 		</div>
 		<div class="form-control-box w-full pb-4">
 			<input
 				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-				type="text" placeholder="투자사" name="investor" maxlength="100"
-				value="${artwork.investor}" />
+				type="text" placeholder="투자사" name="investor" maxlength="100" />
 		</div>
 		<div class="form-control-box w-full pb-4">
 			<input
 				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-				type="text" placeholder="제작사" name="productionName" maxlength="100"
-				value="${artwork.productionName}" />
+				type="text" placeholder="제작사" name="productionName" maxlength="100" />
 		</div>
 		<div class="form-control-box mb-4 flex-grow relative">
 			<select name="genre"
@@ -508,11 +463,10 @@
 			<label class="flex-grow">
 				<input id="artwork-file" class="text-sm cursor-pointer hidden "
 					accept="${appConfig.getAttachemntFileInputAccept('img')}"
-					name="file__artwork__${artwork.id}__common__attachment__1"
-					type="file" />
+					name="file__artwork__0__common__attachment__1" type="file" />
 				<div
 					class="artwork-file-status mb-4 w-full text-center text bg-gray-500 text-white border border-gray-300 rounded-full font-semibold cursor-pointer p-1 px-3 hover:bg-gray-600">
-					${artwork.extra.fileOriginFileNameForArtwork != null && artwork.extra.fileOriginFileNameForArtwork != '' ? artwork.extra.fileOriginFileNameForArtwork : "대표이미지를 업로드 해주세요."}</div>
+					대표 이미지를 선택해주세요</div>
 			</label>
 		</div>
 		<div id="artwork-box" class="flex justify-center">
@@ -522,89 +476,48 @@
 		<div class="form-control-box w-full pb-4">
 			<input
 				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-				type="text" placeholder="감독명." name="directorName" maxlength="100"
-				value="${artwork.directorName}" />
+				type="text" placeholder="감독명." name="directorName" maxlength="100" />
 		</div>
 		<div class="form-control-box w-full pb-4">
 			<input
 				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-				type="text" placeholder="주연(출연)" name="leadActor" maxlength="100"
-				value="${artwork.leadActor}" />
+				type="text" placeholder="주연(출연)" name="leadActor" maxlength="100" />
 		</div>
-
-		<c:set var="displayStatus"
-			value="${actingRoles == null || fn:length(actingRoles) == 0 ? '1' : '-1'}" />
-		<c:set var="display"
-			value="${actingRoles == null || fn:length(actingRoles) == 0 ? 'block' : 'hidden'}" />
 		<div class="form-control-box w-full flex justify-center pb-2">
 			<div class="pr-2">모집배역</div>
 			<div id="actingRole-box-switch"
-				class="${display} text-2xl flex items-center justify-center"
-				data-displayStatus="${displayStatus}"
-				onclick="javascript:showActingRoleBox()">
+				class="text-2xl flex items-center justify-center"
+				data-displayStatus=1 onclick="javascript:showActingRoleBox()">
 				<i class="far fa-plus-square"></i>
 			</div>
 		</div>
 		<div id="actingRole-box">
-			<c:if test="${actingRoles == null || fn:length(actingRoles) == 0}">
-				<div class="actingRole-box flex-grow flex">
-					<button type="button" class="absolute top-0 text-2xl"
-						onclick="javascript:addActingRoleBox()">
-						<i class="far fa-plus-square"></i>
-					</button>
-				</div>
-			</c:if>
-			<c:if test="${actingRoles != null && fn:length(actingRoles) != 0}">
-				<div class="actingRole-box flex-grow relative flex">
-					<button type="button" class="self-start text-2xl"
-						onclick="javascript:addActingRoleBox()">
-						<i class="far fa-plus-square"></i>
-					</button>
-					<div id="actingRole-input-box" class="flex-grow pl-2">
-						<c:forEach items="${actingRoles}" var="actingRole"
-							varStatus="status">
-							<div class="actingRole-input flex flex-grow">
-								<input name="role${actingRole.id}" data-id="${actingRole.id}"
-									class="
-									w-10 shadow appearance-none border rounded-l-full flex-grow
-									mb-2 py-2 pl-2 text-gray-700 leading-tight focus:outline-none
-									focus:shadow-outline"
-									type="text" placeholder="역할" value="${actingRole.role}" />
-								<button type="button"
-									class="bg-gray-500 appearance-none border rounded-r-full mb-2 py-2 pl-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-									onclick="javascript:showActingRoleModal(${actingRole.id})">배역정보입력</button>
-								<button type="button" class="self-start text-2xl"
-									onclick="javascript:removeActingRoleBox(this,${actingRole.id},'delete')">
-									<i class="far fa-minus-square"></i>
-								</button>
-							</div>
-						</c:forEach>
-					</div>
-				</div>
-			</c:if>
+			<div class="actingRole-box flex-grow flex">
+				<button type="button" class="absolute top-0 text-2xl"
+					onclick="javascript:addActingRoleBox()">
+					<i class="far fa-plus-square"></i>
+				</button>
+			</div>
 		</div>
-
 		<div class="form-control-box w-full">
 			<textarea
 				class="resize-none shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-72"
-				name="etc" placeholder="줄거리를 입력해주세요.">${artwork.etc}</textarea>
+				name="etc" placeholder="줄거리를 입력해주세요."></textarea>
 		</div>
 		<div class="text-center">모집일정</div>
 		<div class="form-control-box w-full pb-4 flex items-center">
 			<input
 				class="border rounded-full flex-grow py-2 pl-2 focus:outline-none focus:shadow-outline"
-				type="date" name="startDate"
-				value="${fn:split(artwork.startDate,' ')[0]}" />
+				type="date" name="startDate" />
 			<span>~</span>
 			<input
 				class="border rounded-full flex-grow py-2 pl-2 focus:outline-none focus:shadow-outline"
-				type="date" name="endDate"
-				value="${fn:split(artwork.endDate,' ')[0]}" />
+				type="date" name="endDate" />
 		</div>
 
 		<input
 			class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
-			type="submit" value="수정">
+			type="submit" value="작성">
 	</div>
 </form>
 
@@ -619,7 +532,7 @@
 						class="clear-all shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 						type="hidden" placeholder="역할" />
 					<div>
-						<label for="man">남자</label>
+						<label for="man">남자 </label>
 						<input id="man" name="gender" type="radio" value="남자" checked />
 					</div>
 					<div class="px-2">
@@ -633,6 +546,7 @@
 				<input name="job"
 					class="clear-all  shadow appearance-none border rounded-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 					type="text" placeholder="직업" />
+
 				<div>
 					<input name="feature"
 						class="clear-all shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -645,7 +559,7 @@
 						<label for="month">
 							월
 							<input id="month" name="scheduleOption" type="radio"
-								value="month" />
+								value="month" checked />
 						</label>
 						<label for="date">
 							일
@@ -740,76 +654,19 @@
 </form>
 
 <script>
-	var artworkGenre = '<c:out value="${artwork.genre}"/>';
-	var fileOriginFileNameForArtwork = '<c:out value="${artwork.extra.fileOriginFileNameForArtwork}"/>';
 	var actingRoleCount = 0;
-	var actingRolesIds = new Array();
-	
-	$(document).ready(function () {
-		$('select[name="genre"]').val(artworkGenre);
-		
-		<c:forEach items="${actingRoles}" var="actingRole">
-			var actingRolesDB = new Object();
-			
-			actingRoleCount = parseInt("${actingRole.id}", 10);
-			
-			actingRolesDB["id"]= parseInt("${actingRole.id}", 10);
-			actingRolesIds.push(parseInt("${actingRole.id}", 10));
-			
-			actingRolesDB["startDate"] = "${fn:split(actingRole.startDate," ")[0]}";
-			actingRolesDB["endDate"] = "${fn:split(actingRole.endDate," ")[0]}";
-			actingRolesDB["role"]= "${actingRole.role}";
-			actingRolesDB["pay"] = "${actingRole.pay}";
-			actingRolesDB["age"] = "${actingRole.age}";
-			actingRolesDB["gender"] = "${actingRole.gender}";
-			actingRolesDB["job"] = "${actingRole.job}";
-			actingRolesDB["feature"] = "${actingRole.feature}";
-			actingRolesDB["region"] = "${actingRole.region}";
-			actingRolesDB["schedule"] = "${actingRole.schedule}";
-			
-			var schedule = actingRolesDB["schedule"].split('-');
-			var korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-			 
-			if(korean.test(actingRolesDB["schedule"]) == false && schedule.length == 3 ){
-				actingRolesDB["scheduleType"] = "date";
-			}else if(korean.test(actingRolesDB["schedule"]) == false && schedule.length == 2){
-				actingRolesDB["scheduleType"] = "month";
-			}else{
-				actingRolesDB["scheduleType"] = "typing";
-			}
-			
-			actingRolesDB["shotAngle"] = "${actingRole.shotAngle}";
-			
-			actingRolesDB["guideVideoUrl"] = "${actingRole.guideVideoUrl}";
-			actingRolesDB["scriptStatus"] = "${actingRole.scriptStatus}";
-			if(actingRolesDB["scriptStatus"] == 1 ){
-				actingRolesDB["requestedActing"] = 1;
-			}else{
-				actingRolesDB["requestedActing"] = 0;
-			}
-			actingRolesDB["shootingsCount"] = "${actingRole.shootingsCount}";
-			
-			actingRolesDB["script"] = "${actingRole.extra.originFileNameForActingRole}";
-			
-			actingRoles.set(parseInt("${actingRole.id}", 10) , actingRolesDB);
-	
-		</c:forEach>
-		
-		
-	});
-	
 	//회원모달창 켜졌을경우 외부영역 클릭 시 팝업 닫기
 	$('.modal-background')
 			.mouseup(
 					function(e) {
-						if ($('.modal-content-no-bg').has(e.target).length === 0
-								&& $('.modal-content-no-bg').has(e.target).length === 0) {
+						if ($('.modal-content-no-bg').has(e.target).length === 0) {
 							$('.modal-background').css("display", "none");
 							saveCurrentActingRoleInfo();
 						}
 					});
 
 	function showActingRoleModal(actingRoleId) {
+		//alert("showActingRoleModal실행 : "+ actingRoleId);
 		
 		var input = $('input[name="role' + actingRoleId + '"]');
 
@@ -819,16 +676,8 @@
 			$('#actingRole-modal').data("id", actingRoleId);
 			$('#actingRole-form input[name="role"]').val(input.val());
 			
-			if($('#actingRole-form [name^="file__actingRole"]').attr("name") != "file__actingRole__0__script__attachment__1"){
-				$('#actingRole-form [name^="file__actingRole"]').attr("name","file__actingRole__0__script__attachment__1");	
-			}
-			
 			if(actingRoles.size > 0 && typeof actingRoles.get(actingRoleId) != "undefined"){
 				actingRole = actingRoles.get(actingRoleId);
-				
-				if(actingRole["id"] != null && actingRole["id"] != '' ){
-					$('#actingRole-form [name^="file__actingRole"]').attr("name","file__actingRole__"+ actingRole["id"] +"__script__attachment__1");
-				}
 				
 				if(actingRole["scheduleType"] == "month"){
 					$('#actingRole-form [name="schedule"]').attr("type","month");
@@ -877,7 +726,6 @@
 					}else{
 						$('#actingRole-form [name="'+ index +'"]').val(value);	
 					}
-					
 				});	
 			}else{
 				var allContent = $('.clear-all');
@@ -919,7 +767,7 @@
 			actingRole["role"]= $('input[name="role' + id + '"]').val();
 			actingRole["pay"] = $('input[name="pay"]').val();
 			actingRole["age"] = $('input[name="age"]').val();
-			actingRole["gender"] = $('input[name="gender"]:checked').val();
+			actingRole["gender"] = $('input:radio[name="gender"]:checked').val();
 			actingRole["job"] = $('input[name="job"]').val();
 			actingRole["feature"] = ($('input[name="feature"]').val()).replaceAll("\"","*");
 			actingRole["region"] = $('input[name="region"]').val();
@@ -933,11 +781,11 @@
 			
 			var needToUpload = false;
 			
-			var file__actingRole__relId__script__attachment__1 = $('input[name^="file__actingRole"]');
+			var scriptInput = $('#actingRole-script-input');
 
-			if (file__actingRole__relId__script__attachment__1.val() != ''
-					&& file__actingRole__relId__script__attachment__1.val() != null) {
-				needToUpload = file__actingRole__relId__script__attachment__1.val().length > 0;
+			if (scriptInput.val() != ''
+					&& scriptInput.val() != null) {
+				needToUpload = scriptInput.val().length > 0;
 			}
 
 			if (needToUpload != false) {
@@ -956,6 +804,26 @@
 				
 			}
 			
+			var requestedActing = $('select[name="requestedActing"]');
+			
+			if($.trim(requestedActing.val()) == 0 || $.trim(requestedActing.val()) == '' || $.trim(requestedActing.val()) == null){
+				
+				$('input[name="scriptStatus"]').val("0");
+				$('#actingRole-script-input').val("");
+				
+				delete actingRole["formData"];
+				delete actingRole["script"];
+			}
+			
+			var scriptStatus = $('input[name="scriptStatus"]');
+			
+			if(scriptStatus.val() == 0 ){
+				$('#actingRole-script-input').val("");
+				
+				delete actingRole["formData"];
+				delete actingRole["script"];
+			}
+			
 			actingRoles.set(id , actingRole);
 			
 		}else{
@@ -964,7 +832,7 @@
 			savedActingRole["role"]= $('input[name="role' + id + '"]').val();
 			savedActingRole["pay"] = $('input[name="pay"]').val();
 			savedActingRole["age"] = $('input[name="age"]').val();
-			savedActingRole["gender"] = $('input[name="gender"]:checked').val();
+			savedActingRole["gender"] = $('input:radio[name="gender"]:checked').val();
 			savedActingRole["job"] = $('input[name="job"]').val();
 			savedActingRole["feature"] = ($('input[name="feature"]').val()).replaceAll("\"","*");
 			savedActingRole["region"] = $('input[name="region"]').val();
@@ -976,15 +844,15 @@
 			savedActingRole["shootingsCount"] = $('input[name="shootingsCount"]').val();
 			savedActingRole["requestedActing"] = $('select[name="requestedActing"]').val();
 			
-			if(savedActingRole["scriptStatus"] == 1){
+			if(savedActingRole["formData"] != "" && savedActingRole["formData"] != "undefined"){
 				
 				var needToUpload = false;
 				
-				var file__actingRole__relId__script__attachment__1 = $('input[name^="file__actingRole"]');
+				var file__actingRole__0__script__attachment__1 = $('input[name="file__actingRole__0__script__attachment__1"]');
 
-				if (file__actingRole__relId__script__attachment__1.val() != ''
-						&& file__actingRole__relId__script__attachment__1.val() != null) {
-					needToUpload = file__actingRole__relId__script__attachment__1.val().length > 0;
+				if (file__actingRole__0__script__attachment__1.val() != ''
+						&& file__actingRole__0__script__attachment__1.val() != null) {
+					needToUpload = file__actingRole__0__script__attachment__1.val().length > 0;
 				}
 
 				if (needToUpload != false) {
@@ -1002,13 +870,27 @@
 					savedActingRole["script"] = "파일이름 : " + fileName;
 				}
 				
-				actingRoles.set(id , savedActingRole);
-			}else{
-				delete savedActingRole["formData"];
-				delete savedActingRole["script"];
+				var requestedActing = $('select[name="requestedActing"]');
+				
+				if($.trim(requestedActing.val()) == 0 || $.trim(requestedActing.val()) == '' || $.trim(requestedActing.val()) == null){
+					
+					$('input[name="scriptStatus"]').val("0");
+					$('#actingRole-script-input').val("");
+					
+					delete savedActingRole["formData"];
+					delete savedActingRole["script"];
+				}
+				
+				var scriptStatus = $('input[name="scriptStatus"]');
+				
+				if(scriptStatus.val() == 0 ){
+					$('#actingRole-script-input').val("");
+					
+					delete savedActingRole["formData"];
+					delete savedActingRole["script"];
+				}
 				
 				actingRoles.set(id , savedActingRole);
-				
 			}
 			
 		}
@@ -1023,6 +905,8 @@
 		}
 		
 		var id = $('#actingRole-modal').data("id");
+		
+		//alert("checkAndSaveCurrentActingRoleInfo실행  "+ id);
 		
 		var actingRole = new Object();
 		
@@ -1104,8 +988,8 @@
 			region.focus();
 			
 			var msg = "촬영지역을 입력해주세요";
-			var targetName = "region";
-			var targetType = "input";
+			var targetName = "sido";
+			var targetType = "select";
 			var toastr = setPositionOfToastr(targetType,targetName,msg);
 			return;
 		}
@@ -1194,27 +1078,35 @@
 			}else{
 				var needToUpload = false;
 				
-				var file__actingRole__relId__script__attachment__1 = $('input[name^="file__actingRole"]');
+				var scriptInput = $('#actingRole-script-input');
 
-				if (file__actingRole__relId__script__attachment__1.val() != ''
-						&& file__actingRole__relId__script__attachment__1.val() != null) {
-					needToUpload = file__actingRole__relId__script__attachment__1.val().length > 0;
+				if (scriptInput.val() != ''
+						&& scriptInput.val() != null) {
+					needToUpload = scriptInput.length > 0;
 				}
 
 				if (needToUpload != false) {
 					var formData = new FormData($('#actingRole-form')[0]);
 
 					actingRole["formData"] = formData;
-					var scriptInput = $('#actingRole-script-input');
-					var script = $('#script');
-
-					const files = scriptInput[0].files;
-					const file = scriptInput[0].files[0];
-
-					var fileName = file.name;
-					actingRole["script"] = "파일이름 : " + fileName;
 				}
 			}
+		}else if($.trim(requestedActing.val()) == 0 ){
+			
+			$('input[name="scriptStatus"]').val("0");
+			$('#actingRole-script-input').val("");
+			
+			delete actingRole["formData"];
+			delete actingRole["script"];
+		}
+		
+		var scriptStatus = $('input[name="scriptStatus"]');
+		
+		if(scriptStatus.val() == 0 ){
+			$('#actingRole-script-input').val("");
+			
+			delete actingRole["formData"];
+			delete actingRole["script"];
 		}
 		
 		actingRole["startDate"] = $('input[name="actingRole-startDate"]').val();
@@ -1256,7 +1148,6 @@
 			$('#artwork-box').css("padding", "0 0 10px");
 			
 			var fileName = file.name;
-			
 			artworkFileStatus.html("파일이름 : " + fileName);
 
 			URL.revokeObjectURL(file);
@@ -1278,7 +1169,8 @@
 
 		html += '<div class="actingRole-input flex flex-grow">';
 		html += '<input name="role'+ actingRoleCount +'" data-id="' + actingRoleCount + '" class="w-10 shadow appearance-none border rounded-l-full flex-grow mb-2 py-2 pl-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="역할" />';
-		html += '<button type="button" class="bg-gray-500 appearance-none border rounded-r-full mb-2 py-2 pl-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" onclick="javascript:showActingRoleModal(' + actingRoleCount + ')">배역정보입력</button>';
+		html += '<button type="button" class="bg-gray-500 appearance-none border rounded-r-full mb-2 py-2 pl-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" onclick="javascript:showActingRoleModal('
+				+ actingRoleCount + ')">배역정보입력</button>';
 		html += '<button class="text-2xl self-start" onclick="removeActingRoleBox(this,'+ actingRoleCount +')">';
 		html += '<i class="far fa-minus-square"></i>';
 		html += '</button>';
@@ -1288,14 +1180,9 @@
 
 	}
 
-	function removeActingRoleBox(val, actingRoleId, query) {
-		if(query == "delete"){
-			var actingRole = actingRoles.get(actingRoleId);
-			actingRole["deleteStatus"] = true;
-		}else{
-			if(actingRoles && actingRoles.has(actingRoleId)){
-				actingRoles.delete(actingRoleId);
-			}	
+	function removeActingRoleBox(val,actingRoleCount) {
+		if(actingRoles && actingRoles.has(actingRoleCount)){
+			actingRoles.delete(actingRoleCount);
 		}
 		
 		console.log(actingRoles);
@@ -1312,15 +1199,9 @@
 	}
 
 	function removeActingRoleBoxAndShowSwitch(val) {
-		
-		for (let [key, value] of actingRoles){
-			var actingRole = value;
-			if(actingRole.id != null && actingRole.id != '' && actingRole.id != "undefined"){
-				actingRole.deleteStatus = true;	
-			}else{
-				actingRoles.delete(key);
-			}
-		};
+		if(actingRoles && actingRoles.has(actingRoleCount)){
+			actingRoles.clear();
+		}
 		
 		$('#actingRole-box-switch').attr("data-displayStatus", 1);
 		$('#actingRole-box-switch').css("display", "flex");
@@ -1368,6 +1249,9 @@
 
 				if (optionVal == "1") {
 					$('#script-box').css("display", "flex");
+				}else{
+					$('input[name="scriptStatus"]').val("0");
+					$('#actingRole-script-input').val("");
 				}
 
 			});
@@ -1520,5 +1404,4 @@
 						sidoOption.val() + " " + gugunOption.val());
 		});
 </script>
-
 <%@ include file="../part/foot.jspf"%>

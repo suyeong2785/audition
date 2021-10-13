@@ -24,6 +24,10 @@ public class Applyment {
 	private boolean delStatus;
 	private String delDate;
 	private boolean displayStatus;
+	private String checkDate;
+	private boolean checkStatus;
+	private String alarmDate;
+	private boolean alarmStatus;
 	private boolean hideStatus;
 
 	private List<File> files;
@@ -79,7 +83,7 @@ public class Applyment {
 		}
 		return null;
 	}
-
+	
 	@JsonProperty("forPrintGenUrl")
 	public String getForPrintGenUrl() {
 		if (extra != null) {

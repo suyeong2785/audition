@@ -24,8 +24,8 @@
 				</div>
 				<div
 					class="absolute flex flex-col items-start font-thin text-white z-20 text-lg">
-					<div>${artworkTitle}</div>
-					<div>${actingRoleGender}${actingRoleRole}${actingRoleAge}</div>
+					<div>${artworkId}/${artworkTitle}</div>
+					<div>${actingRoleGender}${actingRole}${actingRoleAge}</div>
 				</div>
 			</div>
 		</div>
@@ -82,7 +82,7 @@
 				<div>
 					<div
 						class="flex justify-center items-center h-full text-4xl text-gray-600 pr-4"
-						onclick="showApplymentModal('${applyment.forPrintGenUrlForApplyment}','${applyment.extra.memberName}',${applyment.id},${applyment.memberId},${applyment.extra.memberRecommendation})">
+						onclick="showApplymentModal('${applyment.forPrintGenUrlForApplyment}',${applyment.id},${applyment.memberId},${applyment.extra.memberRecommendation},${actingRoleId},'${actingRole}',${artworkId},'${artworkTitle}','${applyment.extra.memberName}')">
 						<i class="fas fa-play-circle"></i>
 					</div>
 				</div>
@@ -112,22 +112,7 @@
 			</div>
 		</div>
 		<div id="video-box" class="flex justify-center"></div>
-		<div id="button-box" class="button-box flex justify-around px-8 py-4 "
-			style="background-color: #333333">
-			<button id="recommendation-button"
-				class="bg-white text-black rounded-full w-12 h-12 text-2xl"
-				style="color: #333333" onclick="doRecommendMember()">
-				<i class="fas fa-heart"></i>
-			</button>
-			<button class="bg-white text-black rounded-full w-12 h-12 text-2xl"
-				style="color: #333333" onclick="ChangeApplymentResult(1)">
-				<i class="far fa-circle"></i>
-			</button>
-			<button class="bg-white text-black rounded-full w-12 h-12 text-2xl"
-				style="color: #333333" onclick="ChangeApplymentResult(2)">
-				<i class="fas fa-times"></i>
-			</button>
-		</div>
+		<div id="button-box" class="button-box flex justify-around px-8 py-4 " style="background-color: #333333"></div>
 	</div>
 </div>
 
@@ -143,9 +128,28 @@
 				}
 			});
 
-	function showApplymentModal(videoUrl, applyment_name, applyment_id, applyment_memberId, applyment_recommendation) {
+	function showApplymentModal(videoUrl, applyment_id, applyment_memberId, applyment_recommendation, actingRole_id, actingRole, artwork_id, artwork_title, applyment_name) {
 		$('#video-box').empty();
+		$('#button-box').empty();
 		$('#recommendation-number').remove();
+		 
+		$('#applyment-decision-modal').data('applyment_id', applyment_id);
+		$('#applyment-decision-modal').data('applyment_memberId', applyment_memberId); 
+		$('#applyment-decision-modal').data('applyment_recommendation', applyment_recommendation);
+		 
+		let html = '';
+		
+		html += '<button id="recommendation-button" class="bg-white text-black rounded-full w-12 h-12 text-2xl" style="color: #333333" onclick="doRecommendMember()">';
+		html += '<i class="fas fa-heart"></i>';	
+		html += '</button>';	
+		html += '<button class="bg-white text-black rounded-full w-12 h-12 text-2xl" style="color: #333333" onclick="ChangeApplymentResult(1,' + applyment_memberId + ',' + actingRole_id + ',\'' + actingRole + '\',' + artwork_id + ',\'' +artwork_title + '\')">';
+		html += '<i class="far fa-circle"></i>';				
+		html += '</button>';
+		html += '<button class="bg-white text-black rounded-full w-12 h-12 text-2xl" style="color: #333333" onclick="ChangeApplymentResult(2,' + applyment_memberId + ',' + actingRole_id + ',\'' + actingRole + '\',' + artwork_id + ',\'' + artwork_title + '\')">';	
+		html += '<i class="fas fa-times"></i>';
+		html += '</button>';
+		
+		$('#button-box').html(html);
 		
 		$('#applyment-decision-modal').css("display", "flex");
 		
@@ -181,26 +185,20 @@
 		if (videoUrl == '' || videoUrl == null) {
 			$('#video-box').html('<div class="p-8">오디션 영상이 등록되어 있지않습니다.</div>');
 		} else {
-			$('#video-box')
-					.html(
-							'<video id="video" controls="controls" src="'+ videoUrl +'"></video>');
+			$('#video-box').html('<video id="video" controls="controls" src="'+ videoUrl +'"></video>');
 		}
 
-		var recommenderHtml = '';
+		let recommenderHtml = '';
 
 		$('#recommendation-count').append('<div id="recommendation-number" class="pl-2">' + applyment_recommendation + ' ' + applyment_name + '</div>');	
-		
-		$('#applyment-decision-modal').data("applyment_id",applyment_id);
-		$('#applyment-decision-modal').data("applyment_name",applyment_name);
-		$('#applyment-decision-modal').data("applyment_memberId",applyment_memberId); 
-		$('#applyment-decision-modal').data("applyment_recommendation",applyment_recommendation); 
+		 
 	}
 
 	function doRecommendMember() {
 		
-		var applyment_id = $('#applyment-decision-modal').data("applyment_id");
-		var applyment_memberId = $('#applyment-decision-modal').data("applyment_memberId");
-		var applyment_name = $('#applyment-decision-modal').data("applyment_name");
+		let applyment_id = $('#applyment-decision-modal').data("applyment_id");
+		let applyment_memberId = $('#applyment-decision-modal').data("applyment_memberId");
+		let applyment_name = $('#applyment-decision-modal').data("applyment_name");
 		
 		//video태그를 보여줄 id=recommendation-button 엘리먼트를 가져온다.
 		var $recommendation_button = $("#recommendation-button");
@@ -263,39 +261,58 @@
 
 	}
 	
-	function ChangeApplymentResult(result) {
+	function ChangeApplymentResult(result, applyment_memberId, actingRole_id ,actingRole, artwork_id, artwork_title) {
 		var artworkTitle = '<c:out value="${artworkTitle}"/>';
-		var actingRoleRole = '<c:out value="${actingRoleRole}"/>';
+		var actingRole = '<c:out value="${actingRole}"/>';
 		
 		var id = $('#applyment-decision-modal').data("applyment_id");
 		
 		// result : 1 (합격)
 		if(result == 1){
-			if (confirm('합격 시키겠습니까?') == false) {
-	            return;
+			if (confirm('합격 시키겠습니까?') == true) {
+				$.post('../../usr/applyment/doChangeApplymentResultAjax',{
+					id : id,//relId
+					relId : actingRole_id,
+					relName : actingRole,
+					relTypeCode : "actingRole",
+					extraId : artwork_id,
+					extraName : artwork_title,
+					extraTypeCode : "artwork",
+					getterId : applyment_memberId,
+					senderId : loginedMemberId,
+					result : result,
+					message : "저희가 찾는 이미지와는 맞는 관계로 1차 합격되었습니다. 2차 면접관련해서 추후 연락드리겠습니다"
+				},function(data){
+					alert(data.msg);
+					
+					location.reload();
+				},'json');
+	            
 	        }
 		} else{
 			// result : 2 (불합격)
-			if (confirm('불합격 시키겠습니까?') == false) {
-	            return;
+			if (confirm('불합격 시키겠습니까?') == true) {
+				$.post('../../usr/applyment/doChangeApplymentResultAjax',{
+					id : id, //relId
+					relId : actingRole_id,
+					relName : actingRole,
+					relTypeCode : "actingRole",
+					extraId : artwork_id,
+					extraName : artwork_title,
+					extraTypeCode : "artwork",
+					getterId : applyment_memberId,
+					senderId : loginedMemberId,
+					result : result,
+					message : "이번 작품에 함께하지 못해서 아쉽습니다. 지원해주셔서 진심으로 감사합니다."
+				},function(data){
+					alert(data.msg);
+				
+					location.reload();
+				},'json');
+
 	        }
 		}
-		
-		$.post('../../usr/applyment/doChangeApplymentResultAjax',{
-			id : id,
-			result : result
-		},function(data){
-			alert(data.msg);
-			
-			console.debug("showMyapplyment::socket>>", socket);
-			if(socket){
-				//websocket에 전송
-				socket.send('/TTT', {}, JSON.stringify({cmd: 'applyment', artworkTitle: artworkTitle, actingRole: actingRoleRole}));
-			}
-		},'json');
-		
-		location.reload();
-		
+
 	} 
 	
 	function closeModal(){

@@ -5,77 +5,6 @@
 
 <%@ include file="../part/head.jspf"%>
 
-<style>
-#journal-scroll::-webkit-scrollbar {
-	width: 6px;
-	cursor: pointer;
-}
-
-#journal-scroll::-webkit-scrollbar-track {
-	background-color: rgba(229, 231, 235, var(- -bg-opacity));
-	cursor: pointer;
-}
-
-#journal-scroll::-webkit-scrollbar-thumb {
-	cursor: pointer;
-	background-color: #a0aec0;
-}
-</style>
-
-<script>
-	var stompClient = null;
-	
-	function setConnected(connected) {
-	    $("#connect").prop("disabled", connected);
-	    $("#disconnect").prop("disabled", !connected);
-	    
-	}
-	
-	function connect() {
-	    var socket = new SockJS('/gs-guide-websocket');
-	    stompClient = Stomp.over(socket);
-	    stompClient.connect({}, function (frame) {
-	        setConnected(true);
-	        console.log('Connected: ' + frame);
-	        stompClient.subscribe('/topic/greetings', function (greeting) {
-	            showGreeting(JSON.parse(greeting.body).content);
-	        });
-	    });
-	}
-	
-	function disconnect() {
-	    if (stompClient !== null) {
-	        stompClient.disconnect();
-	    }
-	    setConnected(false);
-	    console.log("Disconnected");
-	}
-	
-	function sendName() {
-	    stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
-	}
-	
-	function showGreeting(message) {
-	    
-		var currentdate = new Date();
-	    
-	    html = '';
-	    html += '<div class="flex justify-end pt-2 pl-10">';
-	    html += '<span class="bg-green-900 h-auto text-gray-200 text-xs font-normal rounded-sm px-1 items-end flex justify-end overflow-hidden " style="font-size: 10px;">' + message ; 
-	    html += '<span class="text-gray-400 pl-1" style="font-size: 8px;">'+ currentdate.getHours() + ':' + currentdate.getMinutes(); 
-	    html += '</span>';
-	    html += '</span>';
-	    html += '</div>';  
-	    	
-	    $("#chatmsg").append(html);
-	    	
-	    var box = document.getElementById('journal-scroll');
-		box.scrollTop = box.scrollHeight;
-	    	
-	}
-	
-</script>
-
 <div class="grid justify-center grid-column-auto-800 p-4 ">
 
 	<div class="flex justify-between py-8">
@@ -143,9 +72,7 @@
 				<div
 					class="relative flex justify-center items-center font-myAudition text-gray-600 pr-12">
 					<div class="absolute text-black text-sm top-0 right-0"
-						onclick="doDeleteAllApplyment()">
-						<i class="fas fa-times"></i>
-					</div>
+						onclick="doDeleteAllApplyment()"></div>
 				</div>
 			</div>
 			<c:set var="actingRoleBg" value="bg-gray-showMyPage"></c:set>
@@ -170,7 +97,9 @@
 	class="modal-background pt-8 items-center">
 	<div class="modal-content">
 		<div class="flex justify-end p-2 bg-gray-300">
-			<i class="fas fa-times"></i>
+			<span onclick="closeModal()">
+				<i class="fas fa-times"></i>
+			</span>
 		</div>
 		<div id="applyment-reply"></div>
 	</div>
@@ -181,38 +110,190 @@
 	<div id="applyment-modify" class="modal-content-no-bg bg-black z-20"></div>
 </div>
 
+<div id="alarm-content" class="flex-col border border-black bg-white rounded-lg z-20 hidden fixed"></div>
+
 <script>
+	let actingRoles = new Array();
+	let itemsInAPage = 3; 
+	
+	let actingRoleListRowNumHashMapList = new Array();
+
+	$(function(){
+		console.log(param);
+		if(param != null){
+			
+			$.ajax({
+				url:'../../usr/applyment/getRowNumbersOfApplymentsByMemberIdAndArtworkIdAjax',
+				data : { artworkId : param.artworkId ,
+					memberId : loginedMemberId},
+				method : "GET",
+				dataType : "json"
+				}).done(function(data){
+					console.log(data.body.actingRoleListRowNumHashMapList);
+					
+					actingRoleListRowNumHashMapList = data.body.actingRoleListRowNumHashMapList;
+					
+					for( let i = 0; i < actingRoleListRowNumHashMapList.length; i++){
+						if( actingRoleListRowNumHashMapList[i]["actingRoleId"] == param.roleId){
+							let page = Math.ceil( actingRoleListRowNumHashMapList[i]["rownum"] / itemsInAPage );
+							//console.log("page : "+ page);
+							
+							$.ajax({
+								url:'../../usr/applyment/getActingRolesRelatedToApplymentByArtworkIdAjax',
+								data : { artworkId : param.artworkId,
+									getterId : loginedMemberId,
+									relTypeCode : "actingRole"},
+								dataType : 'json',
+								}).then(function(data){
+									totalCount = data.body.applyments.length;
+									actingRoles = data.body.applyments;
+									notifications = data.body.notifications;
+									
+									let actingRolesIndex = -1;
+									
+									for(let i = 0; i < actingRoles.length; i++){
+										
+										let notificationsArray = new Array();
+										
+										for(let j = 0; j < notifications.length; j++){
+											if(actingRoles[i].relId == notifications[j].relId){
+												notificationsArray.push(notifications[j]);
+												if(actingRoles[i].relId == param.roleId){
+													actingRolesIndex = i;
+												}
+											}
+										}
+										
+										if(notificationsArray.length > 0){
+											actingRoles[i]["notifications"] = notificationsArray;
+										}
+									}
+									
+									if(actingRoles[actingRolesIndex] && typeof actingRoles[actingRolesIndex]["notifications"] != "undefined"){
+										let notifiactions = actingRoles[actingRolesIndex]["notifications"];	
+										
+										if(notifiactions.length > 0){
+											drawActingRoleList(param.artworkId, page);
+											changeActingRoleListPage(param.artworkId, page);
+											$('#actingRole-alarm-box' + param.roleId).addClass('scale-alarm');
+											$('#actingRole-alarm-box' + param.roleId).on("click",function(){
+												$('#actingRole-alarm-box' + param.roleId).removeClass('scale-alarm');
+											});
+										}
+									}
+								});
+						}
+					}
+						
+				});
+		};
+	});
+	
 	//회원모달창 켜졌을경우 외부영역 클릭 시 팝업 닫기
-	$('.modal-background').mouseup(function(e) {
+	$(document).mouseup(function(e) {
 		if ($('.modal-content').has(e.target).length === 0
 				&& $('.modal-content-no-bg').has(e.target).length === 0) {
 			$('.modal-background').css("display", "none");
 		}
-	});
-	
-	$(document).mouseup(function(e){
+		
+		if ($('.modal-content').has(e.target).length === 0
+				&& $('.modal-content-no-bg').has(e.target).length === 0) {
+			$('.modal-background-no-bg').css("display", "none");
+		}
+		
+		if($('#alarm-content').has(e.target).length === 0 
+			&& $(e.target).is('#alarm-content') == false
+			&& $('#applyment-reply-modal').has(e.target).length === 0
+			&& $(e.target).is('#applyment-reply-modal') == false){
+			$('#alarm-content').css("display", "none");
+		}
+		
 		if ($('[id^="artwork-box"]').has(e.target).length === 0
 				&& $('[id^="actingRoleList-box-by-artwork"]').has(e.target).length === 0
 				&& $('.modal-background').has(e.target).length === 0
-				&& $(e.target).hasClass('modal-background') == false ) {
+				&& $(e.target).hasClass('modal-background') == false 
+				&& $('#alarm-content').has(e.target).length === 0 
+				&& $(e.target).is('#alarm-content') == false) {
 			closeActingRoleList();
 		}
 	});
-	
+
 	var applyments = new Map();
 	
-	function notifyApplicantOfApplymentStatus(result, delStatus){
-		if(result == 1){
-			$('#applyment-reply').html('<div class="flex justify-center items-center py-8">저희가 찾는 이미지와는 맞는 관계로 1차 합격되었습니다.</br> 2차 면접관련해서 추후 연락드리겠습니다.</div>');
-		}else{
-			$('#applyment-reply').html('<div class="flex justify-center items-center py-8">이번 작품에 함께하지 못해서 아쉽습니다.</br> 지원해주셔서 진심으로 감사합니다.</div>');
+	function showAlarmBoxModal(actingRoleindex, actingRoleId){
+		let actingRole = actingRoles[actingRoleindex];
+		let notifications = actingRole.notifications;
+		
+		if(notifications && notifications.length > 0 ){
+			
+			let html = '';
+			
+			$.each(notifications,function(index, notification){
+				html += '<div id="applyment-notification-'+ notification.id +'" class="flex justify-center items-center m-2" onclick="showMessageModal('+ actingRoleindex + ','+ notification.id +',' + actingRoleId +','+ index + ')">';
+				html += '<span>확인해주세요.</span>';
+				html += '<i class="fas fa-envelope"></i>';
+				html += '</div>';
+			});
+			
+			$('#alarm-content').html(html);
+			
+			$('#alarm-content').css("display", "inline-flex");
+			
+			alarmBellCoordinate = $('#actingRole-alarm-box' + actingRoleId).offset();
+			
+			let height = alarmBellCoordinate.top - $('#alarm-content').outerHeight();
+			let left = alarmBellCoordinate.left - $('#alarm-content').outerWidth();
+			
+			$('#alarm-content').offset({left : left, top : height});
 		}
 		
-		if(delStatus == 1){
-			$('#applyment-reply').html('<div class="flex justify-center items-center py-8">작성자의 요청으로인해 해당배역이 삭제되었습니다.</div>');
+		
+	}
+	
+	function showMessageModal(actingRoleindex, notificationId, actingRoleId, notificationArrayIndex){
+		
+		let actingRoleAlarmCount = parseInt($('#actingRole-alarm-count' + actingRoleId).text()) - 1;
+		
+		if(actingRoleAlarmCount == 0){
+			$('#applyment-notification-' + notificationId).remove();
+			
+			$('#actingRole-alarm-bell'+ actingRoleId).attr({"style" : ""});
+			$('#actingRole-alarm-bell'+ actingRoleId + ' > i').removeClass('text-yellow-600');
+
+			$('#actingRole-alarm-count' + actingRoleId).text(actingRoleAlarmCount);	
+		}else{
+			$('#applyment-notification-' + notificationId).remove();
+
+			$('#actingRole-alarm-count' + actingRoleId).text(actingRoleAlarmCount);
 		}
+		
+		let actingRole = actingRoles[actingRoleindex];
+		let notifications = actingRole.notifications;
+		
+		let html = '';
+		
+		$.each(notifications, function(index, notification){
+			if(notificationId == notification.id){
+				html += '<div class="flex justify-center items-center m-2">';
+				html += '<span>'+ notification.message +'</span>';
+				html += '</div>';
+			}
+		});
+		
+		$('#applyment-reply').html(html);		
 		
 		$('#applyment-reply-modal').css("display", "flex");
+		
+		$.ajax({
+			url:'../../usr/notification/changeNotificationCheckStatusAjax',
+			data : { id : notificationId,
+				checkStatus : 1 },
+			dataType : 'json'
+		}).then(function(){
+			notifications.splice(notificationArrayIndex,1);
+			
+			actingRoles[actingRoleindex] = actingRole;
+		});
 	}
 	
 	function showAlternativeImage(){
@@ -241,7 +322,7 @@
 					html = '';
 					html += '<div class="grid" style="grid-templates-row : 30px auto auto">';
 					html += '<div class="flex justify-end items-center text-white" >';
-					html += '<div class="p-4" onclick="closeModal()"><i class="fas fa-times"></i></div>';
+					html += '<div class="p-4" onclick="closeModal('+ actingRoleId +')"><i class="fas fa-times"></i></div>';
 					html += '</div>';
 					html += '<video id="actingRole-video" controls src=' + videoFileUrl + '></video>';
 					html += '<div class="flex justify-around text-white py-8">';
@@ -327,11 +408,10 @@
 			var targetType = "id";
 			var toastr = setPositionOfToastr(targetType,targetName,msg);
 		}
-		
-				
 	}
 	
 	function closeModal(){
+		
 		$('.modal-background').css("display", "none");
 	}
 	
@@ -404,14 +484,32 @@
 		
 		$.ajax({
 			url:'../../usr/applyment/getActingRolesRelatedToApplymentByArtworkIdAjax',
-			data : { artworkId : artworkId },
+			data : { artworkId : artworkId,
+				getterId : loginedMemberId,
+				relTypeCode : "actingRole" },
 			dataType : 'json',
 			}).then(function(data){
 				totalCount = data.body.applyments.length;
 				actingRoles = data.body.applyments;
+				notifications = data.body.notifications;
+				
+				for(let i = 0; i < actingRoles.length; i++){
+					
+					let notificationsArray = new Array();
+					
+					for(let j = 0; j < notifications.length; j++){
+						if(actingRoles[i].relId == notifications[j].relId){
+							notificationsArray.push(notifications[j]);
+						}
+					}
+					
+					if(notificationsArray.length > 0){
+						actingRoles[i]["notifications"] = notificationsArray;
+					}
+				}
+				
 				drawActingRoleList(artworkId, page);
 			});
-		
 	}
 	
 	function closeActingRoleList (){
@@ -425,8 +523,6 @@
 	}
 	
 	function drawActingRoleList(artworkId, page){
-		
-		var itemsInAPage = 3;
 		
 		var limitStart = (page-1) * itemsInAPage ;
 		var limitTake = itemsInAPage;
@@ -443,30 +539,42 @@
 		$.each(actingRoles, function(index, actingRole){
 			actingRoleIds.push(actingRole.extra.id);
 			
+			let alarmAnimation = "";
+			let alarmColor = "";
+			let alaramCount = 0;
+			
+			if( actingRole.notifications && actingRole.notifications.length > 0){
+				alarmAnimation = '<span id="actingRole-alarm-bell' + actingRole.extra.id + '" style="animation:alarm 1s linear 0.5s infinite alternate both">';
+				alarmColor = 'text-yellow-600';
+				alaramCount = actingRole.notifications.length;
+			}else{
+				alarmAnimation = '<span id="actingRole-alarm-bell' + actingRole.extra.id + '">';
+			}
+			
 			if(limitStart <= index && limitTake > index ){
 				
 				html += '<div id="actingRole-detail-box'+ actingRole.extra.id +'" data-result="'+ actingRole.result +'" data-del-status="'+ actingRole.delStatus +'" class="flex justify-between items-center mb-2 font-black border-dashed border-b border-black" style="border-color : #58595B">';
-				html += '<div class="flex justify-start items-center flex-grow"  onclick="showModifyModal(' + actingRole.id + ','+ actingRole.extra.id +')">';
-				html += '<div class="grid justify-items-start" style="grid-template-columns: minmax(30px,40px) minmax(30px,50px) minmax(30px,50px)">';
-				html += '<div class=" text-center overflow-ellipsis overflow-hidden whitespace-nowrap ">'+ actingRole.extra.role +'</div>';
-				html += '<div class=" text-center overflow-ellipsis overflow-hidden whitespace-nowrap ">'+ actingRole.extra.startDate.split("T")[0] + ' ~ ' + actingRole.extra.endDate.split("T")[0] + '</div>';
-				html += '</div>';
-				html += '</div>';
-				html += '<div class="bg-gray-500 hover:bg-gray-700 text-white text-xs font-thin rounded-full py-1 px-2" style="background-color : #58595B">';
-				if(actingRole.result == 0 && actingRole.delStatus == 0){
-					html += '<div class="flex justify-center items-center" >';
-					html += '<i class="fas fa-bell"></i>';
-					html +=	'<div class="pl-1">0</div>';
-					html += '</div>';
-				}else{
-					html += '<div class="flex justify-center items-center" onclick="notifyApplicantOfApplymentStatus('+ actingRole.result + ',' + actingRole.delStatus +')">';
-					html += '<i class="fas fa-bell text-yellow-600"></i>';		
-					html += '<div class="pl-1">1</div>';
-					html += '</div>';
+				html += '<div id="actingRole-content-box'+ actingRole.extra.id +' class="flex justify-start items-center flex-grow" >';
+				html += '<div class="inline-flex items-center">';
+				html += '<div class=" text-center overflow-ellipsis overflow-hidden whitespace-nowrap " style="width:5vmin"  onclick="showModifyModal(' + actingRole.id + ','+ actingRole.extra.id +')">'+ actingRole.extra.role +'</div>';
+				html += '<div class=" text-center overflow-ellipsis overflow-hidden whitespace-nowrap " style="width:30vmin"  onclick="showModifyModal(' + actingRole.id + ','+ actingRole.extra.id +')">'+ actingRole.extra.startDate.split("T")[0] + ' ~ ' + actingRole.extra.endDate.split("T")[0] + '</div>';
+				html += '<div id="actingRole-cancel-button-'+ actingRole.extra.id +'" class="bg-gray-500 hover:bg-gray-700 text-white text-xs font-thin rounded-full py-1 px-2 whitespace-nowrap" style="background-color : #58595B">지원취소</div>';
+				if(actingRole.delStatus == true ) {
+					html += '<div id="actingRole-delete-button-'+ actingRole.extra.id +'" class="text-center" style="width:5vmin" ><i class="fas fa-times"></i></div>';
 				}
 				html += '</div>';
 				html += '</div>';
-				
+				html += '<div class="flex">';
+				html += '<div id="actingRole-alarm-box'+ actingRole.extra.id +'" class="bg-gray-500 hover:bg-gray-700 text-white text-xs font-thin rounded-full py-1 px-2" style="background-color : #58595B">';
+				html += '<div class="flex justify-center items-center" onclick="javscript:showAlarmBoxModal('+ index + ',' + actingRole.extra.id + ')">';
+				html += alarmAnimation;
+				html += '<i class="fas fa-bell '+ alarmColor + '"></i>';
+				html += '</span>';	
+				html += '<div id="actingRole-alarm-count'+ actingRole.extra.id +'" class="pl-1">'+ alaramCount +'</div>';
+				html += '</div>';
+				html += '</div>';
+				html += '</div>';
+				html += '</div>';
 			}
 		});
 		
@@ -555,8 +663,6 @@
 	
 	function changeActingRoleListPage(artworkId, page){
 		
-		var itemsInAPage = 3;
-		
 		var limitStart = (page-1) * itemsInAPage ;
 		var limitTake = limitStart + itemsInAPage;
 		
@@ -565,28 +671,39 @@
 		var html = '';
 		
 		$.each(actingRoles, function(index, actingRole){
+			actingRoleIds.push(actingRole.extra.id);
+			
+			let alarmAnimation = "";
+			let alarmColor = "";
+			let alaramCount = 0;
+			
+			if( actingRole.notifications && actingRole.notifications.length > 0){
+				alarmAnimation = '<span id="actingRole-alarm-bell' + actingRole.extra.id + '" style="animation:alarm 1s linear 0.5s infinite alternate both">';
+				alarmColor = 'text-yellow-600';
+				alaramCount = actingRole.notifications.length;
+			}else{
+				alarmAnimation = '<span id="actingRole-alarm-bell' + actingRole.extra.id + '">';
+			}
+			
 			if(limitStart <= index && limitTake > index ){
 				
 				html += '<div id="actingRole-detail-box'+ actingRole.extra.id +'" data-result="'+ actingRole.result +'" data-del-status="'+ actingRole.delStatus +'" class="flex justify-between items-center mb-2 font-black border-dashed border-b border-black" style="border-color : #58595B">';
-				html += '<div class="flex justify-start items-center flex-grow"  onclick="showModifyModal(' + actingRole.id + ','+ actingRole.extra.id +')">';
-				html += '<div class="grid justify-items-start" style="grid-template-columns: minmax(30px,40px) minmax(30px,50px) minmax(30px,50px);">';
+				html += '<div id="actingRole-content-box'+ actingRole.extra.id +' class="flex justify-start items-center flex-grow"  onclick="showModifyModal(' + actingRole.id + ','+ actingRole.extra.id +')">';
+				html += '<div class="grid justify-items-start" style="grid-template-columns: minmax(30px,40px) minmax(30px,50px) minmax(30px,50px)">';
 				html += '<div class=" text-center overflow-ellipsis overflow-hidden whitespace-nowrap ">'+ actingRole.extra.role +'</div>';
 				html += '<div class=" text-center overflow-ellipsis overflow-hidden whitespace-nowrap ">'+ actingRole.extra.startDate.split("T")[0] + ' ~ ' + actingRole.extra.endDate.split("T")[0] + '</div>';
 				html += '</div>';
 				html += '</div>';
-				html += '<div class="bg-gray-500 hover:bg-gray-700 text-white text-xs font-thin rounded-full py-1 px-2" style="background-color : #58595B">';
-				if(actingRole.result == 0 && actingRole.delStatus == 0){
-					html += '<div class="flex justify-center items-center" >';
-					html += '<i class="fas fa-bell"></i>';
-					html +=	'<div class="pl-1">0</div>';	
-				}else{
-					html += '<div class="flex justify-center items-center" onclick="javscript:notifyApplicantOfApplymentStatus('+ actingRole.result + ',' + actingRole.delStatus +')">';
-					html += '<i class="fas fa-bell text-yellow-600"></i>';		
-					html += '<div class="pl-1">1</div>';	
-				}
+				html += '<div id="actingRole-alarm-box'+ actingRole.extra.id +'" class="bg-gray-500 hover:bg-gray-700 text-white text-xs font-thin rounded-full py-1 px-2" style="background-color : #58595B">';
+				html += '<div class="flex justify-center items-center" onclick="javscript:showAlarmBoxModal('+ index + ',' + actingRole.extra.id + ')">';
+				html += alarmAnimation;
+				html += '<i class="fas fa-bell '+ alarmColor + '"></i>';
+				html += '</span>';	
+				html += '<div id="actingRole-alarm-count'+ actingRole.extra.id +'" class="pl-1">'+ alaramCount +'</div>';
 				html += '</div>';
 				html += '</div>';
 				html += '</div>';
+				
 			}
 		});
 		
