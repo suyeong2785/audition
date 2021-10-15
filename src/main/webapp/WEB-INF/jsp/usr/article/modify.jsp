@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="${board.name} 게시물 상세내용" />
-<%@ include file="../part/head.jspf"%>
-<%@ include file="../../part/toastuiEditor.jspf"%>
+<%@ include file="../part/head.jsp"%>
+<%@ include file="../../part/toastuiEditor.jsp"%>
 <script>
 	function ArticleModifyForm__submit(form) {
 		if (isNowLoading()) {
@@ -230,4 +230,4 @@
         <a class="btn btn-info" href="${listUrl}">리스트</a>
     </div>
 </form>
-<%@ include file="../part/foot.jspf"%>
+<%@ include file="../part/foot.jsp"%>

@@ -23,6 +23,7 @@ import com.quantom.audition.service.ArtworkService;
 import com.quantom.audition.service.ShareService;
 import com.quantom.audition.util.Util;
 
+//캐스팅공고(artwork)를 관리하는 컨트롤러
 @Controller
 public class ArtworkController {
 

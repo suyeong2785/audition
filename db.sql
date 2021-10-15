@@ -656,10 +656,50 @@ ALTER TABLE `actingRole` ADD COLUMN delStatus TINYINT DEFAULT 0 AFTER delDate;
 #applyment에 hideStatus 없애기
 ALTER TABLE `applyment` DROP COLUMN hideStatus;
 
-#함수와 프로시저를 생성할 수 없도록 설정이 되어있는지 확인
-SHOW GLOBAL VARIABLES LIKE 'LOG_BIN_TRUST_FUNCTION_CREATORS';
+#------------------------------------------------------------
 
-#
+#header에서 확인할수있게 applyment에 alarm기능을 추가
+ALTER TABLE `applyment` ADD COLUMN alarmDate DATETIME AFTER delStatus;
+ALTER TABLE `applyment` ADD COLUMN alarmStatus TINYINT DEFAULT 0 AFTER alarmDate;
+
+#내가지원한 오디션페이지에서 지원자가 확인했는지 안했는지 기록하기위해 applyment에 checkDate,checkStatus 추가
+ALTER TABLE `applyment` ADD COLUMN checkDate DATETIME AFTER delStatus;
+ALTER TABLE `applyment` ADD COLUMN checkStatus TINYINT DEFAULT 0 AFTER checkDate;
+
+#applyment에 check관련  없애기
+ALTER TABLE `applyment` DROP COLUMN checkDate;
+ALTER TABLE `applyment` DROP COLUMN checkStatus;
+
+#applyment에 alarm관련 컬럼  없애기
+ALTER TABLE `applyment` DROP COLUMN alarmStatus;
+ALTER TABLE `applyment` DROP COLUMN alarmDate;
+
+#notification db생성 Status로 처리하기에한계가있음...
+CREATE TABLE `notification`(
+id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+regDate DATETIME NOT NULL,
+updateDate DATETIME NOT NULL,
+relId INT UNSIGNED NOT NULL,
+relName VARCHAR(50) NOT NULL,
+relTypeCode VARCHAR(50) NOT NULL,
+extraId INT UNSIGNED,
+extraName VARCHAR(50),
+extraTypeCode VARCHAR(50),
+senderId INT UNSIGNED NOT NULL,
+getterId INT UNSIGNED,
+checkDate DATETIME,
+checkStatus TINYINT UNSIGNED DEFAULT 0,
+alarmDate DATETIME,
+alarmStatus TINYINT UNSIGNED DEFAULT 0,
+result TINYINT UNSIGNED,
+message TEXT NOT NULL
+);
+
+ALTER TABLE notification MODIFY COLUMN getterId INT UNSIGNED DEFAULT 0;
+ALTER TABLE notification MODIFY COLUMN result TINYINT UNSIGNED DEFAULT 0;
+
+DROP TABLE notification;
+
 
 /*
 select * from `file`;
@@ -673,8 +713,9 @@ select * from  reply;
 select * from `career`;
 select * from  share;
 select * from  recommendation;
+select * from  notification;
 select * from  actor;
-
+*/
 
 DESC `applyment`;
 DESC `actingRole`;
@@ -696,4 +737,4 @@ TRUNCATE `actingRole`;
 TRUNCATE `share`;
 TRUNCATE `recommendation`;
 TRUNCATE `applyment`;
-*/
+

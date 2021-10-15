@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<%@ include file="../part/head.jspf"%>
+<%@ include file="../part/head.jsp"%>
 
 <div class="grid grid-rows-layout-myPage con mx-auto">
 	<div class="flex items-center px-4">

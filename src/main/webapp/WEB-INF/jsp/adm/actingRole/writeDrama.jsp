@@ -2,8 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<%@ include file="../../usr/part/head.jspf"%>
-<%@ include file="../../part/toastuiEditor.jspf"%>
+<%@ include file="../../usr/part/head.jsp"%>
+<%@ include file="../../part/toastuiEditor.jsp"%>
 
 <script>
 	var actingRoles = new Map();
@@ -1404,4 +1404,4 @@
 						sidoOption.val() + " " + gugunOption.val());
 		});
 </script>
-<%@ include file="../part/foot.jspf"%>
+<%@ include file="../part/foot.jsp"%>

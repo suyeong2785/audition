@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ include file="../part/head.jspf"%>
+<%@ include file="../part/head.jsp"%>
 
 <!-- rollingBanner -->
 <div class="con overflow-hidden">
@@ -329,4 +329,4 @@
 	});
 </script>
 
-<%@ include file="../part/foot.jspf"%>
+<%@ include file="../part/foot.jsp"%>

@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="회원가입" />
-<%@ include file="../part/head.jspf"%>
+<%@ include file="../part/head.jsp"%>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 <script>
@@ -321,4 +321,4 @@
 		}
 	});
 </script>
-<%@ include file="../part/foot.jspf"%>
+<%@ include file="../part/foot.jsp"%>

@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<%@ include file="../part/head.jspf"%>
+<%@ include file="../part/head.jsp"%>
 <div class="con mx-auto ">
 	<div class="grid grid-columns-showCommonMyPage">
 		<div
@@ -33,4 +33,4 @@
 
 
 </div>
-<%@ include file="../part/foot.jspf"%>
+<%@ include file="../part/foot.jsp"%>

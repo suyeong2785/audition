@@ -3,8 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <c:set var="pageTitle" value="${board.name} 게시물 상세내용" />
-<%@ include file="../part/head.jspf"%>
-<%@ include file="../../part/toastuiEditor.jspf"%>
+<%@ include file="../part/head.jsp"%>
+<%@ include file="../../part/toastuiEditor.jsp"%>
 
 <div class="article-detail-box table-box table-box-vertical con">
 	<table>
@@ -674,4 +674,4 @@
 	ReplyList__loadMore();
 </script>
 
-<%@ include file="../part/foot.jspf"%>
+<%@ include file="../part/foot.jsp"%>

@@ -2,19 +2,32 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<%@ include file="../../usr/part/head.jspf"%>
-<%@ include file="../../part/toastuiEditor.jspf"%>
+<%@ include file="../../usr/part/head.jsp"%>
+<%@ include file="../../part/toastuiEditor.jsp"%>
 
 <script>
+	//작성한 배역(actingRole)상세정보들을 담아 놓기위한 전역Map을 생성
 	var actingRoles = new Map();
 	
+	//작성한 배역들에 데이터가 담겨있는지 검사하는 함수
 	var checkAllActingRolesRd = function() {
 		
+		//데이터 유무 검사중 문제가 있을시 멈추기위한 boolean값 
 		var needToStop = false;
 		
+		//---------------------------------------------------------------
+		//캐스팅공고(artwork)의 form안에 작성되어있는 input[name^=role]에 데이터가 담겨있는지 loop통한 검사
+		
 		$('#artwork-form input[name^=role]').each(function(index,item){
+			
+			//item의 data-id 속성에 저장해놓은 식별자를 가져옴 
 			var id = $(item).data("id");
+			
+			//작성한 배역상세정보들을 담아놓은 actingRoles에 식별자를 통해서 null을 체크한다.
 			if(actingRoles.get(id) == null){
+				
+				//focus로 해당 input으로 이동할 경우 헤더때문에 input이 가려지는
+				//문제로 인해서 tartgetOffset을 통해서 스크롤을 위로 올려준다음 focus줌.
 				var targetOffset = $('input[name="role'+ id + '"]' ).offset();
 				window.scrollTo({top : targetOffset.top - 300, behavior:'auto'});
 				
@@ -22,30 +35,45 @@
 
 				var msg = "";
 				
+				//input[name=role]에 배역이름을 넣고 배역상세정보를 입력안한경우 
 				if($.trim($(item).val()) != null && $.trim($(item).val()) != '' ){
 					msg = $(item).val() + "의 배역정보를 입력해주세요.";
 				}else{
+					//배역이름조차 없는경우 식별자를 통해서 보여준다.
 					msg = id + "번째 배역정보를 입력해주세요.";
 				}
 				
+				//setPositionOfToastr를 통해서 알림을 띄어준다.
 				var targetName = "role"+ $(item).data("id");
 				var targetType = "input";
 				var toastr = setPositionOfToastr(targetType,targetName,msg);
+				
 				needToStop = true;
+				
+				//$.each문의 break 역할을함
 				return false;
+				
 			}else{
+				//식별자에 해당하는 배역상세정보가 있는 경우 배역이름을 넣어준다.
 				actingRoles.get(id).role = $.trim($(item).val());
 			}
 		});
+		//---------------------------------------------------------------
 		
+		//checkAllActingRolesRd의 데이터유무 검사를 멈춘다.
 		if(needToStop == true){
 			return needToStop;
 		}
 		
+		//---------------------------------------------------------------
+		//actingRoles가 있는경우 for..of를 통해서 모든값이 잘들어가있는지 검사한다.
+		//actingRole에 비어있는 값이있는 경우 key값을 통해서 showActingRoleModal을 실행시키게되면 
+		//모달창의 input값에 값을채워 모달창을 띄어준다
+		//이후 checkAndSaveCurrentActingRoleInfo를 통해서 toastr알림창을 띄어준다.
 		for( let [key,actingRole] of actingRoles){
-			//alert("반복문key : " + key);
+			 
 			if(actingRole.gender == null || actingRole.gender == ''){
-				//alert("actingRole.gender실행 : " + actingRole.gender);
+			
 				showActingRoleModal(key);
 				checkAndSaveCurrentActingRoleInfo();
 				needToStop = true;
@@ -53,7 +81,7 @@
 			}
 			
 			if(actingRole.age == null || actingRole.age == ''){
-				//alert("actingRole.age실행 : " + actingRole.age);
+				
 				showActingRoleModal(key);
 				checkAndSaveCurrentActingRoleInfo();
 				needToStop = true;
@@ -61,7 +89,7 @@
 			}
 			
 			if(actingRole.job == null || actingRole.job == ''){
-				//alert("actingRole.job실행 : " + actingRole.job);
+				
 				showActingRoleModal(key);
 				checkAndSaveCurrentActingRoleInfo();
 				needToStop = true;
@@ -69,7 +97,7 @@
 			}
 			
 			if(actingRole.feature == null || actingRole.feature == ''){
-				//alert("actingRole.feature실행 : " + actingRole.feature);
+				
 				showActingRoleModal(key);
 				checkAndSaveCurrentActingRoleInfo();
 				needToStop = true;
@@ -77,7 +105,7 @@
 			}
 			
 			if(actingRole.schedule == null || actingRole.schedule == ''){
-				//alert("actingRole.schedule실행 : " + actingRole.schedule);
+				
 				showActingRoleModal(key);
 				checkAndSaveCurrentActingRoleInfo();
 				needToStop = true;
@@ -85,7 +113,7 @@
 			}
 			
 			if(actingRole.shootingsCount == null || actingRole.shootingsCount == ''){
-				//alert("actingRole.shootingsCount실행 : " + actingRole.shootingsCount);
+				
 				showActingRoleModal(key);
 				checkAndSaveCurrentActingRoleInfo();
 				needToStop = true;
@@ -93,7 +121,7 @@
 			}
 			
 			if(actingRole.region == null || actingRole.region == ''){
-				//alert("actingRole.region실행 : " + actingRole.region);
+				
 				showActingRoleModal(key);
 				checkAndSaveCurrentActingRoleInfo();
 				needToStop = true;
@@ -101,7 +129,7 @@
 			}
 			
 			if(actingRole.startDate == null || actingRole.startDate == ''){
-				//alert("actingRole.startDate실행 : " + actingRole.startDate);
+				
 				showActingRoleModal(key);
 				checkAndSaveCurrentActingRoleInfo();
 				needToStop = true;
@@ -109,7 +137,7 @@
 			}
 			
 			if(actingRole.endDate == null || actingRole.endDate == ''){
-				//alert("actingRole.endDate실행 : " + actingRole.endDate);
+				
 				showActingRoleModal(key);
 				checkAndSaveCurrentActingRoleInfo();
 				needToStop = true;
@@ -117,7 +145,7 @@
 			}
 			
 			if(actingRole.pay == null || actingRole.pay == ''){
-				//alert("actingRole.pay실행 : " + actingRole.pay);
+				
 				showActingRoleModal(key);
 				checkAndSaveCurrentActingRoleInfo();
 				needToStop = true;
@@ -125,7 +153,7 @@
 			}
 			
 			if(actingRole.shotAngle == null || actingRole.shotAngle == ''){
-				//alert("actingRole.shotAngle실행 : " + actingRole.shotAngle);
+				
 				showActingRoleModal(key);
 				checkAndSaveCurrentActingRoleInfo();
 				needToStop = true;
@@ -133,15 +161,17 @@
 			}
 			
 			if(actingRole.requestedActing == null || actingRole.requestedActing == ''){
-				//alert("actingRole.requestedActing실행 : " + actingRole.requestedActing);
+				
 				showActingRoleModal(key);
 				checkAndSaveCurrentActingRoleInfo();
 				needToStop = true;
 				break;
-			}else if(actingRole.requestedActing == 1 ){
 				
+			//만약 오디션지원방식이 지정연기(requestedActing == 1)일 경우 대본을 첨부여부를 확인한다.
+			}else if(actingRole.requestedActing == 1 ){
+					
 				if(actingRole.scriptStatus == 0 ){
-					//alert("actingRole.scriptStatus실행 : " + actingRole.scriptStatus);
+					
 					showActingRoleModal(key);
 					checkAndSaveCurrentActingRoleInfo();
 					needToStop = true;
@@ -149,6 +179,7 @@
 				}
 			}
 		}
+		//---------------------------------------------------------------
 		
 		if(needToStop == true){
 			return needToStop;
@@ -156,11 +187,13 @@
 		
 	}
 	
+	//artwork의 form 데이터 유효성검사
 	async function ArtworkWriteForm__submit(form) {
+		
+		//toastr이 누를때마다 레이어가 생기는것을 방지
 		if ($('.toast')) {
 			window.toastr.remove();
 		}
-		
 		
 		if (isNowLoading()) {
 			alert('처리중입니다.');
@@ -261,6 +294,7 @@
 			return;
 		}
 		
+		//캐스팅콜(artwork)의 대표이미지 파일업로드관련해서 검사
 		var needToUpload = false;
 
 		if (needToUpload == false
@@ -269,18 +303,27 @@
 					&& form.file__artwork__0__common__attachment__1.value.length > 0;
 		}
 
+		//대표이미지 파일업로드할 필요가없다면 startWriteAndUploadActingRoleProcess를 실행하여 actingRole를 ajax통해 form전송 해준다.
 		if (needToUpload == false) {
-			var actingRoleIdsStr = await startWriteApplyment(-1);
 			
+			//-1을 넘겨주는것은 파일업로드를 할 필요가 없다는 의미로 보내줌
+			var actingRoleIdsStr = await startWriteAndUploadActingRoleProcess(-1);
+			
+			//actingRole를 작성한후, 해당하는 pk값을 가져와서
 			form.actingRoleIdsStr.value = actingRoleIdsStr;
 			
+			//artwork의 form submit시 actingRole의 artworkId칼럼에 artwork pk값을 넣어준다.
 			form.submit();
 			
 			
 		} else {
+			//대표이미지 파일업로드해야한다면 startUploadFiles를 통해서 파일업로드를 해준다.
 			var fileIdsStr = await startUploadFiles(form);
-			var actingRoleIdsStr = await startWriteApplyment(fileIdsStr);
 			
+			//파일업로드 한후 pk값을 fileIdsStr에 받아서 startWriteAndUploadActingRoleProcess에 인자로 넘겨준다.
+			var actingRoleIdsStr = await startWriteAndUploadActingRoleProcess(fileIdsStr);
+			
+			// startWriteAndUploadActingRoleProcess 통해 작성된 actingRole의 pk값을 artwork의 form submit시 같이 보내준다.
 			form.actingRoleIdsStr.value = actingRoleIdsStr;
 			
 			form.submit();
@@ -288,21 +331,28 @@
 	
 	}
 	
+	//artwork의 파일업로드를 해준다.
 	async function startUploadFiles(form) {
 		
 		var fileUploadFormData = new FormData(form);
 		
+		//파일업로드가 이루어지지 않았을경우를 startWriteAndUploadActingRoleProcess에 인자로넘겨줌
 		var fileIdsStr = -1;
 
 		$.ajax({
 			url : '../../usr/file/doUploadAjax',
 			data : fileUploadFormData,
+			//processdata를 false로 두어서 queryString생성을 막는다.
 			processData : false,
+			//contentType을 false로 두어서 multipart/form-data로 전송되게한다.
 			contentType : false,
+			//async로 작동시킨다. ※for문으로 업로드실행시 비동기로 설정해놓을경우 오류가 발생하기 때문에 동기적으로 실행시킨다.
 			async: false,
+			//서버에서 받을 데이터값을 json으로 지정한다.
 			dataType : "json",
 			type : 'POST',
 			success : function(data){
+				//artwork file pk값을 저장시킨다.
 				if (data && data.body && data.body.fileIdsStr) {
 					fileIdsStr = data.body.fileIdsStr;
 				}
@@ -312,8 +362,10 @@
 		return fileIdsStr;
 	}
 	
-	async function startWriteApplyment(fileIdsStr) {
+	//actingRole의 form를 해준다.
+	async function startWriteAndUploadActingRoleProcess(fileIdsStr) {
 		
+		//넘겨받은 artwork의 업로드된 file의 pk값이 -1이 아니라면, form전송시 input에 담아서 같이보내준다.
 		if(fileIdsStr != -1){
 			$('input[name="fileIdsStr"]').val(fileIdsStr);
 		}
@@ -327,10 +379,15 @@
 		for (let [key, value] of actingRoles){
 			var actingRole = value;
 			
+			//actingRole에 지정대본이 있는경우
 			if (actingRole.scriptStatus == 1 ) {
 				
+				//actingRole을 startActingRoleUploadFile함수를 통해 파일업로드를 실행하고, 리턴값인 file pk값들을 actingRoleWithFileIds에 담는다.
+				//이때 await를 통해서 함수를 동기적으로 만들어서 리턴값이 나올때까지 다음 코드가 실행되지 못하도록한다.
 				var actingRoleWithFileIds = await startActingRoleUploadFile(actingRole);
 				actingRoleIds = await startWriteActingRole(actingRoleWithFileIds);
+				
+				//actingRole이 작성되고 가져온 pk값들을 array에 담는다.
 				actingRoleIdsStr.push(actingRoleIds);
 			
 			}else{
@@ -339,11 +396,15 @@
 				actingRoleIdsStr.push(actingRoleIds);
 			}
 		}
+		
+		//array값을 join을 ","기준으로 string값으로 변환시킨다.
 		return actingRoleIdsStr.join(",");
 	}
 	
+	//actingRole의 파일업로드를 해준다.
 	async function startActingRoleUploadFile(actingRole) {
 		
+		//actingRole의 formdata를 담아서 ajax의 data에 담아서보낸다.
 		var fileUploadFormData = actingRole.formData;
 		
 		$.ajax({
@@ -365,6 +426,7 @@
 		return actingRole;
 	}
 	
+	//actingRole를 ajax를 통해서 작성해준다.
 	async function startWriteActingRole (actingRole){
 		var actingRoleObj = actingRole;
 		
@@ -521,6 +583,7 @@
 	</div>
 </form>
 
+<!-- actingRole 배역정보입력 모달창 -->
 <form id="actingRole-form" onsubmit="return false;">
 	<div id="actingRole-modal" class="modal-background px-4 z-50">
 		<div
@@ -654,10 +717,9 @@
 </form>
 
 <script>
+	//영화,드라마,cf 등에 따른 다른 form을 제공해야함...생각중...db도 구상해야함
 	$('select[name="media"]').change(
-		function() {
-			
-
+		function() {}
 	});
 	
 	var actingRoleCount = 0;
@@ -1410,4 +1472,4 @@
 						sidoOption.val() + " " + gugunOption.val());
 		});
 </script>
-<%@ include file="../part/foot.jspf"%>
+<%@ include file="../part/foot.jsp"%>

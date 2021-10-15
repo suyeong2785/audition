@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ include file="../part/head.jspf"%>
+<%@ include file="../part/head.jsp"%>
 
 <div class="con">
 	<div class=" flex flex-col">
@@ -129,4 +129,4 @@
 	<a href="${listUrl}" class="btn btn-info">목록</a>
 </div>
 
-<%@ include file="../part/foot.jspf"%>
+<%@ include file="../part/foot.jsp"%>

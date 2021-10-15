@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ include file="../part/head.jspf"%>
+<%@ include file="../part/head.jsp"%>
 <!-- PC용 -->
 <div class="grid justify-center grid-column-auto-800 p-4 gap-y-4">
 	<div class="flex justify-between">
@@ -104,4 +104,4 @@
 		</c:when>
 	</c:choose>
 </div>
-<%@ include file="../part/foot.jspf"%>
+<%@ include file="../part/foot.jsp"%>

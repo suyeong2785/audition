@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="오디션 신청관리페이지" />
-<%@ include file="../part/head.jspf"%>
+<%@ include file="../part/head.jsp"%>
 
 <div class="share-recruitment-box con mx-auto mb-4">
 	<div class="flex border-2 border-black box-border p-2 ">
@@ -587,4 +587,4 @@ var ApplymentList__applymentsCount = 0;
 	
 </script>
 
-<%@ include file="../part/foot.jspf"%>
+<%@ include file="../part/foot.jsp"%>

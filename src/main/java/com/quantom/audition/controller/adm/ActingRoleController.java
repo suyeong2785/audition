@@ -25,6 +25,7 @@ import com.quantom.audition.service.ArtworkService;
 import com.quantom.audition.service.NotificationService;
 import com.quantom.audition.util.Util;
 
+//캐스팅공고(artwork)에 해당하는 배역(actingRole)을 관리하는 컨트롤러
 @Controller
 public class ActingRoleController {
 
@@ -37,6 +38,7 @@ public class ActingRoleController {
 	@Autowired
 	private NotificationService notificationService;
 
+	
 	@RequestMapping("/{authority}/actingRole/artworkListForAuditions")
 	public String showList(Model model, HttpServletRequest req, @PathVariable("authority") String authority) {
 		Map<String, Object> param = new HashMap<String, Object>();

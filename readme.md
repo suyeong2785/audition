@@ -106,7 +106,7 @@ max_allowed_packet = 50M # # file 테이블에 실제 파일을 저장하려면
       - 프로필 사진 파일 업로드기능 구현
       - 회원가입시 이메일 발송구현
       - 회원가입 페이지 css 추가
-      - head.jspf 파일에 titlebar 검색창 웹/앱 구현
+      - head.jsp 파일에 titlebar 검색창 웹/앱 구현
     - 5일
       - 슬라이드 메뉴구현
         - [css 모바일 버거 메뉴 버튼 만들기](https://muzi-muzi.tistory.com/7)
@@ -202,7 +202,7 @@ max_allowed_packet = 50M # # file 테이블에 실제 파일을 저장하려면
       - recommendation 테이블 db.sql추가, career정보 얻어올때 발생한 오류수정, 캐스팅디렉터 검색후 검색목록 삭제기능추가, 마이페이지에 경력사항 보여줌
       
     - 31일
-      - head.jspf의 프로필css수정,회원수정페이지 isni검색기능추가(controller,service,dao등등),admin header버튼수정
+      - head.jsp의 프로필css수정,회원수정페이지 isni검색기능추가(controller,service,dao등등),admin header버튼수정
       
   - 8월
   
