@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%@ include file="../../usr/part/head.jsp"%>
-<%@ include file="../../part/toastuiEditor.jsp"%>
+
 
 <script>
 	var actingRoles = new Map();
@@ -611,7 +611,7 @@
 <form id="actingRole-form" onsubmit="return false;">
 	<div id="actingRole-modal" class="modal-background px-4 z-50">
 		<div
-			class="modal-content-no-bg rounded-2xl bg-gray-200 p-4 max-height-80vh">
+			class="modal-content-no-bg w-full rounded-2xl bg-gray-200 p-4 max-height-80vh">
 			<div class="grid gap-y-4">
 				<div class="actingRole-name flex justify-center font-black text-xl"></div>
 				<div class="flex items-center justify-center">

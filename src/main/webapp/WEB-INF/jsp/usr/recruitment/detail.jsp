@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="신규 오디션 상세내용" />
 <%@ include file="../part/head.jsp"%>
-<%@ include file="../../part/toastuiEditor.jsp"%>
+
 <script>
 	var ApplymentList__needToLoadMore = '${needToLoadMore}' == 'true';
 	var actorIsWriter = '${actorIsWriter}' == 'true';

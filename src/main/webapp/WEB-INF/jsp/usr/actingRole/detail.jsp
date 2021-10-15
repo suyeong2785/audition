@@ -3,7 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="../part/head.jsp"%>
-<%@ include file="../../part/toastuiEditor.jsp"%>
+
 
 <div class="con">
 	<div class=" flex flex-col">

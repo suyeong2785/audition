@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%@ include file="../../usr/part/head.jsp"%>
-<%@ include file="../../part/toastuiEditor.jsp"%>
+
 
 <script>
 	var actingRoles = new Map();

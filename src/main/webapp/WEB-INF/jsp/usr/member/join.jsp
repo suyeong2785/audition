@@ -79,15 +79,7 @@
 			return;
 		}
 		
-		var result = 1;
-		if ($('#career-box-switch').data("displayStatus") == -1) {
-			result = checkCareerBoxResult(form);
-		}
-
-		if (result == -1) {
-			return;
-		}
-
+		//이메일 형식 정규식으로 검사해야함....
 		form.email.value = form.email.value.trim();
 
 		if (form.email.value.length == 0) {
@@ -261,6 +253,7 @@
 					</div>
 				</td>
 			</tr>
+			<!-- 권한 분리 없애야함... -->
 			<tr>
 				<th>직업</th>
 				<td>

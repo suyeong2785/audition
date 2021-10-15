@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%@ include file="../../usr/part/head.jsp"%>
-<%@ include file="../../part/toastuiEditor.jsp"%>
+
 
 <script>
 	//작성한 배역(actingRole)상세정보들을 담아 놓기위한 전역Map을 생성
@@ -461,9 +461,11 @@
 		value="../../usr/actingRole/detailArtwork?id=#id">
 	<input type="hidden" name="fileIdsStr">
 	<input type="hidden" name="actingRoleIdsStr">
+	<!-- 이전구조에 쓰이던 데이터라 필요없음 -->
 	<input type="hidden" name="actingRole" />
 	<input type="hidden" name="actingRoleGender" />
 	<input type="hidden" name="actingRoleAge" />
+	
 	<input type="hidden" name="memberId" value="${loginedMemberId}" />
 
 	<div class="con">
@@ -587,7 +589,7 @@
 <form id="actingRole-form" onsubmit="return false;">
 	<div id="actingRole-modal" class="modal-background px-4 z-50">
 		<div
-			class="modal-content-no-bg rounded-2xl bg-gray-200 p-4 max-height-80vh">
+			class="modal-content-no-bg w-full rounded-2xl bg-gray-200 p-4 max-height-80vh">
 			<div class="grid gap-y-4">
 				<div class="actingRole-name flex justify-center font-black text-xl"></div>
 				<div class="flex items-center justify-center">
@@ -717,11 +719,7 @@
 </form>
 
 <script>
-	//영화,드라마,cf 등에 따른 다른 form을 제공해야함...생각중...db도 구상해야함
-	$('select[name="media"]').change(
-		function() {}
-	});
-	
+
 	var actingRoleCount = 0;
 	//회원모달창 켜졌을경우 외부영역 클릭 시 팝업 닫기
 	$('.modal-background')

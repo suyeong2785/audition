@@ -4,7 +4,6 @@
 
 <c:set var="pageTitle" value="${board.name} 게시물 상세내용" />
 <%@ include file="../part/head.jsp"%>
-<%@ include file="../../part/toastuiEditor.jsp"%>
 
 <div class="article-detail-box table-box table-box-vertical con">
 	<table>

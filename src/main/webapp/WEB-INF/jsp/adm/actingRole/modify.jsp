@@ -4,7 +4,7 @@
 
 <c:set var="pageTitle" value="배역추가" />
 <%@ include file="../part/head.jsp"%>
-<%@ include file="../../part/toastuiEditor.jsp"%>
+
 
 <script>
 	function ActingRoleModifyForm__submit(form) {

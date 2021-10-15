@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="${job.name} 모집 수정" />
 <%@ include file="../part/head.jsp"%>
-<%@ include file="../../part/toastuiEditor.jsp"%>
+
 <script>
 	function RecruitmentModifyForm__submit(form) {
 		if (isNowLoading()) {
