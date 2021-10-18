@@ -32,6 +32,7 @@ import com.quantom.audition.util.Util;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @Controller
 public class HomeController {
+	
 	@Value("${custom.environment}")
 	private String environment;
 	

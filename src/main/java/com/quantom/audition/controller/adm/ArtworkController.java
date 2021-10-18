@@ -23,7 +23,9 @@ import com.quantom.audition.service.ArtworkService;
 import com.quantom.audition.service.ShareService;
 import com.quantom.audition.util.Util;
 
-//캐스팅공고(artwork)를 관리하는 컨트롤러
+/**
+ * 캐스팅공고(artwork)를 관리하는 컨트롤러
+ */
 @Controller
 public class ArtworkController {
 
@@ -39,6 +41,15 @@ public class ArtworkController {
 	@Autowired
 	private ActingRoleService actingRoleService;
 
+	/**
+	 * 지원공고 리스트 (adm 과 나머지) // 진행중인 캐스팅(마이페이지)
+	 * 
+	 * adm -> 진행중인캐스팅 (지원공고 수정 가능)
+	 * @param model
+	 * @param authority
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("/{authority}/actingRole/artworkList")
 	public String showAdmArtworkList(Model model, @PathVariable("authority") String authority,HttpServletRequest req) {
 		int memberId = Util.getAsInt(req.getAttribute("loginedMemberId"));
@@ -55,11 +66,25 @@ public class ArtworkController {
 		return url;
 	}
 
+	/**
+	 * 지원공고 작성 메소드(뷰)
+	 * 
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/adm/actingRole/writeArtwork")
 	public String showWriteArtwork(Model model) {
 		return "adm/actingRole/writeArtwork";
 	}
 
+	/**
+	 * 지원공고 작성 메소드(메소드)
+	 * 
+	 * @param param
+	 * @param req
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/adm/actingRole/doWriteArtwork")
 	public String doWriteArtwork(@RequestParam Map<String, Object> param, HttpServletRequest req, Model model) {
 		int newArtworkId = artworkService.writeArtwork(param);
@@ -70,6 +95,17 @@ public class ArtworkController {
 		return "redirect:" + redirectUri;
 	}
 
+	/**
+	 * 지원공고 상세보기 메소드  ( 유저 / 어드민 나뉘어있음 ) 
+	 * 
+	 * 어드민은 사용하지 않음
+	 * @param model
+	 * @param authority
+	 * @param param
+	 * @param req
+	 * @param listUrl
+	 * @return
+	 */
 	@RequestMapping("/{authority}/actingRole/detailArtwork")
 	public String showDetailArtwork(Model model, @PathVariable("authority") String authority,
 			@RequestParam Map<String, Object> param, HttpServletRequest req, String listUrl) {
@@ -99,6 +135,15 @@ public class ArtworkController {
 		return url;
 	}
 
+	/**
+	 * 지원공고 수정 (진행중인 캐스팅 수정 -> 마이페이지에서 접근 가능) (뷰)
+	 * 
+	 * @param model
+	 * @param param
+	 * @param req
+	 * @param listUrl
+	 * @return
+	 */
 	@RequestMapping("/adm/actingRole/modifyArtwork")
 	public String showModifyArtwork(Model model, @RequestParam Map<String, Object> param, HttpServletRequest req,
 			String listUrl) {
@@ -119,6 +164,15 @@ public class ArtworkController {
 		return "adm/actingRole/modifyArtwork";
 	}
 
+	
+	/**
+	 * 지원공고 수정 (진행중인 캐스팅 수정 -> 마이페이지에서 접근 가능) (로직)
+	 * 
+	 * @param param
+	 * @param req
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/adm/actingRole/doModifyArtwork")
 	public String doModifyArtwork(@RequestParam Map<String, Object> param, HttpServletRequest req, Model model) {
 

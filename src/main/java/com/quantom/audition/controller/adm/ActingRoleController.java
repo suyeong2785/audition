@@ -25,7 +25,10 @@ import com.quantom.audition.service.ArtworkService;
 import com.quantom.audition.service.NotificationService;
 import com.quantom.audition.util.Util;
 
-//캐스팅공고(artwork)에 해당하는 배역(actingRole)을 관리하는 컨트롤러
+/**
+ * 캐스팅공고(artwork)에 해당하는 배역(actingRole)을 관리하는 컨트롤러 
+ * Artwork - 지원공고
+ */
 @Controller
 public class ActingRoleController {
 
@@ -103,6 +106,11 @@ public class ActingRoleController {
 		return new ResultData("S-1", "해당하는 작품의 배역리스트를 찾았습니다.","actingRoles",actingRoles);
 	}
 
+	/**
+	 * 오디션 등록 메소드(뷰)
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/adm/actingRole/write")
 	public String showWrite(Model model) {
 		List<Artwork> artworks = artworkService.getArtworks();
@@ -112,6 +120,13 @@ public class ActingRoleController {
 		return "adm/actingRole/write";
 	}
 
+	/**
+	 * 오디션 등록 메소드(로직)
+	 * @param param
+	 * @param req
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/adm/actingRole/doWrite")
 	public String doWrite(@RequestParam Map<String, Object> param, HttpServletRequest req, Model model) {
 

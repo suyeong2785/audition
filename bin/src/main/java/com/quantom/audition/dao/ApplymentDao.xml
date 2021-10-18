@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quantom.audition.dao.ApplymentDao">
+
+	<select id="getRowNumbersOfApplymentsByMemberIdAndArtworkId" resultType="HashMap">
+		SET @RNUM := 0;
+
+		SELECT  @RNUM:=@RNUM+1 AS rownum, AC.id AS actingRoleId
+		FROM applyment AS AP
+		LEFT 
+		JOIN actingRole AS AC
+		ON AP.relId = AC.id
+		RIGHT
+		JOIN artwork AS AR
+		ON AC.artworkId = AR.id
+		AND AR.id = #{artworkId}
+		WHERE AP.memberId = #{memberId}
+		AND AP.relTypeCode = "actingRole"
+		AND AP.displayStatus = 1
+	</select>
+	
+	
+	<select id="getApplyments" resultType="applyment">
+		SELECT * FROM
+		applyment 
+		WHERE memberId = #{memberId}
+		AND delStatus = 0 
+	</select>
+	
+	<select id="getApplymentsByArtworkId" resultType="applyment">
+		SELECT * FROM
+		applyment 
+		WHERE artworkId = #{artworkId}
+		AND memberId = #{memberId}
+		AND delStatus = 0
+	</select>
+	
+	<select id="getApplymentsIdsByRelIds" resultType="int">
+		SELECT id FROM
+		applyment 
+		WHERE relId IN
+		<foreach item="relId" index="index" collection="relIds" open="("
+			separator="," close=")">
+			#{relId}
+		</foreach>
+		AND relTypeCode = #{relTypeCode} 
+		AND delStatus = 0
+	</select>
+	
+	<select id="getApplymentsIdsByRelIdAndRelTypeCode" resultType="int">
+		SELECT id FROM
+		applyment 
+		WHERE relId = #{relId}
+		AND relTypeCode = #{relTypeCode} 
+		AND delStatus = 0
+	</select>
+	
+	<select id="notifyUserOfApplymentResult" resultMap="applymentNotification">
+		SELECT AP.id,
+		AC.id AS actingRole__Id,
+		AC.role AS actingRole__role,
+		AR.Id AS artwork__id,
+		AR.title AS artwork__title
+		FROM applyment AS AP 
+		LEFT JOIN
+		actingRole AS AC
+		ON AP.relId = AC.id
+		LEFT JOIN
+		artwork AS AR
+		ON AR.id = AC.artworkId
+		WHERE AP.memberId = #{memberId}
+		AND AP.alarmStatus = 0
+		AND AP.delStatus = 0
+		AND AP.result != 0
+		AND AP.checkStatus = 0
+	</select>
+	
+	<select id="getForPrintApplyments" resultMap="applyment">
+
+		SELECT AM.*,
+		M.nickname AS extra__writer,
+		M.age AS extra__age,
+		M.gender
+		AS extra__gender,
+		M.name AS extra__writerRealName,
+		M.cellphoneNo AS
+		extra__writerCellphoneNo,
+		M.email AS extra__writerEmail,
+		M.nickname AS
+		extra__writer
+		FROM applyment AS AM
+		INNER JOIN member AS M
+		ON AM.memberId
+		= M.id
+		WHERE AM.relId = #{relId}
+		AND AM.relTypeCode = #{relTypeCode}
+		AND
+		AM.displayStatus = 1
+		AND AM.delStatus = 0
+		AND AM.id <![CDATA[ >= ]]>
+		#{from}
+		<if test="memberId != null">AND AM.memberId = #{memberId}</if>
+		ORDER BY AM.id ASC
+	</select>
+
+	<select id="getForPrintApplymentRelatedToResult"
+		resultMap="applyment">
+		SELECT AM.*,
+		M.nickname AS extra__writer,
+		M.age AS extra__age,
+		M.gender
+		AS extra__gender,
+		M.name AS extra__writerRealName,
+		M.cellphoneNo AS
+		extra__writerCellphoneNo,
+		M.email AS
+		extra__writerEmail,
+		M.nickname AS
+		extra__writer
+		FROM applyment AS AM
+		INNER JOIN member AS M
+		ON AM.memberId
+		= M.id
+		WHERE AM.displayStatus = 1
+		AND AM.id =
+		#{id}
+		AND AM.result = #{result}
+		AND AM.delStatus = 0
+		ORDER BY AM.id ASC
+	</select>
+
+	<select id="getForPrintApplyment" resultMap="applyment">
+		SELECT AM.*,
+		M.nickname AS extra__writer,
+		M.age AS extra__age,
+		M.gender AS
+		extra__gender,
+		M.name AS extra__writerRealName,
+		M.cellphoneNo AS
+		extra__writerCellphoneNo,
+		M.email AS extra__writerEmail,
+		M.nickname AS
+		extra__writer
+		FROM applyment AS AM
+		INNER JOIN member AS M
+		ON AM.memberId
+		= M.id
+		WHERE AM.displayStatus = 1
+		AND AM.delStatus = 0
+		AND AM.id = #{id}
+	</select>
+
+	<select id="getForPrintApplymentsByRelIdAndRelTypeCode"
+		resultMap="applymentForAudition">
+		SELECT AP.*,
+		M.id AS member__id,
+		M.name AS member__name,
+		M.age AS member__age,
+		M.gender AS member__gender,
+		M.recommendation AS member__recommendation,
+		MF.id AS file__member__Id,
+		MF.updateDate AS file__member__updateDate,
+		MF.relTypeCode AS file__member__relTypeCode,
+		MF.fileExt AS file__member__fileExt,
+		MF.fileDir AS file__member__fileDir,
+		AF.id AS file__applyment__id,
+		AF.updateDate AS file__applyment__updateDate,
+		AF.relTypeCode AS file__applyment__relTypeCode,
+		AF.fileExt AS file__applyment__fileExt,
+		AF.fileDir AS file__applyment__fileDir
+		FROM applyment AS AP
+		LEFT OUTER
+		JOIN member AS M
+		ON M.Id = AP.memberId
+		LEFT OUTER
+		JOIN file AS MF
+		ON MF.relId = M.id
+		AND MF.relTypeCode = "member"
+		AND MF.delStatus = 0
+		LEFT OUTER
+		JOIN file AS AF
+		ON AF.relTypeCode = "applyment"
+		AND AF.relId = AP.id
+		AND AF.delStatus = 0
+		WHERE AP.relTypeCode = #{relTypeCode}
+		AND AP.relId = #{relId}
+		AND AP.delStatus = 0
+		AND AP.Result = 0
+	</select>
+	
+	<select id="getActingRolesRelatedToApplymentByArtworkIdAjax" resultMap="ActingRoleByApplyment">
+		SELECT AP.* , AC.id AS extra__actingRole__id,
+		AC.regDate AS extra__actingRole__regDate,
+		AC.updateDate AS extra__actingRole__updateDate,
+		AC.startDate AS extra__actingRole__startDate,
+		AC.endDate AS extra__actingRole__endDate,
+		AC.role AS extra__actingRole__role,
+		AC.gender AS extra__actingRole__gender,
+		AC.age AS extra__actingRole__age,
+		AC.delDate AS extra__actingRole__delDate,
+		AC.delStatus AS extra__actingRole__delStatus,
+		F.id AS file__id,
+		F.updateDate AS file__updateDate,
+		F.relTypeCode AS file__relTypeCode,
+		F.fileExt AS file__fileExt,
+		F.fileDir AS file__fileDir
+		FROM applyment AS AP
+		LEFT 
+		JOIN actingRole AS AC
+		ON AP.relId = AC.id
+		RIGHT
+		JOIN artwork AS AR
+		ON AC.artworkId = AR.id
+		AND AR.id = #{artworkId}
+		LEFT 
+		JOIN file AS F
+		ON AP.id = F.relId
+		AND F.relTypeCode = "applyment"
+		AND F.delStatus = 0
+		WHERE AP.memberId = #{memberId}
+		AND AP.relTypeCode = "actingRole"
+		AND AP.displayStatus = 1 
+	</select>
+	
+	
+	<select id="getArtworkInfoRelatedToApplymentByMemberId" resultMap="ArtworkByApplyment">
+		SELECT DISTINCT AR.id AS extra__artwork__id,
+		AR.regDate AS extra__artwork__regDate,
+		AR.updateDate AS extra__artwork__updateDate,
+		AR.startDate AS extra__artwork__startDate,
+		AR.endDate AS extra__artwork__endDate,
+		AR.title AS extra__artwork__title,
+		AR.genre AS extra__artwork__genre,
+		AR.delStatus AS extra__artwork__delStatus,
+		AR.delDate AS extra__artwork__delDate,
+		F.id AS file__id,
+		F.updateDate AS file__updateDate,
+		F.relTypeCode AS file__relTypeCode,
+		F.fileExt AS file__fileExt,
+		F.fileDir AS file__fileDir
+		FROM applyment AS AP
+		LEFT 
+		JOIN actingRole AS AC
+		ON AP.relId = AC.id
+		LEFT
+		JOIN artwork AS AR
+		ON AC.artworkId = AR.id
+		LEFT 
+		JOIN file AS F
+		ON AR.id = F.relId
+		AND F.relTypeCode = "artwork"
+		AND F.delStatus = 0
+		WHERE AP.memberId = #{memberId}
+		AND AP.relTypeCode = #{relTypeCode}
+		AND AP.delStatus = 0
+	</select>
+	
+	<select id="getActingRolesRelatedToApplymentByMemberId" resultMap="actingRoleByMemberId">
+		SELECT AP.*, AC.id AS actingRole__id
+		FROM applyment AS AP
+		LEFT 
+		JOIN actingRole AS AC
+		ON AP.relId = AC.id
+		WHERE AP.memberId = #{memberId}
+		AND AP.relTypeCode = "actingRole"
+	</select>
+
+	<select id="getForPrintApplymentsByResult"
+		resultMap="applymentAndRecommendatin">
+		SELECT
+		AM.*,
+		M.nickname AS extra__writer,
+		M.age AS extra__age,
+		M.gender AS
+		extra__gender,
+		M.name AS extra__writerRealName,
+		M.cellphoneNo AS
+		extra__writerCellphoneNo,
+		M.email AS
+		extra__writerEmail,
+		M.nickname AS
+		extra__writer,
+		M.recommendation AS
+		extra__writerRecommendation
+		FROM
+		applyment AS AM
+		INNER JOIN member AS M
+		ON AM.memberId
+		= M.id
+		WHERE
+		AM.displayStatus = 1
+		AND AM.relId = #{relId}
+		AND AM.relTypeCode =
+		#{relTypeCode}
+		AND AM.id <![CDATA[ >= ]]>
+		#{from}
+		AND AM.result = 0
+		AND AM.delStatus = 0
+	</select>
+
+	<insert id="writeApplyment" useGeneratedKeys="true"
+		keyProperty="id">
+		INSERT INTO applyment
+		SET regDate = NOW(),
+		updateDate =
+		NOW(),
+		memberId = #{memberId},
+		relTypeCode =
+		#{relTypeCode},
+		relId =
+		#{relId},
+		displayStatus
+		= 1
+	</insert>
+
+	<select id="getForPrintApplymentById" resultMap="applyment">
+		SELECT AM.*,
+		M.nickname AS extra__writer,
+		M.name AS extra__writerRealName,
+		M.cellphoneNo AS extra__writerCellphoneNo,
+		M.email AS
+		extra__writerEmail,
+		M.nickname AS extra__writer
+		FROM applyment AS
+		AM
+		INNER JOIN member AS M
+		ON
+		AM.memberId = M.id
+		WHERE AM.id = #{id}
+		AND
+		AM.displayStatus = 1
+		AND AM.id
+		= #{id}
+		AND AM.delStatus = 0
+	</select>
+
+	<select id="getApplymentsByRelId" resultMap="applyment">
+		SELECT *
+		FROM
+		applyment AS AM
+		WHERE AM.relId = #{relId}
+		AND AM.relTypeCode =
+		#{relTypeCode}
+		AND AM.delStatus = 0
+		ORDER BY AM.id DESC
+	</select>
+
+	<select id="getApplymentByRelIdAndMemberId"
+		resultMap="applyment">
+		SELECT *
+		FROM applyment AS AM
+		WHERE AM.relId = #{relId}
+		AND
+		AM.relTypeCode = #{relTypeCode}
+		AND AM.memberId = #{memberId}
+		AND
+		AM.delStatus = 0
+	</select>
+
+	<select id="getApplymenResultInfoByMemberId"
+		resultMap="applymentResult">
+		SELECT Apply.*,
+		Act.role AS
+		extra__actingRole,
+		Act.job AS
+		extra__actingJob,
+		Act.gender AS
+		extra__actingGender,
+		Act.StartDate AS
+		extra__actingStartDate,
+		Act.EndDate AS
+		extra__actingEndDate,
+		Art.title AS
+		extra__artworkTitle,
+		Art.productionName
+		AS extra__ProductionName,
+		Art.directorName AS extra__directorName,
+		ARTF.id AS
+		artwork__id,
+		ARTF.updateDate AS artwork__updateDate,
+		ARTF.relTypeCode
+		AS
+		artwork__relTypeCode,
+		ARTF.fileExt AS
+		artwork__fileExt,
+		ARTF.typeCode AS
+		artwork__typeCode,
+		ARTF.fileDir AS artwork__fileDir
+		FROM
+		applyment AS
+		Apply
+		LEFT OUTER
+		JOIN `actingRole` AS Act
+		ON
+		Apply.relId = Act.id
+		LEFT
+		OUTER JOIN
+		`artwork` AS Art
+		ON Act.artworkId
+		= Art.id
+		LEFT OUTER JOIN
+		`file` AS ARTF
+		ON ARTF.relId = Art.id
+		AND ARTF.relTypeCode = "artwork"
+		WHERE Apply.MemberId =
+		#{memberId}
+		AND Apply.delStatus = 0
+	</select>
+
+	<update id="deleteApplyment">
+		UPDATE applyment
+		SET updateDate = NOW(),
+		delStatus = 1,
+		delDate = NOW(),
+		displayStatus = 0
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteApplymentsByRelIdsAndRelTypeCode">
+		UPDATE applyment
+		SET updateDate = NOW(), 
+		delStatus = 1,
+		delDate = NOW()
+		WHERE relId IN
+		<foreach item="relId" index="index" collection="relIds" open="("
+			separator="," close=")">
+			#{relId}
+		</foreach>
+		AND relTypeCode = #{relTypeCode}
+	</update>
+	
+	<update id="deleteApplymentsByRelIdAndRelTypeCode">
+		UPDATE applyment
+		SET updateDate = NOW(),
+		delStatus = 1,
+		delDate = NOW()
+		WHERE relId = #{relId}
+		AND relTypeCode = #{relTypeCode}
+	</update>
+
+	<update id="modifyApplyment">
+		UPDATE applyment
+		<set>
+			updateDate = NOW(),
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<update id="changeHideStatus">
+		UPDATE applyment
+		<set>
+			hideStatus = #{hideStatus}
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<update id="changeApplymentResult">
+		UPDATE applyment
+		<set>
+			updateDate = NOW(),
+			result = #{result}
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="changeApplymentAlarmStatus">
+		UPDATE applyment
+		<set>
+			updateDate = NOW(),
+			alarmDate = NOW(),
+			alarmStatus = #{alarmStatus}
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="changeApplymentCheckStatus">
+		UPDATE applyment
+		<set>
+			updateDate = NOW(),
+			checkDate = NOW(),
+			checkStatus = #{checkStatus}
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<resultMap type="Applyment" id="applyment">
+		<id property="id" column="id" />
+		<id property="regDate" column="regDate" />
+		<id property="updateDate" column="updateDate" />
+		<id property="memberId" column="memberId" />
+		<id property="relId" column="relId" />
+		<id property="result" column="result" />
+		<id property="relTypeCode" column="relTypeCode" />
+		<id property="delDate" column="delDate" />
+		<id property="delStatus" column="delStatus" />
+		<id property="alarmDate" column="alarmDate" />
+		<id property="alarmStatus" column="alarmStatus" />
+		<id property="checkDate" column="checkDate" />
+		<id property="checkStatus" column="checkStatus" />
+		<id property="displayStatus" column="displayStatus" />
+		<id property="hideStatus" column="hideStatus" />
+	</resultMap>
+	
+	<resultMap type="Applyment" id="applymentNotification" extends="applyment">
+		<association property="extra" javaType="map">
+			<id property="actingRoleId" column="actingRole__id" />
+			<id property="actingRole" column="actingRole__role" />
+			<id property="artworkId" column="artwork__id" />
+			<id property="artworkTitle" column="artwork__title" />
+		</association>
+	</resultMap>
+	
+	<resultMap type="Applyment" id="actingRoleByMemberId" extends="applyment">
+		<association property="extra" javaType="map">
+			<id property="actingRoleId" column="actingRole__id" />
+		</association>
+	</resultMap>
+
+	<resultMap type="Applyment" id="applymentAndRecommendatin"
+		extends="applyment">
+		<association property="extra" javaType="map">
+			<id property="writer" column="extra__writer" />
+			<id property="writerAge" column="extra__age" />
+			<id property="writerGender" column="extra__gender" />
+			<id property="writerCellphoneNo" column="extra__writerCellphoneNo" />
+			<id property="writerEmail" column="extra__writerEmail" />
+			<id property="writerRealName" column="extra__writerRealName" />
+			<id property="writerRecommendation"
+				column="extra__writerRecommendation" />
+		</association>
+	</resultMap>
+
+	<resultMap type="Applyment" id="applymentResult"
+		extends="applyment">
+		<association property="extra" javaType="map">
+			<id property="actingRole" column="extra__actingRole" />
+			<id property="actingJob" column="extra__actingJob" />
+			<id property="actingGender" column="extra__actingGender" />
+			<id property="actingStartDate" column="extra__actingStartDate" />
+			<id property="actingEndDate" column="extra__actingEndDate" />
+			<id property="artworkId" column="extra__artworkId" />
+			<id property="artworkTitle" column="extra__artworkTitle" />
+			<id property="ProductionName" column="extra__ProductionName" />
+			<id property="directorName" column="extra__directorName" />
+		</association>
+		<collection property="files" resultMap="files"
+			ofType="File" columnPrefix="artwork__" />
+	</resultMap>
+	
+	<resultMap type="Applyment" id="ArtworkByApplyment">
+		<association property="extra" javaType="map">
+			<id property="artworkId" column="extra__artwork__id" />
+			<id property="artworkRegDate" column="extra__artwork__regDate" />
+			<id property="artworkUpdateDate" column="extra__artwork__updateDate" />
+			<id property="artworkStartDate" column="extra__artwork__startDate" />
+			<id property="artworkEndDate" column="extra__artwork__endDate" />
+			<id property="artworkTitle" column="extra__artwork__title" />
+			<id property="artworkGenre" column="extra__artwork__genre" />
+			<id property="artworkDelStatus" column="extra__artwork__delStatus" />
+			<id property="artworkDelDate" column="extra__artwork__delDate" />
+			<id property="fileId" column="file__id" />
+			<id property="fileUpdateDate"
+				column="file__updateDate" />
+			<id property="fileRelTypeCode"
+				column="file__relTypeCode" />
+			<id property="fileExt" column="file__fileExt" />
+			<id property="fileDir" column="file__fileDir" />
+		</association>
+	</resultMap>
+	
+	<resultMap type="Applyment" id="ActingRoleByApplyment" extends="applyment">
+		<association property="extra" javaType="map">
+			<id property="id" column="extra__actingRole__id" />
+			<id property="regDate" column="extra__actingRole__regDate" />
+			<id property="updateDate" column="extra__actingRole__updateDate" />
+			<id property="startDate" column="extra__actingRole__startDate" />
+			<id property="endDate" column="extra__actingRole__endDate" />
+			<id property="role" column="extra__actingRole__role" />
+			<id property="gender" column="extra__actingRole__gender" />
+			<id property="age" column="extra__actingRole__age" />
+			<id property="result" column="extra__actingRole__result" />
+			<id property="delStatus" column="extra__actingRole__delStatus" />
+			<id property="delDate" column="extra__actingRole__delDate" />
+			<id property="fileId" column="file__id" />
+			<id property="fileUpdateDate"
+				column="file__updateDate" />
+			<id property="fileRelTypeCode"
+				column="file__relTypeCode" />
+			<id property="fileExt" column="file__fileExt" />
+			<id property="fileDir" column="file__fileDir" />
+		</association>
+	</resultMap>
+
+	<resultMap type="Applyment" id="applymentForAudition"
+		extends="applyment">
+		<association property="extra" javaType="map">
+			<id property="memberId" column="member__id" />
+			<id property="memberName" column="member__name" />
+			<id property="memberAge" column="member__age" />
+			<id property="memberGender" column="member__gender" />
+			<id property="memberRecommendation" column="member__recommendation" />
+			<id property="fileIdForMember" column="file__member__id" />
+			<id property="fileUpdateDateForMember"
+				column="file__member__updateDate" />
+			<id property="fileRelTypeCodeForMember"
+				column="file__member__relTypeCode" />
+			<id property="fileExtForMember" column="file__member__fileExt" />
+			<id property="fileDirForMember" column="file__member__fileDir" />
+			<id property="fileIdForApplyment" column="file__applyment__id" />
+			<id property="fileUpdateDateForApplyment"
+				column="file__applyment__updateDate" />
+			<id property="fileRelTypeCodeForApplyment"
+				column="file__applyment__relTypeCode" />
+			<id property="fileExtForApplyment" column="file__applyment__fileExt" />
+			<id property="fileDirForApplyment" column="file__applyment__fileDir" />
+		</association>
+	</resultMap>
+
+	<resultMap id="files" type="File">
+		<id property="id" column="id" />
+		<id property="updateDate" column="updateDate" />
+		<id property="relTypeCode" column="relTypeCode" />
+		<id property="typeCode" column="typeCode" />
+		<id property="fileExt" column="fileExt" />
+		<id property="fileDir" column="fileDir" />
+	</resultMap>
+</mapper>

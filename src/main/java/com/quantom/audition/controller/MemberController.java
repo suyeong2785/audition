@@ -27,6 +27,7 @@ import com.quantom.audition.util.Util;
 
 @Controller
 public class MemberController {
+	
 	@Autowired
 	private MemberService memberService;
 	
@@ -39,11 +40,24 @@ public class MemberController {
 	@Autowired
 	private IsniSearchService isniSearchService;
 
+	/**
+	 * 아이디/비밀번호 찾기 메소드(뷰)
+	 * 
+	 * @return
+	 */
 	@RequestMapping("/usr/member/findLoginInfo")
 	public String showFindLoginInfo() {
 		return "usr/member/findLoginInfo";
 	}
 
+	/**
+	 * 아이디 찾기 메소드(로직)
+	 * 
+	 * @param name
+	 * @param email
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/usr/member/doFindLoginId")
 	public String doFindLoginId(String name, String email, Model model) {
 		Member member = memberService.getMemberByNameAndEmail(name, email);
@@ -59,6 +73,17 @@ public class MemberController {
 		return "common/redirect";
 	}
 
+	
+	/**
+	 * 비밀번호 찾기 메소드(로직)
+	 * 
+	 * @param loginId
+	 * @param email
+	 * @param redirectUri
+	 * @param model
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("/usr/member/doFindLoginPw")
 	public String doFindLoginPw(String loginId, String email, String redirectUri, Model model, HttpServletRequest req) {
 		Member member = memberService.getMemberByLoginId(loginId);
@@ -88,11 +113,25 @@ public class MemberController {
 		return "common/redirect";
 	}
 
+	/**
+	 * 회원가입 메소드 (뷰)
+	 * 
+	 * @return
+	 */
 	@RequestMapping("/usr/member/join")
 	public String showWrite() {
 		return "usr/member/join";
 	}
 
+	/**
+	 * 회원가입 메소드 (로직)
+	 * 
+	 * redirect 관련 이슈 있음
+	 * 
+	 * @param param
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/usr/member/doJoin")
 	public String doWrite(@RequestParam Map<String, Object> param, Model model) {
 		Util.changeMapKey(param, "loginPwReal", "loginPw");
@@ -114,16 +153,36 @@ public class MemberController {
 		return "common/redirect";
 	}
 
+	/**
+	 * 로그인 메소드
+	 * 
+	 * @return
+	 */
 	@RequestMapping("/usr/member/login")
 	public String showLogin() {
 		return "usr/member/login";
 	}
 
+	
+	/**
+	 * 내 정보 수정시 비밀번호 재확인용 메소드(뷰)
+	 * 
+	 * @return
+	 */
 	@RequestMapping("/usr/member/checkPassword")
 	public String showCheckPassword() {
 		return "usr/member/checkPassword";
 	}
 
+	/**
+	 * 내 정보 수정시 비밀번호 재확인용 메소드(로직)
+	 * 
+	 * @param loginPwReal
+	 * @param redirectUri
+	 * @param model
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("/usr/member/doCheckPassword")
 	public String doCheckPassword(String loginPwReal, String redirectUri, Model model, HttpServletRequest req) {
 		String loginPw = loginPwReal;
@@ -148,6 +207,17 @@ public class MemberController {
 		return "common/redirect";
 	}
 
+	
+	/**
+	 * 로그인 로직(로직)
+	 * 
+	 * @param loginId
+	 * @param loginPwReal
+	 * @param redirectUri
+	 * @param model
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("/usr/member/doLogin")
 	public String doLogin(String loginId, String loginPwReal, String redirectUri, Model model, HttpSession session) { 
 		
@@ -193,6 +263,14 @@ public class MemberController {
 		return "common/redirect";
 	}
 
+	/**
+	 * 로그아웃 메소드
+	 * 
+	 * @param session
+	 * @param model
+	 * @param redirectUri
+	 * @return
+	 */
 	@RequestMapping("/usr/member/doLogout")
 	public String doLogout(HttpSession session, Model model, String redirectUri) {
 		session.removeAttribute("loginedMemberId");
@@ -207,6 +285,16 @@ public class MemberController {
 		return "common/redirect";
 	}
 
+	/**
+	 * 회원정보 수정 메소드(뷰)
+	 * 회원경력 정보 포함 (Career)
+	 * 
+	 * @param session
+	 * @param model
+	 * @param req
+	 * @param checkPasswordAuthCode
+	 * @return
+	 */
 	@RequestMapping("/usr/member/modify")
 	public String showModify(HttpSession session, Model model, HttpServletRequest req, String checkPasswordAuthCode) {
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
@@ -241,6 +329,14 @@ public class MemberController {
 		return "usr/member/modify";
 	}
 
+	/**
+	 * 회원정보 수정 메소드(로직)
+	 * 
+	 * @param param
+	 * @param model
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("/usr/member/doModify")
 	public String doWrite(@RequestParam Map<String, Object> param, Model model, HttpServletRequest req) {
 		Util.changeMapKey(param, "loginPwReal", "loginPw");
@@ -271,6 +367,13 @@ public class MemberController {
 		return "common/redirect";
 	}
 	
+	/**
+	 * 캐스팅 감독 리스트(ajax api 통신)
+	 * 
+	 * @param param
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("/usr/member/getCastingDirectorListAjax")
 	@ResponseBody
 	public ResultData getCastingDirectorListAjax(@RequestParam Map<String, Object> param, HttpServletRequest req) {

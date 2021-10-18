@@ -37,6 +37,12 @@ public class Util {
 		return htmlForPrint;
 	}
 
+	/**
+	 * 객체의 값을 int 로 받는 메소드
+	 * 
+	 * @param object
+	 * @return
+	 */
 	public static int getAsInt(Object object) {
 		if (object instanceof BigInteger) {
 			return ((BigInteger) object).intValue();
@@ -51,6 +57,7 @@ public class Util {
 		return -1;
 	}
 
+
 	public static Map<String, Object> getNewMapOf(Map<String, Object> oldMap, String... keys) {
 		Map<String, Object> newMap = new HashMap<>();
 
@@ -61,6 +68,14 @@ public class Util {
 		return newMap;
 	}
 
+	
+	/**
+	 * param key 변경 도와주는 메소드
+	 * 
+	 * @param param
+	 * @param oldKey
+	 * @param newKey
+	 */
 	public static void changeMapKey(Map<String, Object> param, String oldKey, String newKey) {
 		Object value = param.get(oldKey);
 		param.remove(oldKey);
@@ -187,6 +202,12 @@ public class Util {
 		}
 	}
 
+	/**
+	 * 객체 toString
+	 * 
+	 * @param object
+	 * @return
+	 */
 	public static String getAsStr(Object object) {
 		if (object == null) {
 			return "";
@@ -195,6 +216,10 @@ public class Util {
 		return object.toString();
 	}
 
+	/**
+	 * Number 판별
+	 * 
+	 */
 	public static boolean isNum(Object obj) {
 		if (obj == null) {
 			return false;

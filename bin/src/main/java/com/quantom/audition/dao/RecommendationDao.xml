@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quantom.audition.dao.RecommendationDao">
+
+	<insert id="doMakeRecommendMember" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO recommendation
+		SET regDate = NOW(),
+		updateDate = NOW(),
+		relTypeCode = #{relTypeCode},
+		relId = #{relId},
+		recommenderId = #{recommenderId},
+		recommendeeId = #{recommendeeId},
+		recommendationStatus = #{recommendationStatus};		
+	</insert>
+	
+	<select id="getRecommendationByRecommenderId" resultMap="RecommendationForPrint">
+		SELECT R.*,
+		M.name AS extra__requesterName
+		FROM recommendation AS R
+		LEFT OUTER
+		JOIN `member` AS M
+		ON R.recommenderId = M.id
+		WHERE recommenderId = #{recommenderId}
+		AND recommendeeId = #{recommendeeId}
+		
+	</select>
+
+	<select id="getForPrintRecommendationsByRecommendeeId" resultMap="RecommendationForPrint">
+		SELECT R.*,
+		M.name AS extra__requesterName
+		FROM recommendation AS R
+		LEFT OUTER
+		JOIN `member` AS M
+		ON R.recommenderId = M.id
+		WHERE recommendeeId = #{recommendeeId}
+	</select>
+	
+	<update id="doModifyRecommendStatus">
+		UPDATE recommendation
+		SET updateDate = NOW(),
+		recommendationStatus = #{recommendationStatus}
+		WHERE relTypeCode = #{relTypeCode}
+		AND relId = #{relId}
+		AND recommenderId = #{recommenderId}
+		AND recommendeeId = #{recommendeeId}
+	</update>
+	
+	<resultMap type="Recommendation" id="RecommendationForPrint" extends="recommendation">
+		<association property="extra" javaType="map">
+			<id property="requesterName" column="extra__requesterName" />
+		</association>
+	</resultMap>
+	
+	<resultMap type="Recommendation" id="recommendation">
+		<id property="id" column="id" />
+		<id property="regDate" column="regDate" />
+		<id property="updateDate" column="updateDate" />
+		<id property="relTypeCode" column="relTypeCode" />
+		<id property="relId" column="relId" />
+		<id property="recommenderId" column="recommenderId" />
+		<id property="recommendeeId" column="recommendeeId" />
+		<id property="recommendationStatus" column="recommendationStatus" />
+	</resultMap>
+
+</mapper>
