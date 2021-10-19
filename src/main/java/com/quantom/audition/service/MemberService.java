@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.xml.UtilNamespaceHandler;
 import org.springframework.stereotype.Service;
 
 import com.quantom.audition.dao.MemberDao;
@@ -210,4 +211,49 @@ public class MemberService {
 		return memberDao.getMemberByISNINumber(ISNI_number);
 	}
 
+	/**
+	 * 회원가입 정보 유효성 판별
+	 *
+	 * @param param
+	 * @return
+	 */
+	public ResultData checkJoinData(Map<String, Object> param) {
+
+		if ( param.get("loginId") == null || param.get("loginId").equals("") ) {
+
+			return new ResultData("F-1", "아이디를 다시 입력하여 주시기 바랍니다." );
+
+		} else if ( param.get("loginPw") == null || param.get("loginPw").equals("")) {
+
+			return new ResultData("F-1", "비밀번호를 다시 입력하여 주시기 바랍니다." );
+
+		} else if ( param.get("name") == null || param.get("name").equals("") ) {
+
+			return new ResultData("F-1", "이름을 다시 입력하여 주시기 바랍니다." );
+
+		} else if ( param.get("age") == null || Util.getAsInt(param.get("age")) > 200 ) {
+
+			return new ResultData("F-1", "나이를 다시 입력하여 주시기 바랍니다." );
+
+		} else if ( param.get("gender") == null ) {
+
+			return new ResultData("F-1", "성별을 다시 입력하여 주시기 바랍니다." );
+
+		} else if ( param.get("nickname") == null || param.get("nickname").equals("") ) {
+
+			return new ResultData("F-1", "활동명을 다시 입력하여 주시기 바랍니다." );
+
+		} else if ( param.get("email") == null || param.get("email").equals("") ) {
+
+			return new ResultData("F-1", "이메일을 다시 입력하여 주시기 바랍니다." );
+
+		} else if ( param.get("cellphoneNo") == null || param.get("cellphoneNo").equals("") ) {
+
+			return new ResultData("F-1", "핸드폰 번호를 다시 입력하여 주시기 바랍니다." );
+
+		}
+
+		return new ResultData("S-1", "유효한 정보입니다");
+
+	}
 }
