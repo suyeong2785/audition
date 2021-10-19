@@ -39,10 +39,12 @@ public class MemberService {
 	@Autowired
 	private CareerService careerService;
 
+	// 회원번호로 회원 찾기
 	public Member getMemberById(int id) {
 		return memberDao.getMemberById(id);
 	}
 
+	// 회원가입 로직
 	public int join(Map<String, Object> param) {
 		memberDao.join(param);
 
@@ -66,6 +68,7 @@ public class MemberService {
 		return id;
 	}
 
+	// 가입완료 이메일 송부 로직
 	private void sendJoinCompleteMail(String email) {
 		String mailTitle = String.format("[%s] 가입이 완료되었습니다.", siteName);
 
@@ -76,6 +79,7 @@ public class MemberService {
 		mailService.send(email, mailTitle, mailBodySb.toString());
 	}
 
+	// 가입가능한 아이디 여부 확인 로직
 	public ResultData checkLoginIdJoinable(String loginId) {
 		int count = memberDao.getLoginIdDupCount(loginId);
 
@@ -86,6 +90,7 @@ public class MemberService {
 		return new ResultData("F-1", "이미 사용중인 로그인 아이디 입니다.", "loginId", loginId);
 	}
 
+	// 아이디로 회원 조회 로직
 	public Member getMemberByLoginId(String loginId) {
 		return memberDao.getMemberByLoginId(loginId);
 	}
@@ -256,4 +261,33 @@ public class MemberService {
 		return new ResultData("S-1", "유효한 정보입니다");
 
 	}
-}
+	
+	
+	/**
+	 * 이메일로 회원 찾기
+	 * 
+	 * @param email
+	 * @return
+	 */
+	public Member getMemberByEmail(String email) {
+		return memberDao.getMemberByEmail(email);
+	}
+	
+	/**
+	 * 이메일 중복체크 로직
+	 *
+	 * @param email
+	 * @return
+	 */
+	public ResultData checkEmailDuple(String email) {
+		
+		Member findMember = getMemberByEmail(email);
+		
+		if ( findMember != null ) {
+			return new ResultData("F-1", "이미 존재하는 이메일 입니다.");
+		} else {
+			return new ResultData("S-1", "가입하실 수 있는 이메일 입니다.");
+		}
+		
+	}
+ }

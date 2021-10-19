@@ -155,18 +155,34 @@ public class MemberController {
 		return "common/redirect";
 	}
 
+	/*
+	 * 로그인 페이지 이동
+	 */
 	@RequestMapping("/usr/member/login")
 	public String showLogin() {
 		return "usr/member/login";
 	}
 
+	/*
+	 * 정보수정 이전 비밀번호 확인 페이지 
+	 */
 	@RequestMapping("/usr/member/checkPassword")
 	public String showCheckPassword() {
 		return "usr/member/checkPassword";
 	}
 
+	/**
+	 * 정보수정 이전 비밀번호 확인 로직
+	 * 
+	 * @param loginPwReal
+	 * @param redirectUri
+	 * @param model
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("/usr/member/doCheckPassword")
 	public String doCheckPassword(String loginPwReal, String redirectUri, Model model, HttpServletRequest req) {
+		
 		String loginPw = loginPwReal;
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
 
@@ -189,6 +205,16 @@ public class MemberController {
 		return "common/redirect";
 	}
 
+	/**
+	 * 로그인 로직
+	 * 
+	 * @param loginId
+	 * @param loginPwReal
+	 * @param redirectUri
+	 * @param model
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("/usr/member/doLogin")
 	public String doLogin(String loginId, String loginPwReal, String redirectUri, Model model, HttpSession session) { 
 		
@@ -234,6 +260,9 @@ public class MemberController {
 		return "common/redirect";
 	}
 
+	/*
+	 * 로그아웃 로직
+	 */
 	@RequestMapping("/usr/member/doLogout")
 	public String doLogout(HttpSession session, Model model, String redirectUri) {
 		session.removeAttribute("loginedMemberId");
@@ -248,6 +277,15 @@ public class MemberController {
 		return "common/redirect";
 	}
 
+	/**
+	 * 회원정보 수정 페이지
+	 * 
+	 * @param session
+	 * @param model
+	 * @param req
+	 * @param checkPasswordAuthCode
+	 * @return
+	 */
 	@RequestMapping("/usr/member/modify")
 	public String showModify(HttpSession session, Model model, HttpServletRequest req, String checkPasswordAuthCode) {
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
@@ -282,6 +320,14 @@ public class MemberController {
 		return "usr/member/modify";
 	}
 
+	/**
+	 * 회원정보 수정 로직
+	 * 
+	 * @param param
+	 * @param model
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("/usr/member/doModify")
 	public String doWrite(@RequestParam Map<String, Object> param, Model model, HttpServletRequest req) {
 		Util.changeMapKey(param, "loginPwReal", "loginPw");
@@ -349,6 +395,31 @@ public class MemberController {
 		}
 		
 		return new ResultData("S-1", "사용가능한 ISNI 번호입니다.");
+	}
+	
+	
+	/**
+	 * 이메일 중복체크 AJAX
+	 * 
+	 * @param email
+	 * @return
+	 */
+	@RequestMapping("/usr/member/emailDupleAjax")
+	@ResponseBody
+	public ResultData checkEmailDuple(String email) {
+		return memberService.checkEmailDuple(email);
+	}
+	
+	/**
+	 * 로그인 아이디 중복체크 AJAX
+	 * 
+	 * @param loginId
+	 * @return
+	 */
+	@RequestMapping("/usr/member/loginIdDupleAjax")
+	@ResponseBody
+	public ResultData checkLoginIdDuple(String loginId) {
+		return memberService.checkLoginIdJoinable(loginId);
 	}
 	
 }
