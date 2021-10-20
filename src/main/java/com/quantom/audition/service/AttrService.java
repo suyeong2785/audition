@@ -69,14 +69,20 @@ public class AttrService {
 		return attrDao.remove(relTypeCode, relId, typeCode, type2Code);
 	}
 
+	
+	/**
+	 * 값을 설정하는 메소드
+	 * 
+	 * @param relTypeCode
+	 * @param relId
+	 * @param typeCode
+	 * @param type2Code
+	 * @param value
+	 * @param expireDate
+	 * @return
+	 */
 	public int setValue(String relTypeCode, int relId, String typeCode, String type2Code, String value, String expireDate) {
-		System.out.println("relTypeCode : " + relTypeCode);
-		System.out.println("relId : " + relId);
-		System.out.println("typeCode : " + typeCode);
-		System.out.println("type2Code : " + type2Code);
-		System.out.println("value : " + value);
-		System.out.println("expireDate : " + expireDate);
-
+		
 		attrDao.setValue(relTypeCode, relId, typeCode, type2Code, value, expireDate);
 		Attr attr = get(relTypeCode, relId, typeCode, type2Code);
 
@@ -86,4 +92,27 @@ public class AttrService {
 
 		return -1;
 	}
+
+	/**
+	 * 유효한 코드인지 검사하는 로직
+	 * 
+	 * @param email
+	 * @param code
+	 * @return
+	 */
+	public boolean isValidCode(String email, String code) {
+		
+		// 인증 정보를 조회합니다.
+		Attr findAttr = attrDao.getAttrByTypeCodeAndValue(email, code);
+		
+		if ( findAttr != null ) {
+			// 정보가 조회되었을 때에는 true를 리턴합니다.
+			return true;
+		} else {
+			// 나머지 경우는 false를 리턴합니다.
+			return false;
+		}
+	
+	}
+
 }

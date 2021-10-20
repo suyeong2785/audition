@@ -290,4 +290,56 @@ public class MemberService {
 		}
 		
 	}
+
+	
+	/**
+	 * 이메일 인증코드 생성후 이메일로 발송
+	 * 
+	 * @param email
+	 * @return
+	 */
+	public ResultData verifyCode(String email) {
+		
+		// 6자리의 임시 코드를 발급합니다.
+		String verifyCode = Util.getTempPassword(6);
+		
+		// attr 테이블에 이메일 인증코드를 저장합니다.
+		attrService.setValue("member", 0, email, "emailVerifyCode", verifyCode, null);
+		
+		// mailService 의 역할을 memberService가 분담해서 하는 형태
+		// 메일에 포함될 내용 작성
+		String title = "[" + siteName + "] 회원가입 인증코드";
+		String body = "<h1>회원가입 인증 코드 : " + verifyCode + "</h1>";
+		
+		// 메일 발송
+		ResultData sendCode = mailService.send(email, title, body);
+		
+		// 메일 발송 실패시
+		if ( sendCode.isFail() ) {
+			return new ResultData("F-1", "메일 발송에 실패하였습니다");
+		}
+		
+		// 결과 리턴
+		return sendCode;
+	}
+
+	/**
+	 * 인증코드 검사 로직
+	 *  
+	 * @param email
+	 * @param code
+	 * @return
+	 */
+	public ResultData checkCode(String email, String code) {
+		
+		// 유효한 코드인지 검사합니다.
+		boolean isVaildCode = attrService.isValidCode(email,code);
+		
+		if ( isVaildCode ) {
+			return new ResultData("S-1", "코드가 일치합니다.");
+		} else {
+			return new ResultData("F-1", "코드가 일치하지 않습니다.");
+		}
+		
+	}
  }

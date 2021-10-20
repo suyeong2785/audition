@@ -42,6 +42,13 @@
 		ON DUPLICATE KEY UPDATE
 		updateDate = NOW() , `value` = #{value}, expireDate = #{expireDate}
 	</insert>
+	
+	<select id="getAttrByTypeCodeAndValue" resultType="Attr">
+		SELECT *
+		FROM attr
+		WHERE typeCode = #{typeCode}
+		AND value = #{value}
+	</select>
 
 	<select id="getArticleById" resultType="Article">
 		SELECT *

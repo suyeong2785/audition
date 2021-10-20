@@ -422,4 +422,29 @@ public class MemberController {
 		return memberService.checkLoginIdJoinable(loginId);
 	}
 	
+	/**
+	 * 인증코드 생성 및 이메일 발송 로직
+	 * 
+	 * @param email
+	 * @return
+	 */
+	@RequestMapping("/usr/member/sendCodeAjax")
+	@ResponseBody
+	public ResultData emailCheck(String email) {
+		return memberService.verifyCode(email);
+	}
+	
+	/**
+	 * 코드 일치검사
+	 * 
+	 * @param email
+	 * @param code
+	 * @return
+	 */
+	@RequestMapping("/usr/member/verifyCheck")
+	@ResponseBody
+	public ResultData checkVerifyCode(String email, String code) {
+		return memberService.checkCode(email, code);
+	}
+	
 }
