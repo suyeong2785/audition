@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quantom.audition.dao.ActingRoleDao">
+
+	<select id="getActingRoleById" resultType="ActingRole">
+		SELECT *
+		FROM
+		actingRole
+		WHERE
+		id = #{id}
+		AND delStatus = 0
+	</select>
+	
+	<select id="getActingRoleIdsByArtworkId" resultType="int">
+		SELECT id
+		FROM
+		actingRole
+		WHERE
+		artworkId = #{artworkId}
+		AND delStatus = 0
+	</select>
+
+	<select id="getActingRolesForPrintListByArtworkId"
+		resultType="ActingRole">
+		SELECT *
+		FROM
+		actingRole
+		WHERE
+		artworkId = #{artworkId}
+		<if test="limitStart != null and limitTake != null">
+			LIMIT #{limitStart} , #{limitTake}
+		</if>
+		AND delStatus = 0
+	</select>
+
+	<select id="getActingRolesForPrintAuditionsByArtworkId"
+		resultType="ActingRole">
+		SELECT *
+		FROM
+		actingRole
+		WHERE
+		artworkId = #{artworkId}
+		AND delStatus = 0
+	</select>
+
+	<select id="getActingRolesForPrintCastingCallModifyByArtworkId"
+		resultMap="actingRoleForCastingCallModify">
+		SELECT AR.*,
+		F.id AS
+		actingRole__id,
+		F.relTypeCode
+		AS
+		actingRole__relTypeCode,
+		F.originFileName
+		AS actingRole__originFileName,
+		F.fileExt AS
+		actingRole__fileExt,
+		F.typeCode AS
+		actingRole__typeCode,
+		F.fileDir AS actingRole__fileDir
+		FROM
+		actingRole AS AR
+		LEFT OUTER
+		JOIN
+		`file` AS F
+		ON AR.id = F.relId
+		AND F.relTypeCode = "actingRole"
+		AND F.typeCode = "script"
+		WHERE
+		AR.artworkId = #{artworkId}
+		AND AR.delStatus = 0
+	</select>
+
+	<select id="getActingRolesCountByArtworkId" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM
+		actingRole
+		WHERE
+		artworkId = #{artworkId}
+		AND delStatus = 0
+	</select>
+
+	<select id="getForPrintActingRoleById" resultMap="actingRole">
+		SELECT ACR.*,
+		ARW.title AS
+		extra__artworkTitle,
+		ARW.directorName AS
+		extra__directorName
+		FROM
+		actingRole AS
+		ACR
+		INNER JOIN artwork AS ARW
+		ON
+		ACR.artworkId = ARW.id
+		WHERE ACR.id = #{id}
+		AND ACR.delStatus = 0
+	</select>
+
+	<select id="getActingRoleForPrintDetailById"
+		resultMap="actingRoleForList">
+		 <![CDATA[
+		SELECT ACR.*,
+		ACRF.id AS
+		actingRole__id,
+		ACRF.updateDate AS actingRole__updateDate,
+		ACRF.relTypeCode
+		AS actingRole__relTypeCode,
+		ACRF.fileExt AS
+		actingRole__fileExt,
+		ACRF.typeCode AS
+		actingRole__typeCode,
+		ACRF.fileDir AS actingRole__fileDir,
+		MF.id AS
+		member__id,
+		MF.updateDate AS member__updateDate,
+		MF.relTypeCode AS member__relTypeCode,
+		MF.fileExt AS
+		member__fileExt,
+		MF.fileDir AS member__fileDir,
+		ARW.title AS
+		artwork__title,
+		ARW.genre AS
+		artwork__genre,
+		ARW.directorName AS artwork__directorName,
+		M.id AS writer__id,
+		M.authority AS writer__authority
+		FROM
+		actingRole AS
+		ACR
+		LEFT OUTER
+		JOIN artwork AS ARW
+		ON ACR.artworkId = ARW.id
+		LEFT OUTER
+		JOIN member
+		AS M
+		ON ARW.memberId = M.id
+		LEFT OUTER
+		JOIN file
+		AS ACRF
+		ON ACR.id = ACRF.relId
+		AND ACRF.relTypeCode = "actingRole"
+		AND ACRF.delStatus = 0
+		LEFT OUTER
+		JOIN file MF
+		ON ARW.memberId =
+		MF.relId
+		AND
+		MF.relTypeCode = "member"
+		AND MF.delStatus = 0
+		WHERE ACR.id = #{id}
+		AND ACR.delStatus = 0
+		]]>
+	</select>
+
+	<select id="getActingRoleByArtworkIdAndNameAndAgeAndGenderAjax"
+		resultMap="actingRoleForList">
+		SELECT * FROM actingRole
+		WHERE artworkId = #{artworkId}
+		AND
+		gender = #{gender}
+		AND age = #{age}
+		AND role = #{role}
+		AND delStatus = 0
+	</select>
+
+	<select
+		id="checkActingRoleAvailableByArtworkIdAndNamesAndAgesAndGendersAjax"
+		resultType="ActingRole">
+		SELECT * FROM actingRole
+		WHERE artworkId = #{artworkId}
+		AND role IN
+		<foreach item="role" index="index" collection="roles" open="("
+			separator="," close=")">
+			#{role}
+		</foreach>
+		AND delStatus = 0
+	</select>
+
+	<select id="getActingRolesForPrintList"
+		resultMap="actingRoleForList">
+		SELECT ACR.*,
+		ACRF.id AS
+		actingRole__id,
+		ACRF.updateDate AS
+		actingRole__updateDate,
+		ACRF.relTypeCode
+		AS actingRole__relTypeCode,
+		ACRF.fileExt AS
+		actingRole__fileExt,
+		ACRF.typeCode AS
+		actingRole__typeCode,
+		ACRF.fileDir AS actingRole__fileDir,
+		MF.id AS
+		member__id,
+		MF.updateDate AS member__updateDate,
+		MF.relTypeCode AS
+		member__relTypeCode,
+		MF.fileExt AS
+		member__fileExt,
+		MF.fileDir AS
+		member__fileDir,
+		ARW.title AS
+		artwork__title,
+		ARW.genre AS
+		artwork__genre,
+		ARW.directorName AS artwork__directorName,
+		M.id AS
+		writer__id,
+		M.authority AS writer__authority
+		FROM
+		actingRole AS
+		ACR
+		LEFT
+		OUTER
+		JOIN artwork AS ARW
+		ON ACR.artworkId = ARW.id
+		LEFT OUTER
+		JOIN member
+		AS M
+		ON ARW.memberId = M.id
+		LEFT OUTER
+		JOIN file
+		AS ACRF
+		ON ACR.id =
+		ACRF.relId
+		AND ACRF.relTypeCode = "actingRole"
+		<if test="typeCode != null and typeCode != '' ">
+			AND ACRF.typeCode = #{typeCode}
+		</if>
+		AND ACRF.delStatus = 0
+		LEFT OUTER
+		JOIN file MF
+		ON ARW.memberId =
+		MF.relId
+		AND
+		MF.relTypeCode =
+		"member"
+		AND MF.delStatus = 0
+		WHERE ACR.delStatus = 0
+	</select>
+
+	<insert id="write" useGeneratedKeys="true" keyProperty="id">
+		INSERT
+		INTO actingRole
+		SET regDate = NOW(),
+		updateDate = NOW(),
+		startDate
+		= #{startDate},
+		endDate = #{endDate},
+		<if test="artworkId != null and artworkId != '' ">
+			artworkId = #{artworkId},
+		</if>
+		role = #{role},
+		pay = #{pay},
+		age = #{age},
+		gender = #{gender},
+		job =
+		#{job},
+		feature = #{feature},
+		region = #{region},
+		schedule = #{schedule},
+		shotAngle = #{shotAngle},
+		scriptStatus = #{scriptStatus},
+		guideVideoUrl
+		= #{guideVideoUrl},
+		shootingsCount = #{shootingsCount}
+	</insert>
+
+	<update id="delete">
+		UPDATE actingRole 
+		SET updateDate = NOW(),
+		delDate = NOW(),
+		delStatus = 1
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteActingRolesByArtworkId">
+		UPDATE actingRole
+		SET updateDate = NOW(),
+		delDate = NOW(),
+		delStatus = 1
+		WHERE artworkId = #{artworkId}
+	</update>
+
+	<update id="modify">
+		UPDATE actingRole
+		<set>
+			updateDate = NOW(),
+			<if test="artworkId != null">
+				artworkId = #{artworkId},
+			</if>
+			<if test="startDate != null">
+				startDate = #{startDate},
+			</if>
+			<if test="endDate != null">
+				endDate = #{endDate},
+			</if>
+
+			<if test="role != null">
+				role = #{role},
+			</if>
+			<if test="pay != null">
+				pay = #{pay},
+			</if>
+
+			<if test="age != null">
+				age = #{age},
+			</if>
+
+			<if test="gender != null">
+				gender = #{gender},
+			</if>
+			<if test="job != null">
+				job = #{job},
+			</if>
+			<if test="feature != null">
+				feature = #{feature},
+			</if>
+			<if test="region != null">
+				region = #{region},
+			</if>
+			<if test="schedule != null">
+				schedule = #{schedule},
+			</if>
+			<if test="shotAngle != null">
+				shotAngle = #{shotAngle},
+			</if>
+			<if test="guideVideoUrl != null">
+				guideVideoUrl = #{guideVideoUrl},
+			</if>
+			<if test="scriptStatus != null">
+				`scriptStatus` = #{scriptStatus},
+			</if>
+
+			<if test="shootingsCount != null">
+				shootingsCount = #{shootingsCount},
+			</if>
+
+			<if test="scriptStatus != null">
+				scriptStatus = #{scriptStatus},
+			</if>
+
+			<if test="auditionStatus != null">
+				auditionStatus = #{auditionStatus},
+			</if>
+			<if test="shootingsCount != null">
+				shootingsCount = #{shootingsCount},
+			</if>
+			<if test="etc != null">
+				etc = #{etc}
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<update id="changeRelId">
+		UPDATE `actingRole`
+		SET updateDate = NOW(),
+		artworkId =
+		#{artworkId}
+		WHERE id = #{id}
+	</update>
+
+	<resultMap type="ActingRole" id="actingRole">
+		<id property="id" column="id" />
+		<id property="regDate" column="regDate" />
+		<id property="updateDate" column="updateDate" />
+		<id property="startDate" column="startDate" />
+		<id property="endDate" column="endDate" />
+		<id property="artworkId" column="artworkId" />
+		<id property="role" column="role" />
+		<id property="pay" column="pay" />
+		<id property="age" column="age" />
+		<id property="gender" column="gender" />
+		<id property="job" column="job" />
+		<id property="feature" column="feature" />
+		<id property="region" column="region" />
+		<id property="schedule" column="schedule" />
+		<id property="shotAngle" column="shotAngle" />
+		<id property="guideVideoUrl" column="guideVideoUrl" />
+		<id property="scriptStatus" column="scriptStatus" />
+		<id property="shootingsCount" column="shootingsCount" />
+	</resultMap>
+
+	<resultMap type="ActingRole" id="actingRoleWithArtork"
+		extends="actingRole">
+		<association property="extra" javaType="map">
+			<id property="directorName" column="artwork__directorName" />
+			<id property="genre" column="artwork__genre" />
+			<id property="title" column="artwork__title" />
+		</association>
+	</resultMap>
+
+	<resultMap type="ActingRole"
+		id="actingRoleForCastingCallModify" extends="actingRole">
+		<association property="extra" javaType="map"
+			columnPrefix="actingRole__">
+			<id property="idForActingRole" column="id" />
+			<id property="updateDateForActingRole" column="updateDate" />
+			<id property="relTypeCodeForActingRole" column="relTypeCode" />
+			<id property="originFileNameForActingRole" column="originFileName" />
+			<id property="typeCodeForActingRole" column="typeCode" />
+			<id property="fileExtForActingRole" column="fileExt" />
+			<id property="fileDirForActingRole" column="fileDir" />
+		</association>
+	</resultMap>
+
+	<resultMap type="ActingRole" id="actingRoleForList"
+		extends="actingRole">
+		<association property="extra" javaType="map">
+			<id property="directorName" column="artwork__directorName" />
+			<id property="artworkGenre" column="artwork__genre" />
+			<id property="artworkTitle" column="artwork__title" />
+			<id property="fileIdForMember" column="member__id" />
+			<id property="fileUpdateDateForMember" column="member__updateDate" />
+			<id property="fileRelTypeCodeForMember"
+				column="member__relTypeCode" />
+			<id property="fileExtForMember" column="member__fileExt" />
+			<id property="fileDirForMember" column="member__fileDir" />
+			<id property="writerId" column="writer__id" />
+			<id property="writerAuthority" column="writer__authority" />
+		</association>
+		<collection property="files" resultMap="files"
+			ofType="File" columnPrefix="actingRole__" />
+	</resultMap>
+
+	<resultMap id="files" type="File">
+		<id property="id" column="id" />
+		<id property="updateDate" column="updateDate" />
+		<id property="relTypeCode" column="relTypeCode" />
+		<id property="typeCode" column="typeCode" />
+		<id property="fileExt" column="fileExt" />
+		<id property="fileDir" column="fileDir" />
+	</resultMap>
+
+</mapper>

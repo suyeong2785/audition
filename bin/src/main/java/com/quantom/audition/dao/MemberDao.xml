@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quantom.audition.dao.MemberDao">
+
+	<select id="getMemberById" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE
+		id = #{id}
+	</select>
+
+	<select id="getMemberByNameAndEmail" resultType="Member">
+		SELECT *
+		FROM
+		member
+		WHERE
+		name = #{name}
+		AND email = #{email}
+	</select>
+
+	<select id="getLoginIdDupCount" resultType="int">
+		SELECT COUNT(*) AS
+		cnt
+		FROM member
+		WHERE loginId = #{loginId}
+	</select>
+
+	<select id="getMembersByLoginId" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE loginId LIKE CONCAT('%',#{loginId},'%')
+	</select>
+
+	<select id="getCastingDirectorsByLoginId" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE loginId LIKE CONCAT('%',#{loginId},'%')
+		AND authority
+		= #{authority}
+		AND id != #{id}
+		AND id NOT IN 
+		(SELECT requesteeId FROM `share`)
+	</select>
+	
+	<select id="getCastingDirectorsNameAndNickAndLoginIdNameByLoginId" resultType="Member">
+		SELECT id,name,loginId,nickname
+		FROM member
+		WHERE loginId LIKE CONCAT('%',#{loginId},'%')
+		AND authority
+		= #{authority}
+		AND id != #{id}
+		AND id NOT IN 
+		(SELECT requesteeId FROM `share`)
+	</select>
+
+	<select id="getMemberByISNINumber" resultType="Member">
+		SELECT *
+		FROM
+		member
+		WHERE ISNI_number = #{ISNI_number}
+	</select>
+
+	<select id="getMemberByLoginId" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE loginId = #{loginId}
+	</select>
+
+	<insert id="join" useGeneratedKeys="true" keyProperty="id">
+		INSERT
+		INTO member
+		SET regDate = NOW(),
+		updateDate = NOW(),
+		authStatus = 0,
+		authority = #{authority},
+		loginId = #{loginId},
+		loginPw = #{loginPw},
+		`name` = #{name},
+		`age` = #{age},
+		`gender` = #{gender},
+		nickname =
+		#{nickname},
+		email = #{email},
+		cellphoneNo = #{cellphoneNo}
+	</insert>
+
+	<update id="modify">
+		UPDATE member
+		<set>
+			updateDate = NOW(),
+			`youTubeUrl` = #{youTubeUrl},
+			<if test="name != null and name.length() > 0">`name` = #{name},</if>
+			<if test="careerId != null and careerId > 0">`careerId` = #{careerId},</if>
+			<if test="nickname != null and nickname.length() > 0">`nickname` = #{nickname},</if>
+			<if test="email != null and email.length() > 0">`email` = #{email},</if>
+			<if test="cellphoneNo != null and cellphoneNo.length() > 0">`cellphoneNo` = #{cellphoneNo},</if>
+			<if test="loginPw != null and loginPw.length() > 0">`loginPw` = #{loginPw},</if>
+			<if test="loginPw != null and loginPw.length() > 0">`careerId` = #{careerId},</if>
+			<if test="ISNI_number != null and ISNI_number.length() > 0">`ISNI_number` = #{ISNI_number},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<update id="doModifyMemberRecommendation">
+		UPDATE member
+		SET updateDate = NOW(),
+		<choose>
+			<when test="recommendationStatus == 1">
+				recommendation = recommendation + 1
+			</when>
+			<otherwise>
+				recommendation = recommendation - 1
+			</otherwise>
+		</choose>
+		WHERE id = #{id}
+	</update>
+
+</mapper>

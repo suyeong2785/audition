@@ -1,0 +1,25 @@
+<div class="mt-8">ISNI 검색 test</div>
+		<input id="ISNI-number" type="text" placeholder="ISNI를 입력해주세요" />
+		<button onclick="getISNIInfo()"
+			class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">전송</button>
+		<div id="ISNI-result"></div>
+
+function getISNIInfo(){
+		
+	var $ISNI_number = $("#ISNI-number").val();
+	
+	$.ajax({
+		type: 'GET',
+		url: "http://isni.oclc.org/sru/DB=1.2/?query=pica.isn+%3D+%22" + $ISNI_number + "%22&operation=searchRetrieve&version=1.1&recordSchema=isni-b",
+		dataType: "xml",
+		success: function(data){
+			
+			$(data).find("titleOfWork").each(function(){
+				var activity = "title : " + $(this).find("title").text() + "<br/>";
+				$("#ISNI-result").append(activity);
+			});
+			
+		}
+		
+	});
+	}

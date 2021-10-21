@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quantom.audition.dao.ActorDao">
+
+	<insert id="join" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO `actor`
+		<set>
+			regDate = NOW(),
+			updateDate = NOW(),
+			<if test="name != null and name.length() > 0">`name` = #{name},</if>
+			<if test="nickname != null and nickname.length() > 0">`nickname` = #{nickname},</if>
+			<if test="gender != null and gender.length() > 0">`gender` = #{gender},</if>
+			<if test="age > 0">`age` = #{age},</if>
+			<if test="height > 0">`height` = #{height},</if>
+			<if test="weight  > 0">`weight` = #{weight},</if>
+			<if test="careerId > 0">`careerId` = #{careerId},</if>
+			<if test="email != null and email.length() > 0">`email` = #{email},</if>
+			<if test="youTubeUrl != null and youTubeUrl.length() > 0">`youTubeUrl` = #{youTubeUrl},</if>
+			<if test="phone != null and phone.length() > 0">`phone` = #{phone},</if>
+		</set>
+	</insert>
+
+	<select id="getActorListByName" resultType="Actor">
+		SELECT *
+		FROM `actor`
+		WHERE name LIKE CONCAT('%',#{name},'%')
+	</select>
+
+	<select id="getForPrintActorById" resultMap="actor">
+		SELECT A.*, C.date
+		AS extra__careerDate
+		, C.artwork AS extra__careerArtwork
+		FROM actor AS A
+		LEFT JOIN career AS C
+		ON A.careerId = C.id
+		WHERE A.id = #{id}
+	</select>
+
+	<select id="getActorListByKeywordAndKeywordTypeAndLimit"
+		resultType="Actor">
+		SELECT *
+		FROM `actor`
+		WHERE 1
+		<if test="searchType == 'name'">
+			AND name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		<if test="searchType == 'nickname'">
+			AND nickname LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		<if test="searchType == 'email'">
+			AND email LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		<if test="searchType == 'phone'">
+			AND phone LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		<if test="sort == 'ascendingSortByName'">
+			ORDER BY name ASC
+		</if>
+		<if test="sort == 'descendingSortByName'">
+			ORDER BY name DESC
+		</if>
+		<if test="sort == 'ascendingSortByGender'">
+			ORDER BY gender ASC
+		</if>
+		<if test="sort == 'descendingSortByGender'">
+			ORDER BY gender DESC
+		</if>
+		<if test="sort == 'ascendingSortByAge'">
+			ORDER BY age ASC
+		</if>
+		<if test="sort == 'descendingSortByAge'">
+			ORDER BY age DESC
+		</if>
+		<if test="limitStart != null and limitTake != null">
+			LIMIT #{limitStart} , #{limitTake}
+		</if>
+	</select>
+
+	<select id="getActorCountByKeywordAndKeywordType"
+		resultType="int">
+		SELECT COUNT(id)
+		FROM `actor`
+		WHERE 1
+		<if test="searchType == 'name'">
+			AND name LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		<if test="searchType == 'nickname'">
+			AND nickname LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		<if test="searchType == 'email'">
+			AND email LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		<if test="searchType == 'phone'">
+			AND phone LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+
+	</select>
+
+
+
+	<resultMap type="Actor" id="actor">
+		<id property="id" column="id" />
+		<id property="regDate" column="regDate" />
+		<id property="updateDate" column="updateDate" />
+		<id property="name" column="name" />
+		<id property="nickname" column="nickname" />
+		<id property="gender" column="gender" />
+		<id property="age" column="age" />
+		<id property="height" column="height" />
+		<id property="weight" column="weight" />
+		<id property="careerId" column="careerId" />
+		<id property="email" column="email" />
+		<id property="phone" column="phone" />
+		<id property="youTubeUrl" column="youTubeUrl" />
+		<association property="extra" javaType="map">
+			<id property="careerDate" column="extra__careerDate" />
+			<id property="careerArtwork" column="extra__careerArtwork" />
+		</association>
+	</resultMap>
+
+</mapper>
+

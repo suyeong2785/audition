@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quantom.audition.dao.ShareDao">
+
+	<insert id="doShareArtworksAndActingRolesAjax">
+		INSERT
+		INTO `share`(regDate, updateDate, relTypeCode, relId,
+		requesterId, requesteeId)
+		values
+		<foreach collection="relIds" item="relId" separator=",">
+			(
+			NOW(),
+			NOW(),
+			#{relTypeCode},
+			#{relId},
+			#{requesterId},
+			#{requesteeId}
+			)
+		</foreach>
+	</insert>
+
+	<update id="doModifyShareAnswer">
+		UPDATE
+		`share`
+		SET updateDate = NOW(),
+		answer =
+		#{answer}
+		WHERE id = #{id}
+	</update>
+
+	<update id="modifySharesByRequesterId">
+		UPDATE
+		`share`
+		SET updateDate = NOW(),
+		answer =
+		#{answer}
+		WHERE id = #{id}
+	</update>
+
+	<select id="getForPrintAcceptedSharesByRequesteeId"
+		resultMap="AcceptedShare">
+		SELECT S.*
+		, M.id AS extra__member_id
+		, M.name AS
+		extra__member_name
+		, M.nickname AS extra__member_nickname
+		, M.email AS
+		extra__member_email
+		, M.cellphoneNo AS extra__member_cellphoneNo
+		FROM
+		`share` AS S
+		LEFT OUTER JOIN `member` AS M
+		ON S.requesterId = M.id
+		WHERE
+		S.requesteeId = #{requesteeId}
+		AND S.answer = 1
+	</select>
+
+	<select id="getShareByRequesterId" resultType="Share">
+		SELECT *
+		FROM
+		`share`
+		WHERE requesterId = #{requesterId}
+	</select>
+
+	<select id="getSharesIdsByRequesterId" resultType="Share">
+		SELECT id
+		FROM
+		`share`
+		WHERE requesterId = #{requesterId}
+	</select>
+
+	<select id="getSharesByRelIdsAndRequesterId" resultType="Share">
+		SELECT *
+		FROM
+		`share`
+		WHERE 1 AND
+		<foreach item="relId" index="index" collection="relIds">
+			AND `relId` =
+			#{relId}
+		</foreach>
+		AND requesterId = #{requesterId}
+
+	</select>
+
+	<select id="getAccesibleRequesteesByActingRoleId"
+		resultMap="AcceptedMember">
+		SELECT S.*
+		,M.name AS extra__member_name
+		FROM `share` AS S
+		LEFT OUTER
+		JOIN member AS M
+		on S.requesteeId = M.id
+		WHERE relTypeCode =
+		#{relTypeCode}
+		AND FIND_IN_SET(#{relId},S.relId);
+	</select>
+
+	<select id="getForPrintRequestedSharesByRequesteeId"
+		resultMap="RequestedShare">
+		SELECT S.*
+		, M.loginId AS extra__requesterLoginId
+		, M.name AS
+		extra__requesterName
+		, M.name AS extra__requesterNickname
+		FROM `share`
+		AS S
+		LEFT OUTER JOIN `member` AS M
+		ON S.requesteeId = M.id
+		WHERE
+		S.requesteeId = #{requesteeId}
+		AND answer = 0
+	</select>
+
+	<delete id="deleteSharesByrequesterIdAndrelIds">
+		DELETE FROM share
+		WHERE requesterId = #{requesterId}
+		AND relId IN
+		<foreach collection="relIds" item="relId" separator="," open="(" close=")">
+			#{relId}
+		</foreach>
+	</delete>
+
+	<resultMap type="Share" id="AcceptedShare" extends="share">
+		<association property="extra" javaType="map">
+			<id property="memberId" column="extra__member_id" />
+			<id property="memberName" column="extra__member_name" />
+			<id property="memberNickname" column="extra__member_nickname" />
+			<id property="memberEmail" column="extra__member_email" />
+			<id property="memberCellphoneNo"
+				column="extra__member_cellphoneNo" />
+		</association>
+	</resultMap>
+
+	<resultMap type="Share" id="AcceptedMember" extends="share">
+		<association property="extra" javaType="map">
+			<id property="memberName" column="extra__member_name" />
+		</association>
+	</resultMap>
+
+	<resultMap type="Share" id="RequestedShare" extends="share">
+		<association property="extra" javaType="map">
+			<id property="requesterLoginId" column="extra__requesterLoginId" />
+			<id property="requesterName" column="extra__requesterName" />
+			<id property="requesterNickname" column="extra__requesterNickname" />
+		</association>
+	</resultMap>
+
+	<resultMap type="Share" id="share">
+		<id property="id" column="id" />
+		<id property="regDate" column="regDate" />
+		<id property="updateDate" column="updateDate" />
+		<id property="delDate" column="delDate" />
+		<id property="delStatus" column="delStatus" />
+		<id property="answer" column="answer" />
+		<id property="relTypeCode" column="relTypeCode" />
+		<id property="requesterId" column="requesterId" />
+		<id property="requesteeId" column="requesteeId" />
+	</resultMap>
+</mapper>
