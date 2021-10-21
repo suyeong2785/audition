@@ -1,13 +1,11 @@
 package com.quantom.audition.controller;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.quantom.audition.dto.Career;
-import com.quantom.audition.dto.File;
 import com.quantom.audition.dto.ISNIRecord;
 import com.quantom.audition.dto.Member;
 import com.quantom.audition.dto.ResultData;
@@ -25,25 +22,37 @@ import com.quantom.audition.service.IsniSearchService;
 import com.quantom.audition.service.MemberService;
 import com.quantom.audition.util.Util;
 
-@Controller
-public class MemberController {
-	@Autowired
-	private MemberService memberService;
-	
-	@Autowired
-	private FileService fileService;
-	
-	@Autowired
-	private CareerService careerService;
-	
-	@Autowired
-	private IsniSearchService isniSearchService;
+import lombok.RequiredArgsConstructor;
 
+@Controller
+@RequiredArgsConstructor
+public class MemberController {
+	
+	
+	private final MemberService memberService;
+	private final FileService fileService;
+	private final CareerService careerService;
+	private final IsniSearchService isniSearchService;
+
+
+	/**
+	 * 회원정보 찾기 메소드
+	 * 
+	 * @return
+	 */
 	@RequestMapping("/usr/member/findLoginInfo")
 	public String showFindLoginInfo() {
 		return "usr/member/findLoginInfo";
 	}
 
+	/**
+	 * 회원 아이디 찾기 메소드
+	 * 
+	 * @param name
+	 * @param email
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/usr/member/doFindLoginId")
 	public String doFindLoginId(String name, String email, Model model) {
 		Member member = memberService.getMemberByNameAndEmail(name, email);
@@ -59,6 +68,16 @@ public class MemberController {
 		return "common/redirect";
 	}
 
+	/**
+	 * 회원 비밀번호 찾기 메소드
+	 * 
+	 * @param loginId
+	 * @param email
+	 * @param redirectUri
+	 * @param model
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("/usr/member/doFindLoginPw")
 	public String doFindLoginPw(String loginId, String email, String redirectUri, Model model, HttpServletRequest req) {
 		Member member = memberService.getMemberByLoginId(loginId);
@@ -88,14 +107,36 @@ public class MemberController {
 		return "common/redirect";
 	}
 
+	/**
+	 * 회원가입 페이지
+	 * 
+	 * @return
+	 */
 	@RequestMapping("/usr/member/join")
 	public String showWrite() {
 		return "usr/member/join";
 	}
 
+	/**
+	 * 회원가입 메소드
+	 * 
+	 * @param param
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/usr/member/doJoin")
 	public String doWrite(@RequestParam Map<String, Object> param, Model model) {
+		
+		// @ModelAttribute 암호화된 비밀번호 DB에 저장용
 		Util.changeMapKey(param, "loginPwReal", "loginPw");
+		
+		ResultData isAvailableJoinData = memberService.checkJoinData(param);
+
+		if ( isAvailableJoinData.isFail() ) {
+			model.addAttribute("historyBack", true);
+			model.addAttribute("msg", isAvailableJoinData.getMsg());
+			return "common/redirect";
+		}
 
 		ResultData checkLoginIdJoinableResultData = memberService
 				.checkLoginIdJoinable(Util.getAsStr(param.get("loginId")));
@@ -114,18 +155,34 @@ public class MemberController {
 		return "common/redirect";
 	}
 
+	/*
+	 * 로그인 페이지 이동
+	 */
 	@RequestMapping("/usr/member/login")
 	public String showLogin() {
 		return "usr/member/login";
 	}
 
+	/*
+	 * 정보수정 이전 비밀번호 확인 페이지 
+	 */
 	@RequestMapping("/usr/member/checkPassword")
 	public String showCheckPassword() {
 		return "usr/member/checkPassword";
 	}
 
+	/**
+	 * 정보수정 이전 비밀번호 확인 로직
+	 * 
+	 * @param loginPwReal
+	 * @param redirectUri
+	 * @param model
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("/usr/member/doCheckPassword")
 	public String doCheckPassword(String loginPwReal, String redirectUri, Model model, HttpServletRequest req) {
+		
 		String loginPw = loginPwReal;
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
 
@@ -148,6 +205,16 @@ public class MemberController {
 		return "common/redirect";
 	}
 
+	/**
+	 * 로그인 로직
+	 * 
+	 * @param loginId
+	 * @param loginPwReal
+	 * @param redirectUri
+	 * @param model
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("/usr/member/doLogin")
 	public String doLogin(String loginId, String loginPwReal, String redirectUri, Model model, HttpSession session) { 
 		
@@ -193,6 +260,9 @@ public class MemberController {
 		return "common/redirect";
 	}
 
+	/*
+	 * 로그아웃 로직
+	 */
 	@RequestMapping("/usr/member/doLogout")
 	public String doLogout(HttpSession session, Model model, String redirectUri) {
 		session.removeAttribute("loginedMemberId");
@@ -207,6 +277,15 @@ public class MemberController {
 		return "common/redirect";
 	}
 
+	/**
+	 * 회원정보 수정 페이지
+	 * 
+	 * @param session
+	 * @param model
+	 * @param req
+	 * @param checkPasswordAuthCode
+	 * @return
+	 */
 	@RequestMapping("/usr/member/modify")
 	public String showModify(HttpSession session, Model model, HttpServletRequest req, String checkPasswordAuthCode) {
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
@@ -241,6 +320,14 @@ public class MemberController {
 		return "usr/member/modify";
 	}
 
+	/**
+	 * 회원정보 수정 로직
+	 * 
+	 * @param param
+	 * @param model
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("/usr/member/doModify")
 	public String doWrite(@RequestParam Map<String, Object> param, Model model, HttpServletRequest req) {
 		Util.changeMapKey(param, "loginPwReal", "loginPw");
@@ -308,6 +395,56 @@ public class MemberController {
 		}
 		
 		return new ResultData("S-1", "사용가능한 ISNI 번호입니다.");
+	}
+	
+	
+	/**
+	 * 이메일 중복체크 AJAX
+	 * 
+	 * @param email
+	 * @return
+	 */
+	@RequestMapping("/usr/member/emailDupleAjax")
+	@ResponseBody
+	public ResultData checkEmailDuple(String email) {
+		return memberService.checkEmailDuple(email);
+	}
+	
+	/**
+	 * 로그인 아이디 중복체크 AJAX
+	 * 
+	 * @param loginId
+	 * @return
+	 */
+	@RequestMapping("/usr/member/loginIdDupleAjax")
+	@ResponseBody
+	public ResultData checkLoginIdDuple(String loginId) {
+		return memberService.checkLoginIdJoinable(loginId);
+	}
+	
+	/**
+	 * 인증코드 생성 및 이메일 발송 로직
+	 * 
+	 * @param email
+	 * @return
+	 */
+	@RequestMapping("/usr/member/sendCodeAjax")
+	@ResponseBody
+	public ResultData emailCheck(String email) {
+		return memberService.verifyCode(email);
+	}
+	
+	/**
+	 * 코드 일치검사
+	 * 
+	 * @param email
+	 * @param code
+	 * @return
+	 */
+	@RequestMapping("/usr/member/verifyCheck")
+	@ResponseBody
+	public ResultData checkVerifyCode(String email, String code) {
+		return memberService.checkCode(email, code);
 	}
 	
 }

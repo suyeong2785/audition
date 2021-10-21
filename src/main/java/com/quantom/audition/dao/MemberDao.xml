@@ -67,6 +67,12 @@
 		FROM member
 		WHERE loginId = #{loginId}
 	</select>
+	
+	<select id="getMemberByEmail" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE email = #{email}
+	</select>
 
 	<insert id="join" useGeneratedKeys="true" keyProperty="id">
 		INSERT

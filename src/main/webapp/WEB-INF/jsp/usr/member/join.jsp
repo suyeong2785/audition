@@ -165,7 +165,7 @@
 <form method="POST" class="table-box table-box-vertical con form1"
 	action="doJoin"
 	onsubmit="javascript:MemberJoinForm__submit(this); return false;">
-	<input type="hidden" name="redirectUri" value="${param.redirectUri}">
+	<input type="hidden" name="redirectUri" value="/">
 	<input type="hidden" name="loginPwReal">
 	<input type="hidden" name="fileIdsStr">
 	<table>

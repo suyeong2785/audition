@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.xml.UtilNamespaceHandler;
 import org.springframework.stereotype.Service;
 
 import com.quantom.audition.dao.MemberDao;
@@ -38,10 +39,12 @@ public class MemberService {
 	@Autowired
 	private CareerService careerService;
 
+	// 회원번호로 회원 찾기
 	public Member getMemberById(int id) {
 		return memberDao.getMemberById(id);
 	}
 
+	// 회원가입 로직
 	public int join(Map<String, Object> param) {
 		memberDao.join(param);
 
@@ -65,6 +68,7 @@ public class MemberService {
 		return id;
 	}
 
+	// 가입완료 이메일 송부 로직
 	private void sendJoinCompleteMail(String email) {
 		String mailTitle = String.format("[%s] 가입이 완료되었습니다.", siteName);
 
@@ -75,6 +79,7 @@ public class MemberService {
 		mailService.send(email, mailTitle, mailBodySb.toString());
 	}
 
+	// 가입가능한 아이디 여부 확인 로직
 	public ResultData checkLoginIdJoinable(String loginId) {
 		int count = memberDao.getLoginIdDupCount(loginId);
 
@@ -85,6 +90,7 @@ public class MemberService {
 		return new ResultData("F-1", "이미 사용중인 로그인 아이디 입니다.", "loginId", loginId);
 	}
 
+	// 아이디로 회원 조회 로직
 	public Member getMemberByLoginId(String loginId) {
 		return memberDao.getMemberByLoginId(loginId);
 	}
@@ -210,4 +216,130 @@ public class MemberService {
 		return memberDao.getMemberByISNINumber(ISNI_number);
 	}
 
-}
+	/**
+	 * 회원가입 정보 유효성 판별
+	 *
+	 * @param param
+	 * @return
+	 */
+	public ResultData checkJoinData(Map<String, Object> param) {
+
+		if ( param.get("loginId") == null || param.get("loginId").equals("") ) {
+
+			return new ResultData("F-1", "아이디를 다시 입력하여 주시기 바랍니다." );
+
+		} else if ( param.get("loginPw") == null || param.get("loginPw").equals("")) {
+
+			return new ResultData("F-1", "비밀번호를 다시 입력하여 주시기 바랍니다." );
+
+		} else if ( param.get("name") == null || param.get("name").equals("") ) {
+
+			return new ResultData("F-1", "이름을 다시 입력하여 주시기 바랍니다." );
+
+		} else if ( param.get("age") == null || Util.getAsInt(param.get("age")) > 200 ) {
+
+			return new ResultData("F-1", "나이를 다시 입력하여 주시기 바랍니다." );
+
+		} else if ( param.get("gender") == null ) {
+
+			return new ResultData("F-1", "성별을 다시 입력하여 주시기 바랍니다." );
+
+		} else if ( param.get("nickname") == null || param.get("nickname").equals("") ) {
+
+			return new ResultData("F-1", "활동명을 다시 입력하여 주시기 바랍니다." );
+
+		} else if ( param.get("email") == null || param.get("email").equals("") ) {
+
+			return new ResultData("F-1", "이메일을 다시 입력하여 주시기 바랍니다." );
+
+		} else if ( param.get("cellphoneNo") == null || param.get("cellphoneNo").equals("") ) {
+
+			return new ResultData("F-1", "핸드폰 번호를 다시 입력하여 주시기 바랍니다." );
+
+		}
+
+		return new ResultData("S-1", "유효한 정보입니다");
+
+	}
+	
+	
+	/**
+	 * 이메일로 회원 찾기
+	 * 
+	 * @param email
+	 * @return
+	 */
+	public Member getMemberByEmail(String email) {
+		return memberDao.getMemberByEmail(email);
+	}
+	
+	/**
+	 * 이메일 중복체크 로직
+	 *
+	 * @param email
+	 * @return
+	 */
+	public ResultData checkEmailDuple(String email) {
+		
+		Member findMember = getMemberByEmail(email);
+		
+		if ( findMember != null ) {
+			return new ResultData("F-1", "이미 존재하는 이메일 입니다.");
+		} else {
+			return new ResultData("S-1", "가입하실 수 있는 이메일 입니다.");
+		}
+		
+	}
+
+	
+	/**
+	 * 이메일 인증코드 생성후 이메일로 발송
+	 * 
+	 * @param email
+	 * @return
+	 */
+	public ResultData verifyCode(String email) {
+		
+		// 6자리의 임시 코드를 발급합니다.
+		String verifyCode = Util.getTempPassword(6);
+		
+		// attr 테이블에 이메일 인증코드를 저장합니다.
+		attrService.setValue("member", 0, email, "emailVerifyCode", verifyCode, null);
+		
+		// mailService 의 역할을 memberService가 분담해서 하는 형태
+		// 메일에 포함될 내용 작성
+		String title = "[" + siteName + "] 회원가입 인증코드";
+		String body = "<h1>회원가입 인증 코드 : " + verifyCode + "</h1>";
+		
+		// 메일 발송
+		ResultData sendCode = mailService.send(email, title, body);
+		
+		// 메일 발송 실패시
+		if ( sendCode.isFail() ) {
+			return new ResultData("F-1", "메일 발송에 실패하였습니다");
+		}
+		
+		// 결과 리턴
+		return sendCode;
+	}
+
+	/**
+	 * 인증코드 검사 로직
+	 *  
+	 * @param email
+	 * @param code
+	 * @return
+	 */
+	public ResultData checkCode(String email, String code) {
+		
+		// 유효한 코드인지 검사합니다.
+		boolean isVaildCode = attrService.isValidCode(email,code);
+		
+		if ( isVaildCode ) {
+			return new ResultData("S-1", "코드가 일치합니다.");
+		} else {
+			return new ResultData("F-1", "코드가 일치하지 않습니다.");
+		}
+		
+	}
+ }
