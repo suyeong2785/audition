@@ -173,9 +173,10 @@
 	<div class="m-auto" style="max-width: 600px">
 		<div>
 			<div class="form-control-box pb-4 flex-grow">
-				<input
+				<input id="loginId"
 					class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 					type="text" placeholder="로그인 아이디" name="loginId" maxlength="30" />
+				<div id="loginId-duple-result"></div>
 			</div>
 		</div>
 		<div>
@@ -286,6 +287,30 @@
 </form>
 
 <script>
+	
+	$('#loginId').on("propertychange change keyup paste",function(){
+		
+		let loginId = $('#loginId').val();
+	
+		$.ajax({
+			url : '../../usr/member/loginIdDupleAjax',
+			data : {loginId : loginId},
+			dataType : "json",
+			type : 'GET',
+			success : function(data){	
+				if (data && data.msg) {
+					if(data.fail == false){
+						$('#loginId-duple-result').html('<div class="text-green-500 pt-4">'+ data.msg +'</span>');
+					}else{
+						$('#loginId-duple-result').html('<div class="text-red-500 pt-4">'+ data.msg +'</span>');
+					}
+				}
+			}
+		});
+		
+		
+		
+	});
 	
 	$('#join-file').on('change', function() {
 
