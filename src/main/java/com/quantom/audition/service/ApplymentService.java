@@ -1,6 +1,7 @@
 package com.quantom.audition.service;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -301,9 +302,25 @@ public class ApplymentService {
 		return applymentDao.getForPrintApplymentsByRelIdAndRelTypeCode(param);
 	}
 
-	public void deleteApplymentsByRelIdsAndRelTypeCode(String relTypeCode, List<Integer> relIds) {
+	public void deleteApplymentsByRelIdsAndRelTypeCode(int senderId, String relTypeCode, List<Integer> relIds, int extraId, String extraTypeCode, String extraName, String message) {
+		
 		if(applymentDao.getApplymentsIdsByRelIds(relTypeCode, relIds).isEmpty() == false) {
-			List<Integer> applymentsIds = applymentDao.getApplymentsIdsByRelIds(relTypeCode, relIds);
+			List<Applyment> applyments = applymentDao.getApplymentsIdsByRelIds(relTypeCode, relIds);
+			
+			List<Integer> applymentsIds = applyments.stream().map(applyment -> applyment.getId())
+					.collect(Collectors.toList());
+
+			Map<String, Object> param = new HashMap<String, Object>();
+			
+			param.put("senderId", senderId);
+			param.put("applyments", applyments);
+			param.put("relTypeCode", relTypeCode);
+			param.put("extraId", extraId);
+			param.put("extraTypeCode", extraTypeCode);
+			param.put("extraName", extraName);
+			param.put("message", message);
+			
+			notificationService.insertBulkNotificationMessages(param);
 			
 			fileService.deleteFilesByRelIds(relTypeCode, applymentsIds);
 		}

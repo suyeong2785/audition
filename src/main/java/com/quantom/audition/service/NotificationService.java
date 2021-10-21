@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.quantom.audition.dao.NotificationDao;
+import com.quantom.audition.dto.Applyment;
 import com.quantom.audition.dto.Notification;
 
 @Service
@@ -36,6 +37,11 @@ public class NotificationService {
 
 	public List<Notification> getApplymentNotificationsRelatedToUser(int getterId, List<Integer> applymentsIds) {
 		return notificationDao.getApplymentNotificationsRelatedToUser(getterId, applymentsIds);
+	}
+
+	public void insertBulkNotificationMessages(Map<String, Object> param) {
+		notificationDao.insertBulkNotificationMessages(param);
+		
 	}
 
 }

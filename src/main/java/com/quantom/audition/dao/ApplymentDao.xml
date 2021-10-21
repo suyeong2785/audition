@@ -37,16 +37,20 @@
 		AND delStatus = 0
 	</select>
 	
-	<select id="getApplymentsIdsByRelIds" resultType="int">
-		SELECT id FROM
-		applyment 
-		WHERE relId IN
+	<select id="getApplymentsIdsByRelIds" resultMap="applymentForNotification">
+		SELECT AP.id,AP.memberId,
+		AC.id AS actingRole__id,
+		AC.role AS actingRole__role
+		FROM applyment AS AP
+		LEFT JOIN actingRole AS AC
+		ON AP.relId = AC.id
+		WHERE AP.relId IN
 		<foreach item="relId" index="index" collection="relIds" open="("
 			separator="," close=")">
 			#{relId}
 		</foreach>
-		AND relTypeCode = #{relTypeCode} 
-		AND delStatus = 0
+		AND AP.relTypeCode = #{relTypeCode} 
+		AND AP.delStatus = 0
 	</select>
 	
 	<select id="getApplymentsIdsByRelIdAndRelTypeCode" resultType="int">
@@ -254,7 +258,7 @@
 		AND F.delStatus = 0
 		WHERE AP.memberId = #{memberId}
 		AND AP.relTypeCode = #{relTypeCode}
-		AND AP.delStatus = 0
+		AND AP.displayStatus = 1
 	</select>
 	
 	<select id="getActingRolesRelatedToApplymentByMemberId" resultMap="actingRoleByMemberId">
@@ -617,6 +621,15 @@
 			<id property="fileDirForApplyment" column="file__applyment__fileDir" />
 		</association>
 	</resultMap>
+	
+	<resultMap type="Applyment" id="applymentForNotification"
+		extends="applyment">
+		<association property="extra" javaType="map">
+			<id property="id" column="actingRole__id" />
+			<id property="role" column="actingRole__role" />
+		</association>
+	</resultMap>
+	
 
 	<resultMap id="files" type="File">
 		<id property="id" column="id" />

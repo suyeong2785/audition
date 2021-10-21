@@ -128,11 +128,25 @@ public class ArtworkController {
 
 		return "redirect:" + redirectUri;
 	}
+	/**
+	 * artworkList.jsp에서 캐스팅콜 삭제시 사용되는 함수 
+	 * 
+	 * ----param content-----
+	 * id : artworkId,
+	 * message : "작성자의 요청으로인해 해당공고가 삭제되었습니다.",
+     * senderId : loginedMemberId,
+	 * relTypeCode : "actingRole",
+	 * extraName : artworkName,
+	 * extraTypeCode : "artwork"
+	 * 
+	 * @param param
+	 * @param req
+	 * @return
+	 */
 	
 	@RequestMapping("/adm/actingRole/doDeleteArtworkAjax")
 	@ResponseBody
 	public ResultData doDeleteArtworkAjax(@RequestParam Map<String, Object> param, HttpServletRequest req) {
-		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
 		int id = Util.getAsInt(param.get("id"));
 		
 		artworkService.deleteArtwork(param);

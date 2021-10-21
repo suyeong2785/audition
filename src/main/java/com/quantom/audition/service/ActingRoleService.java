@@ -128,13 +128,20 @@ public class ActingRoleService {
 		actingRoleDao.changeRelId(id, artworkId);
 	}
 
-	public void deleteActingRolesByArtworkId(int artworkId, int requesterId) {
+	public void deleteActingRolesByArtworkId(Map<String,Object> param) {
+		int artworkId = Util.getAsInt(param.get("id"));
+		int requesterId = Util.getAsInt(param.get("senderId"));
+		String relTypeCode = Util.getAsStr(param.get("relTypeCode"));
+		String extraTypeCode = Util.getAsStr(param.get("extraTypeCode"));
+		String artworkName = Util.getAsStr(param.get("extraName"));
+		String message = Util.getAsStr(param.get("message"));
+		
 		if(actingRoleDao.getActingRoleIdsByArtworkId(artworkId).isEmpty() == false) {
 			List<Integer> actingRolesIds = actingRoleDao.getActingRoleIdsByArtworkId(artworkId);
 			
 			fileService.deleteFilesByRelIds("actingRole", actingRolesIds);
 			shareService.deleteSharesByrequesterIdAndrelIds(requesterId,actingRolesIds);
-			applymentService.deleteApplymentsByRelIdsAndRelTypeCode("actingRole", actingRolesIds);
+			applymentService.deleteApplymentsByRelIdsAndRelTypeCode(requesterId, relTypeCode, actingRolesIds, artworkId, artworkName, extraTypeCode, message);
 		}
 		
 		actingRoleDao.deleteActingRolesByArtworkId(artworkId);
