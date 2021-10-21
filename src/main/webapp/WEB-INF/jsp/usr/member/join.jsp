@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="회원가입" />
 <%@ include file="../part/head.jsp"%>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
@@ -78,7 +77,7 @@
 
 			return;
 		}
-		
+
 		//이메일 형식 정규식으로 검사해야함....
 		form.email.value = form.email.value.trim();
 
@@ -162,156 +161,157 @@
 
 	}
 </script>
-<form method="POST" class="table-box table-box-vertical con form1"
+<div class="m-auto p-4" style="max-width: 600px">
+	<span class="font-bold text-xl">회원가입</span>
+</div>
+<form method="POST" class="bg-gray-200 p-4 w-full h-full"
 	action="doJoin"
 	onsubmit="javascript:MemberJoinForm__submit(this); return false;">
 	<input type="hidden" name="redirectUri" value="/">
 	<input type="hidden" name="loginPwReal">
 	<input type="hidden" name="fileIdsStr">
-	<table>
-		<colgroup>
-			<col class="table-first-col">
-		</colgroup>
-		<tbody>
-			<tr>
-				<th>로그인 아이디</th>
-				<td>
-					<div class="form-control-box">
-						<input type="text" placeholder="로그인 아이디 입력해주세요." name="loginId"
-							maxlength="30" />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>로그인 비번</th>
-				<td>
-					<div class="form-control-box">
-						<input type="password" placeholder="로그인 비밀번호를 입력해주세요."
-							name="loginPw" maxlength="30" />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>로그인 비번 확인</th>
-				<td>
-					<div class="form-control-box">
-						<input type="password" placeholder="로그인 비밀번호 확인을 입력해주세요."
-							name="loginPwConfirm" maxlength="30" />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>프로필 사진</th>
-				<td>
-					<div class="form-control-box">
-						<input id="join-file" type="file"
-							accept="${appConfig.getAttachemntFileInputAccept('img')}"
-							name="file__member__0__common__attachment__1" />
-						<img id="join-profile" class="w-20" src="" alt="" />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>이름</th>
-				<td>
-					<div class="form-control-box">
-						<input type="text" placeholder="이름을 입력해주세요." name="name"
-							maxlength="20" />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>나이</th>
-				<td>
-					<div class="form-control-box">
-						<input type="number" placeholder="나이를 입력해주세요." name="age"
-							maxlength="20" />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>성별</th>
-				<td>
-					<div class="form-control-box">
-						<label>
-							<input type="radio" name="gender" value="woman">
-							여성
-						</label>
-						<label>
-							<input type="radio" name="gender" value="man">
-							남성
-						</label>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>활동명</th>
-				<td>
-					<div class="form-control-box">
-						<input type="text" placeholder="활동명 입력해주세요." name="nickname"
-							maxlength="20" />
-					</div>
-				</td>
-			</tr>
-			<!-- 권한 분리 없애야함... -->
-			<tr>
-				<th>직업</th>
-				<td>
-					<div class="form-control-box">
-						<select name="authority" maxlength="20">
-							<option value="1">캐스팅디렉터</option>
-							<option value="2">배우</option>
-						</select>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>이메일</th>
-				<td>
-					<div class="form-control-box">
-						<input type="email" placeholder="이메일 입력해주세요." name="email"
-							maxlength="50" />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>휴대폰</th>
-				<td>
-					<div class="form-control-box">
-						<input type="tel" placeholder="휴대전화번호를 입력해주세요." name="cellphoneNo"
-							maxlength="12" />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>가입</th>
-				<td>
-					<input class="btn btn-primary" type="submit" value="가입">
-					<button class="btn btn-info" type="button"
-						onclick="history.back();">취소</button>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+	<div class="m-auto" style="max-width: 600px">
+		<div>
+			<div class="form-control-box pb-4 flex-grow">
+				<input
+					class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+					type="text" placeholder="로그인 아이디" name="loginId" maxlength="30" />
+			</div>
+		</div>
+		<div>
+			<div class="form-control-box pb-4 flex-grow">
+				<input
+					class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+					type="password" placeholder="로그인 비밀번호" name="loginPw"
+					maxlength="30" />
+			</div>
+		</div>
+		<div>
+			<div class="form-control-box pb-4 flex-grow">
+				<input
+					class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+					type="password" placeholder="로그인 비밀번호확인" name="loginPwConfirm"
+					maxlength="30" />
+			</div>
+		</div>
+
+		<div class="flex justify-center">
+			<label class="flex-grow">
+				<input id="join-file" type="file"
+					class="text-sm cursor-pointer hidden "
+					accept="${appConfig.getAttachemntFileInputAccept('img')}"
+					name="file__member__0__common__attachment__1" />
+				<div
+					class="member-file-status mb-4 w-full text-center text bg-gray-500 text-white border border-gray-300 rounded-full font-semibold cursor-pointer p-1 px-3 hover:bg-gray-600">
+					프로필 사진을 선택해주세요</div>
+			</label>
+		</div>
+		<div id="join-profile-box" class="flex justify-center">
+			<img id="join-profile" class="max-w-xs" src="" alt="" />
+		</div>
+
+
+		<div>
+			<div class="form-control-box pb-4 flex-grow">
+				<input
+					class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+					type="text" placeholder="이름" name="name" maxlength="20" />
+			</div>
+		</div>
+		<div>
+			<div class="form-control-box pb-4 flex-grow">
+				<input
+					class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+					type="number" placeholder="나이" name="age" maxlength="20" />
+			</div>
+		</div>
+		<div>
+			<div class="form-control-box pb-4 flex-grow">
+				<label>
+					<input type="radio" name="gender" value="woman">
+					여성
+				</label>
+				<label>
+					<input type="radio" name="gender" value="man">
+					남성
+				</label>
+			</div>
+		</div>
+		<div>
+			<div class="form-control-box pb-4 flex-grow">
+				<input
+					class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+					type="text" placeholder="활동명" name="nickname" maxlength="20" />
+			</div>
+		</div>
+		<!-- 권한 분리 없애야함... -->
+		<div>
+			<div class="form-control-box mb-4 flex-grow relative">
+				<select name="authority"
+					class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+					<option value="1">캐스팅디렉터</option>
+					<option value="2">배우</option>
+				</select>
+				<div
+					class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+					<i class="fas fa-chevron-down"></i>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div class="form-control-box pb-4 flex-grow">
+				<input
+					class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+					type="email" placeholder="이메일" name="email" maxlength="50" />
+			</div>
+		</div>
+		<div>
+			<div class="form-control-box pb-4 flex-grow">
+				<input
+					class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+					type="tel" placeholder="휴대전화번호" name="cellphoneNo" maxlength="12" />
+			</div>
+		</div>
+		<div>
+			<div class="form-control-box pb-4 flex-grow flex">
+				<input
+					class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+					type="submit" value="가입">
+				<button
+					class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+					type="button" onclick="history.back();">취소</button>
+			</div>
+		</div>
+	</div>
 </form>
 
 <script>
-
+	
 	$('#join-file').on('change', function() {
 
+		var memberFileStatus = $('.member-file-status');
+		
 		const files = $("#join-file")[0].files;
 		const file = $("#join-file")[0].files[0];
 
 		if (files.length != 0) {
 			const imgurl = URL.createObjectURL(file);
 			$('#join-profile').attr("src", imgurl);
+			$('#join-profile-box').css("padding", "0 0 10px");
+			
+			var fileName = file.name;
+			memberFileStatus.html("파일이름 : " + fileName);
 
 			URL.revokeObjectURL(file);
 
 		} else {
 			//파일이 없는 경우 내용을 지워준다.
 			$('#join-profile').attr("src", "");
+			$('#join-profile-box').css("padding", "0");
+			
+			memberFileStatus.html("프로필 사진을 선택해주세요");
 		}
 	});
+	
 </script>
 <%@ include file="../part/foot.jsp"%>

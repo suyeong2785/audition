@@ -36,6 +36,8 @@ h3 {
 /* 커스텀 */
 .con {
     max-width: 1200px;
+    margin-left: auto;
+	margin-right: auto;
 }
 
 .bg-gray-showMyPage{

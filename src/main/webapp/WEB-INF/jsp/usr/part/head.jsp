@@ -84,7 +84,6 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 
 <body>
 	<!-- 로딩화면 -->
-	div 
 	<div
 		class="loader-background bg-gray-200 bg-opacity-20 w-full h-full absolute z-40">
 		<img class="loader-img absolute " src="/resource/img/logo_1@3x.png"
