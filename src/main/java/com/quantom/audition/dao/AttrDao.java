@@ -17,4 +17,8 @@ public interface AttrDao {
 
 	Attr getAttrByTypeCodeAndValue(@Param("typeCode") String typeCode, @Param("value") String value);
 	
+	Attr getAttrByTypeCode(@Param("typeCode") String typeCode);
+	
+	void updateAttrByValueAndExpireDate(@Param("typeCode")String typeCode, @Param("value")String value, @Param("expireDate") String expireDate);
+	
 }

@@ -12,6 +12,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.quantom.audition.dto.ResultData;
+import com.quantom.audition.util.Util;
 
 @Service
 public class MailService {
@@ -74,5 +75,21 @@ public class MailService {
 		}
 
 		return new ResultData("S-1", "메일이 발송되었습니다.");
+	}
+	
+	public ResultData sendVerifyEmail(String email, String siteName, String verifyCode) {
+		
+
+		String title = "[" + siteName + "] 회원가입 인증코드";
+		String body = "<h1>회원가입 인증 코드 : " + verifyCode + "</h1>";
+		
+		ResultData sendCode = send(email, title, body);
+		
+		if ( sendCode.isSuccess() ) {
+			return new ResultData("S-1", "이메일이 발송되었습니다.");
+		} else {
+			return new ResultData("F-1", "이메일 발송에 실패하였습니다.");
+		}
+		
 	}
 }
