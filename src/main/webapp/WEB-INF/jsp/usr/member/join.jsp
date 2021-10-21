@@ -308,8 +308,6 @@
 			}
 		});
 		
-		
-		
 	});
 	
 	$('#join-file').on('change', function() {
