@@ -303,8 +303,11 @@ public class MemberService {
 		// 6자리의 임시 코드를 발급합니다.
 		String verifyCode = Util.getTempPassword(6);
 		
+		// 유효기간을 설정합니다.
+		String expiredTime = Util.getDateStrLater(1800);
+		
 		// attr 테이블에 이메일 인증코드를 저장합니다.
-		attrService.setValue("member", 0, email, "emailVerifyCode", verifyCode, null);
+		attrService.setValue("member", 0, email, "emailVerifyCode", verifyCode, expiredTime);
 		
 		// mailService 의 역할을 memberService가 분담해서 하는 형태
 		// 메일에 포함될 내용 작성
@@ -336,9 +339,9 @@ public class MemberService {
 		boolean isVaildCode = attrService.isValidCode(email,code);
 		
 		if ( isVaildCode ) {
-			return new ResultData("S-1", "코드가 일치합니다.");
+			return new ResultData("S-1", "인증에 성공하였습니다.");
 		} else {
-			return new ResultData("F-1", "코드가 일치하지 않습니다.");
+			return new ResultData("F-1", "유효하지 않은 코드입니다.");
 		}
 		
 	}

@@ -44,10 +44,13 @@
 	</insert>
 	
 	<select id="getAttrByTypeCodeAndValue" resultType="Attr">
+	 	<![CDATA[
 		SELECT *
 		FROM attr
 		WHERE typeCode = #{typeCode}
 		AND value = #{value}
+		AND (expireDate >= NOW() OR expireDate IS NULL)
+		 ]]>
 	</select>
 
 	<select id="getArticleById" resultType="Article">
