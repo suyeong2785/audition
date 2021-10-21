@@ -14,6 +14,7 @@ import org.springframework.beans.factory.xml.UtilNamespaceHandler;
 import org.springframework.stereotype.Service;
 
 import com.quantom.audition.dao.MemberDao;
+import com.quantom.audition.dto.Attr;
 import com.quantom.audition.dto.Career;
 import com.quantom.audition.dto.Member;
 import com.quantom.audition.dto.ResultData;
@@ -302,25 +303,30 @@ public class MemberService {
 		
 		// 6자리의 임시 코드를 발급합니다.
 		String verifyCode = Util.getTempPassword(6);
+		// 유효기간을 설정합니다.
+		String expiredTime = Util.getDateStrLater(300);
 		
-		// attr 테이블에 이메일 인증코드를 저장합니다.
-		attrService.setValue("member", 0, email, "emailVerifyCode", verifyCode, null);
+		// 이미 저장되어있는 인증정보가 있는지 조회합니다.
+		Attr findAttr = attrService.getAttrByTypeCode(email);
 		
-		// mailService 의 역할을 memberService가 분담해서 하는 형태
-		// 메일에 포함될 내용 작성
-		String title = "[" + siteName + "] 회원가입 인증코드";
-		String body = "<h1>회원가입 인증 코드 : " + verifyCode + "</h1>";
+		// 1. 인증정보가 업을경우
+		if ( findAttr == null ) {
+			
+			// attr 테이블에 이메일 인증코드를 저장합니다.
+			attrService.setValue("member", 0, email, "emailVerifyCode", verifyCode, expiredTime);
+			
+			// 메일 보내기
+			return mailService.sendVerifyEmail(email, expiredTime, verifyCode);
 		
-		// 메일 발송
-		ResultData sendCode = mailService.send(email, title, body);
-		
-		// 메일 발송 실패시
-		if ( sendCode.isFail() ) {
-			return new ResultData("F-1", "메일 발송에 실패하였습니다");
+		} else {
+			
+			attrService.updateVerifyCode(email, verifyCode, expiredTime);
+			
+			// 메일 발송
+			return mailService.sendVerifyEmail(email, expiredTime, verifyCode);
+			
 		}
 		
-		// 결과 리턴
-		return sendCode;
 	}
 
 	/**
@@ -336,9 +342,9 @@ public class MemberService {
 		boolean isVaildCode = attrService.isValidCode(email,code);
 		
 		if ( isVaildCode ) {
-			return new ResultData("S-1", "코드가 일치합니다.");
+			return new ResultData("S-1", "인증에 성공하였습니다.");
 		} else {
-			return new ResultData("F-1", "코드가 일치하지 않습니다.");
+			return new ResultData("F-1", "유효하지 않은 코드입니다.");
 		}
 		
 	}

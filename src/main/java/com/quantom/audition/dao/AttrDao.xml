@@ -27,6 +27,16 @@
 		AND (expireDate >= NOW() OR expireDate IS NULL)
 		 ]]>
 	</select>
+	
+	<update id="updateAttrByValueAndExpireDate">
+		UPDATE attr
+		<set>
+			updateDate = NOW(),
+			value = #{value},
+			expireDate = #{expireDate}
+		</set>
+		WHERE typeCode = #{typeCode}
+	</update>
 
 	<delete id="remove">
 		DELETE FROM attr
@@ -44,10 +54,19 @@
 	</insert>
 	
 	<select id="getAttrByTypeCodeAndValue" resultType="Attr">
+	 	<![CDATA[
 		SELECT *
 		FROM attr
 		WHERE typeCode = #{typeCode}
 		AND value = #{value}
+		AND (expireDate >= NOW() OR expireDate IS NULL)
+		 ]]>
+	</select>
+	
+	<select id="getAttrByTypeCode" resultType="Attr">
+		SELECT *
+		FROM attr
+		WHERE typeCode = #{typeCode}
 	</select>
 
 	<select id="getArticleById" resultType="Article">

@@ -14,6 +14,7 @@ public class MemberServiceTest {
 	
 	@Autowired MemberService memberService;
 	
+	/*
 	@Test
 	public void verifyCodeTest() {
 		
@@ -27,17 +28,20 @@ public class MemberServiceTest {
 		assertThat(verifyCode.isSuccess()).isEqualTo(true);
 		
 	}
+	*/
 	
 	
 	@Test
 	public void checkVerifyCode() {
 		
 		// given 인증코드와 이메일이 주어졌을 때
-		String verifyCode = "dj20hc";
+		String verifyCode = "v4s5ye";
 		String email = "archaco124@gmail.com";
 		
 		// when 인증 코드 일치여부 검사를 한다면
 		ResultData checkCode = memberService.checkCode(email, verifyCode);
+		
+		System.out.println(checkCode.getMsg());
 		
 		// then 검증
 		Assertions.assertThat(checkCode.isSuccess()).isEqualTo(true);

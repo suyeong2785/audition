@@ -114,5 +114,26 @@ public class AttrService {
 		}
 	
 	}
+	
+	/**
+	 * 이메일로 인증정보 가져오기
+	 * 
+	 * @param typeCode
+	 * @return
+	 */
+	public Attr getAttrByTypeCode(String typeCode) {
+		return attrDao.getAttrByTypeCode(typeCode);
+	}
+
+	/**
+	 * 인증번호 업데이트
+	 * 
+	 * @param email
+	 * @param verifyCode
+	 * @param expiredTime
+	 */
+	public void updateVerifyCode(String email, String verifyCode, String expiredTime) {
+		attrDao.updateAttrByValueAndExpireDate(email, verifyCode, expiredTime);
+	}
 
 }
