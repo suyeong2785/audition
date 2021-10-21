@@ -291,23 +291,27 @@
 	$('#loginId').on("propertychange change keyup paste",function(){
 		
 		let loginId = $('#loginId').val();
-	
-		$.ajax({
-			url : '../../usr/member/loginIdDupleAjax',
-			data : {loginId : loginId},
-			dataType : "json",
-			type : 'GET',
-			success : function(data){	
-				if (data && data.msg) {
-					if(data.fail == false){
-						$('#loginId-duple-result').html('<div class="text-green-500 pt-4">'+ data.msg +'</span>');
-					}else{
-						$('#loginId-duple-result').html('<div class="text-red-500 pt-4">'+ data.msg +'</span>');
+		
+		if(loginId.length == 0){
+			$('#loginId-duple-result').empty();
+		}else{
+			$.ajax({
+				url : '../../usr/member/loginIdDupleAjax',
+				data : {loginId : loginId},
+				dataType : "json",
+				type : 'GET',
+				success : function(data){	
+					if (data && data.msg) {
+						if(data.fail == false){
+							$('#loginId-duple-result').html('<div class="text-green-500 pt-4">'+ data.msg +'</span>');
+						}else{
+							$('#loginId-duple-result').html('<div class="text-red-500 pt-4">'+ data.msg +'</span>');
+						}
 					}
 				}
-			}
-		});
-		
+			});
+		}
+
 	});
 	
 	$('#join-file').on('change', function() {
