@@ -46,7 +46,7 @@ public interface ApplymentDao {
 
 	List<Applyment> getApplymentsByArtworkId(@Param("memberId") int memberId,@Param("artworkId") int artworkId);
 
-	List<Integer> getApplymentsIdsByRelIds(@Param("relTypeCode") String relTypeCode,@Param("relIds") List<Integer> relIds);
+	List<Applyment> getApplymentsIdsByRelIds(@Param("relTypeCode") String relTypeCode,@Param("relIds") List<Integer> relIds);
 
 	List<Integer> getApplymentsIdsByRelIdAndRelTypeCode(@Param("relTypeCode") String relTypeCode,@Param("relId") int relId);
 

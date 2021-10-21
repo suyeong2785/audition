@@ -80,7 +80,7 @@
 							</div>
 						</a>
 						<button
-							class=" rounded-full px-4" onclick="deleteArtworkBy(${artwork.id})">
+							class=" rounded-full px-4" onclick="deleteArtworkBy(${artwork.id},'${artwork.title}')">
 							<i class="fas fa-trash"></i>
 						</button>
 					</div>
@@ -91,28 +91,34 @@
 </div>
 
 <script>
-	function deleteArtworkBy(id){
+	// 캐스팅콜 삭제시 사용되는 함수 
+	function deleteArtworkBy(artworkId, artworkName){
 		
+		//확인 버튼눌렀을 경우 실행됨
 		if(confirm("해당 캐스팅콜을 삭제하시겠습니까?")){
 			$.ajax({
 				url : '../../adm/actingRole/doDeleteArtworkAjax',
-				data : {id : id,
-					message : "작성자의 요청으로인해 해당배역이 삭제되었습니다.",
+				data : {id : artworkId,
+					message : "작성자의 요청으로인해 해당공고가 삭제되었습니다.",
 					senderId : loginedMemberId,
-					relTypeCode : "artwork"},
+					relTypeCode : "actingRole",
+					extraName : artworkName,
+					extraTypeCode : "artwork"},
 				dataType : 'json',
 				async : false,
 				type : 'POST',
 				success : function(data){
 					if (data && data.body) {
-						
-						alert(data.body.msg);
-		
+						//공고삭제했기에 다시 새로고침 해줌.
+						location.reload();
 					}
 				}
+			}).then(function(){
+				//오류발생시 페이지넘김방지
+				throw new Error("에러발생!!");
 			});
 			
-			location.reload();
+			
 		}
 	}
 </script>

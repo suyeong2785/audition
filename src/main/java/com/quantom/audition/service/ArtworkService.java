@@ -112,15 +112,13 @@ public class ArtworkService {
 	}
 
 	public void deleteArtwork(Map<String,Object> param) {
-		int id = Util.getAsInt(param.get("id"));
-		int requesterId = Util.getAsInt(param.get("senderId"));
+		int id = Util.getAsInt(param.get("id"));//artworkId
 		
 		artworkDao.deleteArtwork(id);
 		fileService.deleteFilesByRelId("artwork", id);
-		actingRoleService.deleteActingRolesByArtworkId(id,requesterId);
 		
-		Util.changeMapKey(param, "id","relId");
-		notificationService.insertNotificationMessage(param);
+		actingRoleService.deleteActingRolesByArtworkId(param);
+		
 	}
 
 	public List<Artwork> getForPrintArtworksByLoginId(int memberId) {
