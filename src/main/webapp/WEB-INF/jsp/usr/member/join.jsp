@@ -9,7 +9,7 @@
 		if ($('.toast')) {
 			window.toastr.remove();
 		}
-		
+
 		if (isNowLoading()) {
 			alert('처리중입니다.');
 			return;
@@ -26,18 +26,18 @@
 			var msg = "로그인 아이디를 입력해주세요.";
 			var targetName = "loginId";
 			var targetType = "input";
-			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			var toastr = setPositionOfToastr(targetType, targetName, msg);
 
 			return;
 		}
 
 		if (form.loginId.value.length < 4) {
 			form.loginId.focus();
-			
+
 			var msg = "로그인 아이디 4자 이상 입력해주세요.";
 			var targetName = "loginId";
 			var targetType = "input";
-			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			var toastr = setPositionOfToastr(targetType, targetName, msg);
 
 			return;
 		}
@@ -46,56 +46,68 @@
 
 		if (form.loginPw.value.length == 0) {
 			var targetOffset = $('input[name="loginPw"]').offset();
-			window.scrollTo({top : targetOffset.top - 500, behavior:'auto'});
-			
+			window.scrollTo({
+				top : targetOffset.top - 500,
+				behavior : 'auto'
+			});
+
 			form.loginPw.focus();
-			
+
 			var msg = "로그인 비밀번호를 입력해주세요.";
 			var targetName = "loginPw";
 			var targetType = "input";
-			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			var toastr = setPositionOfToastr(targetType, targetName, msg);
 
 			return;
 		}
 
 		if (form.loginPw.value.length < 5) {
 			var targetOffset = $('input[name="loginPw"]').offset();
-			window.scrollTo({top : targetOffset.top - 500, behavior:'auto'});
-			
+			window.scrollTo({
+				top : targetOffset.top - 500,
+				behavior : 'auto'
+			});
+
 			form.loginPw.focus();
-			
+
 			var msg = "로그인 비밀번호를 5자 이상 입력해주세요.";
 			var targetName = "loginPw";
 			var targetType = "input";
-			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			var toastr = setPositionOfToastr(targetType, targetName, msg);
 
 			return;
 		}
 
 		if (form.loginPwConfirm.value.length == 0) {
 			var targetOffset = $('input[name="loginPwConfirm"]').offset();
-			window.scrollTo({top : targetOffset.top - 500, behavior:'auto'});
-			
+			window.scrollTo({
+				top : targetOffset.top - 500,
+				behavior : 'auto'
+			});
+
 			form.loginPwConfirm.focus();
-			
+
 			var msg = "로그인 비밀번호 확인을 입력해주세요.";
 			var targetName = "loginPwConfirm";
 			var targetType = "input";
-			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			var toastr = setPositionOfToastr(targetType, targetName, msg);
 
 			return;
 		}
 
 		if (form.loginPw.value != form.loginPwConfirm.value) {
 			var targetOffset = $('input[name="loginPwConfirm"]').offset();
-			window.scrollTo({top : targetOffset.top - 500, behavior:'auto'});
-			
+			window.scrollTo({
+				top : targetOffset.top - 500,
+				behavior : 'auto'
+			});
+
 			form.loginPwConfirm.focus();
-			
+
 			var msg = "로그인 비밀번호 확인이 일치하지 않습니다.";
 			var targetName = "loginPwConfirm";
 			var targetType = "input";
-			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			var toastr = setPositionOfToastr(targetType, targetName, msg);
 
 			return;
 		}
@@ -104,24 +116,24 @@
 
 		if (form.name.value.length == 0) {
 			form.name.focus();
-			
+
 			var msg = "이름을 입력해주세요.";
 			var targetName = "name";
 			var targetType = "input";
-			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			var toastr = setPositionOfToastr(targetType, targetName, msg);
 
 			return;
 		}
-		
+
 		form.age.value = form.age.value.trim();
 
 		if (form.age.value.length == 0) {
 			form.age.focus();
-			
+
 			var msg = "나이를 입력해주세요.";
 			var targetName = "age";
 			var targetType = "input";
-			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			var toastr = setPositionOfToastr(targetType, targetName, msg);
 
 			return;
 		}
@@ -130,11 +142,11 @@
 
 		if (form.nickname.value.length == 0) {
 			form.nickname.focus();
-			
+
 			var msg = "활동명을 입력해주세요.";
 			var targetName = "nickname";
 			var targetType = "input";
-			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			var toastr = setPositionOfToastr(targetType, targetName, msg);
 
 			return;
 		}
@@ -144,20 +156,21 @@
 
 		if (form.email.value.length == 0) {
 			form.email.focus();
-			
+
 			var msg = "이메일을 입력해주세요.";
 			var targetName = "email";
 			var targetType = "input";
-			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			var toastr = setPositionOfToastr(targetType, targetName, msg);
 			return;
-			
-		}else if(form.email.value.length != 0 && $('#email').data("authentication") == "-1"){
+
+		} else if (form.email.value.length != 0
+				&& $('#email').data("authentication") == "-1") {
 			form.email.focus();
-			
+
 			var msg = "'이메일 인증을 완료해주세요.";
 			var targetName = "email";
 			var targetType = "input";
-			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			var toastr = setPositionOfToastr(targetType, targetName, msg);
 			return;
 		}
 
@@ -167,33 +180,33 @@
 
 		if (form.cellphoneNo.value.length == 0) {
 			form.cellphoneNo.focus();
-			
+
 			var msg = "휴대전화번호를 입력해주세요.";
 			var targetName = "cellphoneNo";
 			var targetType = "input";
-			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			var toastr = setPositionOfToastr(targetType, targetName, msg);
 
 			return;
 		}
 
 		if (form.cellphoneNo.value.length < 10) {
 			form.cellphoneNo.focus();
-			
+
 			var msg = "휴대폰번호를 10자 이상 입력해주세요.";
 			var targetName = "cellphoneNo";
 			var targetType = "input";
-			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			var toastr = setPositionOfToastr(targetType, targetName, msg);
 
 			return;
 		}
 
 		if (isCellphoneNo(form.cellphoneNo.value) == false) {
 			form.cellphoneNo.focus();
-	
+
 			var msg = "휴대전화번호를 정확히 입력해주세요.";
 			var targetName = "cellphoneNo";
 			var targetType = "input";
-			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			var toastr = setPositionOfToastr(targetType, targetName, msg);
 
 			return;
 		}
@@ -349,14 +362,21 @@
 					<input id="email" data-authentication="-1"
 						class="leading-tight appearance-none rounded-full flex-grow py-2 pl-2 text-gray-700 border-t border-l border-b focus:outline-none focus:shadow-outline"
 						type="email" placeholder="이메일" name="email" maxlength="50" />
-					<button type="button" id="email-button" class="hidden bg-gray-500 appearance-none rounded-r-full px-4 text-white hover:bg-gray-700 border-t border-r border border-b border-gray-500"
-					onclick="sendEmailAuthenticationVal()">인증번호발송</button>
+					<button type="button" id="email-button"
+						class="hidden bg-gray-500 appearance-none rounded-r-full px-4 text-white hover:bg-gray-700 border-t border-r border border-b border-gray-500"
+						onclick="sendEmailAuthenticationVal()">인증번호발송</button>
 				</div>
 				<div id="email-duple-result"></div>
 				<div id="email-verify-box" class="hidden flex-grow pt-4">
-					<input type="text" id="email-verify" class="shadow appearance-none border rounded-l-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
-					<button type="button" id="email-verify-button" class="whitespace-nowrap bg-gray-500 appearance-none rounded-r-full px-4 text-white hover:bg-gray-700 border-t border-r border border-b border-gray-500"
-					onclick="verifyAuthenticationCode()">인증확인</button>
+					<div class="flex flex-grow relative">
+						<input type="text" id="email-verify"
+							class="shadow appearance-none border rounded-l-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+						<div id="authentication-timer" class="absolute top-2/4 right-0 transform -translate-x-1/2 -translate-y-1/2 text-opacity-60 text-gray-600"></div>
+					</div>
+					<button type="button" id="email-verify-button"
+						class="whitespace-nowrap bg-gray-500 appearance-none rounded-r-full px-4 text-white hover:bg-gray-700 border-t border-r border border-b border-gray-500"
+						onclick="verifyAuthenticationCode()">인증확인</button>
+
 				</div>
 				<div id="email-verify-result"></div>
 			</div>
@@ -382,7 +402,6 @@
 </form>
 
 <script>
-
 	//프로필사진 업로드 유무 화면에 표시해줌
 	$('#join-file').on('change', function() {
 
@@ -410,7 +429,7 @@
 			memberFileStatus.html("프로필 사진을 선택해주세요");
 		}
 	});
-	
+
 	//로그인 아이디 실시간 체크
 	$('#loginId').on(
 			"propertychange change keyup paste",
@@ -447,31 +466,91 @@
 			});
 
 	//이메일 실시간 체크
-	$('#email').on("propertychange change keyup paste",function() {
+	$('#email').on("propertychange change keyup paste",
+					function() {
 
-		//이메일 체크 정규식
-		var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+						//이메일 체크 정규식
+						var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
-		$('#email-verify-box').css("display", "none");
+						$('#email-verify-box').css("display", "none");
+						
+						$('#authentication-timer').html("");
+						
+						$("#email").data("authentication", "-1");
 
+						let email = $('#email').val();
+
+						$('#email-authentication-result').empty();
+
+						if (email.length == 0) {
+							$('#email-duple-result').empty();
+							$('#email').css("border-radius", "9999px");
+							$('#email-button').css("display", "none");
+
+						} else if (email.length != 0
+								&& regExp.test(email) == false) {
+
+							$('#email-duple-result').empty();
+							$('#email').css("border-radius", "9999px");
+							$('#email-button').css("display", "none");
+
+						} else if (email.length != 0 && regExp.test(email)) {
+							$
+									.ajax({
+										url : '../../usr/member/emailDupleAjax',
+										data : {
+											email : email
+										},
+										dataType : "json",
+										type : 'GET',
+										success : function(data) {
+											if (data && data.msg) {
+												if (data.fail == false) {
+													$('#email-duple-result')
+															.html(
+																	'<div class="text-green-500 pt-4">'
+																			+ data.msg
+																			+ '</span>');
+													$('#email')
+															.css(
+																	{
+																		"border-top-right-radius" : "0px",
+																		"border-bottom-right-radius" : "0px"
+																	});
+													$('#email-button').css(
+															"display", "block");
+												} else {
+													$('#email-duple-result')
+															.html(
+																	'<div class="text-red-500 pt-4">'
+																			+ data.msg
+																			+ '</span>');
+													$('#email').css(
+															"border-radius",
+															"9999px");
+													$('#email-button').css(
+															"display", "none");
+												}
+											}
+										}
+									});
+						}
+					});
+	
+	//이메일 인증번호 전송함수
+	function sendEmailAuthenticationVal() {
+		
+		if ($('.toast')) {
+			window.toastr.remove();
+		}
+		
 		let email = $('#email').val();
-
-		$('#email-authentication-result').empty();
-
-		if (email.length == 0) {
+		
+		if(typeof timer == "undefined"){
 			$('#email-duple-result').empty();
-			$('#email').css("border-radius" , "9999px");
-			$('#email-button').css("display","none");
-			
-		} else if(email.length != 0 && regExp.test(email) == false){
-			
-			$('#email-duple-result').empty();
-			$('#email').css("border-radius" , "9999px");
-			$('#email-button').css("display","none");
-			
-		} else if (email.length != 0 && regExp.test(email)) {
+
 			$.ajax({
-				url : '../../usr/member/emailDupleAjax',
+				url : '../../usr/member/sendCodeAjax',
 				data : {
 					email : email
 				},
@@ -480,77 +559,135 @@
 				success : function(data) {
 					if (data && data.msg) {
 						if (data.fail == false) {
-							$('#email-duple-result').html('<div class="text-green-500 pt-4">'+ data.msg + '</span>');
-							$('#email').css({"border-top-right-radius" : "0px",
-								"border-bottom-right-radius" : "0px"});
-							$('#email-button').css("display","block");
+							
+							var msg = data.msg;
+							var targetName = "email";
+							var targetType = "id";
+							var toastr = setPositionOfToastr(targetType,
+									targetName, msg);
+
+							$('#email-verify-box').css("display", "flex");
+							
+							startAuthentiactionTimer();
+
 						} else {
-							$('#email-duple-result').html('<div class="text-red-500 pt-4">'+ data.msg + '</span>');
-							$('#email').css("border-radius" , "9999px");
-							$('#email-button').css("display","none");
+							var msg = data.msg;
+							var targetName = "email";
+							var targetType = "id";
+							var toastr = setPositionOfToastr(targetType,
+									targetName, msg);
+
 						}
 					}
 				}
 			});
-		}
-	});
-	
-	function sendEmailAuthenticationVal(){
-		if ($('.toast')) {
-			window.toastr.remove();
-		}
-	
-		$('#email-duple-result').empty();
-		
-		let email = $('#email').val();
-		
-		$.ajax({
-			url : '../../usr/member/sendCodeAjax',
-			data : {
-				email : email
-			},
-			dataType : "json",
-			type : 'GET',
-			success : function(data) {
-				if (data && data.msg) {
-					if (data.fail == false) {
-						var msg = data.msg;
-						var targetName = "email";
-						var targetType = "id";
-						var toastr = setPositionOfToastr(targetType,targetName,msg);
-						
-						$('#email-verify-box').css("display", "flex");
-						
-					} else {
-						var msg = data.msg;
-						var targetName = "email";
-						var targetType = "id";
-						var toastr = setPositionOfToastr(targetType,targetName,msg);
+			
+		} else{
+			if(time <= 0){
+				$('#email-duple-result').empty();
 				
+				$.ajax({
+					url : '../../usr/member/sendCodeAjax',
+					data : {
+						email : email
+					},
+					dataType : "json",
+					type : 'GET',
+					success : function(data) {
+						if (data && data.msg) {
+							if (data.fail == false) {
+								
+								var msg = data.msg;
+								var targetName = "email";
+								var targetType = "id";
+								var toastr = setPositionOfToastr(targetType,
+										targetName, msg);
+
+								$('#email-verify-box').css("display", "flex");
+								
+								time = 5;
+								startAuthentiactionTimer();
+								
+								html = '';
+								html += '<span>인증확인</span>';
+
+								$("#email-verify-button").html(html);
+
+							} else {
+								var msg = data.msg;
+								var targetName = "email";
+								var targetType = "id";
+								var toastr = setPositionOfToastr(targetType,
+										targetName, msg);
+
+							}
+						}
 					}
-				}
+				});
+				
+			}else{
+				var msg = "인증번호 재발송까지 " + min + "분 " + sec + "초 남았습니다.";
+				var targetName = "email";
+				var targetType = "id";
+				var toastr = setPositionOfToastr(targetType,
+						targetName, msg);
 			}
-		});
-	
+		}
+
 	}
 	
-	function verifyAuthenticationCode(){
+	//타이머(setInterval)를 담을 함수 -> 나중에 clearInterval(timer)를 통해서 타이머를 없앨수있음
+	var timer;
+	
+	//타이머 시간설정
+	var time = 5;
+	var min = "";
+	var sec = "";
+	
+	//인증시간 타이머 함수
+	function startAuthentiactionTimer() {
+		clearInterval(timer);
+		
+		timer = setInterval(function(){
+			
+			min = parseInt(time/60);
+			sec = time%60;
+			
+			if(min != 0 ){
+				$('#authentication-timer').html('<span>'+ min + "분 " + sec + "초" +'</span>');	
+			}else{
+				$('#authentication-timer').html('<span>' + sec + "초" +'</span>');
+			}
+			
+			if(time == 0){
+				clearInterval(timer);
+				$('#authentication-timer').html('<span>인증실패</span>');
+			}else{
+				time--;
+			}
+			
+		}, 1000);
+		
+	}
+
+	//인증번호 일치하는지 확인하는 함수
+	function verifyAuthenticationCode() {
 		if ($('.toast')) {
 			window.toastr.remove();
 		}
-		
+
 		let email = $('#email').val();
 		let emailAuthenCode = $('#email-verify').val();
-		
-		if(emailAuthenCode.length == 0){
+
+		if (emailAuthenCode.length == 0) {
 			var msg = "인증번호를 입력해주세요.";
 			var targetName = "email-verify";
 			var targetType = "id";
-			var toastr = setPositionOfToastr(targetType,targetName,msg);
+			var toastr = setPositionOfToastr(targetType, targetName, msg);
 			return;
-			
-		}else{
-			
+
+		} else {
+
 			$.ajax({
 				url : '../../usr/member/verifyCheck',
 				data : {
@@ -562,32 +699,36 @@
 				success : function(data) {
 					if (data && data.msg) {
 						if (data.fail == false) {
-							
+
 							var msg = "인증번호가 일치합니다.";
 							var targetName = "email-verify";
 							var targetType = "id";
-							var toastr = setPositionOfToastr(targetType,targetName,msg);
-							
+							var toastr = setPositionOfToastr(targetType,
+									targetName, msg);
+
 							html = '';
 							html += '<span>인증완료</span>';
 							html += '<i class="fas fa-check"></i>';
-							
+
 							$("#email-verify-button").html(html);
-							$("#email").data("authentication" , "1");
-							
+							$("#email").data("authentication", "1");
+							clearInterval(timer);
+							$('#authentication-timer').empty();
+
 						} else {
-							
+
 							var msg = "인증번호가 잘못입력되었습니다.";
 							var targetName = "email-verify";
 							var targetType = "id";
-							var toastr = setPositionOfToastr(targetType,targetName,msg);
-							
+							var toastr = setPositionOfToastr(targetType,
+									targetName, msg);
+
 						}
 					}
 				}
-			});		
+			});
 		}
-	
+
 	}
 </script>
 <%@ include file="../part/foot.jsp"%>
