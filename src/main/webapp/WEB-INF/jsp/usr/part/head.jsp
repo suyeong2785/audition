@@ -209,9 +209,12 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 		</div>
 		
 <script>
+
 $(function() {
-	notifyUserOfApplymentResult();
-	setInterval(function() { notifyUserOfApplymentResult()}, 30000);
+	if(loginedMemberId > 0 && loginedMemberId && loginedMemberId != null ){
+		notifyUserOfApplymentResult();
+		setInterval(function() { notifyUserOfApplymentResult()}, 30000);
+	}
 });
 	
 	function showNotificationModal(){

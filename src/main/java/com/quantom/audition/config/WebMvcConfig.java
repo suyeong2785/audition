@@ -56,8 +56,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 				.excludePathPatterns("/usr/file/doUpload*").excludePathPatterns("/usr/actingRole/detail*")
 				.excludePathPatterns("/usr/actingRole/artworkList").excludePathPatterns("/usr/actingRole/artworkListForAuditions")
 				.excludePathPatterns("/usr/actingRole/getActingRoleByArtworkIdAndNameAndAgeAndGenderAjax")
-				.excludePathPatterns("/usr/member/loginIdDupleAjax");
-
+				.excludePathPatterns("/usr/member/loginIdDupleAjax").excludePathPatterns("/usr/member/emailDupleAjax")
+				.excludePathPatterns("/usr/member/sendCodeAjax").excludePathPatterns("/usr/member/verifyCheck");
+		
 		// 로그인 상태에서 접속할 수 없는 URI 전부 기술
 		registry.addInterceptor(needToLogoutInterceptor).addPathPatterns("/usr/member/login")
 				.addPathPatterns("/usr/member/doLogin").addPathPatterns("/usr/member/join")
