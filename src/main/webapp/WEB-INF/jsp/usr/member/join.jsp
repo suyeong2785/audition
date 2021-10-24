@@ -2,6 +2,10 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="../part/head.jsp"%>
+
+<!-- iamport.payment.js -->
+  <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 <script>
@@ -378,7 +382,6 @@
 						onclick="verifyAuthenticationCode()">인증확인</button>
 
 				</div>
-				<div id="email-verify-result"></div>
 			</div>
 		</div>
 		<div>
@@ -470,17 +473,24 @@
 					function() {
 
 						//이메일 체크 정규식
-						var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+						//(21-10-24) 이메일에 . / - /_ 허용
+						var regExp = /^([\w\.\_\-])*[a-zA-Z0-9]+([\w\.\_\-])*([a-zA-Z0-9])+([\w\.\_\-])+@([a-zA-Z0-9]+\.)+[a-zA-Z0-9]{2,8}$/i;
 
+						//이메일 인증박스 안보이게함
 						$('#email-verify-box').css("display", "none");
 						
+						//타이머를 없애줌
 						$('#authentication-timer').html("");
 						
+						//이메일 인풋에 인증안되어있음으로 변경 
 						$("#email").data("authentication", "-1");
 
+						//이메일 값 가져오기
 						let email = $('#email').val();
-
-						$('#email-authentication-result').empty();
+						
+						//타이머 삭제 및 타임 초기화
+						clearInterval(timer);
+						time = 299
 
 						if (email.length == 0) {
 							$('#email-duple-result').empty();
@@ -583,7 +593,7 @@
 			});
 			
 		} else{
-			if(time <= 0){
+			if(time == 299){
 				$('#email-duple-result').empty();
 				
 				$.ajax({
@@ -605,7 +615,7 @@
 
 								$('#email-verify-box').css("display", "flex");
 								
-								time = 5;
+								time = 299;
 								startAuthentiactionTimer();
 								
 								html = '';
@@ -640,7 +650,7 @@
 	var timer;
 	
 	//타이머 시간설정
-	var time = 5;
+	var time = 299;
 	var min = "";
 	var sec = "";
 	
