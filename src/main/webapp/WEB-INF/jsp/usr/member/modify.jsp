@@ -250,196 +250,192 @@
 	<input type="hidden" name="jobId" value="1" />
 	<div class="m-auto" style="max-width: 400px">
 		<div>
-			<div>ID</div>
-			<div class="form-control-box">${loginedMember.loginId}</div>
-		</div>
-
-		<div>
-			<div class="form-control-box pb-4 flex flex-col flex-grow">
-				<div>비밀번호</div>
-				<input
-					class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-					type="password" placeholder="새 로그인 비밀번호를 입력해주세요." name="loginPw"
-					maxlength="30" />
+			<div class=" pb-4 flex flex-col flex-grow">
+				<div class="bg-gray-500 text-white font-bold py-2 rounded-full px-4">로그인
+					아이디</div>
+				<input disabled="disabled"
+					class="bg-gray-100 shadow appearance-none border rounded-full flex-grow py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
+					value="${loginedMember.loginId}" />
 			</div>
-		</div>
-		<div>
-			<div class="form-control-box pb-4 flex flex-col flex-grow">
-				<div>비밀번호 g확인</div>
-				<input name="loginPwConfirm"
-					class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-					type="password" placeholder="새 로그인 비밀번호 확인을 입력해주세요."
+			<div class=" pb-4 flex flex-col flex-grow">
+				<div
+					class="bg-gray-500 text-white font-bold py-2 rounded-full px-4 ">새
+					로그인 비번(선택)</div>
+				<input type="password" placeholder="새 로그인 비밀번호를 입력해주세요."
+					class="shadow appearance-none border rounded-full flex-grow py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
+					name="loginPw" maxlength="30" />
+
+
+			</div>
+			<div class=" pb-4 flex flex-col flex-grow">
+				<div
+					class="bg-gray-500 text-white font-bold py-2 rounded-full px-4 ">새
+					로그인 비번 확인(선택)</div>
+
+				<input type="password" placeholder="새 로그인 비밀번호 확인을 입력해주세요."
+					class="shadow appearance-none border rounded-full flex-grow py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
 					name="loginPwConfirm" maxlength="30" />
 			</div>
-		</div>
-		<div class="flex justify-center">
-			<label class="flex-grow">
-				<input id="modify-file" type="file"
-					class="text-sm cursor-pointer hidden "
-					accept="${appConfig.getAttachemntFileInputAccept('img')}"
-					name="file__member__${loginedMemberId}__common__attachment__${fileForProfile != null ? fileForProfile.fileNo : 0 }" />
+			<div class=" pb-4 flex flex-col flex-grow">
 				<div
-					class="member-file-status mb-4 w-full text-center text bg-gray-500 text-white border border-gray-300 rounded-full font-semibold cursor-pointer p-1 px-3 hover:bg-gray-600">
-					프로필 사진을 선택해주세요</div>
-			</label>
-			<c:if test="${fileForProfile != null}">
-				<div>
-					<label>프로필 삭제</label>
-					<input type="checkbox" onclick="changeDeleteCheck()" />
-				</div>
-			</c:if>
-		</div>
-		<div id="join-profile-box" class="flex justify-center">
-			<img id="modify-profile" class="max-w-xs" src="" alt="" />
-		</div>
-		<input type="hidden" id="delete-check" name="deleteCheck" value="-1" />
-		<div class="flex">
-			<div class="flex">
-				<span>ISNI 인증</span>
-				<span id="ISNI-validation" data-isni-result="1"
-					class="hidden text-green-400">
-					<i class="fas fa-check"></i>
-				</span>
-			</div>
-			<div class="form-control-box pb-4 flex-grow">
-				<input name="loginPwConfirm"
-					class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-					type="text"
-					placeholder="ex) https://www.youtube.com/watch?v=영문/숫자/특수문자 (pc버전)"
-					name="youTubeUrl" maxlength="30" />
-			</div>
-		</div>
-		<div>
-			<div>
-				<div class="ISNI-box flex items-center">
-					<div class="flex-col items-center pr-4">
-						<input id="ISNI-number" type="hidden" name="ISNI_number" />
-						<div class="ISNI-input-box flex items-center">
-							<span class="pr-2">
-								<input id="ISNI-number1"
-									class="w-12 border border-black border-opacity-25 rounded-sm text-center"
-									type="text" maxlength="4" placeholder="0000"
-									value="${loginedMember.ISNI_number != null ? fn:substring(loginedMember.ISNI_number,0,4) : ''}" />
-							</span>
-
-							<span class="pr-2">
-								<input id="ISNI-number2"
-									class="w-12 border border-black border-opacity-25 rounded-sm text-center"
-									type="text" maxlength="4" placeholder="0000"
-									value="${loginedMember.ISNI_number != null ? fn:substring(loginedMember.ISNI_number,4,8) : ''}" />
-							</span>
-
-							<span class="pr-2">
-								<input id="ISNI-number3"
-									class="w-12 border border-black border-opacity-25 rounded-sm text-center"
-									type="text" maxlength="4" placeholder="0000"
-									value="${loginedMember.ISNI_number != null ? fn:substring(loginedMember.ISNI_number,8,12) : ''}" />
-							</span>
-
-							<span class="pr-2">
-								<input id="ISNI-number4"
-									class="w-12 border border-black border-opacity-25 rounded-sm text-center"
-									type="text" maxlength="4" placeholder="0000"
-									value="${loginedMember.ISNI_number != null ? fn:substring(loginedMember.ISNI_number,12,16) : ''}" />
-							</span>
+					class="bg-gray-500 text-white font-bold py-2 rounded-full px-4 mb-2 ">프로필
+					사진</div>
+				<div class="flex items-center">
+					<label class="modify-file">
+						<input id="modify-file" type="file"
+							class="text-sm cursor-pointer hidden "
+							accept="${appConfig.getAttachemntFileInputAccept('img')}"
+							name="file__member__${loginedMemberId}__common__attachment__${fileForProfile != null ? fileForProfile.fileNo : 0 }" />
+						<div
+							class="member-file-status w-full text-center text bg-green-500 text-white rounded-full font-semibold cursor-pointer p-1 px-3 hover:bg-green-600">
+							프로필 사진 업로드</div>
+					</label>
+					<c:if test="${fileForProfile != null}">
+						<div class="flex items-center">
+							<label>프로필 삭제</label>
+							<input type="checkbox" onclick="changeDeleteCheck()" />
 						</div>
-						<div id="ISNI-reuslt" class="hidden"></div>
+					</c:if>
+					<input type="hidden" id="delete-check" name="deleteCheck"
+						value="-1" />
+				</div>
+				<img id="modify-profile" class="w-20" src="" alt="" />
+			</div>
+			<div class=" pb-4 flex flex-col flex-grow">
+				<div
+					class="bg-gray-500 text-white font-bold py-2 rounded-full px-4 ">유튜브
+					url</div>
+				<input type="text" name="youTubeUrl"
+					class="shadow appearance-none border rounded-full flex-grow py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
+					placeholder="ex) https://www.youtube.com/watch?v=영문/숫자/특수문자 (pc버전)" value="${loginedMember.youTubeUrl}" />
+			</div>
+			<div class=" pb-4 flex flex-col flex-grow">
+				<div class="flex flex-grow">
+					<div
+						class="bg-gray-500 text-white font-bold py-2 rounded-full px-4 flex-grow">ISNI
+						인증</div>
+					<span id="ISNI-validation" data-isni-result="1"
+						class="hidden text-green-400">
+						<i class="fas fa-check"></i>
+					</span>
+				</div>
+				<div>
+					<div class="ISNI-box flex items-center">
+						<div class="flex-col items-center pr-4 mt-2">
+							<input id="ISNI-number" type="hidden" name="ISNI_number" />
+							<div class="ISNI-input-box flex items-center">
+								<span class="pr-2">
+									<input id="ISNI-number1"
+										class="w-12 border border-black border-opacity-25 rounded-sm text-center"
+										type="text" maxlength="4" placeholder="0000"
+										value="${loginedMember.ISNI_number != null ? fn:substring(loginedMember.ISNI_number,0,4) : ''}" />
+								</span>
+
+								<span class="pr-2">
+									<input id="ISNI-number2"
+										class="w-12 border border-black border-opacity-25 rounded-sm text-center"
+										type="text" maxlength="4" placeholder="0000"
+										value="${loginedMember.ISNI_number != null ? fn:substring(loginedMember.ISNI_number,4,8) : ''}" />
+								</span>
+
+								<span class="pr-2">
+									<input id="ISNI-number3"
+										class="w-12 border border-black border-opacity-25 rounded-sm text-center"
+										type="text" maxlength="4" placeholder="0000"
+										value="${loginedMember.ISNI_number != null ? fn:substring(loginedMember.ISNI_number,8,12) : ''}" />
+								</span>
+
+								<span class="pr-2">
+									<input id="ISNI-number4"
+										class="w-12 border border-black border-opacity-25 rounded-sm text-center"
+										type="text" maxlength="4" placeholder="0000"
+										value="${loginedMember.ISNI_number != null ? fn:substring(loginedMember.ISNI_number,12,16) : ''}" />
+								</span>
+							</div>
+							<div id="ISNI-reuslt" class="hidden"></div>
+						</div>
+						<button type="button" onclick="javascript:getISNIInfo()"
+							class=" mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4">검색</button>
 					</div>
-					<button type="button" onclick="javascript:getISNIInfo()"
-						class="mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">검색</button>
 				</div>
 			</div>
-		</div>
-		<div>
-			<div class="form-control-box pb-4 flex-grow">
-				<input id="name"
-					class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-					type="text" placeholder="이름을 입력해주세요." name="name" maxlength="20"
-					value="${loginedMember.name.trim()}" />
+			<div class=" pb-4 flex flex-col flex-grow">
+				<div
+					class="bg-gray-500 text-white font-bold py-2 rounded-full px-4 ">이름</div>
+				<input id="name" type="text" placeholder="이름을 입력해주세요." name="name" disabled="disabled"
+					class="bg-gray-100 shadow appearance-none border rounded-full flex-grow py-2 px-3 leading-tight focus:outline-none focus:shadow-outline "
+					maxlength="20" value="${loginedMember.name.trim()}" />
 			</div>
-		</div>
-		<div>
-			<div class="form-control-box pb-4 flex-grow">
-				<input id="name"
-					class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-					type="text" placeholder="활동명 입력해주세요." name="nickname"
+			<div class=" pb-4 flex flex-col flex-grow">
+				<div
+					class="bg-gray-500 text-white font-bold py-2 rounded-full px-4 ">활동명</div>
+				<input type="text" placeholder="활동명 입력해주세요." name="nickname"
+					class="shadow appearance-none border rounded-full flex-grow py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
 					maxlength="20" value="${loginedMember.nickname.trim()}" />
 			</div>
-		</div>
-		<div>
-			<div class="form-control-box pb-4 flex-grow">
-				<input
-					class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-					type="email" placeholder="이메일 입력해주세요." name="email" maxlength="50"
-					value="${loginedMember.email.trim()}" />
+			<div class=" pb-4 flex flex-col flex-grow">
+				<div
+					class="bg-gray-500 text-white font-bold py-2 rounded-full px-4 ">이메일</div>
+				<input type="email" placeholder="이메일 입력해주세요." name="email" disabled="disabled"
+					class="bg-gray-100 shadow border rounded-full flex-grow py-2 px-3 leading-tight focus:outline-none focus:shadow-outline "
+					maxlength="50" value="${loginedMember.email.trim()}" />
 			</div>
-		</div>
-		<div>
-			<div class="form-control-box pb-4 flex-grow">
-				<input
-					class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-					type="tel" placeholder="휴대전화번호를 입력해주세요." name="cellphoneNo"
+			<div class=" pb-4 flex flex-col flex-grow">
+				<div
+					class="bg-gray-500 text-white font-bold py-2 rounded-full px-4 ">휴대폰</div>
+				<input type="tel" placeholder="휴대전화번호를 입력해주세요." name="cellphoneNo" disabled="disabled"
+					class="bg-gray-100 shadow appearance-none border rounded-full flex-grow py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
 					maxlength="12" value="${loginedMember.cellphoneNo.trim()}" />
 			</div>
-		</div>
-		<div>
-			<div class="form-control-box pb-4 flex-grow">
-				<input
-					class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-					type="tel" placeholder="휴대전화번호를 입력해주세요." name="cellphoneNo"
-					maxlength="12" value="${loginedMember.cellphoneNo.trim()}" />
-			</div>
-		</div>
-		<div id="activity-box">
-			<div>
-				<span>활동이력</span>
-			</div>
-			<div class="relative flex items-center">
-				<button type="button" class="absolute top-50 text-2xl"
-					id="career-box-switch" data-displayStatus=-1
-					onclick="javascript:showCareerBox()">
-					<i class="far fa-plus-square"></i>
-				</button>
-				<div class="career-box hidden relative">
-					<c:if test="${joinedCareer != null}">
-						<button type="button" class="absolute top-0 text-2xl"
-							onclick="javascript:addCareerBox()">
-							<i class="far fa-plus-square"></i>
-						</button>
+			<div id="activity-box">
+				<div class="pb-4 flex flex-col flex-grow">
+					<div class="bg-gray-500 text-white font-bold py-2 rounded-full px-4">활동이력</div>
+				</div>
+				<div class="relative flex items-center">
+					<button type="button" class="absolute top-50 text-2xl"
+						id="career-box-switch" data-displayStatus=-1
+						onclick="javascript:showCareerBox()">
+						<i class="far fa-plus-square"></i>
+					</button>
+					<div class="career-box hidden relative">
+						<c:if test="${joinedCareer != null}">
+							<button type="button" class="absolute top-0 text-2xl"
+								onclick="javascript:addCareerBox()">
+								<i class="far fa-plus-square"></i>
+							</button>
 
-						<div id="career-input-box" class="pl-8">
-							<c:forEach items="${joinedCareer}" var="career"
-								varStatus="status">
-								<div class="career-input flex items-center">
-									<div class="flex-grow">
-										<input name="careerDate" type="date" class="w-30 rounded-full"
-											value="${fn:contains(career.key,'-') ? career.key : ''}" />
-									</div>
-									<div class="flex-grow">
-										<input name="careerArtwork" type="text" class="w-full rounded-full"
-											placeholder="작품명" name="career" maxlength="20"
-											value="${career.value}" />
-									</div>
-									<div class="flex-grow">
+							<div id="career-input-box" class="pl-8">
+								<c:forEach items="${joinedCareer}" var="career"
+									varStatus="status">
+									<div class="career-input flex items-center">
+										<div>
+											<input name="careerDate" type="date"
+												value="${fn:contains(career.key,'-') ? career.key : ''}" />
+										</div>
+										<div>
+											<input name="careerArtwork" type="text"
+												placeholder="작품명 입력해주세요." name="career" maxlength="20"
+												value="${career.value}" />
+										</div>
 										<button type="button" class="text-2xl"
 											onclick="javascript:removeCareerBox(this)">
 											<i class="far fa-minus-square"></i>
 										</button>
 									</div>
-								</div>
-							</c:forEach>
-						</div>
-					</c:if>
+								</c:forEach>
+							</div>
+						</c:if>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="form-control-box pb-4 flex-grow flex">
-			<button
-				class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
-				type="submit">수정</button>
-			<button
-				class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
-				type="button" onclick="history.back();">취소</button>
+			<div class="flex">
+				<button
+					class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+					type="submit">수정</button>
+				<button
+					class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+					type="button" onclick="history.back();">취소</button>
+			</div>
 		</div>
 	</div>
 </form>
@@ -675,10 +671,10 @@
 
 		html += '<div class="career-input flex items-center">';
 		html += '<div>';
-		html += '<input type="date" name="careerDate" class="rounded-full" />';
+		html += '<input type="date" name="careerDate" />';
 		html += '</div>';
 		html += '<div>';
-		html += '<input name="careerArtwork" type="text" class="rounded-full" placeholder="작품명 입력해주세요." maxlength="20" value="'
+		html += '<input name="careerArtwork" type="text" placeholder="작품명 입력해주세요." maxlength="20" value="'
 				+ (title != null ? title : "") + '"/>';
 		html += '</div>';
 		html += '<button class="text-2xl" onclick="removeCareerBox(this)">';
