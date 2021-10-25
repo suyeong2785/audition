@@ -215,6 +215,28 @@
 
 			return;
 		}
+		
+		if ( $('input[name="userAgreement"]').is(":checked") == false ) {
+			form.cellphoneNo.focus();
+
+			var msg = "이용약관을 체크해주세요.";
+			var targetName = "userAgreement";
+			var targetType = "input";
+			var toastr = setPositionOfToastr(targetType, targetName, msg);
+
+			return;
+		}
+		
+		if ($('input[name="personalClause"]').is(":checked") == false) {
+			form.cellphoneNo.focus();
+
+			var msg = "개인정보 수집 및 이용에 대한 동의를 체크해주세요.";
+			var targetName = "personalClause";
+			var targetType = "input";
+			var toastr = setPositionOfToastr(targetType, targetName, msg);
+
+			return;
+		}
 
 		form.loginPwReal.value = sha256(form.loginPw.value);
 
@@ -396,13 +418,13 @@
 		<!-- 오디션트리 이용약관 -->
 		<div class="flex justify-between">
 			<div>
-				<input type="checkbox" />
+				<input type="checkbox" name="userAgreement"/>
 				<span>Audictiontree 이용약관</span>
 			</div>
-			<button type="button" class="bg-green-500 hover:bg-green-700 text-white font-bold rounded-full px-4 text-">자세히보기</button>
+			<button type="button" class="bg-green-500 hover:bg-green-700 text-white font-bold rounded-full px-4 " onclick="showUserAgreement()">자세히보기</button>
 		</div>
 
-		<div class="bg-white" style="height: 100px; overflow-y: scroll;">
+		<div id="userAgreement" class="bg-white hidden" style="height: 100px; overflow-y: scroll;">
 			<h3>개인 회원 약관 (개정 및 적용 2020. 06. 10)</h3>
 			<h2>제1장 총칙</h2>
 			<h3>제1조 (목적)</h3>
@@ -681,12 +703,12 @@
 		<!-- 오디션트리 개인정보동의서 -->
 		<div class="flex justify-between">
 			<div>
-				<input type="checkbox" />
+				<input type="checkbox" name="personalClause" />
 				<span>개인정보 수집 및 이용에 대한 동의</span>
 			</div>
-			<div>자세히보기</div>
+			<div class="bg-green-500 hover:bg-green-700 text-white font-bold rounded-full px-4 " onclick="showPersonalClause()">자세히보기</div>
 		</div>
-		<div class="bg-white" style="height: 100px; overflow-y: scroll">
+		<div id="personalClause" class="hidden bg-white" style="height: 100px; overflow-y: scroll">
 			<h2>1. 개인정보 수집 및 이용 현황</h2>
 			<p>(주) 미일 (이하 '회사'는) 고객님의 개인 정보를 중요시하며, "정보 통신망 이용 촉진 및 정 보 보호"에
 				관한 법률을 준수하고 있습니다. 회사는 개인 정보 취급 방침을 통하여 고객님 께서 제공하시는 개인 정보가 어떠한 용도와
@@ -1119,6 +1141,14 @@
 			});
 		}
 
+	}
+	
+	function showPersonalClause(){
+		$('#personalClause').toggle();
+	}
+	
+	function showUserAgreement(){
+		$('#userAgreement').toggle();
 	}
 </script>
 <%@ include file="../part/foot.jsp"%>
