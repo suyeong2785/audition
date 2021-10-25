@@ -55,17 +55,25 @@ public class MemberController {
 	 */
 	@RequestMapping("/usr/member/doFindLoginId")
 	public String doFindLoginId(String name, String email, Model model) {
+		
+		
+		
 		Member member = memberService.getMemberByNameAndEmail(name, email);
 
 		if (member == null) {
 			model.addAttribute("historyBack", true);
 			model.addAttribute("msg", "해당 회원이 존재하지 않습니다.");
 			return "common/redirect";
+		} else {
+			
+			memberService.sendLoginIdEmail(email, member.getLoginId());
+			
+			model.addAttribute("historyBack", true);
+			model.addAttribute("msg", "메일이 발송되었습니다.");
+			return "common/redirect";
+			
 		}
 
-		model.addAttribute("historyBack", true);
-		model.addAttribute("msg", String.format("해당 회원의 로그인 아이디는 %s 입니다.", member.getLoginId()));
-		return "common/redirect";
 	}
 
 	/**

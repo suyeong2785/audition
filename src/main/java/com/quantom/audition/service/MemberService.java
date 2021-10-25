@@ -49,7 +49,8 @@ public class MemberService {
 	public int join(Map<String, Object> param) {
 		memberDao.join(param);
 
-		sendJoinCompleteMail((String) param.get("email"));
+		// 회원가입 완료 이메일 발송 로직
+		//sendJoinCompleteMail((String) param.get("email"));
 
 		int id = Util.getAsInt(param.get("id"));
 
@@ -141,20 +142,24 @@ public class MemberService {
 		return memberDao.getMemberByNameAndEmail(name, email);
 	}
 
+	/**
+	 * 임시 비밀번호 발송 로직
+	 * 
+	 * @param actor
+	 * @return
+	 */
 	public ResultData sendTempLoginPwToEmail(Member actor) {
-		String title = "[" + siteName + "] 임시 패스워드 발송";
+
+		// 임시 비밀번호 생성
 		String tempPassword = Util.getTempPassword(6);
-		String body = "<h1>임시 패스워드 : " + tempPassword + "</h1>";
-		body += "<a href=\"" + siteMainUri + "/usr/member/login\" target=\"_blank\">로그인 하러가기</a>";
-
-		ResultData sendResultData = mailService.send(actor.getEmail(), title, body);
-
-		if (sendResultData.isFail()) {
-			return sendResultData;
-		}
-
+		
+		// 임시 비밀번호 메일 발송
+		mailService.sendTempPw(actor.getEmail(), siteName, tempPassword);
+		
+		// 임시 비밀번호 설정
 		setTempPassword(actor, tempPassword);
 
+		// 결과 리턴
 		return new ResultData("S-1", "계정의 이메일주소로 임시 패스워드가 발송되었습니다.");
 	}
 
@@ -257,6 +262,8 @@ public class MemberService {
 
 			return new ResultData("F-1", "핸드폰 번호를 다시 입력하여 주시기 바랍니다." );
 
+		} else if ( param.get("userAgreement") == null || param.get("personalClause") == null) {
+			return new ResultData("F-1", "오디션 트리 이용약관과 개인정보 수집 이용에 대한 안내에 동의하여주시기 바랍니다." );
 		}
 
 		return new ResultData("S-1", "유효한 정보입니다");
@@ -309,21 +316,21 @@ public class MemberService {
 		// 이미 저장되어있는 인증정보가 있는지 조회합니다.
 		Attr findAttr = attrService.getAttrByTypeCode(email);
 		
-		// 1. 인증정보가 업을경우
+		// 1. 인증정보가 없을경우
 		if ( findAttr == null ) {
 			
 			// attr 테이블에 이메일 인증코드를 저장합니다.
 			attrService.setValue("member", 0, email, "emailVerifyCode", verifyCode, expiredTime);
 			
 			// 메일 보내기
-			return mailService.sendVerifyEmail(email, expiredTime, verifyCode);
+			return mailService.sendVerifyEmail(email, expiredTime, verifyCode, findAttr.getRegDate());
 		
 		} else {
 			
 			attrService.updateVerifyCode(email, verifyCode, expiredTime);
 			
 			// 메일 발송
-			return mailService.sendVerifyEmail(email, expiredTime, verifyCode);
+			return mailService.sendVerifyEmail(email, expiredTime, verifyCode, findAttr.getRegDate());
 			
 		}
 		
@@ -347,5 +354,12 @@ public class MemberService {
 			return new ResultData("F-1", "유효하지 않은 코드입니다.");
 		}
 		
+	}
+
+	public ResultData sendLoginIdEmail(String email, String loginId) {
+
+		mailService.sendloginId(email, siteName, loginId);
+		
+		return mailService.sendloginId(email, siteName, loginId);
 	}
  }
