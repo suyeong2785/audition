@@ -90,7 +90,7 @@
 		#{nickname},
 		email = #{email},
 		cellphoneNo = #{cellphoneNo},
-		userAgreemnet = #{userAgreement},
+		userAgreement = #{userAgreement},
 		personalClause = #{personalClause}
 	</insert>
 

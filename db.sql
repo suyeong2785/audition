@@ -738,3 +738,10 @@ TRUNCATE `share`;
 TRUNCATE `recommendation`;
 TRUNCATE `applyment`;
 
+ALTER TABLE `member` ADD COLUMN `userAgreement` TINYINT(1) COMMENT '회원약관 동의여부';
+ALTER TABLE `member` ADD COLUMN `personalClause` TINYINT(1)  COMMENT '개인정보 수집 약관 동의 여부';
+
+ALTER TABLE `member` MODIFY COLUMN `userAgreement` TINYINT(1) UNSIGNED NOT NULL COMMENT '회원약관 동의여부';
+ALTER TABLE `member` MODIFY COLUMN `personalClause` TINYINT(1) UNSIGNED NOT NULL COMMENT '개인정보 수집 약관 동의 여부';
+
+ALTER TABLE `member` MODIFY COLUMN `careerId` INT(10) UNSIGNED NULL AFTER `loginId`;

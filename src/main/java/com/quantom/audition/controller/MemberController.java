@@ -68,7 +68,7 @@ public class MemberController {
 			
 			memberService.sendLoginIdEmail(email, member.getLoginId());
 			
-			model.addAttribute("historyBack", true);
+			model.addAttribute("redirectUri", "/usr/member/login");
 			model.addAttribute("msg", "메일이 발송되었습니다.");
 			return "common/redirect";
 			
