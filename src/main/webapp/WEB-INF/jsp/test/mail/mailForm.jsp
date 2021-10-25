@@ -16,13 +16,13 @@
 		width="100%">
 		<tr>
 			<td align="center">
-				<img src="https://localhost:8080/resource/img/mobile_header.svg"
+				<img src="http://localhost:8080/resource/img/mobile_header.svg"
 					width="176px" height="16px" alt="Brand name" />
 			</td>
 		</tr>
 		<tr>
 			<td align="center">
-				<img src="https://localhost:8080/resource/img/logoForLogin.svg"
+				<img src="http://localhost:8080/resource/img/logoForLogin.svg"
 					alt="Logo image" width="200px" height="200px" />
 			</td>
 		</tr>
