@@ -4,12 +4,12 @@
 <%@ include file="../../usr/part/head.jsp"%>
 
 <div class="grid justify-center grid-column-auto-800 mx-4">
-	<!--  
+	
 	<div>
 		<span>actingRoleId : </span>
 		<span id="checked-actingRole-id"></span>
 	</div>
-	-->
+	
 	<div class="flex justify-between">
 		<div class="text-center py-8 text-xl font-bold">
 			<span>진행중인 오디션</span>
@@ -342,7 +342,6 @@
 		}
 		
 		if($("[id='share-artwork"+ artworkId +"']").is(":checked") == true){
-			$('input:checkbox[id^="share-actingRole"]').css("display","none");
 			
 			var actingRoleIds = $('#actingRoleList'+ artworkId).data("actingRoleIds");
 			
@@ -377,6 +376,8 @@
 		
 		$("[id^='share-actingRole']").change(function(){
 			$('#checked-actingRole-id').empty();
+
+			$("[id^='share-artwork"+ artworkId +"']").prop("checked", false);
 			
 			$('input:checkbox[id^="share-actingRole"]:checked').each(function(index,item) {
 				var sameValue = -1;
@@ -520,6 +521,7 @@
 		
 		$("[id^='share-actingRole']").change(function(){
 			$('#checked-actingRole-id').empty();
+			$("[id^='share-artwork"+ artworkId +"']").prop("checked", false);
 			
 			$('input:checkbox[id^="share-actingRole"]:checked').each(function(index,item) {
 				var sameValue = -1;
@@ -556,30 +558,92 @@
 	
 	}
 	
+	//이벤트 버블링으로 인해서 부모노드에 달려있는 showActingRoleList()와 
+	//연속적으로 drawActingRoleList() 함수가 일어나는 오류를 막음
+	$("[id^='share-artwork']").click(function(e){
+		e.stopPropagation();
+	});
+	
 	$("[id^='share-artwork']").change(function(e){
 		
-		var actingRoleIds = $('#actingRoleList'+ e.target.value).data("actingRoleIds");
-		
-		if($("[id='"+ e.target.id +"']").is(":checked") == false){		
+		if($(e.target).is(":checked") == true){
+			
+			$("#actingRoleList"+ e.target.value + " [id^='share-actingRole']").prop("checked", true);
+			
+			getActingRolesByArtworkId(e.target.value);
+			
+		}else{
+			var actingRoleIds = $('#actingRoleList'+ e.target.value).data("actingRoleIds");
+			
 			for(var i = 0; i < actingRoleIds.length; i++ ){
 				for(var j = 0; j < sharedActingRoles.length; j++){
 					if(sharedActingRoles[j] == actingRoleIds[i]){
 						sharedActingRoles.splice(sharedActingRoles.indexOf(sharedActingRoles[j]),1);
 					}
-				} 
+				}
 			}
+			
+			console.log("sharedActingRoles : " + sharedActingRoles);
+			
+			// 오름차순
+			sharedActingRoles.sort(function(a, b) {
+			    return a - b;
+			});
+			
+			sharedActingRoles = sharedActingRoles.filter((element, index) => element != "" && element != null );
+			
+			console.log("sharedActingRoles : " + sharedActingRoles);
+			var actingRoleToShare =  sharedActingRoles.join(",");
+			
+			$('#checked-actingRole-id').html(actingRoleToShare);
 		}
 		
-		// 오름차순
-		sharedActingRoles.sort(function(a, b) {
-		    return a - b;
+	});
+	
+	function getActingRolesByArtworkId (artworkId){
+		$.ajax({
+			url:'../../adm/actingRole/getActingRoleListByArtworkIdAjax',
+			data : { artworkId : artworkId},
+			dataType : 'json',
+			}).then(function(data){
+				totalCount = data.body.actingRoles.length;
+				actingRoles = data.body.actingRoles;
+				
+				var actingRoleIds = new Array();
+				
+				$.each(actingRoles, function(index, actingRole){
+					actingRoleIds.push(actingRole.id);
+				});
+				
+				$('#actingRoleList'+ artworkId).data("actingRoleIds", actingRoleIds);
+				
+				console.log("actingRoleIds : " + actingRoleIds);
+				
+				for(var i = 0; i < actingRoleIds.length; i++ ){
+					for(var j = 0; j < sharedActingRoles.length; j++){
+						if(sharedActingRoles[j] == actingRoleIds[i]){
+							sharedActingRoles.splice(sharedActingRoles.indexOf(sharedActingRoles[j]),1);
+						}
+					}
+					sharedActingRoles[ sharedActingRoles.length + 1] = actingRoles[i].id;	
+				}
+				
+				console.log("sharedActingRoles : " + sharedActingRoles);
+				
+				// 오름차순
+				sharedActingRoles.sort(function(a, b) {
+				    return a - b;
+				});
+				
+				sharedActingRoles = sharedActingRoles.filter((element, index) => element != "" && element != null );
+				
+				console.log("sharedActingRoles : " + sharedActingRoles);
+				var actingRoleToShare =  sharedActingRoles.join(",");
+				
+				$('#checked-actingRole-id').html(actingRoleToShare);
 		});
 		
-		sharedActingRoles = sharedActingRoles.filter((element, index) => element != "" && element != null );
-		var actingRoleToShare =  sharedActingRoles.join(",");
-		
-		$('#checked-actingRole-id').html(actingRoleToShare);	
-	});
+	}
 	
 	//감춰두었던 체크박스 보여주는 함수
 	function showArtworksAndActingRolesCheckBox(){
