@@ -409,8 +409,8 @@ h3 {
 
 /* loader 커스텀*/
 .loader-img {
-  width: 120px;
-  height: 120px;
+  width: 150px;
+  height: 150px;
   -webkit-animation: 2s linear infinite; 
   animation:  2s linear infinite;
   position:fixed;

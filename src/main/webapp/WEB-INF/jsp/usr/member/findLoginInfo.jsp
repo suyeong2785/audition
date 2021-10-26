@@ -1,9 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="아이디/비번찾기" />
 <%@ include file="../part/head.jsp"%>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
-<h2 class="con">아이디 찾기</h2>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
+
 <script>
 	function MemberFindLoginIdForm__submit(form) {
 		if (isNowLoading()) {
@@ -33,46 +34,47 @@
 			return;
 		}
 
+		$('.loader').show();
+		$('.loader-img').show();
+		$('.loader-background').show();
 		form.submit();
 		startLoading();
 	}
+	
+	
 </script>
-<form method="POST" class="table-box table-box-vertical con form1" action="doFindLoginId" onsubmit="MemberFindLoginIdForm__submit(this); return false;">
-    <table>
-        <colgroup>
-            <col class="table-first-col">
-        </colgroup>
-        <tbody>
-            <tr>
-                <th>이름(실명)</th>
-                <td>
-                    <div class="form-control-box">
-                        <input type="text" placeholder="이름을 입력해주세요. 입력해주세요." name="name" maxlength="30" autofocus="autofocus" />
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <th>이메일주소</th>
-                <td>
-                    <div class="form-control-box">
-                        <input type="email" placeholder="이메일을 입력해주세요." name="email" maxlength="50" />
-                    </div>
-                </td>
-            </tr>
-            <tr class="tr-do">
-                <th>아이디 찾기</th>
-                <td>
-                    <button class="btn btn-primary" type="submit">찾기</button>
-                    <button class="btn btn-info" onclick="history.back();" type="button">취소</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<div class="m-auto p-4" style="max-width: 400px">
+	<span class="font-bold text-xl">아이디 찾기</span>
+</div>
+<form method="POST" class="bg-gray-200 p-4 w-full h-full"
+	action="doFindLoginId"
+	onsubmit="MemberFindLoginIdForm__submit(this); return false;">
+	<div class="m-auto" style="max-width: 400px">
+		<div class="pb-4 flex flex-col flex-grow">
+			<div class="bg-gray-500 text-white font-bold py-2 rounded-full px-4">이름(실명)</div>
+			<input type="text" placeholder="이름을 입력해주세요. 입력해주세요." name="name"
+				class="shadow appearance-none border rounded-full flex-grow py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow"
+				maxlength="30" autofocus="autofocus" />
+		</div>
+		<div class="pb-4 flex flex-col flex-grow">
+			<div class="bg-gray-500 text-white font-bold py-2 rounded-full px-4">이메일주소</div>
+			<input type="email" placeholder="이메일을 입력해주세요." name="email"
+				class="shadow appearance-none border rounded-full flex-grow py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow"
+				maxlength="50" />
+		</div>
+		<div class="pb-4 flex flex-grow">
+			<button
+				class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+				type="submit">찾기</button>
+			<button
+				class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+				onclick="history.back();" type="button">취소</button>
+		</div>
+	</div>
 </form>
-<h2 class="con">비번 찾기</h2>
 <script>
-    function MemberFindLoginPwForm__submit(form) {
-    	if (isNowLoading()) {
+	function MemberFindLoginPwForm__submit(form) {
+		if (isNowLoading()) {
 			alert('처리중입니다.');
 			return;
 		}
@@ -96,52 +98,52 @@
 			return;
 		}
 
-        form.email.value = form.email.value.trim();
-        form.email.value = form.email.value.replaceAll(' ', '');
+		form.email.value = form.email.value.trim();
+		form.email.value = form.email.value.replaceAll(' ', '');
 
-        if (form.email.value.length == 0) {
-            form.email.focus();
-            alert('이메일을 입력해주세요.');
+		if (form.email.value.length == 0) {
+			form.email.focus();
+			alert('이메일을 입력해주세요.');
 
-            return;
-        }
+			return;
+		}
 
-        form.submit();
-        startLoading();
-    }
+		$('.loader').show();
+		$('.loader-img').show();
+		$('.loader-background').show();
+		form.submit();
+		startLoading();
+	}
 </script>
-<form method="POST" class="table-box table-box-vertical con form1" action="doFindLoginPw" onsubmit="MemberFindLoginPwForm__submit(this); return false;">
-    <input type="hidden" name="redirectUri" value="/usr/member/login">
-    <table>
-        <colgroup>
-            <col class="table-first-col">
-        </colgroup>
-        <tbody>
-            <tr>
-                <th>로그인 아이디</th>
-				<td>
-					<div class="form-control-box">
-						<input type="text" placeholder="로그인 아이디 입력해주세요." name="loginId"
-							maxlength="30" autofocus="autofocus" />
-					</div>
-				</td>
-            </tr>
-            <tr>
-                <th>이메일주소</th>
-                <td>
-                    <div class="form-control-box">
-                        <input type="email" placeholder="이메일을 입력해주세요." name="email" maxlength="50" />
-                    </div>
-                </td>
-            </tr>
-            <tr class="tr-do">
-                <th>비번 찾기</th>
-                <td>
-                    <button class="btn btn-primary" type="submit">찾기</button>
-                    <button class="btn btn-info" onclick="history.back();" type="button">취소</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<div class="m-auto p-4" style="max-width: 400px">
+	<span class="font-bold text-xl">비밀번호 찾기</span>
+</div>
+<form method="POST" class="bg-gray-200 p-4 w-full h-full"
+	action="doFindLoginPw"
+	onsubmit="MemberFindLoginPwForm__submit(this); return false;">
+	<input type="hidden" name="redirectUri" value="/usr/member/login">
+	<div class="m-auto" style="max-width: 400px">
+		<div class="pb-4 flex flex-col flex-grow">
+			<div class="bg-gray-500 text-white font-bold py-2 rounded-full px-4">로그인
+				아이디</div>
+			<input type="text" placeholder="로그인 아이디 입력해주세요." name="loginId"
+				class="shadow appearance-none border rounded-full flex-grow py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow"
+				maxlength="30" autofocus="autofocus" />
+		</div>
+		<div class="pb-4 flex flex-col flex-grow">
+			<div class="bg-gray-500 text-white font-bold py-2 rounded-full px-4">이메일주소</div>
+			<input type="email" placeholder="이메일을 입력해주세요." name="email"
+				class="shadow appearance-none border rounded-full flex-grow py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow"
+				maxlength="50" />
+		</div>
+		<div class="pb-4 flex flex-grow">
+			<button
+				class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+				type="submit">찾기</button>
+			<button
+				class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+				onclick="history.back();" type="button">취소</button>
+		</div>
+	</div>
 </form>
 <%@ include file="../part/foot.jsp"%>

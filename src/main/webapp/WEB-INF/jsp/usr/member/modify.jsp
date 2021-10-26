@@ -307,7 +307,8 @@
 					url</div>
 				<input type="text" name="youTubeUrl"
 					class="shadow appearance-none border rounded-full flex-grow py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
-					placeholder="ex) https://www.youtube.com/watch?v=영문/숫자/특수문자 (pc버전)" value="${loginedMember.youTubeUrl}" />
+					placeholder="ex) https://www.youtube.com/watch?v=영문/숫자/특수문자 (pc버전)"
+					value="${loginedMember.youTubeUrl}" />
 			</div>
 			<div class=" pb-4 flex flex-col flex-grow">
 				<div class="flex flex-grow">
@@ -362,7 +363,8 @@
 			<div class=" pb-4 flex flex-col flex-grow">
 				<div
 					class="bg-gray-500 text-white font-bold py-2 rounded-full px-4 ">이름</div>
-				<input id="name" type="text" placeholder="이름을 입력해주세요." name="name" disabled="disabled"
+				<input id="name" type="text" placeholder="이름을 입력해주세요." name="name"
+					disabled="disabled"
 					class="bg-gray-100 shadow appearance-none border rounded-full flex-grow py-2 px-3 leading-tight focus:outline-none focus:shadow-outline "
 					maxlength="20" value="${loginedMember.name.trim()}" />
 			</div>
@@ -376,28 +378,30 @@
 			<div class=" pb-4 flex flex-col flex-grow">
 				<div
 					class="bg-gray-500 text-white font-bold py-2 rounded-full px-4 ">이메일</div>
-				<input type="email" placeholder="이메일 입력해주세요." name="email" disabled="disabled"
+				<input type="email" placeholder="이메일 입력해주세요." name="email"
+					disabled="disabled"
 					class="bg-gray-100 shadow border rounded-full flex-grow py-2 px-3 leading-tight focus:outline-none focus:shadow-outline "
 					maxlength="50" value="${loginedMember.email.trim()}" />
 			</div>
 			<div class=" pb-4 flex flex-col flex-grow">
 				<div
 					class="bg-gray-500 text-white font-bold py-2 rounded-full px-4 ">휴대폰</div>
-				<input type="tel" placeholder="휴대전화번호를 입력해주세요." name="cellphoneNo" disabled="disabled"
+				<input type="tel" placeholder="휴대전화번호를 입력해주세요." name="cellphoneNo"
+					disabled="disabled"
 					class="bg-gray-100 shadow appearance-none border rounded-full flex-grow py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
 					maxlength="12" value="${loginedMember.cellphoneNo.trim()}" />
 			</div>
-			<div id="activity-box">
-				<div class="pb-4 flex flex-col flex-grow">
-					<div class="bg-gray-500 text-white font-bold py-2 rounded-full px-4">활동이력</div>
-				</div>
-				<div class="relative flex items-center">
+			<div class="flex flex-col flex-grow pb-2">
+				<div class="bg-gray-500 text-white font-bold py-2 rounded-full px-4">활동이력</div>
+			</div>
+			<div id="activity-box flex flex-grow" style="min-height: 45px">
+				<div class="relative flex flex-grow">
 					<button type="button" class="absolute top-50 text-2xl"
 						id="career-box-switch" data-displayStatus=-1
 						onclick="javascript:showCareerBox()">
 						<i class="far fa-plus-square"></i>
 					</button>
-					<div class="career-box hidden relative">
+					<div class="career-box hidden relative flex-grow">
 						<c:if test="${joinedCareer != null}">
 							<button type="button" class="absolute top-0 text-2xl"
 								onclick="javascript:addCareerBox()">
@@ -407,14 +411,14 @@
 							<div id="career-input-box" class="pl-8">
 								<c:forEach items="${joinedCareer}" var="career"
 									varStatus="status">
-									<div class="career-input flex items-center">
+									<div class="career-input flex ">
 										<div>
 											<input name="careerDate" type="date"
 												value="${fn:contains(career.key,'-') ? career.key : ''}" />
 										</div>
 										<div>
 											<input name="careerArtwork" type="text"
-												placeholder="작품명 입력해주세요." name="career" maxlength="20"
+												placeholder="작품명 입력해주세요." name="career"
 												value="${career.value}" />
 										</div>
 										<button type="button" class="text-2xl"
@@ -634,7 +638,7 @@
 		if (joinedCareer != null && joinedCareer != "") {
 			$('#career-box-switch').data("displayStatus", -1);
 			$('#career-box-switch').css("display", "none");
-			$('.career-box').css("display", "block");
+			$('.career-box').css("display", "flex");
 		}
 
 	});
@@ -669,14 +673,10 @@
 
 		let html = '';
 
-		html += '<div class="career-input flex items-center">';
-		html += '<div>';
-		html += '<input type="date" name="careerDate" />';
-		html += '</div>';
-		html += '<div>';
-		html += '<input name="careerArtwork" type="text" placeholder="작품명 입력해주세요." maxlength="20" value="'
+		html += '<div class="career-input grid flex-grow" style="grid-template-columns: minmax(50px,auto) minmax(20px,auto) 10px;" >';
+		html += '<input type="date" name="careerDate" class="rounded-full" />';
+		html += '<input name="careerArtwork" type="text" class="rounded-full flex-grow" placeholder="작품명 입력해주세요." value="'
 				+ (title != null ? title : "") + '"/>';
-		html += '</div>';
 		html += '<button class="text-2xl" onclick="removeCareerBox(this)">';
 		html += '<i class="far fa-minus-square"></i>';
 		html += '</button>';
@@ -692,7 +692,7 @@
 
 	function removeCareerBoxAndShowSwitch(val) {
 		$('#career-box-switch').data("displayStatus", 1);
-		$('#career-box-switch').css("display", "block");
+		$('#career-box-switch').css("display", "flex");
 
 		$('.career-box').css("display", "none");
 		$('.career-box').empty();
@@ -705,19 +705,15 @@
 
 		html = '';
 
-		html += '<button type="button" class="absolute top-0 text-2xl" onclick="javascript:addCareerBox()">';
+		html += '<button type="button" class="absolute top-0 text-2xl flex-grow" onclick="javascript:addCareerBox()">';
 		html += '<i class="far fa-plus-square"></i>';
 		html += '</button>';
 
-		html += '<div id="career-input-box" class="pl-8">';
-		html += '<div class="career-input flex items-center">';
-		html += '<div>';
-		html += '<input name="careerDate" type="date" />';
-		html += '</div>';
-		html += '<div>';
-		html += '<input name="careerArtwork" type="text" placeholder="작품명 입력해주세요." name="career" maxlength="20" value="'
+		html += '<div id="career-input-box" class="pl-8 flex flex-col flex-grow">';
+		html += '<div class="career-input grid flex-grow" style="grid-template-columns: minmax(50px,auto) minmax(20px,auto) 10px; " >';
+		html += '<input name="careerDate" type="date" class="rounded-full "/>';
+		html += '<input name="careerArtwork" class="rounded-full" type="text" placeholder="작품명 입력해주세요." name="career" value="'
 				+ (title != null ? title : "") + '"/>';
-		html += '</div>';
 
 		html += '<button type="button" class="text-2xl" onclick="javascript:removeCareerBoxAndShowSwitch(this)">';
 		html += '<i class="far fa-trash-alt"></i>';
