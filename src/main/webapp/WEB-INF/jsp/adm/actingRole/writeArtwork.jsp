@@ -472,22 +472,6 @@
 		<div class="text-sm font-bold">캐스팅콜 등록에 관한설명</div>
 		<div class="text-xs pb-4">캐스팅 콜 등록에 관한 설명 설명 설명 설명 설명 설명 설명 설명
 			설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명 설명</div>
-
-		<div class="form-control-box mb-4 flex-grow relative">
-			<select name="genre"
-				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-				<option selected="selected" value="">매체 선택</option>
-				<option value="movie">영화</option>
-				<option value="drama">드라마</option>
-				<option value="theater">연극</option>
-				<option value="CF">광고</option>
-				<option value="dance">댄스</option>
-			</select>
-			<div
-				class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-				<i class="fas fa-chevron-down"></i>
-			</div>
-		</div>
 		<div class="form-control-box pb-4 flex-grow">
 			<input
 				class="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"

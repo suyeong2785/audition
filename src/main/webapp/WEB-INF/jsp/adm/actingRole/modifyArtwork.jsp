@@ -914,6 +914,7 @@
 			
 			var actingRole = new Object();
 			
+			actingRole["id"]= id;
 			actingRole["startDate"] = $('input[name="actingRole-startDate"]').val();
 			actingRole["endDate"] = $('input[name="actingRole-endDate"]').val();
 			actingRole["role"]= $('input[name="role' + id + '"]').val();
@@ -959,6 +960,7 @@
 			actingRoles.set(id , actingRole);
 			
 		}else{
+			savedActingRole["id"]= id;
 			savedActingRole["startDate"] = $('input[name="actingRole-startDate"]').val();
 			savedActingRole["endDate"] = $('input[name="actingRole-endDate"]').val();
 			savedActingRole["role"]= $('input[name="role' + id + '"]').val();
@@ -1217,6 +1219,7 @@
 			}
 		}
 		
+		actingRole["id"] = id;
 		actingRole["startDate"] = $('input[name="actingRole-startDate"]').val();
 		actingRole["endDate"] = $('input[name="actingRole-endDate"]').val();
 		actingRole["role"]= $('input[name="role' + id + '"]').val();
