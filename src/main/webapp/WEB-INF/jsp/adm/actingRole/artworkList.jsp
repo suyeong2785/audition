@@ -93,6 +93,7 @@
 <script>
 	// 캐스팅콜 삭제시 사용되는 함수 
 	function deleteArtworkBy(artworkId, artworkName){
+		let deleteSuccess = 0;
 		
 		//확인 버튼눌렀을 경우 실행됨
 		if(confirm("해당 캐스팅콜을 삭제하시겠습니까?")){
@@ -108,17 +109,20 @@
 				async : false,
 				type : 'POST',
 				success : function(data){
-					if (data && data.body) {
+					if (data && data.fail == false) {
 						//공고삭제했기에 다시 새로고침 해줌.
-						location.reload();
+						deleteSuccess = 1;
+						
 					}
+				},
+				error:function(){
+					throw new Error("에러발생!!");
 				}
-			}).then(function(){
-				//오류발생시 페이지넘김방지
-				throw new Error("에러발생!!");
 			});
-			
-			
+		}
+		
+		if(deleteSuccess == 1){
+			location.reload();
 		}
 	}
 </script>
