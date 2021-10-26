@@ -23,14 +23,15 @@
 		AF.fileDir AS artwork__file__fileDir
 		FROM
 		artwork AS A
-		LEFT OUTER
+		LEFT
 		JOIN file
 		AS AF
 		ON A.id = AF.relId
 		AND AF.relTypeCode = "artwork"
 		AND AF.delStatus = 0
+		WHERE 1
 		<if test="memberId != 1">
-		WHERE memberId = #{memberId}
+		AND memberId = #{memberId}
 		</if>
 		AND A.delStatus = 0
 	</select>
