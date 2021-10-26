@@ -39,27 +39,59 @@ public class ArtworkController {
 	@Autowired
 	private ActingRoleService actingRoleService;
 
+	/**
+	 * 캐스팅 콜 리스트 로직(모집공고 열람)
+	 * 
+	 * @param model
+	 * @param authority
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("/{authority}/actingRole/artworkList")
 	public String showAdmArtworkList(Model model, @PathVariable("authority") String authority,HttpServletRequest req) {
-		int memberId = Util.getAsInt(req.getAttribute("loginedMemberId"));
-		List<Artwork> artworks = artworkService.getArtworksForArtworkListPageByMemberId(memberId);
-
-		model.addAttribute("artworks", artworks);
-
+				
+		// 전체 캐스팅 콜 리스트
+		List<Artwork> artworks = artworkService.getArtworks();
+		
+		// 일반 url 설정
 		String url = "usr/actingRole/artworkList";
 
+		// adm일 경우( 마이페이지 접근 )
 		if (authority.equals("adm")) {
 			url = "adm/actingRole/artworkList";
+			
+			int memberId = Util.getAsInt(req.getAttribute("loginedMemberId"));
+
+			// 본인이 작성한 캐스팅 콜만 보이도록 설정
+			artworks = artworkService.getArtworksForArtworkListPageByMemberId(memberId);
+			
 		}
+		
+		
+		model.addAttribute("artworks", artworks);
 
 		return url;
 	}
 
+	/**
+	 * 캐스팅 콜 작성 페이지
+	 * 
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/adm/actingRole/writeArtwork")
 	public String showWriteArtwork(Model model) {
 		return "adm/actingRole/writeArtwork";
 	}
 
+	/**
+	 * 캐스팅 콜 작성 로직
+	 * 
+	 * @param param
+	 * @param req
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/adm/actingRole/doWriteArtwork")
 	public String doWriteArtwork(@RequestParam Map<String, Object> param, HttpServletRequest req, Model model) {
 		int newArtworkId = artworkService.writeArtwork(param);
@@ -70,6 +102,16 @@ public class ArtworkController {
 		return "redirect:" + redirectUri;
 	}
 
+	/**
+	 * 캐스팅 콜 상세페이지 
+	 * 
+	 * @param model
+	 * @param authority
+	 * @param param
+	 * @param req
+	 * @param listUrl
+	 * @return
+	 */
 	@RequestMapping("/{authority}/actingRole/detailArtwork")
 	public String showDetailArtwork(Model model, @PathVariable("authority") String authority,
 			@RequestParam Map<String, Object> param, HttpServletRequest req, String listUrl) {
@@ -99,6 +141,15 @@ public class ArtworkController {
 		return url;
 	}
 
+	/**
+	 * 캐스팅 콜 수정 페이지
+	 * 
+	 * @param model
+	 * @param param
+	 * @param req
+	 * @param listUrl
+	 * @return
+	 */
 	@RequestMapping("/adm/actingRole/modifyArtwork")
 	public String showModifyArtwork(Model model, @RequestParam Map<String, Object> param, HttpServletRequest req,
 			String listUrl) {
@@ -119,6 +170,14 @@ public class ArtworkController {
 		return "adm/actingRole/modifyArtwork";
 	}
 
+	/**
+	 * 캐스팅 콜 수정 로직
+	 * 
+	 * @param param
+	 * @param req
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/adm/actingRole/doModifyArtwork")
 	public String doModifyArtwork(@RequestParam Map<String, Object> param, HttpServletRequest req, Model model) {
 
@@ -128,6 +187,7 @@ public class ArtworkController {
 
 		return "redirect:" + redirectUri;
 	}
+	
 	/**
 	 * artworkList.jsp에서 캐스팅콜 삭제시 사용되는 함수 
 	 * 
@@ -143,7 +203,6 @@ public class ArtworkController {
 	 * @param req
 	 * @return
 	 */
-	
 	@RequestMapping("/adm/actingRole/doDeleteArtworkAjax")
 	@ResponseBody
 	public ResultData doDeleteArtworkAjax(@RequestParam Map<String, Object> param, HttpServletRequest req) {
@@ -153,4 +212,5 @@ public class ArtworkController {
 
 		return new ResultData("S-1", String.format("해당게시물을 삭제했습니다.", id));
 	}
+	
 }

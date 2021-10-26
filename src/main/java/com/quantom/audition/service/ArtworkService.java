@@ -111,12 +111,19 @@ public class ArtworkService {
 
 	}
 
+	/**
+	 * 캐스팅 콜 삭제 메소드
+	 * 
+	 * @param param
+	 */
 	public void deleteArtwork(Map<String,Object> param) {
-		int id = Util.getAsInt(param.get("id"));//artworkId
+		int id = Util.getAsInt(param.get("id"));
 		
+		// 캐스팅 콜 정보 삭제
 		artworkDao.deleteArtwork(id);
-		fileService.deleteFilesByRelId("artwork", id);
-		
+		// 동봉된 파일도 동시에 삭제
+		fileService.deleteFilesByRelId("artwork", id);	
+		// 배역정보 같이 삭제
 		actingRoleService.deleteActingRolesByArtworkId(param);
 		
 	}
