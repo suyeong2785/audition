@@ -88,13 +88,13 @@
 
 			<!-- 검색 버튼 -->
 			<button type="submit"
-				class="flex justify-center items-center h-10 bg-green-400 text-white text-center px-4 text-2xl md:text-3xl hover:bg-green-500">
+				class="flex justify-center items-center h-10 bg-yellow-400 text-white text-center px-4 text-2xl md:text-3xl hover:bg-yellow-500">
 				<i class="fas fa-search"></i>
 			</button>
 
 			<!-- 검색 닫기버튼 -->
 			<button onclick="closeActorList()" id="search-close-button"
-				class=" hidden justify-center items-center h-10 bg-green-400 text-white text-center px-4 text-2xl md:text-3xl hover:bg-green-500">
+				class=" hidden justify-center items-center h-10 bg-yellow-400 text-white text-center px-4 text-2xl md:text-3xl hover:bg-yellow-500">
 				<i class="fas fa-times"></i>
 			</button>
 		</div>

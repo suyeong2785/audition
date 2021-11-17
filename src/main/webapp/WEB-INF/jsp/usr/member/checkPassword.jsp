@@ -65,10 +65,10 @@
 		<div>
 			<div class="form-control-box pb-4 flex-grow flex">
 				<input
-					class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+					class="w-full bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 rounded-full px-4"
 					type="submit" value="비밀번호 확인">
 				<button
-					class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+					class="w-full bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 rounded-full px-4"
 					type="button" onclick="history.back();">취소</button>
 			</div>
 		</div>

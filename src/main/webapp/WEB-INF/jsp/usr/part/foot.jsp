@@ -4,7 +4,7 @@
 
 <div class=" py-4">
 	<div class="foo_div1 text-center ">
-		<p class="text-base font-bold">Copyright(c) 2021 (주)호전 인터네셔널
+		<p class="text-base font-bold">Copyright(c) 2021 (주)베스트 오디션
 			co.,ltd</p>
 		<p class="text-base ">All rights reserved.</p>
 	</div>

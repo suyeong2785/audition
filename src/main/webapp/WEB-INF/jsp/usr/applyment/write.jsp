@@ -149,7 +149,7 @@
 	</div>
 	<div class="flex justify-center items-center py-8">
 		<button
-			class=" bg-green-500 hover:bg-green-700 text-white py-2 rounded-full px-4"
+			class=" bg-yellow-500 hover:bg-yellow-700 text-white py-2 rounded-full px-4"
 			type="submit">오디션 지원하기</button>
 	</div>
 </form>

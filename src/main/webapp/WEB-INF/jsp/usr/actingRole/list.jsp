@@ -9,7 +9,7 @@
 		<c:if test="${isAdmin == true || isCastingDirector == true}">
 			<div>
 				<a
-					class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+					class="w-full bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 rounded-full px-4"
 					href="../../adm/actingRole/write">
 					<i class="fas fa-plus"></i>
 					<span>신규모집</span>

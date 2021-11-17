@@ -64,10 +64,10 @@
 		</div>
 		<div class="pb-4 flex flex-grow">
 			<button
-				class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+				class="w-full bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 rounded-full px-4"
 				type="submit">찾기</button>
 			<button
-				class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+				class="w-full bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 rounded-full px-4"
 				onclick="history.back();" type="button">취소</button>
 		</div>
 	</div>
@@ -138,10 +138,10 @@
 		</div>
 		<div class="pb-4 flex flex-grow">
 			<button
-				class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+				class="w-full bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 rounded-full px-4"
 				type="submit">찾기</button>
 			<button
-				class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+				class="w-full bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 rounded-full px-4"
 				onclick="history.back();" type="button">취소</button>
 		</div>
 	</div>

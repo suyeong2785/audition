@@ -132,7 +132,7 @@
 		</div>
 		<div class="flex justify-center">
 			<button
-				class="w-28 bg-green-500 hover:bg-green-700 text-white py-2 rounded-full px-4"
+				class="w-28 bg-yellow-500 hover:bg-yellow-700 text-white py-2 rounded-full px-4"
 				onclick="closeActingRoleModal()">확인</button>
 		</div>
 	</div>

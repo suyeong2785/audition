@@ -88,7 +88,7 @@
 	<input type="hidden" name="redirectUri" value="${param.redirectUri}">
 	<input type="hidden" name="loginPwReal">
 	<div class="flex justify-center pb-12">
-		<img src="/resource/img/logoForLogin.svg" alt="" />
+		<img class="h-48" src="/resource/img/logoForLogin.svg" alt="" />
 	</div>
 	<div class="form-control-box px-8 pb-4">
 		<input type="text"
@@ -102,7 +102,7 @@
 	</div>
 	<div class="px-8">
 		<button
-			class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full"
+			class="w-full bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 rounded-full"
 			type="submit">로그인</button>
 	</div>
 	<!--  

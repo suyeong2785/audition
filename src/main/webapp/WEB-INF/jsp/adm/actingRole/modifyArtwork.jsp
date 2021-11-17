@@ -603,7 +603,7 @@
 		</div>
 
 		<input
-			class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+			class="w-full bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 rounded-full px-4"
 			type="submit" value="수정">
 	</div>
 </form>
@@ -733,7 +733,7 @@
 				</div>
 				<button onclick="javascript:checkAndSaveCurrentActingRoleInfo()"
 					type="button"
-					class="shadow appearance-none border rounded-full py-2 px-3 bg-green-300 text-white leading-tight focus:outline-none focus:shadow-outline">입력완료</button>
+					class="shadow appearance-none border rounded-full py-2 px-3 bg-yellow-300 text-white leading-tight focus:outline-none focus:shadow-outline">입력완료</button>
 			</div>
 		</div>
 	</div>

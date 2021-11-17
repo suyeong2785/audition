@@ -11,7 +11,7 @@
 			<div class="flex-grow"></div>
 			<div class="flex items-center justify-center">
 				<a
-					class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+					class="w-full bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 rounded-full px-4"
 					href="./write">
 					<i class="fas fa-plus"></i>
 					<span>Add</span>

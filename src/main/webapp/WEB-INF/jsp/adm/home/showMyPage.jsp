@@ -17,21 +17,21 @@
 
 		<div id="share-box" class="flex items-center justify-center font-bold">
 			<div id="share-button"
-				class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+				class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 rounded-full px-4"
 				onclick="showArtworksAndActingRolesCheckBox()">
 				<span>
 					<i class="far fa-share-square"></i>
 				</span>
 			</div>
 			<div id="share-search-button"
-				class="hidden bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-l-full px-4"
+				class="hidden bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 rounded-l-full px-4"
 				onclick="showShareModal()">
 				<span>
 					<i class="fas fa-user-plus"></i>
 				</span>
 			</div>
 			<div id="share-close-button"
-				class="hidden bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-r-full px-4"
+				class="hidden bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 rounded-r-full px-4"
 				onclick="closeArtworksAndActingRolesCheckBox()">
 				<span>
 					<i class="fas fa-times"></i>
@@ -130,12 +130,12 @@
 			</div>
 			<!-- 검색 버튼 -->
 			<button onclick="getCastingDirectorList()"
-				class="flex justify-center items-center h-full bg-green-400 text-white text-center h-full px-4 text-2xl md:text-3xl hover:bg-green-500">
+				class="flex justify-center items-center h-full bg-yellow-400 text-white text-center h-full px-4 text-2xl md:text-3xl hover:bg-green-500">
 				<i class="fas fa-search"></i>
 			</button>
 			<!-- 닫기 버튼 -->
 			<button onclick="closeCastingDirectorList()" id="search-close-button"
-				class=" hidden justify-center items-center h-full bg-green-400 text-white text-center h-full px-4 text-2xl md:text-3xl hover:bg-green-500">
+				class=" hidden justify-center items-center h-full bg-yellow-400 text-white text-center h-full px-4 text-2xl md:text-3xl hover:bg-green-500">
 				<i class="fas fa-times"></i>
 			</button>
 		</div>

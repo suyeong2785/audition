@@ -104,7 +104,7 @@ var param = ${paramJson}; var loginedMemberId = ${loginedMemberId};
 				<i class="fas fa-bars"></i>
 			</a>
 			<a href="/usr/home/main" class="logo img-box">
-				<img src="/resource/img/mobile_header.svg" alt="" />
+				<img class="h-8" src="/resource/img/mobile_header.svg" alt="" />
 			</a>
 			<c:if test="${isLogined == false}">
 				<a href="/usr/member/login">

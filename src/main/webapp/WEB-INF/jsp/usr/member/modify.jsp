@@ -287,7 +287,7 @@
 							accept="${appConfig.getAttachemntFileInputAccept('img')}"
 							name="file__member__${loginedMemberId}__common__attachment__${fileForProfile != null ? fileForProfile.fileNo : 0 }" />
 						<div
-							class="member-file-status w-full text-center text bg-green-500 text-white rounded-full font-semibold cursor-pointer p-1 px-3 hover:bg-green-600">
+							class="member-file-status w-full text-center text bg-yellow-500 text-white rounded-full font-semibold cursor-pointer p-1 px-3 hover:bg-green-600">
 							프로필 사진 업로드</div>
 					</label>
 					<c:if test="${fileForProfile != null}">
@@ -356,7 +356,7 @@
 							<div id="ISNI-reuslt" class="hidden"></div>
 						</div>
 						<button type="button" onclick="javascript:getISNIInfo()"
-							class=" mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4">검색</button>
+							class=" mt-2 bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 rounded-full px-4">검색</button>
 					</div>
 				</div>
 			</div>
@@ -434,10 +434,10 @@
 			</div>
 			<div class="flex">
 				<button
-					class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+					class="w-full bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 rounded-full px-4"
 					type="submit">수정</button>
 				<button
-					class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+					class="w-full bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 rounded-full px-4"
 					type="button" onclick="history.back();">취소</button>
 			</div>
 		</div>

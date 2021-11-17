@@ -435,7 +435,7 @@
 					<span>Audictiontree 이용약관</span>
 				</div>
 				<button type="button"
-					class="bg-green-500 hover:bg-green-700 text-white font-bold rounded-full px-4 "
+					class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold rounded-full px-4 "
 					onclick="showUserAgreement()">자세히보기</button>
 			</div>
 
@@ -728,7 +728,7 @@
 					<span>개인정보 수집 및 이용에 대한 동의</span>
 				</div>
 				<div
-					class="bg-green-500 hover:bg-green-700 text-white font-bold rounded-full px-4 "
+					class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold rounded-full px-4 "
 					onclick="showPersonalClause()">자세히보기</div>
 			</div>
 			<div id="personalClause" class="hidden bg-white my-4"
@@ -819,10 +819,10 @@
 		<div>
 			<div class="form-control-box flex-grow flex">
 				<input
-					class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+					class="w-full bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 rounded-full px-4"
 					type="submit" value="가입">
 				<button
-					class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 rounded-full px-4"
+					class="w-full bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 rounded-full px-4"
 					type="button" onclick="history.back();">취소</button>
 			</div>
 		</div>
